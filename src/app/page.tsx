@@ -11,27 +11,41 @@ import {
 } from "@dnd-kit/sortable";
 import { restrictToVerticalAxis } from "@dnd-kit/modifiers";
 import FileDropzone from "@/components/FileDropzone";
+import VideoDropzone from "@/components/VideoDropzone";
 import ImageCard, { ImageItem, ImageStatus } from "@/components/ImageCard";
+import VideoCard, { VideoItem, VideoStatus } from "@/components/VideoCard";
 import QualityControls, { OptimizeOptions } from "@/components/QualityControls";
+import VideoControls, { VideoOptions } from "@/components/VideoControls";
 import StatsPanel from "@/components/StatsPanel";
 import { useTheme } from "@/context/ThemeContext";
-import { Zap, Download, Trash2, FolderOpen, Sun, Moon, AlertCircle, X } from "lucide-react";
+import { Zap, Download, Trash2, FolderOpen, Sun, Moon, AlertCircle, X, ImageIcon, Video } from "lucide-react";
 
 const DEFAULT_OPTIONS: OptimizeOptions = {
-  quality: 82,
-  nearLossless: true,
+  quality: 75,
+  nearLossless: false,
   stripMetadata: true,
   format: "webp",
-  maxWidth: "",
+  maxWidth: "2400",
   maxHeight: "",
   renameTemplate: "",
   sizeBudget: "",
+};
+
+const DEFAULT_VIDEO_OPTIONS: VideoOptions = {
+  crf: 33,
+  maxWidth: "",
+  stripAudio: false,
+  speed: 2,
+  renameTemplate: "",
 };
 
 let idCounter = 0;
 
 export default function Home() {
   const { theme, toggle: toggleTheme } = useTheme();
+  const [activeTab, setActiveTab] = useState<"images" | "videos">("images");
+
+  // — Image state —
   const [items, setItems] = useState<ImageItem[]>([]);
   const [options, setOptions] = useState<OptimizeOptions>(DEFAULT_OPTIONS);
   const [isProcessing, setIsProcessing] = useState(false);
@@ -39,10 +53,20 @@ export default function Home() {
   const [dupeWarning, setDupeWarning] = useState<string | null>(null);
   const abortRef = useRef<AbortController | null>(null);
 
+  // — Video state —
+  const [videoItems, setVideoItems] = useState<VideoItem[]>([]);
+  const [videoOptions, setVideoOptions] = useState<VideoOptions>(DEFAULT_VIDEO_OPTIONS);
+  const [isVideoProcessing, setIsVideoProcessing] = useState(false);
+  const [isVideoZipping, setIsVideoZipping] = useState(false);
+  const [videoDupeWarning, setVideoDupeWarning] = useState<string | null>(null);
+  const videoAbortRef = useRef<AbortController | null>(null);
+
   const sensors = useSensors(
     useSensor(PointerSensor, { activationConstraint: { distance: 5 } }),
     useSensor(KeyboardSensor, { coordinateGetter: sortableKeyboardCoordinates })
   );
+
+  // ── Image handlers ──────────────────────────────────────────────────────────
 
   const updateItem = useCallback((id: string, patch: Partial<ImageItem>) => {
     setItems((prev) => prev.map((it) => (it.id === id ? { ...it, ...patch } : it)));
@@ -53,30 +77,20 @@ export default function Home() {
       const existingKeys = new Set(prev.map((it) => `${it.file.name}_${it.file.size}`));
       const dupes: string[] = [];
       const fresh: ImageItem[] = [];
-
       for (const file of files) {
         const key = `${file.name}_${file.size}`;
-        if (existingKeys.has(key)) {
-          dupes.push(file.name);
-        } else {
+        if (existingKeys.has(key)) { dupes.push(file.name); }
+        else {
           existingKeys.add(key);
-          fresh.push({
-            id: `img_${++idCounter}`,
-            file,
-            preview: URL.createObjectURL(file),
-            status: "pending" as ImageStatus,
-          });
+          fresh.push({ id: `img_${++idCounter}`, file, preview: URL.createObjectURL(file), status: "pending" as ImageStatus });
         }
       }
-
       if (dupes.length > 0) {
-        setDupeWarning(
-          dupes.length === 1
-            ? `"${dupes[0]}" is already in the queue — skipped.`
-            : `${dupes.length} duplicate files already in the queue were skipped.`
+        setDupeWarning(dupes.length === 1
+          ? `"${dupes[0]}" is already in the queue — skipped.`
+          : `${dupes.length} duplicate files already in the queue were skipped.`
         );
       }
-
       return [...prev, ...fresh];
     });
   }, []);
@@ -109,17 +123,14 @@ export default function Home() {
   const handleOptimize = useCallback(async () => {
     const pending = items.filter((it) => it.status === "pending");
     if (pending.length === 0) return;
-
     setIsProcessing(true);
     const controller = new AbortController();
     abortRef.current = controller;
-
-    const BATCH = 4;
+    const BATCH = 1;
     for (let i = 0; i < pending.length; i += BATCH) {
       if (controller.signal.aborted) break;
       const batch = pending.slice(i, i + BATCH);
       batch.forEach((it) => updateItem(it.id, { status: "processing" }));
-
       const formData = new FormData();
       batch.forEach((it) => formData.append("files", it.file));
       formData.append("quality", options.quality.toString());
@@ -130,7 +141,6 @@ export default function Home() {
       if (options.maxWidth) formData.append("maxWidth", options.maxWidth);
       if (options.maxHeight) formData.append("maxHeight", options.maxHeight);
       if (options.renameTemplate) formData.append("renameTemplate", options.renameTemplate);
-
       try {
         const res = await fetch("/api/optimize", { method: "POST", body: formData, signal: controller.signal });
         if (!res.ok) {
@@ -151,7 +161,6 @@ export default function Home() {
         batch.forEach((it) => updateItem(it.id, { status: "error", error: (err as Error).message }));
       }
     }
-
     setIsProcessing(false);
     abortRef.current = null;
   }, [items, options, updateItem]);
@@ -185,15 +194,143 @@ export default function Home() {
     }
   };
 
-  // Keyboard shortcuts
+  // ── Video handlers ──────────────────────────────────────────────────────────
+
+  const updateVideoItem = useCallback((id: string, patch: Partial<VideoItem>) => {
+    setVideoItems((prev) => prev.map((it) => (it.id === id ? { ...it, ...patch } : it)));
+  }, []);
+
+  const handleVideoFiles = useCallback((files: File[]) => {
+    setVideoItems((prev) => {
+      const existingKeys = new Set(prev.map((it) => `${it.file.name}_${it.file.size}`));
+      const dupes: string[] = [];
+      const fresh: VideoItem[] = [];
+      for (const file of files) {
+        const key = `${file.name}_${file.size}`;
+        if (existingKeys.has(key)) { dupes.push(file.name); }
+        else {
+          existingKeys.add(key);
+          fresh.push({ id: `vid_${++idCounter}`, file, preview: URL.createObjectURL(file), status: "pending" as VideoStatus });
+        }
+      }
+      if (dupes.length > 0) {
+        setVideoDupeWarning(dupes.length === 1
+          ? `"${dupes[0]}" is already in the queue — skipped.`
+          : `${dupes.length} duplicate files already in the queue were skipped.`
+        );
+      }
+      return [...prev, ...fresh];
+    });
+  }, []);
+
+  const handleVideoRemove = useCallback((id: string) => {
+    setVideoItems((prev) => {
+      const item = prev.find((it) => it.id === id);
+      if (item) URL.revokeObjectURL(item.preview);
+      return prev.filter((it) => it.id !== id);
+    });
+  }, []);
+
+  const handleVideoClearAll = () => {
+    videoItems.forEach((it) => URL.revokeObjectURL(it.preview));
+    setVideoItems([]);
+    setVideoDupeWarning(null);
+  };
+
+  const handleVideoDragEnd = (event: DragEndEvent) => {
+    const { active, over } = event;
+    if (over && active.id !== over.id) {
+      setVideoItems((prev) => {
+        const oldIndex = prev.findIndex((i) => i.id === active.id);
+        const newIndex = prev.findIndex((i) => i.id === over.id);
+        return arrayMove(prev, oldIndex, newIndex);
+      });
+    }
+  };
+
+  const handleVideoCompress = useCallback(async () => {
+    const pending = videoItems.filter((it) => it.status === "pending");
+    if (pending.length === 0) return;
+    setIsVideoProcessing(true);
+    const controller = new AbortController();
+    videoAbortRef.current = controller;
+    for (let i = 0; i < pending.length; i++) {
+      if (controller.signal.aborted) break;
+      const item = pending[i];
+      updateVideoItem(item.id, { status: "processing" });
+      const formData = new FormData();
+      formData.append("file", item.file);
+      formData.append("crf", videoOptions.crf.toString());
+      formData.append("speed", videoOptions.speed.toString());
+      formData.append("stripAudio", videoOptions.stripAudio.toString());
+      formData.append("fileIndex", (i + 1).toString());
+      if (videoOptions.maxWidth) formData.append("maxWidth", videoOptions.maxWidth);
+      if (videoOptions.renameTemplate) formData.append("renameTemplate", videoOptions.renameTemplate);
+      try {
+        const res = await fetch("/api/compress-video", { method: "POST", body: formData, signal: controller.signal });
+        if (!res.ok) {
+          const err = await res.json();
+          updateVideoItem(item.id, { status: "error", error: err.error || "Server error" });
+          continue;
+        }
+        const { result } = await res.json();
+        if (result.error) updateVideoItem(item.id, { status: "error", error: result.error });
+        else updateVideoItem(item.id, { status: "done", result });
+      } catch (err) {
+        if ((err as Error).name === "AbortError") break;
+        updateVideoItem(item.id, { status: "error", error: (err as Error).message });
+      }
+    }
+    setIsVideoProcessing(false);
+    videoAbortRef.current = null;
+  }, [videoItems, videoOptions, updateVideoItem]);
+
+  const handleVideoStop = () => {
+    videoAbortRef.current?.abort();
+    setIsVideoProcessing(false);
+    setVideoItems((prev) => prev.map((it) => it.status === "processing" ? { ...it, status: "pending" } : it));
+  };
+
+  const handleVideoDownloadAll = async () => {
+    const done = videoItems.filter((it) => it.status === "done" && it.result);
+    if (done.length === 0) return;
+    setIsVideoZipping(true);
+    try {
+      const res = await fetch("/api/download-zip", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ filenames: done.map((it) => it.result!.outputName), folder: "optimized_videos" }),
+      });
+      if (!res.ok) throw new Error("Failed to create ZIP");
+      const blob = await res.blob();
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url; a.download = "compressed_videos.zip"; a.click();
+      URL.revokeObjectURL(url);
+    } catch (err) {
+      alert(`ZIP error: ${(err as Error).message}`);
+    } finally {
+      setIsVideoZipping(false);
+    }
+  };
+
+  // ── Keyboard shortcuts ──────────────────────────────────────────────────────
+
   useEffect(() => {
     const handler = (e: KeyboardEvent) => {
-      if (e.key === "Escape" && isProcessing) { e.preventDefault(); handleStop(); }
-      if (e.key === "Enter" && (e.ctrlKey || e.metaKey) && !isProcessing) { e.preventDefault(); handleOptimize(); }
+      if (activeTab === "images") {
+        if (e.key === "Escape" && isProcessing) { e.preventDefault(); handleStop(); }
+        if (e.key === "Enter" && (e.ctrlKey || e.metaKey) && !isProcessing) { e.preventDefault(); handleOptimize(); }
+      } else {
+        if (e.key === "Escape" && isVideoProcessing) { e.preventDefault(); handleVideoStop(); }
+        if (e.key === "Enter" && (e.ctrlKey || e.metaKey) && !isVideoProcessing) { e.preventDefault(); handleVideoCompress(); }
+      }
     };
     window.addEventListener("keydown", handler);
     return () => window.removeEventListener("keydown", handler);
-  }, [isProcessing, handleOptimize]);
+  }, [activeTab, isProcessing, isVideoProcessing, handleOptimize, handleVideoCompress]);
+
+  // ── Derived values ──────────────────────────────────────────────────────────
 
   const pendingCount = items.filter((it) => it.status === "pending").length;
   const doneItems = items.filter((it) => it.status === "done" && it.result);
@@ -203,6 +340,9 @@ export default function Home() {
   const overBudgetCount = sizeBudgetKB
     ? doneItems.filter((it) => it.result && it.result.optimizedSize > sizeBudgetKB * 1024).length
     : 0;
+
+  const videoPendingCount = videoItems.filter((it) => it.status === "pending").length;
+  const videoDoneItems = videoItems.filter((it) => it.status === "done" && it.result);
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-zinc-950 text-zinc-900 dark:text-zinc-100">
@@ -215,7 +355,7 @@ export default function Home() {
             </div>
             <div>
               <h1 className="text-base font-bold text-zinc-800 dark:text-zinc-100">WebP Optimizer</h1>
-              <p className="text-xs text-gray-400 dark:text-zinc-500">Bulk image compression & conversion</p>
+              <p className="text-xs text-gray-400 dark:text-zinc-500">Bulk image & video compression</p>
             </div>
           </div>
 
@@ -226,15 +366,29 @@ export default function Home() {
               {theme === "dark" ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
             </button>
 
-            {doneItems.length > 0 && (
+            {activeTab === "images" && doneItems.length > 0 && (
               <button onClick={handleDownloadAll} disabled={isZipping}
                 className="flex items-center gap-2 px-3.5 py-2 bg-emerald-600 hover:bg-emerald-500 disabled:opacity-50 rounded-xl text-sm font-medium text-white transition-colors">
                 <Download className="w-4 h-4" />
                 {isZipping ? "Packing…" : `ZIP (${doneItems.length})`}
               </button>
             )}
-            {items.length > 0 && (
+            {activeTab === "images" && items.length > 0 && (
               <button onClick={handleClearAll} disabled={isProcessing}
+                className="flex items-center gap-2 px-3 py-2 bg-gray-100 dark:bg-zinc-800 hover:bg-gray-200 dark:hover:bg-zinc-700 disabled:opacity-50 rounded-xl text-sm text-gray-500 dark:text-zinc-400 transition-colors">
+                <Trash2 className="w-4 h-4" />
+              </button>
+            )}
+
+            {activeTab === "videos" && videoDoneItems.length > 0 && (
+              <button onClick={handleVideoDownloadAll} disabled={isVideoZipping}
+                className="flex items-center gap-2 px-3.5 py-2 bg-emerald-600 hover:bg-emerald-500 disabled:opacity-50 rounded-xl text-sm font-medium text-white transition-colors">
+                <Download className="w-4 h-4" />
+                {isVideoZipping ? "Packing…" : `ZIP (${videoDoneItems.length})`}
+              </button>
+            )}
+            {activeTab === "videos" && videoItems.length > 0 && (
+              <button onClick={handleVideoClearAll} disabled={isVideoProcessing}
                 className="flex items-center gap-2 px-3 py-2 bg-gray-100 dark:bg-zinc-800 hover:bg-gray-200 dark:hover:bg-zinc-700 disabled:opacity-50 rounded-xl text-sm text-gray-500 dark:text-zinc-400 transition-colors">
                 <Trash2 className="w-4 h-4" />
               </button>
@@ -244,99 +398,184 @@ export default function Home() {
       </header>
 
       <main className="max-w-5xl mx-auto px-5 py-6 space-y-5">
-        <StatsPanel
-          total={items.length} done={doneItems.length}
-          totalOriginalBytes={totalOriginalBytes} totalOptimizedBytes={totalOptimizedBytes}
-          overBudgetCount={overBudgetCount}
-        />
 
-        {/* Duplicate warning */}
-        {dupeWarning && (
-          <div className="flex items-center gap-3 bg-amber-50 dark:bg-amber-500/10 border border-amber-200 dark:border-amber-500/30 rounded-xl px-4 py-3">
-            <AlertCircle className="w-4 h-4 text-amber-500 flex-shrink-0" />
-            <p className="text-sm text-amber-700 dark:text-amber-300 flex-1">{dupeWarning}</p>
-            <button onClick={() => setDupeWarning(null)} className="text-amber-400 hover:text-amber-600 dark:hover:text-amber-200">
-              <X className="w-4 h-4" />
-            </button>
-          </div>
-        )}
+        {/* Tab switcher */}
+        <div className="flex gap-1 p-1 bg-gray-100 dark:bg-zinc-800/60 rounded-xl w-fit">
+          <button
+            onClick={() => setActiveTab("images")}
+            className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-semibold transition-all
+              ${activeTab === "images"
+                ? "bg-white dark:bg-zinc-900 text-zinc-800 dark:text-zinc-100 shadow-sm"
+                : "text-gray-500 dark:text-zinc-400 hover:text-zinc-700 dark:hover:text-zinc-200"
+              }`}
+          >
+            <ImageIcon className="w-4 h-4" />
+            Images
+          </button>
+          <button
+            onClick={() => setActiveTab("videos")}
+            className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-semibold transition-all
+              ${activeTab === "videos"
+                ? "bg-white dark:bg-zinc-900 text-zinc-800 dark:text-zinc-100 shadow-sm"
+                : "text-gray-500 dark:text-zinc-400 hover:text-zinc-700 dark:hover:text-zinc-200"
+              }`}
+          >
+            <Video className="w-4 h-4" />
+            Videos
+          </button>
+        </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-[1fr_300px] gap-5 items-start">
-          {/* Left */}
-          <div className="space-y-4">
-            <FileDropzone onFiles={handleFiles} disabled={isProcessing} />
+        {/* ── Images tab ── */}
+        {activeTab === "images" && (
+          <>
+            <StatsPanel
+              total={items.length} done={doneItems.length}
+              totalOriginalBytes={totalOriginalBytes} totalOptimizedBytes={totalOptimizedBytes}
+              overBudgetCount={overBudgetCount}
+            />
 
-            {items.length > 0 && (
-              <div className="space-y-2">
-                <div className="flex items-center justify-between px-1">
-                  <p className="text-xs text-gray-400 dark:text-zinc-500">
-                    {items.length} image{items.length !== 1 ? "s" : ""} queued
-                  </p>
-                  <p className="text-xs text-gray-400 dark:text-zinc-500">Drag to reorder</p>
-                </div>
+            {dupeWarning && (
+              <div className="flex items-center gap-3 bg-amber-50 dark:bg-amber-500/10 border border-amber-200 dark:border-amber-500/30 rounded-xl px-4 py-3">
+                <AlertCircle className="w-4 h-4 text-amber-500 flex-shrink-0" />
+                <p className="text-sm text-amber-700 dark:text-amber-300 flex-1">{dupeWarning}</p>
+                <button onClick={() => setDupeWarning(null)} className="text-amber-400 hover:text-amber-600 dark:hover:text-amber-200">
+                  <X className="w-4 h-4" />
+                </button>
+              </div>
+            )}
 
-                <DndContext
-                  sensors={sensors}
-                  collisionDetection={closestCenter}
-                  modifiers={[restrictToVerticalAxis]}
-                  onDragEnd={handleDragEnd}
-                >
-                  <SortableContext items={items.map((i) => i.id)} strategy={verticalListSortingStrategy}>
-                    <div className="space-y-2">
-                      {items.map((item) => (
-                        <ImageCard
-                          key={item.id}
-                          item={item}
-                          onRemove={handleRemove}
-                          sizeBudgetKB={sizeBudgetKB}
-                        />
-                      ))}
+            <div className="grid grid-cols-1 lg:grid-cols-[1fr_300px] gap-5 items-start">
+              <div className="space-y-4">
+                <FileDropzone onFiles={handleFiles} disabled={isProcessing} />
+                {items.length > 0 && (
+                  <div className="space-y-2">
+                    <div className="flex items-center justify-between px-1">
+                      <p className="text-xs text-gray-400 dark:text-zinc-500">{items.length} image{items.length !== 1 ? "s" : ""} queued</p>
+                      <p className="text-xs text-gray-400 dark:text-zinc-500">Drag to reorder</p>
                     </div>
-                  </SortableContext>
-                </DndContext>
+                    <DndContext sensors={sensors} collisionDetection={closestCenter} modifiers={[restrictToVerticalAxis]} onDragEnd={handleDragEnd}>
+                      <SortableContext items={items.map((i) => i.id)} strategy={verticalListSortingStrategy}>
+                        <div className="space-y-2">
+                          {items.map((item) => (
+                            <ImageCard key={item.id} item={item} onRemove={handleRemove} sizeBudgetKB={sizeBudgetKB} />
+                          ))}
+                        </div>
+                      </SortableContext>
+                    </DndContext>
+                  </div>
+                )}
+                {items.length === 0 && (
+                  <div className="text-center py-8 text-gray-300 dark:text-zinc-600 text-sm">
+                    <FolderOpen className="w-8 h-8 mx-auto mb-2 opacity-40" />
+                    Drop images above to get started
+                  </div>
+                )}
               </div>
-            )}
 
-            {items.length === 0 && (
-              <div className="text-center py-8 text-gray-300 dark:text-zinc-600 text-sm">
-                <FolderOpen className="w-8 h-8 mx-auto mb-2 opacity-40" />
-                Drop images above to get started
-              </div>
-            )}
-          </div>
-
-          {/* Right */}
-          <div className="space-y-3 lg:sticky lg:top-20">
-            <QualityControls options={options} onChange={setOptions} disabled={isProcessing} />
-
-            {isProcessing ? (
-              <button onClick={handleStop}
-                className="w-full py-3 rounded-xl font-semibold text-sm bg-red-600 hover:bg-red-500 text-white transition-colors">
-                Stop Processing
-              </button>
-            ) : (
-              <button onClick={handleOptimize} disabled={pendingCount === 0}
-                className="w-full py-3 rounded-xl font-semibold text-sm bg-violet-600 hover:bg-violet-500 disabled:opacity-40 disabled:cursor-not-allowed text-white transition-colors flex items-center justify-center gap-2">
-                <Zap className="w-4 h-4" />
-                {pendingCount > 0 ? `Optimize ${pendingCount} image${pendingCount !== 1 ? "s" : ""}` : "No images to process"}
-              </button>
-            )}
-
-            <div className="bg-white dark:bg-zinc-900/50 border border-gray-100 dark:border-zinc-800/50 rounded-xl p-3.5 space-y-2">
-              <p className="text-xs font-semibold text-gray-500 dark:text-zinc-400">Keyboard shortcuts</p>
-              <div className="space-y-1.5 text-xs text-gray-400 dark:text-zinc-500">
-                <div className="flex justify-between">
-                  <span>Start optimizing</span>
-                  <kbd className="px-1.5 py-0.5 bg-gray-100 dark:bg-zinc-800 rounded text-[10px] font-mono text-gray-500 dark:text-zinc-400">⌘ Enter</kbd>
-                </div>
-                <div className="flex justify-between">
-                  <span>Stop processing</span>
-                  <kbd className="px-1.5 py-0.5 bg-gray-100 dark:bg-zinc-800 rounded text-[10px] font-mono text-gray-500 dark:text-zinc-400">Esc</kbd>
+              <div className="space-y-3 lg:sticky lg:top-20">
+                <QualityControls options={options} onChange={setOptions} disabled={isProcessing} />
+                {isProcessing ? (
+                  <button onClick={handleStop}
+                    className="w-full py-3 rounded-xl font-semibold text-sm bg-red-600 hover:bg-red-500 text-white transition-colors">
+                    Stop Processing
+                  </button>
+                ) : (
+                  <button onClick={handleOptimize} disabled={pendingCount === 0}
+                    className="w-full py-3 rounded-xl font-semibold text-sm bg-violet-600 hover:bg-violet-500 disabled:opacity-40 disabled:cursor-not-allowed text-white transition-colors flex items-center justify-center gap-2">
+                    <Zap className="w-4 h-4" />
+                    {pendingCount > 0 ? `Optimize ${pendingCount} image${pendingCount !== 1 ? "s" : ""}` : "No images to process"}
+                  </button>
+                )}
+                <div className="bg-white dark:bg-zinc-900/50 border border-gray-100 dark:border-zinc-800/50 rounded-xl p-3.5 space-y-2">
+                  <p className="text-xs font-semibold text-gray-500 dark:text-zinc-400">Keyboard shortcuts</p>
+                  <div className="space-y-1.5 text-xs text-gray-400 dark:text-zinc-500">
+                    <div className="flex justify-between">
+                      <span>Start optimizing</span>
+                      <kbd className="px-1.5 py-0.5 bg-gray-100 dark:bg-zinc-800 rounded text-[10px] font-mono text-gray-500 dark:text-zinc-400">⌘ Enter</kbd>
+                    </div>
+                    <div className="flex justify-between">
+                      <span>Stop processing</span>
+                      <kbd className="px-1.5 py-0.5 bg-gray-100 dark:bg-zinc-800 rounded text-[10px] font-mono text-gray-500 dark:text-zinc-400">Esc</kbd>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
-        </div>
+          </>
+        )}
+
+        {/* ── Videos tab ── */}
+        {activeTab === "videos" && (
+          <>
+            {videoDupeWarning && (
+              <div className="flex items-center gap-3 bg-amber-50 dark:bg-amber-500/10 border border-amber-200 dark:border-amber-500/30 rounded-xl px-4 py-3">
+                <AlertCircle className="w-4 h-4 text-amber-500 flex-shrink-0" />
+                <p className="text-sm text-amber-700 dark:text-amber-300 flex-1">{videoDupeWarning}</p>
+                <button onClick={() => setVideoDupeWarning(null)} className="text-amber-400 hover:text-amber-600 dark:hover:text-amber-200">
+                  <X className="w-4 h-4" />
+                </button>
+              </div>
+            )}
+
+            <div className="grid grid-cols-1 lg:grid-cols-[1fr_300px] gap-5 items-start">
+              <div className="space-y-4">
+                <VideoDropzone onFiles={handleVideoFiles} disabled={isVideoProcessing} />
+                {videoItems.length > 0 && (
+                  <div className="space-y-2">
+                    <div className="flex items-center justify-between px-1">
+                      <p className="text-xs text-gray-400 dark:text-zinc-500">{videoItems.length} video{videoItems.length !== 1 ? "s" : ""} queued</p>
+                      <p className="text-xs text-gray-400 dark:text-zinc-500">Drag to reorder</p>
+                    </div>
+                    <DndContext sensors={sensors} collisionDetection={closestCenter} modifiers={[restrictToVerticalAxis]} onDragEnd={handleVideoDragEnd}>
+                      <SortableContext items={videoItems.map((i) => i.id)} strategy={verticalListSortingStrategy}>
+                        <div className="space-y-2">
+                          {videoItems.map((item) => (
+                            <VideoCard key={item.id} item={item} onRemove={handleVideoRemove} />
+                          ))}
+                        </div>
+                      </SortableContext>
+                    </DndContext>
+                  </div>
+                )}
+                {videoItems.length === 0 && (
+                  <div className="text-center py-8 text-gray-300 dark:text-zinc-600 text-sm">
+                    <FolderOpen className="w-8 h-8 mx-auto mb-2 opacity-40" />
+                    Drop videos above to get started
+                  </div>
+                )}
+              </div>
+
+              <div className="space-y-3 lg:sticky lg:top-20">
+                <VideoControls options={videoOptions} onChange={setVideoOptions} disabled={isVideoProcessing} />
+                {isVideoProcessing ? (
+                  <button onClick={handleVideoStop}
+                    className="w-full py-3 rounded-xl font-semibold text-sm bg-red-600 hover:bg-red-500 text-white transition-colors">
+                    Stop Processing
+                  </button>
+                ) : (
+                  <button onClick={handleVideoCompress} disabled={videoPendingCount === 0}
+                    className="w-full py-3 rounded-xl font-semibold text-sm bg-violet-600 hover:bg-violet-500 disabled:opacity-40 disabled:cursor-not-allowed text-white transition-colors flex items-center justify-center gap-2">
+                    <Video className="w-4 h-4" />
+                    {videoPendingCount > 0 ? `Compress ${videoPendingCount} video${videoPendingCount !== 1 ? "s" : ""}` : "No videos to process"}
+                  </button>
+                )}
+                <div className="bg-white dark:bg-zinc-900/50 border border-gray-100 dark:border-zinc-800/50 rounded-xl p-3.5 space-y-2">
+                  <p className="text-xs font-semibold text-gray-500 dark:text-zinc-400">Keyboard shortcuts</p>
+                  <div className="space-y-1.5 text-xs text-gray-400 dark:text-zinc-500">
+                    <div className="flex justify-between">
+                      <span>Start compressing</span>
+                      <kbd className="px-1.5 py-0.5 bg-gray-100 dark:bg-zinc-800 rounded text-[10px] font-mono text-gray-500 dark:text-zinc-400">⌘ Enter</kbd>
+                    </div>
+                    <div className="flex justify-between">
+                      <span>Stop processing</span>
+                      <kbd className="px-1.5 py-0.5 bg-gray-100 dark:bg-zinc-800 rounded text-[10px] font-mono text-gray-500 dark:text-zinc-400">Esc</kbd>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </>
+        )}
       </main>
     </div>
   );

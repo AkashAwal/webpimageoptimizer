@@ -83,7 +83,7 @@ export async function processImage(
     outputPath = path.join(OPTIMIZED_DIR, outputFilename);
   }
 
-  let pipeline = sharp(inputBuffer);
+  let pipeline = sharp(inputBuffer).rotate();
 
   if (options.stripMetadata) pipeline = pipeline.withMetadata({});
 
