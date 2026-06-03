@@ -1,0 +1,23 @@
+import type { MetadataRoute } from "next";
+
+const BASE = "https://pixgarage.com";
+
+const PAGES = [
+  { path: "", priority: 1 },
+  { path: "/png-to-webp", priority: 0.9 },
+  { path: "/jpg-to-webp", priority: 0.9 },
+  { path: "/webp-resizer", priority: 0.9 },
+  { path: "/heic-to-webp", priority: 0.9 },
+  { path: "/about", priority: 0.5 },
+  { path: "/contact", priority: 0.4 },
+  { path: "/privacy", priority: 0.3 },
+];
+
+export default function sitemap(): MetadataRoute.Sitemap {
+  return PAGES.map(({ path, priority }) => ({
+    url: `${BASE}${path}`,
+    lastModified: new Date(),
+    changeFrequency: path === "" || path.startsWith("/") && !path.includes("about") && !path.includes("contact") && !path.includes("privacy") ? "monthly" as const : "yearly" as const,
+    priority,
+  }));
+}

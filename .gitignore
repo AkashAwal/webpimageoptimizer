@@ -2,7 +2,6 @@
 
 # dependencies
 /node_modules
-/package-lock.json
 /.pnp
 .pnp.*
 .yarn/*
@@ -33,7 +32,6 @@ yarn-error.log*
 
 # env files (can opt-in for committing if needed)
 .env*
-!.env.example
 
 # vercel
 .vercel
@@ -42,12 +40,11 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
-# OpenNext
-/.open-next
-
-# wrangler files
-.wrangler
-.dev.vars*
 
 
-!.dev.vars.example
+# clerk configuration (can include secrets)
+/.clerk/
+/.claude/
+/.agents/
+
+.open-next

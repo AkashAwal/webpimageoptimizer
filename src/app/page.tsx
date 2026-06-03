@@ -1,7 +1,124 @@
-export default function Home() {
-	return (
-		<main className="max-w-6xl mx-auto px-5 py-12">
-			<p className="text-gray-400 text-sm">Coming soon.</p>
-		</main>
-	);
+"use client";
+
+import { useEffect, useState } from "react";
+import Link from "next/link";
+import { motion, type Variants } from "motion/react";
+import { Image, Aperture, ArrowsOut, DeviceMobile, ArrowRight } from "@phosphor-icons/react";
+
+import { SiteHeader } from "@/components/layout/site-header";
+import { SiteFooter } from "@/components/layout/site-footer";
+import SoftPillButton from "@/components/ui/soft-pill-button";
+import { cn } from "@/lib/utils";
+import { TOOLS } from "@/lib/tools";
+
+const containerVariants: Variants = {
+  hidden: { opacity: 0 },
+  show: {
+    opacity: 1,
+    transition: { delayChildren: 0.18, staggerChildren: 0.08 },
+  },
+};
+
+const itemVariants: Variants = {
+  hidden: { opacity: 0, y: 14 },
+  show: {
+    opacity: 1,
+    y: 0,
+    transition: { type: "spring", stiffness: 340, damping: 28, mass: 0.8 },
+  },
+};
+
+const TOOL_ICONS: Record<string, React.ReactNode> = {
+  "/png-to-webp": <Image size={22} />,
+  "/jpg-to-webp": <Aperture size={22} />,
+  "/webp-resizer": <ArrowsOut size={22} />,
+  "/heic-to-webp": <DeviceMobile size={22} />,
+};
+
+export default function Page() {
+  const [entered, setEntered] = useState(false);
+
+  useEffect(() => {
+    const id = requestAnimationFrame(() => setEntered(true));
+    return () => cancelAnimationFrame(id);
+  }, []);
+
+  return (
+    <div className="relative flex flex-1 flex-col">
+      <SiteHeader />
+
+      {/* Hero */}
+      <section className="relative flex items-center justify-center px-6 pb-12 pt-10 sm:pt-16">
+        <motion.div
+          variants={containerVariants}
+          initial="hidden"
+          animate="show"
+          className="mx-auto flex w-full max-w-2xl flex-col items-center text-center"
+        >
+          <motion.h1
+            variants={itemVariants}
+            className={cn(
+              "text-5xl font-bold tracking-tight text-foreground sm:text-6xl md:text-7xl",
+              entered && "giti-shimmer-text",
+            )}
+          >
+            Image tools,
+            <br />
+            in your browser.
+          </motion.h1>
+
+          <motion.p variants={itemVariants} className="mt-5 max-w-md text-sm text-muted-foreground">
+            Free, fast, and completely private. Convert and resize images client-side — nothing is ever uploaded to a server.
+          </motion.p>
+
+          <motion.div variants={itemVariants} className="mt-8">
+            <Link href="#tools">
+              <SoftPillButton variant="secondary" className="h-9 px-4 text-[13px]">
+                Browse tools
+              </SoftPillButton>
+            </Link>
+          </motion.div>
+        </motion.div>
+      </section>
+
+      {/* Tool cards */}
+      <section id="tools" className="mx-auto w-full max-w-5xl px-6 pb-24 sm:px-10">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.45, type: "spring", stiffness: 280, damping: 26 }}
+          className="grid grid-cols-1 gap-4 sm:grid-cols-2"
+        >
+          {TOOLS.map((tool) => (
+            <Link
+              key={tool.href}
+              href={tool.href}
+              className="group flex flex-col gap-4 rounded-2xl bg-white p-6 ring-1 ring-black/6 shadow-[0_4px_24px_-6px_rgba(0,0,0,0.10),0_1px_3px_rgba(0,0,0,0.06)] transition-shadow hover:shadow-[0_8px_32px_-8px_rgba(0,0,0,0.16),0_2px_6px_rgba(0,0,0,0.08)]"
+            >
+              <div className="flex items-start justify-between gap-3">
+                <div className="flex size-11 items-center justify-center rounded-xl bg-neutral-100 text-neutral-600 transition-colors group-hover:bg-neutral-900 group-hover:text-white">
+                  {TOOL_ICONS[tool.href]}
+                </div>
+                <span className="inline-flex items-center rounded-full bg-neutral-100 px-2.5 py-0.5 text-[11px] font-medium text-neutral-600 ring-1 ring-black/5">
+                  {tool.badge}
+                </span>
+              </div>
+
+              <div className="flex-1">
+                <h2 className="text-[15px] font-semibold tracking-tight text-foreground">{tool.name}</h2>
+                <p className="mt-1 text-[13px] leading-relaxed text-muted-foreground">{tool.description}</p>
+              </div>
+
+              <SoftPillButton variant="primary" className="w-full h-9 text-[13px]" tabIndex={-1}>
+                Use tool
+                <ArrowRight size={12} className="ml-0.5" />
+              </SoftPillButton>
+            </Link>
+          ))}
+        </motion.div>
+      </section>
+
+      <SiteFooter />
+    </div>
+  );
 }
