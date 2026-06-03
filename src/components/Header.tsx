@@ -137,7 +137,7 @@ export default function Header() {
 														href="#"
 														className="flex items-center gap-3 py-1.5 group/item"
 													>
-														<span className={`w-7 h-7 rounded-md ${tool.color} flex items-center justify-center text-white text-xs flex-shrink-0 shadow-sm`}>
+														<span className={`w-8 h-6 rounded-md ${tool.color} flex items-center justify-center text-white text-xs flex-shrink-0 shadow-sm`}>
 															{tool.icon}
 														</span>
 														<span className="text-sm font-medium text-gray-700 group-hover/item:text-gray-900 transition-colors">
