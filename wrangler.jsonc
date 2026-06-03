@@ -6,7 +6,7 @@
 	"$schema": "node_modules/wrangler/config-schema.json",
 	"name": "pixgarage-com",
 	"main": ".open-next/worker.js",
-	"compatibility_date": "2026-06-04",
+	"compatibility_date": "2026-06-03",
 	"compatibility_flags": [
 		"nodejs_compat",
 		"global_fetch_strictly_public"
