@@ -1,14 +1,12 @@
 import type { Metadata } from "next";
-import localFont from "next/font/local";
+import { Plus_Jakarta_Sans } from "next/font/google";
 import Header from "@/components/Header";
 import "./globals.css";
 
-const alteHaas = localFont({
-	src: [
-		{ path: "../../public/AlteHaasGroteskRegular.ttf", weight: "400", style: "normal" },
-		{ path: "../../public/AlteHaasGroteskBold.ttf", weight: "700", style: "normal" },
-	],
+const jakarta = Plus_Jakarta_Sans({
 	variable: "--font-nexa",
+	subsets: ["latin"],
+	weight: ["400", "500", "600", "700", "800"],
 });
 
 export const metadata: Metadata = {
@@ -26,7 +24,7 @@ export default function RootLayout({
 			<head>
 				<link rel="icon" href="/favicon.svg" type="image/svg+xml" />
 			</head>
-			<body className={`${alteHaas.variable} font-sans antialiased bg-white text-gray-900`}>
+			<body className={`${jakarta.variable} font-sans antialiased bg-white text-gray-900`}>
 				<Header />
 				{children}
 			</body>
