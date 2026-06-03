@@ -3,7 +3,7 @@ import Image from "next/image";
 export default function Header() {
 	return (
 		<header className="sticky top-0 z-50 w-full bg-white border-b border-gray-100">
-			<div className="px-6 h-14 flex items-center justify-between">
+			<div className="px-6 h-24 flex items-center justify-between">
 				{/* Logo */}
 				<a href="/" className="flex items-center select-none">
 					<Image
@@ -11,7 +11,7 @@ export default function Header() {
 						alt="Image Garage"
 						width={160}
 						height={36}
-						className="h-10 w-auto"
+						className="h-20 w-auto"
 						priority
 					/>
 				</a>
