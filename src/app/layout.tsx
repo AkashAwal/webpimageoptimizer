@@ -1,11 +1,12 @@
 import type { Metadata } from "next";
-import { Geist } from "next/font/google";
+import { Inter } from "next/font/google";
 import Header from "@/components/Header";
 import "./globals.css";
 
-const geist = Geist({
-	variable: "--font-geist-sans",
+const inter = Inter({
+	variable: "--font-inter",
 	subsets: ["latin"],
+	weight: ["500", "600", "700"],
 });
 
 export const metadata: Metadata = {
@@ -23,7 +24,7 @@ export default function RootLayout({
 			<head>
 				<link rel="icon" href="/favicon.svg" type="image/svg+xml" />
 			</head>
-			<body className={`${geist.variable} font-sans antialiased bg-white text-gray-900`}>
+			<body className={`${inter.variable} font-sans antialiased bg-white text-gray-900`}>
 				<Header />
 				{children}
 			</body>

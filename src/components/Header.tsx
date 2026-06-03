@@ -28,7 +28,7 @@ export default function Header() {
 
 	return (
 		<header className="sticky top-0 z-50 w-full bg-white border-b border-gray-100">
-			<div className="px-6 h-20 flex items-center justify-between">
+			<div className="px-6 h-20 flex items-center justify-between relative">
 				{/* Logo */}
 				<a href="/" className="flex items-center select-none flex-shrink-0">
 					<Image
@@ -41,8 +41,8 @@ export default function Header() {
 					/>
 				</a>
 
-				{/* Nav */}
-				<nav className="hidden md:flex items-center gap-1">
+				{/* Nav — absolutely centered */}
+				<nav className="hidden md:flex items-center gap-1 absolute left-1/2 -translate-x-1/2">
 					{/* Quick links */}
 					{[
 						{ label: "Compress", href: "#" },
@@ -52,7 +52,7 @@ export default function Header() {
 						<a
 							key={label}
 							href={href}
-							className="px-3.5 py-2 text-sm font-medium text-gray-600 hover:text-gray-900 hover:bg-gray-50 rounded-lg transition-colors"
+							className="px-3.5 py-2 text-sm font-semibold text-gray-600 hover:text-gray-900 hover:bg-gray-50 rounded-lg transition-colors"
 						>
 							{label}
 						</a>
@@ -63,7 +63,7 @@ export default function Header() {
 						<button
 							onClick={() => setToolsOpen(!toolsOpen)}
 							onBlur={() => setTimeout(() => setToolsOpen(false), 150)}
-							className="flex items-center gap-1 px-3.5 py-2 text-sm font-medium text-gray-600 hover:text-gray-900 hover:bg-gray-50 rounded-lg transition-colors"
+							className="flex items-center gap-1 px-3.5 py-2 text-sm font-semibold text-gray-600 hover:text-gray-900 hover:bg-gray-50 rounded-lg transition-colors"
 						>
 							Tools
 							<ChevronDown className={`w-3.5 h-3.5 transition-transform ${toolsOpen ? "rotate-180" : ""}`} />
@@ -101,7 +101,7 @@ export default function Header() {
 						<a
 							key={label}
 							href={href}
-							className="px-3.5 py-2 text-sm font-medium text-gray-600 hover:text-gray-900 hover:bg-gray-50 rounded-lg transition-colors"
+							className="px-3.5 py-2 text-sm font-semibold text-gray-600 hover:text-gray-900 hover:bg-gray-50 rounded-lg transition-colors"
 						>
 							{label}
 						</a>
