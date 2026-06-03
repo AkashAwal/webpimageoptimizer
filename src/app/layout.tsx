@@ -3,10 +3,10 @@ import localFont from "next/font/local";
 import Header from "@/components/Header";
 import "./globals.css";
 
-const nexa = localFont({
+const alteHaas = localFont({
 	src: [
-		{ path: "../../public/Nexa-ExtraLight.ttf", weight: "300", style: "normal" },
-		{ path: "../../public/Nexa-Heavy.ttf", weight: "700", style: "normal" },
+		{ path: "../../public/AlteHaasGroteskRegular.ttf", weight: "400", style: "normal" },
+		{ path: "../../public/AlteHaasGroteskBold.ttf", weight: "700", style: "normal" },
 	],
 	variable: "--font-nexa",
 });
@@ -26,7 +26,7 @@ export default function RootLayout({
 			<head>
 				<link rel="icon" href="/favicon.svg" type="image/svg+xml" />
 			</head>
-			<body className={`${nexa.variable} font-sans antialiased bg-white text-gray-900`}>
+			<body className={`${alteHaas.variable} font-sans antialiased bg-white text-gray-900`}>
 				<Header />
 				{children}
 			</body>
