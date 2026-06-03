@@ -8,18 +8,22 @@ import { ChevronDown } from "lucide-react";
 const toolCategories = [
 	{
 		label: "Compress",
+		icon: "🗜️",
 		tools: ["Compress JPG", "Compress PNG", "Compress WebP", "Compress GIF", "Compress to target size", "Bulk compress"],
 	},
 	{
 		label: "Convert",
+		icon: "🔄",
 		tools: ["JPG to PNG", "PNG to JPG", "Convert to WebP", "WebP to JPG", "Convert to AVIF", "HEIC to JPG", "PNG to SVG", "Image to PDF"],
 	},
 	{
 		label: "Edit",
+		icon: "✏️",
 		tools: ["Resize", "Crop", "Rotate & Flip", "Add Watermark", "Add Text", "Filters & Effects", "Round Corners"],
 	},
 	{
 		label: "AI Tools",
+		icon: "✨",
 		tools: ["Background Remover", "AI Upscaler", "Object Eraser", "Photo Restoration", "Colorize", "Auto Alt-Text"],
 	},
 ];
@@ -75,11 +79,13 @@ export default function Header() {
 						<NavLink key={label} label={label} href={href} pathname={pathname} />
 					))}
 
-					{/* Tools dropdown */}
-					<div className="relative">
+					{/* Tools mega menu trigger */}
+					<div
+						className="relative"
+						onMouseEnter={() => setToolsOpen(true)}
+						onMouseLeave={() => setToolsOpen(false)}
+					>
 						<button
-							onClick={() => setToolsOpen(!toolsOpen)}
-							onBlur={() => setTimeout(() => setToolsOpen(false), 150)}
 							className="relative flex items-center gap-1 px-3.5 py-2 text-base font-semibold text-gray-700 hover:text-gray-900 transition-colors duration-150 group"
 						>
 							Tools
@@ -89,24 +95,36 @@ export default function Header() {
 							/>
 						</button>
 
+						{/* Mega menu */}
 						{toolsOpen && (
-							<div className="absolute top-full left-1/2 -translate-x-1/2 mt-2 w-[580px] bg-white border border-gray-100 rounded-2xl shadow-xl shadow-gray-100/80 p-5 grid grid-cols-2 gap-5">
-								{toolCategories.map((cat) => (
-									<div key={cat.label}>
-										<p className="text-[11px] font-bold text-gray-400 uppercase tracking-widest mb-2 px-1">{cat.label}</p>
-										<div className="space-y-0.5">
-											{cat.tools.map((tool) => (
-												<a
-													key={tool}
-													href="#"
-													className="block px-2.5 py-1.5 text-sm font-medium text-gray-600 hover:text-gray-900 hover:bg-gray-50 rounded-lg transition-colors duration-100"
-												>
-													{tool}
-												</a>
-											))}
+							<div className="fixed left-0 right-0 top-20 bg-white border-b border-gray-100 shadow-lg">
+								<div className="max-w-6xl mx-auto px-6 py-8 flex gap-0">
+									{toolCategories.map((cat, i) => (
+										<div
+											key={cat.label}
+											className={`flex-1 px-6 ${i !== 0 ? "border-l border-gray-100" : ""}`}
+										>
+											<div className="flex items-center gap-2 mb-4">
+												<span className="text-lg">{cat.icon}</span>
+												<p className="text-xs font-bold text-gray-400 uppercase tracking-widest">{cat.label}</p>
+											</div>
+											<div className="space-y-0.5">
+												{cat.tools.map((tool) => (
+													<a
+														key={tool}
+														href="#"
+														className="block py-1.5 text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors duration-100 group/item"
+													>
+														<span className="relative">
+															{tool}
+															<span className="absolute -bottom-0.5 left-0 w-0 h-px bg-gray-900 group-hover/item:w-full transition-all duration-200" />
+														</span>
+													</a>
+												))}
+											</div>
 										</div>
-									</div>
-								))}
+									))}
+								</div>
 							</div>
 						)}
 					</div>
