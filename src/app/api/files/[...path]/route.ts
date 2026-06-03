@@ -14,9 +14,6 @@ const MIME: Record<string, string> = {
   ".tiff": "image/tiff",
   ".bmp": "image/bmp",
   ".svg": "image/svg+xml",
-  ".webm": "video/webm",
-  ".mp4": "video/mp4",
-  ".mov": "video/quicktime",
 };
 
 export async function GET(
@@ -31,7 +28,7 @@ export async function GET(
   }
 
   const folder = segments[0];
-  if (folder !== "uploads" && folder !== "optimized" && folder !== "optimized_videos") {
+  if (folder !== "uploads" && folder !== "optimized") {
     return NextResponse.json({ error: "Forbidden" }, { status: 403 });
   }
 

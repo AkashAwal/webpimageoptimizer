@@ -13,8 +13,7 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "No filenames provided" }, { status: 400 });
     }
 
-    const allowedFolders = new Set(["optimized", "optimized_videos"]);
-    if (!allowedFolders.has(folder)) {
+    if (folder !== "optimized") {
       return NextResponse.json({ error: "Forbidden" }, { status: 403 });
     }
 
