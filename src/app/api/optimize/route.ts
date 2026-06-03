@@ -1,57 +1,48 @@
 import { NextRequest, NextResponse } from "next/server";
 import { processImage, ProcessOptions } from "@/lib/imageProcessor";
 
-export const runtime = "nodejs";
-export const maxDuration = 60;
-
 const ALLOWED_TYPES = new Set([
   "image/jpeg", "image/jpg", "image/png", "image/gif", "image/webp",
-  "image/tiff", "image/bmp", "image/svg+xml", "image/avif", "image/heic", "image/heif",
+  "image/tiff", "image/bmp", "image/avif", "image/heic", "image/heif",
 ]);
 
 export async function POST(req: NextRequest) {
   try {
     const formData = await req.formData();
+    const file = formData.get("file") as File;
 
-    const quality = parseInt(formData.get("quality") as string) || 82;
-    const nearLossless = formData.get("nearLossless") === "true";
-    const stripMetadata = formData.get("stripMetadata") !== "false";
-    const format = (formData.get("format") as string) === "avif" ? "avif" : "webp";
-    const maxWidthRaw = formData.get("maxWidth") as string;
-    const maxHeightRaw = formData.get("maxHeight") as string;
-    const renameTemplate = (formData.get("renameTemplate") as string) || "";
-    const startIndex = parseInt(formData.get("startIndex") as string) || 1;
-
-    const baseOptions: Omit<ProcessOptions, "fileIndex"> = {
-      quality,
-      nearLossless,
-      stripMetadata,
-      format,
-      maxWidth: maxWidthRaw ? parseInt(maxWidthRaw) : undefined,
-      maxHeight: maxHeightRaw ? parseInt(maxHeightRaw) : undefined,
-      renameTemplate: renameTemplate || undefined,
-    };
-
-    const files = formData.getAll("files") as File[];
-    if (!files || files.length === 0) {
-      return NextResponse.json({ error: "No files provided" }, { status: 400 });
+    if (!file) return NextResponse.json({ error: "No file provided" }, { status: 400 });
+    if (file.type && file.type !== "" && !ALLOWED_TYPES.has(file.type)) {
+      return NextResponse.json({ error: `Unsupported type: ${file.type}` }, { status: 400 });
     }
 
-    const results = await Promise.all(
-      files.map(async (file, i) => {
-        if (file.type && !ALLOWED_TYPES.has(file.type)) {
-          return { error: `Unsupported type: ${file.type}`, originalName: file.name };
-        }
-        try {
-          const buffer = Buffer.from(await file.arrayBuffer());
-          return await processImage(buffer, file.name, { ...baseOptions, fileIndex: startIndex + i });
-        } catch (err) {
-          return { error: `Failed: ${(err as Error).message}`, originalName: file.name };
-        }
-      })
-    );
+    const options: ProcessOptions = {
+      quality: parseInt(formData.get("quality") as string) || 82,
+      nearLossless: formData.get("nearLossless") === "true",
+      stripMetadata: formData.get("stripMetadata") !== "false",
+      format: (formData.get("format") as string) === "avif" ? "avif" : "webp",
+      maxWidth: formData.get("maxWidth") ? parseInt(formData.get("maxWidth") as string) : undefined,
+      maxHeight: formData.get("maxHeight") ? parseInt(formData.get("maxHeight") as string) : undefined,
+      renameTemplate: (formData.get("renameTemplate") as string) || undefined,
+      fileIndex: parseInt(formData.get("fileIndex") as string) || 1,
+    };
 
-    return NextResponse.json({ results });
+    const { result, buffer } = await processImage(file, options);
+
+    const contentType = options.format === "avif" ? "image/avif" : "image/webp";
+
+    return new NextResponse(buffer, {
+      headers: {
+        "Content-Type": contentType,
+        "X-Original-Name": encodeURIComponent(result.originalName),
+        "X-Output-Name": encodeURIComponent(result.outputName),
+        "X-Original-Size": String(result.originalSize),
+        "X-Optimized-Size": String(result.optimizedSize),
+        "X-Saved-Bytes": String(result.savedBytes),
+        "X-Saved-Percent": String(result.savedPercent),
+        "X-Was-Already-Webp": String(result.wasAlreadyWebp),
+      },
+    });
   } catch (err) {
     return NextResponse.json({ error: `Server error: ${(err as Error).message}` }, { status: 500 });
   }

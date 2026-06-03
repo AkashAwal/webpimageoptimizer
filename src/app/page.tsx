@@ -75,13 +75,19 @@ export default function Home() {
   const handleRemove = useCallback((id: string) => {
     setItems((prev) => {
       const item = prev.find((it) => it.id === id);
-      if (item) URL.revokeObjectURL(item.preview);
+      if (item) {
+        URL.revokeObjectURL(item.preview);
+        if (item.result?.outputPath) URL.revokeObjectURL(item.result.outputPath);
+      }
       return prev.filter((it) => it.id !== id);
     });
   }, []);
 
   const handleClearAll = () => {
-    items.forEach((it) => URL.revokeObjectURL(it.preview));
+    items.forEach((it) => {
+      URL.revokeObjectURL(it.preview);
+      if (it.result?.outputPath) URL.revokeObjectURL(it.result.outputPath);
+    });
     setItems([]);
     setDupeWarning(null);
   };
@@ -103,39 +109,50 @@ export default function Home() {
     setIsProcessing(true);
     const controller = new AbortController();
     abortRef.current = controller;
-    const BATCH = 1;
-    for (let i = 0; i < pending.length; i += BATCH) {
+
+    for (let i = 0; i < pending.length; i++) {
       if (controller.signal.aborted) break;
-      const batch = pending.slice(i, i + BATCH);
-      batch.forEach((it) => updateItem(it.id, { status: "processing" }));
+      const item = pending[i];
+      updateItem(item.id, { status: "processing" });
+
       const formData = new FormData();
-      batch.forEach((it) => formData.append("files", it.file));
+      formData.append("file", item.file);
       formData.append("quality", options.quality.toString());
       formData.append("nearLossless", options.nearLossless.toString());
       formData.append("stripMetadata", options.stripMetadata.toString());
       formData.append("format", options.format);
-      formData.append("startIndex", (i + 1).toString());
+      formData.append("fileIndex", (i + 1).toString());
       if (options.maxWidth) formData.append("maxWidth", options.maxWidth);
       if (options.maxHeight) formData.append("maxHeight", options.maxHeight);
       if (options.renameTemplate) formData.append("renameTemplate", options.renameTemplate);
+
       try {
         const res = await fetch("/api/optimize", { method: "POST", body: formData, signal: controller.signal });
         if (!res.ok) {
           const err = await res.json();
-          batch.forEach((it) => updateItem(it.id, { status: "error", error: err.error || "Server error" }));
+          updateItem(item.id, { status: "error", error: err.error || "Server error" });
           continue;
         }
-        const { results } = await res.json();
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        results.forEach((result: any, idx: number) => {
-          const item = batch[idx];
-          if (!item) return;
-          if (result.error) updateItem(item.id, { status: "error", error: result.error });
-          else updateItem(item.id, { status: "done", result });
+        const buffer = await res.arrayBuffer();
+        const contentType = res.headers.get("Content-Type") || "image/webp";
+        const outputPath = URL.createObjectURL(new Blob([buffer], { type: contentType }));
+        updateItem(item.id, {
+          status: "done",
+          result: {
+            originalName: decodeURIComponent(res.headers.get("X-Original-Name") || item.file.name),
+            outputName: decodeURIComponent(res.headers.get("X-Output-Name") || item.file.name),
+            originalSize: parseInt(res.headers.get("X-Original-Size") || "0"),
+            optimizedSize: parseInt(res.headers.get("X-Optimized-Size") || "0"),
+            savedBytes: parseInt(res.headers.get("X-Saved-Bytes") || "0"),
+            savedPercent: parseInt(res.headers.get("X-Saved-Percent") || "0"),
+            wasAlreadyWebp: res.headers.get("X-Was-Already-Webp") === "true",
+            outputPath,
+          },
+          outputBuffer: buffer,
         });
       } catch (err) {
         if ((err as Error).name === "AbortError") break;
-        batch.forEach((it) => updateItem(it.id, { status: "error", error: (err as Error).message }));
+        updateItem(item.id, { status: "error", error: (err as Error).message });
       }
     }
     setIsProcessing(false);
@@ -149,17 +166,14 @@ export default function Home() {
   };
 
   const handleDownloadAll = async () => {
-    const done = items.filter((it) => it.status === "done" && it.result);
+    const done = items.filter((it) => it.status === "done" && it.result && it.outputBuffer);
     if (done.length === 0) return;
     setIsZipping(true);
     try {
-      const res = await fetch("/api/download-zip", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ filenames: done.map((it) => it.result!.outputName) }),
-      });
-      if (!res.ok) throw new Error("Failed to create ZIP");
-      const blob = await res.blob();
+      const JSZip = (await import("jszip")).default;
+      const zip = new JSZip();
+      done.forEach((it) => zip.file(it.result!.outputName, it.outputBuffer!));
+      const blob = await zip.generateAsync({ type: "blob", compression: "DEFLATE", compressionOptions: { level: 6 } });
       const url = URL.createObjectURL(blob);
       const a = document.createElement("a");
       a.href = url; a.download = "optimized_images.zip"; a.click();

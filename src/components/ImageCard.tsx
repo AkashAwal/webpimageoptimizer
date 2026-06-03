@@ -23,12 +23,10 @@ export interface ImageItem {
     optimizedSize: number;
     savedBytes: number;
     savedPercent: number;
-    width: number;
-    height: number;
     wasAlreadyWebp: boolean;
-    outputPath: string;
-    backupPath: string;
+    outputPath: string; // blob URL
   };
+  outputBuffer?: ArrayBuffer;
   error?: string;
 }
 
@@ -150,10 +148,7 @@ export default function ImageCard({ item, onRemove, sizeBudgetKB }: Props) {
       setCopied(true);
       setTimeout(() => setCopied(false), 2000);
     } catch {
-      // Fallback: copy URL
-      await navigator.clipboard.writeText(window.location.origin + item.result.outputPath);
-      setCopied(true);
-      setTimeout(() => setCopied(false), 2000);
+      setCopied(false);
     }
   };
 
@@ -264,12 +259,11 @@ export default function ImageCard({ item, onRemove, sizeBudgetKB }: Props) {
       {/* Expanded stats + compare */}
       {expanded && item.status === "done" && item.result && !showCssExport && (
         <div className="border-t border-gray-100 dark:border-zinc-800 p-3 space-y-3">
-          <div className="grid grid-cols-4 gap-2 text-center">
+          <div className="grid grid-cols-3 gap-2 text-center">
             {[
               { label: "Original", value: formatBytes(item.result.originalSize), color: "text-zinc-700 dark:text-zinc-200" },
               { label: "Optimized", value: formatBytes(item.result.optimizedSize), color: "text-emerald-600 dark:text-emerald-300" },
               { label: "Saved", value: formatBytes(item.result.savedBytes), color: "text-blue-600 dark:text-blue-300" },
-              { label: "Dimensions", value: `${item.result.width}×${item.result.height}`, color: "text-zinc-500 dark:text-zinc-400" },
             ].map(({ label, value, color }) => (
               <div key={label} className="bg-gray-50 dark:bg-zinc-800/60 rounded-lg p-2">
                 <p className="text-[10px] text-gray-400 dark:text-zinc-500 uppercase mb-0.5">{label}</p>

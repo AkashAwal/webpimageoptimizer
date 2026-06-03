@@ -1,6 +1,4 @@
-import sharp from "sharp";
-import path from "path";
-import fs from "fs";
+import { getCloudflareContext } from "@opennextjs/cloudflare";
 
 export type OutputFormat = "webp" | "avif";
 
@@ -22,108 +20,77 @@ export interface ProcessResult {
   optimizedSize: number;
   savedBytes: number;
   savedPercent: number;
-  width: number;
-  height: number;
   wasAlreadyWebp: boolean;
-  backupPath: string;
-  outputPath: string;
 }
 
-const UPLOADS_DIR = path.join(process.cwd(), "uploads");
-const OPTIMIZED_DIR = path.join(process.cwd(), "optimized");
+function resolveOutputName(originalFilename: string, template: string | undefined, index: number, format: OutputFormat): string {
+  const dotIndex = originalFilename.lastIndexOf(".");
+  const base = (dotIndex > 0 ? originalFilename.slice(0, dotIndex) : originalFilename)
+    .replace(/[^a-zA-Z0-9_-]/g, "_");
+  const ext = format === "avif" ? ".avif" : ".webp";
 
-export function ensureDirs() {
-  if (!fs.existsSync(UPLOADS_DIR)) fs.mkdirSync(UPLOADS_DIR, { recursive: true });
-  if (!fs.existsSync(OPTIMIZED_DIR)) fs.mkdirSync(OPTIMIZED_DIR, { recursive: true });
-}
+  if (!template) return `${base}_${index}_${Date.now()}${ext}`;
 
-export function getUploadsDir() { return UPLOADS_DIR; }
-export function getOptimizedDir() { return OPTIMIZED_DIR; }
-
-function resolveOutputBase(
-  originalFilename: string,
-  template: string | undefined,
-  index: number
-): string {
-  const ext = path.extname(originalFilename);
-  const base = path.basename(originalFilename, ext).replace(/[^a-zA-Z0-9_-]/g, "_");
-
-  if (!template) return `${base}_${index}_${Date.now()}`;
-
-  return template
-    .replace(/\{name\}/g, base)
-    .replace(/\{n\}/g, String(index))
-    .replace(/[^a-zA-Z0-9_\-{}.]/g, "_");
+  return (
+    template
+      .replace(/\{name\}/g, base)
+      .replace(/\{n\}/g, String(index))
+      .replace(/[^a-zA-Z0-9_\-{}.]/g, "_") + ext
+  );
 }
 
 export async function processImage(
-  inputBuffer: Buffer,
-  originalFilename: string,
+  file: File,
   options: ProcessOptions
-): Promise<ProcessResult> {
-  ensureDirs();
+): Promise<{ result: ProcessResult; buffer: ArrayBuffer }> {
+  const { env } = await getCloudflareContext({ async: true });
 
-  const ext = path.extname(originalFilename).toLowerCase();
-  const outputBase = resolveOutputBase(originalFilename, options.renameTemplate, options.fileIndex ?? 1);
-  const outputExt = options.format === "avif" ? ".avif" : ".webp";
+  const inputBuffer = await file.arrayBuffer();
+  const originalSize = inputBuffer.byteLength;
+  const wasAlreadyWebp =
+    file.type === "image/webp" || file.name.toLowerCase().endsWith(".webp");
 
-  // Save original backup (always use timestamp to avoid collision)
-  const backupFilename = `${path.basename(originalFilename, ext)}_${options.fileIndex ?? 1}_${Date.now()}${ext}`;
-  const backupPath = path.join(UPLOADS_DIR, backupFilename);
-  fs.writeFileSync(backupPath, inputBuffer);
+  const outputName = resolveOutputName(
+    file.name,
+    options.renameTemplate,
+    options.fileIndex ?? 1,
+    options.format
+  );
 
-  const originalSize = inputBuffer.length;
-  const wasAlreadyWebp = ext === ".webp";
-
-  // Disambiguate output filename if it already exists
-  let outputFilename = `${outputBase}${outputExt}`;
-  let outputPath = path.join(OPTIMIZED_DIR, outputFilename);
-  if (fs.existsSync(outputPath)) {
-    outputFilename = `${outputBase}_${Date.now()}${outputExt}`;
-    outputPath = path.join(OPTIMIZED_DIR, outputFilename);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const images = (env as any).IMAGES;
+  if (!images) {
+    throw new Error("IMAGES binding is not available");
   }
 
-  let pipeline = sharp(inputBuffer).rotate();
+  const transformOpts: Record<string, unknown> = {
+    fit: "scale-down",
+    metadata: options.stripMetadata ? "none" : "keep",
+  };
+  if (options.maxWidth) transformOpts.width = options.maxWidth;
+  if (options.maxHeight) transformOpts.height = options.maxHeight;
 
-  if (options.stripMetadata) pipeline = pipeline.withMetadata({});
+  const transformResult = await images
+    .input(inputBuffer)
+    .transform(transformOpts)
+    .output({ format: options.format, quality: options.quality });
 
-  if (options.maxWidth || options.maxHeight) {
-    pipeline = pipeline.resize({
-      width: options.maxWidth,
-      height: options.maxHeight,
-      fit: "inside",
-      withoutEnlargement: true,
-    });
-  }
+  const outputBuffer: ArrayBuffer = await new Response(transformResult.image()).arrayBuffer();
 
-  if (options.format === "avif") {
-    pipeline = pipeline.avif({ quality: options.quality, effort: 4 });
-  } else if (options.nearLossless) {
-    pipeline = pipeline.webp({ nearLossless: true, quality: options.quality, effort: 4 });
-  } else {
-    pipeline = pipeline.webp({ quality: options.quality, effort: 4, smartSubsample: true });
-  }
-
-  const { data: outputBuffer, info } = await pipeline.toBuffer({ resolveWithObject: true });
-  fs.writeFileSync(outputPath, outputBuffer);
-
-  const optimizedSize = outputBuffer.length;
+  const optimizedSize = outputBuffer.byteLength;
   const savedBytes = Math.max(0, originalSize - optimizedSize);
   const savedPercent = originalSize > 0 ? Math.round((savedBytes / originalSize) * 100) : 0;
 
   return {
-    originalName: originalFilename,
-    outputName: outputFilename,
-    originalSize,
-    optimizedSize,
-    savedBytes,
-    savedPercent,
-    width: info.width,
-    height: info.height,
-    wasAlreadyWebp,
-    backupPath: `/api/files/uploads/${backupFilename}`,
-    outputPath: `/api/files/optimized/${outputFilename}`,
+    result: {
+      originalName: file.name,
+      outputName,
+      originalSize,
+      optimizedSize,
+      savedBytes,
+      savedPercent,
+      wasAlreadyWebp,
+    },
+    buffer: outputBuffer,
   };
 }
-
-export { formatBytes } from "./utils";
