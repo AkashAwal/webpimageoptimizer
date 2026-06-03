@@ -70,14 +70,9 @@ const secondaryLinks = [
 function NavLink({ label, href, pathname }: { label: string; href: string; pathname: string }) {
 	const isActive = pathname === href;
 	return (
-		<a
-			href={href}
-			className="relative px-3.5 py-2 text-base font-semibold text-gray-700 hover:text-gray-900 transition-colors duration-150 group"
-		>
+		<a href={href} className="relative px-3.5 py-2 text-base font-semibold text-gray-700 hover:text-gray-900 transition-colors duration-150 group">
 			{label}
-			<span className={`absolute bottom-0 left-1/2 -translate-x-1/2 h-0.5 bg-gray-900 transition-all duration-300
-				${isActive ? "w-4" : "w-0 group-hover:w-7"}`}
-			/>
+			<span className={`absolute bottom-0 left-1/2 -translate-x-1/2 h-0.5 bg-gray-900 transition-all duration-300 ${isActive ? "w-4" : "w-0 group-hover:w-7"}`} />
 		</a>
 	);
 }
@@ -87,80 +82,65 @@ export default function Header() {
 	const pathname = usePathname();
 
 	return (
-		<header className="sticky top-0 z-50 w-full bg-white border-b border-gray-100">
-			<div className="px-6 h-20 flex items-center justify-between relative">
-				{/* Logo */}
-				<a href="/" className="flex items-center select-none flex-shrink-0">
-					<Image
-						src="/hori-logo-svg.svg"
-						alt="Image Garage"
-						width={200}
-						height={50}
-						className="h-20 w-auto"
-						priority
-					/>
-				</a>
+		<>
+			<header
+				className="sticky top-0 z-50 w-full bg-white border-b border-gray-100"
+				onMouseLeave={() => setToolsOpen(false)}
+			>
+				<div className="px-6 h-20 flex items-center justify-between">
+					{/* Logo */}
+					<a href="/" className="flex items-center select-none flex-shrink-0">
+						<Image src="/hori-logo-svg.svg" alt="Image Garage" width={200} height={50} className="h-20 w-auto" priority />
+					</a>
 
-				{/* Nav */}
-				<nav className="hidden md:flex items-center gap-0.5 absolute left-1/2 -translate-x-1/2">
-					{quickLinks.map(({ label, href }) => (
-						<NavLink key={label} label={label} href={href} pathname={pathname} />
-					))}
+					{/* Nav — centered */}
+					<nav className="hidden md:flex items-center gap-0.5 absolute left-1/2 -translate-x-1/2">
+						{quickLinks.map(({ label, href }) => (
+							<NavLink key={label} label={label} href={href} pathname={pathname} />
+						))}
 
-					{/* Tools mega menu trigger */}
-					<div
-						className="relative"
-						onMouseEnter={() => setToolsOpen(true)}
-						onMouseLeave={() => setToolsOpen(false)}
-					>
-						<button className="relative flex items-center gap-1 px-3.5 py-2 text-base font-semibold text-gray-700 hover:text-gray-900 transition-colors duration-150 group">
+						<button
+							onMouseEnter={() => setToolsOpen(true)}
+							className="relative flex items-center gap-1 px-3.5 py-2 text-base font-semibold text-gray-700 hover:text-gray-900 transition-colors duration-150 group"
+						>
 							Tools
 							<ChevronDown className={`w-3.5 h-3.5 transition-transform duration-200 ${toolsOpen ? "rotate-180" : ""}`} />
-							<span className={`absolute bottom-0 left-1/2 -translate-x-1/2 h-0.5 bg-gray-900 transition-all duration-300
-								${toolsOpen ? "w-4" : "w-0 group-hover:w-7"}`}
-							/>
+							<span className={`absolute bottom-0 left-1/2 -translate-x-1/2 h-0.5 bg-gray-900 transition-all duration-300 ${toolsOpen ? "w-4" : "w-0 group-hover:w-7"}`} />
 						</button>
 
-						{/* Mega menu */}
-						{toolsOpen && (
-							<div className="fixed left-0 right-0 top-20 bg-white border-b border-gray-100 shadow-md z-50">
-								<div className="w-full px-12 py-4 grid grid-cols-4 gap-0">
-									{toolCategories.map((cat) => (
-										<div key={cat.label}>
-											<p className="text-[11px] font-bold text-gray-400 uppercase tracking-widest mb-2">
-												{cat.label}
-											</p>
-											<div className="space-y-0">
-												{cat.tools.map((tool) => (
-													<a
-														key={tool.name}
-														href="#"
-														className="flex items-center gap-3 py-1 group/item"
-													>
-														<span className={`w-7 h-7 rounded-md ${tool.color} flex items-center justify-center text-white text-xs flex-shrink-0 shadow-sm`}>
-															{tool.icon}
-														</span>
-														<span className="text-sm font-medium text-gray-700 group-hover/item:text-gray-900 transition-colors">
-															{tool.name}
-														</span>
-													</a>
-												))}
-											</div>
-										</div>
-									))}
+						<div className="w-px h-4 bg-gray-200 mx-1.5" />
+
+						{secondaryLinks.map(({ label, href }) => (
+							<NavLink key={label} label={label} href={href} pathname={pathname} />
+						))}
+					</nav>
+				</div>
+
+				{/* Mega menu — direct child of header, no transform parent */}
+				{toolsOpen && (
+					<div className="w-full bg-white border-t border-gray-100 shadow-md">
+						<div className="w-full px-12 py-5 grid grid-cols-4">
+							{toolCategories.map((cat, i) => (
+								<div key={cat.label} className={`px-6 ${i !== 0 ? "border-l border-gray-100" : ""}`}>
+									<p className="text-[11px] font-bold text-gray-400 uppercase tracking-widest mb-3">{cat.label}</p>
+									<div className="space-y-0.5">
+										{cat.tools.map((tool) => (
+											<a key={tool.name} href="#" className="flex items-center gap-3 py-1 group/item">
+												<span className={`w-7 h-7 rounded-md ${tool.color} flex items-center justify-center text-white text-xs flex-shrink-0`}>
+													{tool.icon}
+												</span>
+												<span className="text-sm font-medium text-gray-700 group-hover/item:text-gray-900 transition-colors">
+													{tool.name}
+												</span>
+											</a>
+										))}
+									</div>
 								</div>
-							</div>
-						)}
+							))}
+						</div>
 					</div>
-
-					{/* Divider */}
-					<div className="w-px h-4 bg-gray-200 mx-1.5" />
-
-					{secondaryLinks.map(({ label, href }) => (
-						<NavLink key={label} label={label} href={href} pathname={pathname} />
-					))}
-				</nav>
-			</div>
-		</header>
+				)}
+			</header>
+		</>
 	);
 }
