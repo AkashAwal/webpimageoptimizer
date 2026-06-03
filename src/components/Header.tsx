@@ -43,8 +43,8 @@ function NavLink({ label, href, pathname }: { label: string; href: string; pathn
 			className="relative px-3.5 py-2 text-base font-semibold text-gray-700 hover:text-gray-900 transition-colors duration-150 group"
 		>
 			{label}
-			<span className={`absolute bottom-0 left-0 h-0.5 bg-gray-900 transition-all duration-300
-				${isActive ? "w-full" : "w-0 group-hover:w-full"}`}
+			<span className={`absolute bottom-0 left-1/2 -translate-x-1/2 h-0.5 bg-gray-900 transition-all duration-300
+				${isActive ? "w-4" : "w-0 group-hover:w-4"}`}
 			/>
 		</a>
 	);
@@ -84,8 +84,8 @@ export default function Header() {
 						>
 							Tools
 							<ChevronDown className={`w-3.5 h-3.5 transition-transform duration-200 ${toolsOpen ? "rotate-180" : ""}`} />
-							<span className={`absolute bottom-0 left-0 h-0.5 bg-gray-900 transition-all duration-300
-								${toolsOpen ? "w-full" : "w-0 group-hover:w-full"}`}
+							<span className={`absolute bottom-0 left-1/2 -translate-x-1/2 h-0.5 bg-gray-900 transition-all duration-300
+								${toolsOpen ? "w-4" : "w-0 group-hover:w-4"}`}
 							/>
 						</button>
 
