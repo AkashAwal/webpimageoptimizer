@@ -70,9 +70,12 @@ const secondaryLinks = [
 function NavLink({ label, href, pathname }: { label: string; href: string; pathname: string }) {
 	const isActive = pathname === href;
 	return (
-		<a href={href} className="relative px-3.5 py-2 text-base font-semibold text-gray-700 hover:text-gray-900 transition-colors duration-150 group">
+		<a
+			href={href}
+			style={isActive ? { color: "#4b7aba" } : undefined}
+			className="relative px-3.5 py-2 text-base font-semibold text-gray-700 transition-colors duration-150 hover:[color:#8ec254]"
+		>
 			{label}
-			<span className={`absolute bottom-0 left-1/2 -translate-x-1/2 h-0.5 bg-gray-900 transition-all duration-300 ${isActive ? "w-4" : "w-0 group-hover:w-7"}`} />
 		</a>
 	);
 }
@@ -101,11 +104,10 @@ export default function Header() {
 
 						<button
 							onMouseEnter={() => setToolsOpen(true)}
-							className="relative flex items-center gap-1 px-3.5 py-2 text-base font-semibold text-gray-700 hover:text-gray-900 transition-colors duration-150 group"
+							className="relative flex items-center gap-1 px-3.5 py-2 text-base font-semibold text-gray-700 transition-colors duration-150 hover:[color:#8ec254]"
 						>
 							Tools
 							<ChevronDown className={`w-3.5 h-3.5 transition-transform duration-200 ${toolsOpen ? "rotate-180" : ""}`} />
-							<span className={`absolute bottom-0 left-1/2 -translate-x-1/2 h-0.5 bg-gray-900 transition-all duration-300 ${toolsOpen ? "w-4" : "w-0 group-hover:w-7"}`} />
 						</button>
 
 						<div className="w-px h-4 bg-gray-200 mx-1.5" />
