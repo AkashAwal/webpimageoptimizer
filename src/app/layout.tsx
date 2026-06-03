@@ -1,20 +1,17 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Inter } from "next/font/google";
+import Header from "@/components/Header";
 import "./globals.css";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
+const inter = Inter({
+	variable: "--font-sans",
+	subsets: ["latin"],
+	weight: ["400", "500", "600", "700", "800"],
 });
 
 export const metadata: Metadata = {
-  title: "Jeevan PG",
-  description: "Premium paying guest accommodations — your home away from home.",
+	title: "Image Garage — Image Tools",
+	description: "Fast, free image compression, conversion and editing tools.",
 };
 
 export default function RootLayout({
@@ -22,14 +19,15 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  return (
-    <html
-      lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
-    >
-      <body className="min-h-full flex flex-col">
-        {children}
-      </body>
-    </html>
-  );
+	return (
+		<html lang="en">
+			<head>
+				<link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+			</head>
+			<body className={`${inter.variable} antialiased bg-white text-gray-900`}>
+				<Header />
+				{children}
+			</body>
+		</html>
+	);
 }
