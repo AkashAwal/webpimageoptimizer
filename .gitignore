@@ -37,6 +37,9 @@ yarn-error.log*
 # opennext cloudflare build output
 .open-next
 
+# local claude settings (personal, not for team)
+.claude/settings.local.json
+
 # vercel
 .vercel
 
