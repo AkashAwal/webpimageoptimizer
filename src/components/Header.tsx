@@ -124,18 +124,18 @@ export default function Header() {
 						{/* Mega menu */}
 						{toolsOpen && (
 							<div className="fixed left-0 right-0 top-20 bg-white border-b border-gray-100 shadow-md z-50">
-								<div className="max-w-7xl mx-auto px-8 py-8 grid grid-cols-4 gap-8">
+								<div className="max-w-7xl mx-auto px-8 py-4 grid grid-cols-4 gap-4">
 									{toolCategories.map((cat) => (
 										<div key={cat.label}>
-											<p className="text-[11px] font-bold text-gray-400 uppercase tracking-widest mb-4">
+											<p className="text-[11px] font-bold text-gray-400 uppercase tracking-widest mb-2">
 												{cat.label}
 											</p>
-											<div className="space-y-1">
+											<div className="space-y-0">
 												{cat.tools.map((tool) => (
 													<a
 														key={tool.name}
 														href="#"
-														className="flex items-center gap-3 py-1.5 group/item"
+														className="flex items-center gap-3 py-1 group/item"
 													>
 														<span className={`w-7 h-7 rounded-md ${tool.color} flex items-center justify-center text-white text-xs flex-shrink-0 shadow-sm`}>
 															{tool.icon}
