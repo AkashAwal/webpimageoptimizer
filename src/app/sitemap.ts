@@ -1,16 +1,23 @@
 import type { MetadataRoute } from "next";
 
 const BASE = "https://pixgarage.com";
-const TOOLS = ["png-to-webp", "jpg-to-webp", "webp-resizer", "heic-to-webp"];
+
+const PAGES = [
+  { path: "", priority: 1 },
+  { path: "/png-to-webp", priority: 0.9 },
+  { path: "/jpg-to-webp", priority: 0.9 },
+  { path: "/webp-resizer", priority: 0.9 },
+  { path: "/heic-to-webp", priority: 0.9 },
+  { path: "/about", priority: 0.5 },
+  { path: "/contact", priority: 0.4 },
+  { path: "/privacy", priority: 0.3 },
+];
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  return [
-    { url: BASE, lastModified: new Date(), changeFrequency: "monthly", priority: 1 },
-    ...TOOLS.map((slug) => ({
-      url: `${BASE}/${slug}`,
-      lastModified: new Date(),
-      changeFrequency: "monthly" as const,
-      priority: 0.8,
-    })),
-  ];
+  return PAGES.map(({ path, priority }) => ({
+    url: `${BASE}${path}`,
+    lastModified: new Date(),
+    changeFrequency: path === "" || path.startsWith("/") && !path.includes("about") && !path.includes("contact") && !path.includes("privacy") ? "monthly" as const : "yearly" as const,
+    priority,
+  }));
 }
