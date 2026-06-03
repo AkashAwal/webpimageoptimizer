@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
-import { Plus_Jakarta_Sans } from "next/font/google";
+import { Inter } from "next/font/google";
 import Header from "@/components/Header";
 import "./globals.css";
 
-const jakarta = Plus_Jakarta_Sans({
+const inter = Inter({
 	variable: "--font-nexa",
 	subsets: ["latin"],
 	weight: ["400", "500", "600", "700", "800"],
@@ -24,7 +24,7 @@ export default function RootLayout({
 			<head>
 				<link rel="icon" href="/favicon.svg" type="image/svg+xml" />
 			</head>
-			<body className={`${jakarta.variable} font-sans antialiased bg-white text-gray-900`}>
+			<body className={`${inter.variable} font-sans antialiased bg-white text-gray-900`}>
 				<Header />
 				{children}
 			</body>
