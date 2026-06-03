@@ -81,9 +81,16 @@
   --sidebar-ring: oklch(0.708 0 0);
 }
 
-@theme inline {
-	--color-background: var(--background);
-	--color-foreground: var(--foreground);
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+  html {
+    @apply font-sans;
+  }
 }
 
 @keyframes giti-shimmer {
@@ -91,9 +98,29 @@
   to { background-position: 0% 50%; }
 }
 
-body {
-	background: var(--background);
-	color: var(--foreground);
+.giti-shimmer-text {
+  background-image: linear-gradient(
+    90deg,
+    var(--foreground) 0%,
+    var(--foreground) 40%,
+    #a855f7 47%,
+    #06b6d4 50%,
+    #f97316 53%,
+    var(--foreground) 60%,
+    var(--foreground) 100%
+  );
+  background-size: 300% 100%;
+  background-position: 0% 50%;
+  background-repeat: no-repeat;
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+  animation-name: giti-shimmer;
+  animation-duration: 1.6s;
+  animation-timing-function: cubic-bezier(0.45, 0, 0.55, 1);
+  animation-iteration-count: 1;
+  animation-fill-mode: forwards;
 }
 
 @keyframes flower-wobble {
