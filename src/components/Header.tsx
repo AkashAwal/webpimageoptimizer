@@ -7,10 +7,10 @@ export default function Header() {
 				{/* Logo */}
 				<a href="/" className="flex items-center select-none">
 					<Image
-						src="/logo-hori-trans.png"
+						src="/hori-logo-svg.svg"
 						alt="Image Garage"
-						width={160}
-						height={36}
+						width={200}
+						height={50}
 						className="h-20 w-auto"
 						priority
 					/>
