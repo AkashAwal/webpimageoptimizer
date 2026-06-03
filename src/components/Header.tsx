@@ -44,7 +44,7 @@ function NavLink({ label, href, pathname }: { label: string; href: string; pathn
 		>
 			{label}
 			<span className={`absolute bottom-0 left-1/2 -translate-x-1/2 h-0.5 bg-gray-900 transition-all duration-300
-				${isActive ? "w-4" : "w-0 group-hover:w-4"}`}
+				${isActive ? "w-4" : "w-0 group-hover:w-7"}`}
 			/>
 		</a>
 	);
@@ -85,7 +85,7 @@ export default function Header() {
 							Tools
 							<ChevronDown className={`w-3.5 h-3.5 transition-transform duration-200 ${toolsOpen ? "rotate-180" : ""}`} />
 							<span className={`absolute bottom-0 left-1/2 -translate-x-1/2 h-0.5 bg-gray-900 transition-all duration-300
-								${toolsOpen ? "w-4" : "w-0 group-hover:w-4"}`}
+								${toolsOpen ? "w-4" : "w-0 group-hover:w-7"}`}
 							/>
 						</button>
 
