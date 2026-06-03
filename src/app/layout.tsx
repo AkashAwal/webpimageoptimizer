@@ -10,7 +10,7 @@ const jakarta = Plus_Jakarta_Sans({
 });
 
 export const metadata: Metadata = {
-	title: "PixGarage — Image Tools",
+	title: "Image Garage — Image Tools",
 	description: "Fast, free image compression, conversion and editing tools.",
 };
 
