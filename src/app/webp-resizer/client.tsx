@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import { motion } from "motion/react";
+import { UploadSimple, X, CircleNotch, Check, Lock, LockOpen } from "@phosphor-icons/react";
 import { cn } from "@/lib/utils";
 import SoftPillButton from "@/components/ui/soft-pill-button";
 
@@ -151,9 +152,7 @@ export function WebpResizerTool() {
           )}
         >
           <div className="flex size-11 items-center justify-center rounded-xl bg-neutral-100 text-neutral-400">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
-              <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M17 8l-5-5-5 5M12 3v12" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
-            </svg>
+            <UploadSimple size={20} />
           </div>
           <div>
             <p className="text-[14px] font-medium text-foreground">Drop your image here</p>
@@ -181,9 +180,7 @@ export function WebpResizerTool() {
               </p>
             </div>
             <button onClick={reset} className="shrink-0 rounded-full p-1.5 text-neutral-400 hover:bg-neutral-100 hover:text-neutral-600 transition-colors" aria-label="Remove file">
-              <svg width="13" height="13" viewBox="0 0 24 24" fill="none">
-                <path d="M18 6L6 18M6 6l12 12" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
-              </svg>
+              <X size={13} />
             </button>
           </div>
         </div>
@@ -204,12 +201,7 @@ export function WebpResizerTool() {
               className={cn("mt-5 shrink-0 rounded-lg p-2 transition-colors", lockAspect ? "bg-foreground text-background" : "bg-neutral-100 text-neutral-500 hover:bg-neutral-200")}
               title={lockAspect ? "Unlock aspect ratio" : "Lock aspect ratio"}
             >
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
-                {lockAspect
-                  ? <path d="M17 11V7A5 5 0 007 7v4M5 11h14a1 1 0 011 1v8a1 1 0 01-1 1H5a1 1 0 01-1-1v-8a1 1 0 011-1z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                  : <path d="M19 11V7a7 7 0 00-9.9-6.4M5 11V7m0 0a5 5 0 015-5M5 11h14a1 1 0 011 1v8a1 1 0 01-1 1H5a1 1 0 01-1-1v-8a1 1 0 011-1z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                }
-              </svg>
+              {lockAspect ? <Lock size={14} /> : <LockOpen size={14} />}
             </button>
 
             <div className="flex flex-1 flex-col gap-1">
@@ -235,10 +227,7 @@ export function WebpResizerTool() {
         <SoftPillButton variant="primary" onClick={handleConvert} disabled={convertState === "converting" || !width || !height} className="w-full h-10 text-[13px]">
           {convertState === "converting" ? (
             <>
-              <svg className="animate-spin" width="13" height="13" viewBox="0 0 24 24" fill="none">
-                <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="3" />
-                <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
-              </svg>
+              <CircleNotch size={13} className="animate-spin" />
               Resizing…
             </>
           ) : "Resize & Convert to WebP"}
@@ -264,9 +253,7 @@ export function WebpResizerTool() {
           <div className="p-4 space-y-3">
             <div className="flex items-center gap-2">
               <div className="flex size-6 items-center justify-center rounded-full bg-emerald-100 text-emerald-600">
-                <svg width="11" height="11" viewBox="0 0 24 24" fill="none">
-                  <path d="M20 6L9 17l-5-5" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
-                </svg>
+                <Check size={11} weight="bold" />
               </div>
               <span className="text-[13px] font-medium text-foreground">Resized to {width} × {height}px</span>
             </div>

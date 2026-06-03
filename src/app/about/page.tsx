@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { CaretLeft, Check } from "@/components/ui/icons";
 import { SiteHeader } from "@/components/layout/site-header";
 import { SiteFooter } from "@/components/layout/site-footer";
 import { TOOLS } from "@/lib/tools";
@@ -20,9 +21,7 @@ export default function Page() {
           href="/"
           className="inline-flex items-center gap-1.5 text-[13px] text-muted-foreground hover:text-foreground transition-colors"
         >
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="none">
-            <path d="M15 18l-6-6 6-6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-          </svg>
+          <CaretLeft size={13} />
           Home
         </Link>
 
@@ -60,9 +59,7 @@ export default function Page() {
                 "Supported in Chrome, Firefox, Safari 14+, Edge, and Opera",
               ].map((item) => (
                 <li key={item} className="flex items-start gap-2.5">
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" className="mt-0.5 shrink-0 text-emerald-500">
-                    <path d="M20 6L9 17l-5-5" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" />
-                  </svg>
+                  <Check size={14} className="mt-0.5 shrink-0 text-emerald-500" weight="bold" />
                   <span>{item}</span>
                 </li>
               ))}

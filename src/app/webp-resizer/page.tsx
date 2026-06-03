@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { CaretLeft } from "@/components/ui/icons";
 import { SiteHeader } from "@/components/layout/site-header";
 import { SiteFooter } from "@/components/layout/site-footer";
 import { OtherTools } from "@/components/converter/other-tools";
@@ -16,11 +17,9 @@ export default function Page() {
     <div className="flex flex-1 flex-col">
       <SiteHeader fixed />
 
-      <main className="mx-auto w-full max-w-2xl px-6 pb-24 pt-8 sm:px-10">
+      <main className="mx-auto w-full max-w-3xl px-6 pb-24 pt-8 sm:px-10">
         <Link href="/" className="inline-flex items-center gap-1.5 text-[13px] text-muted-foreground hover:text-foreground transition-colors">
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="none">
-            <path d="M15 18l-6-6 6-6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-          </svg>
+          <CaretLeft size={13} />
           All tools
         </Link>
 

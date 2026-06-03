@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { CaretLeft, EnvelopeSimple } from "@/components/ui/icons";
 import { SiteHeader } from "@/components/layout/site-header";
 import { SiteFooter } from "@/components/layout/site-footer";
 import { TOOLS } from "@/lib/tools";
@@ -20,9 +21,7 @@ export default function Page() {
           href="/"
           className="inline-flex items-center gap-1.5 text-[13px] text-muted-foreground hover:text-foreground transition-colors"
         >
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="none">
-            <path d="M15 18l-6-6 6-6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-          </svg>
+          <CaretLeft size={13} />
           Home
         </Link>
 
@@ -39,10 +38,7 @@ export default function Page() {
         <div className="rounded-2xl bg-white p-6 ring-1 ring-black/6 shadow-[0_4px_24px_-6px_rgba(0,0,0,0.10),0_1px_3px_rgba(0,0,0,0.06)] space-y-5">
           <div className="flex items-start gap-4">
             <div className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-neutral-100 text-neutral-500">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
-                <rect x="2" y="4" width="20" height="16" rx="2.5" stroke="currentColor" strokeWidth="1.8" />
-                <path d="M2 8l10 7 10-7" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
-              </svg>
+              <EnvelopeSimple size={18} />
             </div>
             <div>
               <p className="text-[13px] font-semibold text-foreground">Email</p>

@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { motion, type Variants } from "motion/react";
+import { Image, Aperture, ArrowsOut, DeviceMobile, ArrowRight } from "@phosphor-icons/react";
 
 import { SiteHeader } from "@/components/layout/site-header";
 import { SiteFooter } from "@/components/layout/site-footer";
@@ -28,31 +29,10 @@ const itemVariants: Variants = {
 };
 
 const TOOL_ICONS: Record<string, React.ReactNode> = {
-  "/png-to-webp": (
-    <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
-      <rect x="2" y="2" width="20" height="20" rx="3" stroke="currentColor" strokeWidth="1.8" />
-      <circle cx="8" cy="8" r="1.5" fill="currentColor" />
-      <path d="M2 16l5-5 4 4 3-3 6 6" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
-    </svg>
-  ),
-  "/jpg-to-webp": (
-    <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
-      <rect x="2" y="2" width="20" height="20" rx="3" stroke="currentColor" strokeWidth="1.8" />
-      <path d="M8 17V12m0 0V7m0 5h5m0-5v10" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
-    </svg>
-  ),
-  "/webp-resizer": (
-    <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
-      <path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
-    </svg>
-  ),
-  "/heic-to-webp": (
-    <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
-      <rect x="7" y="2" width="10" height="20" rx="2.5" stroke="currentColor" strokeWidth="1.8" />
-      <circle cx="12" cy="18" r="1" fill="currentColor" />
-      <path d="M10 5h4" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
-    </svg>
-  ),
+  "/png-to-webp": <Image size={22} />,
+  "/jpg-to-webp": <Aperture size={22} />,
+  "/webp-resizer": <ArrowsOut size={22} />,
+  "/heic-to-webp": <DeviceMobile size={22} />,
 };
 
 export default function Page() {
@@ -102,7 +82,7 @@ export default function Page() {
       </section>
 
       {/* Tool cards */}
-      <section id="tools" className="mx-auto w-full max-w-4xl px-6 pb-24 sm:px-10">
+      <section id="tools" className="mx-auto w-full max-w-5xl px-6 pb-24 sm:px-10">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -131,9 +111,7 @@ export default function Page() {
 
               <SoftPillButton variant="primary" className="w-full h-9 text-[13px]" tabIndex={-1}>
                 Use tool
-                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" className="ml-0.5">
-                  <path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                </svg>
+                <ArrowRight size={12} className="ml-0.5" />
               </SoftPillButton>
             </Link>
           ))}

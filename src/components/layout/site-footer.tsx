@@ -4,10 +4,10 @@ import { TOOLS } from "@/lib/tools";
 export function SiteFooter() {
   return (
     <footer className="mt-auto border-t border-border">
-      <div className="mx-auto w-full max-w-5xl px-6 py-12 sm:px-10">
-        <div className="grid grid-cols-1 gap-10 sm:grid-cols-3">
+      <div className="mx-auto w-full max-w-7xl px-6 py-12 sm:px-10">
+        <div className="grid grid-cols-1 gap-10 sm:grid-cols-4">
           {/* Brand */}
-          <div>
+          <div className="sm:col-span-1">
             <Link href="/" className="flex items-center gap-2">
               <svg width="22" height="22" viewBox="0 0 24 24" fill="none" className="text-foreground">
                 <rect x="2" y="4" width="20" height="16" rx="3" stroke="currentColor" strokeWidth="1.8" />
@@ -34,6 +34,31 @@ export function SiteFooter() {
                     className="text-[13px] text-muted-foreground hover:text-foreground transition-colors"
                   >
                     {tool.name}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Sitemap */}
+          <div>
+            <p className="text-[12px] font-semibold uppercase tracking-widest text-muted-foreground">
+              Sitemap
+            </p>
+            <ul className="mt-3 space-y-2">
+              {[
+                { href: "/", label: "Home" },
+                { href: "/png-to-webp", label: "PNG to WebP" },
+                { href: "/jpg-to-webp", label: "JPG to WebP" },
+                { href: "/webp-resizer", label: "WebP Resizer" },
+                { href: "/heic-to-webp", label: "HEIC to WebP" },
+              ].map(({ href, label }) => (
+                <li key={href}>
+                  <Link
+                    href={href}
+                    className="text-[13px] text-muted-foreground hover:text-foreground transition-colors"
+                  >
+                    {label}
                   </Link>
                 </li>
               ))}
