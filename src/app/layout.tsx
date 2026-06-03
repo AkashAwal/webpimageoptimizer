@@ -4,7 +4,7 @@ import Header from "@/components/Header";
 import "./globals.css";
 
 const inter = Inter({
-	variable: "--font-nexa",
+	variable: "--font-sans",
 	subsets: ["latin"],
 	weight: ["400", "500", "600", "700", "800"],
 });
@@ -24,7 +24,7 @@ export default function RootLayout({
 			<head>
 				<link rel="icon" href="/favicon.svg" type="image/svg+xml" />
 			</head>
-			<body className={`${inter.variable} font-sans antialiased bg-white text-gray-900`}>
+			<body className={`${inter.variable} antialiased bg-white text-gray-900`}>
 				<Header />
 				{children}
 			</body>
