@@ -2,22 +2,17 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import Image from "next/image";
 import { motion, type Variants } from "motion/react";
 
 import { SiteHeader } from "@/components/layout/site-header";
 import SoftPillButton from "@/components/ui/soft-pill-button";
-import { HOSTELS } from "@/lib/hostels";
 import { cn } from "@/lib/utils";
 
 const containerVariants: Variants = {
   hidden: { opacity: 0 },
   show: {
     opacity: 1,
-    transition: {
-      delayChildren: 0.18,
-      staggerChildren: 0.08,
-    },
+    transition: { delayChildren: 0.18, staggerChildren: 0.08 },
   },
 };
 
@@ -30,18 +25,60 @@ const itemVariants: Variants = {
   },
 };
 
-
-function AmenityPill({ label }: { label: string }) {
-  return (
-    <span className="inline-flex items-center rounded-full bg-neutral-100 px-2.5 py-0.5 text-[11px] font-medium text-neutral-600 ring-1 ring-black/5">
-      {label}
-    </span>
-  );
-}
+const TOOLS = [
+  {
+    href: "/png-to-webp",
+    name: "PNG → WebP",
+    description: "Convert PNG images to WebP. Dramatically smaller files at the same visual quality.",
+    badge: "Lossless source",
+    icon: (
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+        <rect x="2" y="2" width="20" height="20" rx="3" stroke="currentColor" strokeWidth="1.8" />
+        <circle cx="8" cy="8" r="1.5" fill="currentColor" />
+        <path d="M2 16l5-5 4 4 3-3 6 6" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+      </svg>
+    ),
+  },
+  {
+    href: "/jpg-to-webp",
+    name: "JPG → WebP",
+    description: "Convert JPEG photos to WebP. Up to 34% smaller than JPEG at comparable quality.",
+    badge: "Lossy optimized",
+    icon: (
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+        <rect x="2" y="2" width="20" height="20" rx="3" stroke="currentColor" strokeWidth="1.8" />
+        <path d="M8 17V12m0 0V7m0 5h5m0-5v10" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+      </svg>
+    ),
+  },
+  {
+    href: "/webp-resizer",
+    name: "WebP Resizer",
+    description: "Resize any image to custom dimensions and export as WebP. Aspect ratio lock included.",
+    badge: "Any format in",
+    icon: (
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+        <path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+      </svg>
+    ),
+  },
+  {
+    href: "/heic-to-webp",
+    name: "HEIC → WebP",
+    description: "Convert iPhone HEIC photos to WebP. Works in Chrome and Firefox via WebAssembly.",
+    badge: "Cross-browser",
+    icon: (
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+        <rect x="7" y="2" width="10" height="20" rx="2.5" stroke="currentColor" strokeWidth="1.8" />
+        <circle cx="12" cy="18" r="1" fill="currentColor" />
+        <path d="M10 5h4" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
+      </svg>
+    ),
+  },
+];
 
 export default function Page() {
   const [entered, setEntered] = useState(false);
-  const [ctaHovered, setCtaHovered] = useState(false);
 
   useEffect(() => {
     const id = requestAnimationFrame(() => setEntered(true));
@@ -53,222 +90,93 @@ export default function Page() {
       <SiteHeader />
 
       {/* Hero */}
-      <section className="relative flex items-center justify-center px-6 pb-16 pt-12 sm:pt-20">
+      <section className="relative flex items-center justify-center px-6 pb-12 pt-10 sm:pt-16">
         <motion.div
           variants={containerVariants}
           initial="hidden"
           animate="show"
-          className="mx-auto flex w-full max-w-3xl flex-col items-center text-center"
+          className="mx-auto flex w-full max-w-2xl flex-col items-center text-center"
         >
-          <div className="relative">
-            <motion.span
-              aria-hidden
-              initial={{ scale: 0, rotate: 30, opacity: 0 }}
-              animate={{ scale: 1, rotate: 30, opacity: 1 }}
-              transition={{
-                type: "spring",
-                stiffness: 320,
-                damping: 14,
-                delay: 0.35,
-              }}
-              className="pointer-events-none absolute -left-3 -top-4 sm:-left-4 sm:-top-5 md:-left-6 md:-top-7"
-            >
-              <svg
-                width="53"
-                height="65"
-                viewBox="0 0 53 65"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-                className="h-9 w-auto sm:h-12 md:h-16"
-              >
-                <g clipPath="url(#clip0_leaf)">
-                  <path
-                    d="M42.3616 0.0113368C46.2296 -0.157615 49.904 1.56041 51.5504 5.26152C53.1521 8.86198 50.9133 15.8829 48.5936 18.814C45.0084 23.3437 39.2779 27.8686 33.9132 30.1542C34.1033 30.6591 34.2387 31.2287 34.4273 31.7146C36.173 36.2125 36.8381 39.7221 37.2126 44.4989C37.6921 50.6159 38.7152 57.1826 36.5608 63.1398C36.3204 63.8043 35.4628 64.6364 34.7264 64.2561C34.268 63.4271 35.1918 58.0562 35.2086 56.6563C35.2959 49.3965 35.3986 42.6312 33.3936 35.5822C32.6619 33.5514 32.0572 31.5579 30.6837 29.875C25.7878 32.1662 22.1803 34.9365 16.6403 35.1717C11.6463 35.4227 7.49219 34.9033 3.66206 31.4278C-3.85225 24.6092 1.04405 14.1832 10.6838 13.7993C16.9015 13.5517 23.346 14.5798 28.1125 18.9013C28.6925 15.1238 30.4694 7.79677 33.0151 4.90764C35.3451 2.2632 38.8067 0.301599 42.3616 0.0113368Z"
-                    fill="#010602"
-                  />
-                  <path
-                    d="M11.6556 16.6468C15.3185 16.3008 19.1248 17.9883 22.4733 19.2997C25.8338 20.6158 27.8522 23.3779 29.1794 26.6836C27.2116 29.2629 22.8008 30.7254 19.6999 31.5682L19.5419 31.6026C15.4049 32.484 10.1122 32.514 6.49261 30.1593C3.58352 28.2668 1.09344 24.3183 3.15901 21.0224C4.46298 18.9417 9.3418 17.0756 11.6556 16.6468Z"
-                    fill="#2AA749"
-                  />
-                  <path
-                    d="M42.0699 3.30589C42.7608 3.19146 44.4652 3.24172 45.1154 3.40021C50.7503 4.77358 49.2073 9.50824 47.5536 13.265C46.0425 16.6973 46.0458 18.0624 42.851 20.5978C40.8225 22.2075 39.2648 23.6153 37.1195 25.0031C36.3343 25.5164 34.1067 26.6306 33.1972 27.1265C30.3943 22.5349 31.6629 11.3535 34.9119 6.80569C36.2898 4.87685 39.7045 3.59711 42.0699 3.30589Z"
-                    fill="#2AA749"
-                  />
-                </g>
-                <defs>
-                  <clipPath id="clip0_leaf">
-                    <rect width="53" height="65" fill="white" />
-                  </clipPath>
-                </defs>
-              </svg>
-            </motion.span>
-
-            <motion.h1
-              variants={itemVariants}
-              className={cn(
-                "text-5xl font-bold tracking-tight text-foreground sm:text-6xl md:text-7xl",
-                (entered || ctaHovered) && "giti-shimmer-text",
-              )}
-            >
-              Your home
-              <br />
-              away from home
-            </motion.h1>
-
-            <motion.span
-              aria-hidden
-              initial={{ scale: 0, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1, rotate: [-20, -4, -20] }}
-              transition={{
-                scale: { type: "spring", stiffness: 320, damping: 14, delay: 0.55 },
-                opacity: { duration: 0.3, delay: 0.55 },
-                rotate: {
-                  duration: 6,
-                  ease: "easeInOut",
-                  repeat: Infinity,
-                  delay: 0.9,
-                },
-              }}
-              style={{ transformOrigin: "center" }}
-              className="pointer-events-none absolute -bottom-3 -right-3 sm:-bottom-4 sm:-right-4 md:-bottom-5 md:-right-6"
-            >
-              <svg
-                width="89"
-                height="89"
-                viewBox="0 0 89 89"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-                className="size-7 sm:size-9 md:size-12"
-              >
-                <path
-                  d="M59.6821 0C62.856 0.222207 66.7738 1.57679 69.562 3.08971C73.5022 5.22777 76.2691 9.92984 77.4284 14.1721C79.3203 21.0944 77.0105 24.7582 73.7153 30.4826C74.7952 31.4718 76.1914 32.3914 77.4729 33.1164C84.1924 36.9154 90.1556 47.2114 87.8712 54.9457C85.9626 61.4071 81.3447 67.1792 74.2197 67.6693C71.1925 67.8774 67.2565 67.9333 64.3378 67.0914C62.4866 74.2006 62.2677 79.7246 55.8699 84.6741C47.425 91.2069 35.9345 89.4112 29.4176 81.1437C27.6331 78.4332 26.4317 72.8977 25.966 69.641C23.1869 70.5342 14.5772 70.7799 12.007 69.5774C2.54355 65.1501 -2.49062 52.4946 1.23226 42.7426C3.67639 36.3402 7.86093 34.7822 13.2408 32.1518C11.5667 29.8881 9.49857 23.8194 9.30588 21.003C9.05446 17.3314 9.74137 11.099 12.265 8.24966C15.6268 4.45383 19.6747 1.67064 24.8233 1.33657C29.475 1.03474 35.0984 1.11785 38.9315 4.08646C40.5995 5.37838 42.3884 7.09518 44.0496 8.49261C45.3055 7.6227 46.9559 5.9012 48.1444 4.81484C51.0083 2.19679 55.8891 0.442144 59.6821 0Z"
-                  fill="black"
-                />
-                <path
-                  d="M56.6709 7.27168C60.1487 6.7254 64.6997 8.27495 67.1718 10.7354C69.2956 12.8494 70.8662 17.8285 70.7927 20.7689C70.6983 24.5316 68.6614 29.9067 65.9565 32.5562C69.876 33.6622 75.6858 38.1901 78.0553 41.5177C80.4715 44.9111 82.1531 50.2594 80.4917 54.2974C77.0272 62.7176 67.0531 63.2305 59.3761 61.9348C59.1281 65.4843 59.1969 67.9295 58.1026 71.4499C55.5335 79.716 47.8427 83.4036 39.6729 80.7877C35.9567 79.5978 33.4305 77.307 31.6689 73.7842C30.3386 70.7962 29.2504 67.1793 29.4709 63.8792C26.2108 65.3667 21.0549 66.0421 17.5815 65.0331C13.7979 63.9339 11.0542 61.3509 9.15533 57.9638C7.02136 54.1571 6.80233 50.9163 7.9621 46.7594C8.95447 43.2023 11.7263 39.182 14.9438 37.3255C16.5955 36.3723 18.4216 35.5713 20.1249 34.6289C17.4792 31.1211 14.6553 24.6281 15.3017 20.0991C15.8456 16.2891 17.8559 13.0704 20.8533 10.6242C24.3163 7.79814 28.8311 8.09724 33.0383 8.35986C37.0011 8.6072 42.3081 12.1259 44.6967 15.2089C44.7475 15.1402 44.7991 15.0722 44.8515 15.0049C47.8496 11.145 51.7178 7.90606 56.6709 7.27168Z"
-                  fill="white"
-                />
-                <path
-                  d="M42.7533 30.213C50.0486 29.6627 56.4094 35.1291 56.9625 42.4242C57.5156 49.7193 52.0517 56.0822 44.7568 56.6383C37.4579 57.1946 31.0906 51.7269 30.5371 44.4278C29.9837 37.1286 35.4538 30.7635 42.7533 30.213Z"
-                  fill="black"
-                />
-                <path
-                  d="M42.9391 34.7563C47.7471 34.3147 51.9972 37.8677 52.4148 42.6778C52.8324 47.488 49.2584 51.7202 44.4463 52.1139C39.6679 52.5047 35.4718 48.9612 35.0571 44.1849C34.6423 39.4086 38.165 35.1949 42.9391 34.7563Z"
-                  fill="#FBBF24"
-                />
-              </svg>
-            </motion.span>
-          </div>
+          <motion.h1
+            variants={itemVariants}
+            className={cn(
+              "text-5xl font-bold tracking-tight text-foreground sm:text-6xl md:text-7xl",
+              entered && "giti-shimmer-text",
+            )}
+          >
+            Image tools,
+            <br />
+            in your browser.
+          </motion.h1>
 
           <motion.p
             variants={itemVariants}
-            className="mt-6 max-w-lg text-sm text-muted-foreground"
+            className="mt-5 max-w-md text-sm text-muted-foreground"
           >
-            Premium paying guest accommodations in Bengaluru.
-            <br className="hidden sm:inline" />
-            Safe, comfortable, and affordable — for boys and girls.
+            Free, fast, and completely private. Convert and resize images client-side — nothing
+            is ever uploaded to a server.
           </motion.p>
 
-          <motion.div variants={itemVariants} className="mt-10 flex flex-row items-center gap-3">
-            <div
-              onMouseEnter={() => setCtaHovered(true)}
-              onMouseLeave={() => setCtaHovered(false)}
-            >
-              <Link href="#hostels">
-                <SoftPillButton variant="primary" className="h-9 px-4 text-[13px]">
-                  Explore Hostels
-                </SoftPillButton>
-              </Link>
-            </div>
-            <Link href="/contact">
+          <motion.div variants={itemVariants} className="mt-8">
+            <Link href="#tools">
               <SoftPillButton variant="secondary" className="h-9 px-4 text-[13px]">
-                Contact Us
+                Browse tools
               </SoftPillButton>
             </Link>
           </motion.div>
         </motion.div>
       </section>
 
-      {/* Hostel Cards */}
-      <section
-        id="hostels"
-        className="mx-auto w-full max-w-5xl px-6 pb-24 sm:px-10"
-      >
+      {/* Tool cards */}
+      <section id="tools" className="mx-auto w-full max-w-4xl px-6 pb-24 sm:px-10">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.55, type: "spring", stiffness: 280, damping: 26 }}
-          className="grid grid-cols-1 gap-5 sm:grid-cols-2"
+          transition={{ delay: 0.45, type: "spring", stiffness: 280, damping: 26 }}
+          className="grid grid-cols-1 gap-4 sm:grid-cols-2"
         >
-          {HOSTELS.map((hostel) => (
+          {TOOLS.map((tool) => (
             <Link
-              key={hostel.id}
-              href={`/hostels/${hostel.slug}`}
-              className="group cursor-pointer overflow-hidden rounded-2xl bg-white ring-1 ring-black/6 shadow-[0_4px_24px_-6px_rgba(0,0,0,0.10),0_1px_3px_rgba(0,0,0,0.06)] transition-shadow hover:shadow-[0_8px_32px_-8px_rgba(0,0,0,0.16),0_2px_6px_rgba(0,0,0,0.08)]"
+              key={tool.href}
+              href={tool.href}
+              className="group flex flex-col gap-4 rounded-2xl bg-white p-6 ring-1 ring-black/6 shadow-[0_4px_24px_-6px_rgba(0,0,0,0.10),0_1px_3px_rgba(0,0,0,0.06)] transition-shadow hover:shadow-[0_8px_32px_-8px_rgba(0,0,0,0.16),0_2px_6px_rgba(0,0,0,0.08)]"
             >
-              {/* Image */}
-              <div className="relative h-52 w-full overflow-hidden bg-neutral-100">
-                <Image
-                  src={hostel.image}
-                  alt={hostel.name}
-                  fill
-                  className="object-cover transition-transform duration-500 group-hover:scale-105"
-                  sizes="(max-width: 640px) 100vw, 50vw"
-                />
-                <span className="absolute right-3 top-3 rounded-full bg-white/90 px-2.5 py-0.5 text-[11px] font-semibold text-neutral-700 ring-1 ring-black/8 backdrop-blur">
-                  {hostel.gender}
+              <div className="flex items-start justify-between gap-3">
+                <div className="flex size-11 items-center justify-center rounded-xl bg-neutral-100 text-neutral-600 transition-colors group-hover:bg-neutral-900 group-hover:text-white">
+                  {tool.icon}
+                </div>
+                <span className="inline-flex items-center rounded-full bg-neutral-100 px-2.5 py-0.5 text-[11px] font-medium text-neutral-600 ring-1 ring-black/5">
+                  {tool.badge}
                 </span>
               </div>
 
-              {/* Content */}
-              <div className="p-5">
-                <div className="flex items-start justify-between gap-2">
-                  <div>
-                    <h2 className="text-[15px] font-semibold tracking-tight text-foreground">
-                      {hostel.name}
-                    </h2>
-                    <p className="mt-0.5 text-[13px] text-muted-foreground">
-                      {hostel.tagline}
-                    </p>
-                  </div>
-                  <span className="shrink-0 text-[13px] font-semibold text-foreground">
-                    {hostel.price}
-                  </span>
-                </div>
-
-                <p className="mt-3 flex items-center gap-1.5 text-[12px] text-muted-foreground">
-                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" className="shrink-0">
-                    <path
-                      d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"
-                      fill="currentColor"
-                    />
-                  </svg>
-                  {hostel.address}
+              <div className="flex-1">
+                <h2 className="text-[15px] font-semibold tracking-tight text-foreground">
+                  {tool.name}
+                </h2>
+                <p className="mt-1 text-[13px] leading-relaxed text-muted-foreground">
+                  {tool.description}
                 </p>
-
-                <div className="mt-3 flex flex-wrap gap-1.5">
-                  {hostel.amenities.map((a) => (
-                    <AmenityPill key={a} label={a} />
-                  ))}
-                </div>
-
-                <div className="mt-4 flex gap-2">
-                  <Link href={`/hostels/${hostel.slug}`} className="flex-1" onClick={(e) => e.stopPropagation()}>
-                    <SoftPillButton variant="primary" className="w-full h-9 text-[13px]">
-                      View Details
-                    </SoftPillButton>
-                  </Link>
-                  <Link href="/contact" className="flex-1" onClick={(e) => e.stopPropagation()}>
-                    <SoftPillButton variant="secondary" className="w-full h-9 text-[13px]">
-                      Enquire Now
-                    </SoftPillButton>
-                  </Link>
-                </div>
               </div>
+
+              <SoftPillButton
+                variant="primary"
+                className="w-full h-9 text-[13px]"
+                tabIndex={-1}
+              >
+                Use tool
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" className="ml-0.5">
+                  <path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                </svg>
+              </SoftPillButton>
             </Link>
           ))}
         </motion.div>
       </section>
+
+      <footer className="mt-auto border-t border-border px-6 py-5 text-center text-[12px] text-muted-foreground sm:px-10">
+        © {new Date().getFullYear()} Pix Garage · All processing happens in your browser
+      </footer>
     </div>
   );
 }
