@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { useState } from "react";
+import { usePathname } from "next/navigation";
 import { ChevronDown } from "lucide-react";
 
 const toolCategories = [
@@ -23,8 +24,39 @@ const toolCategories = [
 	},
 ];
 
+const quickLinks = [
+	{ label: "Compress", href: "/compress" },
+	{ label: "Resize", href: "/resize" },
+	{ label: "Convert", href: "/convert" },
+];
+
+const secondaryLinks = [
+	{ label: "Features", href: "/features" },
+	{ label: "Contact", href: "/contact" },
+];
+
+function NavLink({ label, href, pathname }: { label: string; href: string; pathname: string }) {
+	const isActive = pathname === href;
+	return (
+		<a
+			href={href}
+			className={`relative px-3.5 py-2 text-base font-semibold rounded-lg transition-all duration-150
+				${isActive
+					? "text-violet-600 bg-violet-50"
+					: "text-gray-600 hover:text-gray-900 hover:bg-gray-100"
+				}`}
+		>
+			{label}
+			{isActive && (
+				<span className="absolute bottom-0 left-1/2 -translate-x-1/2 w-4 h-0.5 bg-violet-500 rounded-full" />
+			)}
+		</a>
+	);
+}
+
 export default function Header() {
 	const [toolsOpen, setToolsOpen] = useState(false);
+	const pathname = usePathname();
 
 	return (
 		<header className="sticky top-0 z-50 w-full bg-white border-b border-gray-100">
@@ -42,20 +74,10 @@ export default function Header() {
 				</a>
 
 				{/* Nav — absolutely centered */}
-				<nav className="hidden md:flex items-center gap-1 absolute left-1/2 -translate-x-1/2">
+				<nav className="hidden md:flex items-center gap-0.5 absolute left-1/2 -translate-x-1/2">
 					{/* Quick links */}
-					{[
-						{ label: "Compress", href: "#" },
-						{ label: "Resize", href: "#" },
-						{ label: "Convert", href: "#" },
-					].map(({ label, href }) => (
-						<a
-							key={label}
-							href={href}
-							className="px-3.5 py-2 text-base font-semibold text-gray-600 hover:text-gray-900 hover:bg-gray-50 rounded-lg transition-colors"
-						>
-							{label}
-						</a>
+					{quickLinks.map(({ label, href }) => (
+						<NavLink key={label} label={label} href={href} pathname={pathname} />
 					))}
 
 					{/* Tools dropdown */}
@@ -63,23 +85,27 @@ export default function Header() {
 						<button
 							onClick={() => setToolsOpen(!toolsOpen)}
 							onBlur={() => setTimeout(() => setToolsOpen(false), 150)}
-							className="flex items-center gap-1 px-3.5 py-2 text-base font-semibold text-gray-600 hover:text-gray-900 hover:bg-gray-50 rounded-lg transition-colors"
+							className={`flex items-center gap-1 px-3.5 py-2 text-base font-semibold rounded-lg transition-all duration-150
+								${toolsOpen
+									? "text-violet-600 bg-violet-50"
+									: "text-gray-600 hover:text-gray-900 hover:bg-gray-100"
+								}`}
 						>
 							Tools
-							<ChevronDown className={`w-3.5 h-3.5 transition-transform ${toolsOpen ? "rotate-180" : ""}`} />
+							<ChevronDown className={`w-3.5 h-3.5 transition-transform duration-200 ${toolsOpen ? "rotate-180" : ""}`} />
 						</button>
 
 						{toolsOpen && (
-							<div className="absolute top-full left-0 mt-1.5 w-[600px] bg-white border border-gray-100 rounded-2xl shadow-lg p-4 grid grid-cols-2 gap-4">
+							<div className="absolute top-full left-1/2 -translate-x-1/2 mt-2 w-[580px] bg-white border border-gray-100 rounded-2xl shadow-xl shadow-gray-100/80 p-5 grid grid-cols-2 gap-5">
 								{toolCategories.map((cat) => (
 									<div key={cat.label}>
-										<p className="text-[11px] font-semibold text-gray-400 uppercase tracking-wider mb-1.5 px-1">{cat.label}</p>
+										<p className="text-[11px] font-bold text-gray-400 uppercase tracking-widest mb-2 px-1">{cat.label}</p>
 										<div className="space-y-0.5">
 											{cat.tools.map((tool) => (
 												<a
 													key={tool}
 													href="#"
-													className="block px-2.5 py-1.5 text-sm text-gray-600 hover:text-gray-900 hover:bg-gray-50 rounded-lg transition-colors"
+													className="block px-2.5 py-1.5 text-sm font-medium text-gray-600 hover:text-violet-600 hover:bg-violet-50 rounded-lg transition-colors duration-100"
 												>
 													{tool}
 												</a>
@@ -92,19 +118,10 @@ export default function Header() {
 					</div>
 
 					{/* Divider */}
-					<div className="w-px h-4 bg-gray-200 mx-1" />
+					<div className="w-px h-4 bg-gray-200 mx-1.5" />
 
-					{[
-						{ label: "Features", href: "#" },
-						{ label: "Contact", href: "#" },
-					].map(({ label, href }) => (
-						<a
-							key={label}
-							href={href}
-							className="px-3.5 py-2 text-base font-semibold text-gray-600 hover:text-gray-900 hover:bg-gray-50 rounded-lg transition-colors"
-						>
-							{label}
-						</a>
+					{secondaryLinks.map(({ label, href }) => (
+						<NavLink key={label} label={label} href={href} pathname={pathname} />
 					))}
 				</nav>
 			</div>
