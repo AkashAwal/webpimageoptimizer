@@ -1,12 +1,14 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import localFont from "next/font/local";
 import Header from "@/components/Header";
 import "./globals.css";
 
-const inter = Inter({
-	variable: "--font-inter",
-	subsets: ["latin"],
-	weight: ["500", "600", "700"],
+const nexa = localFont({
+	src: [
+		{ path: "../../public/Nexa-ExtraLight.ttf", weight: "300", style: "normal" },
+		{ path: "../../public/Nexa-Heavy.ttf", weight: "700", style: "normal" },
+	],
+	variable: "--font-nexa",
 });
 
 export const metadata: Metadata = {
@@ -24,7 +26,7 @@ export default function RootLayout({
 			<head>
 				<link rel="icon" href="/favicon.svg" type="image/svg+xml" />
 			</head>
-			<body className={`${inter.variable} font-sans antialiased bg-white text-gray-900`}>
+			<body className={`${nexa.variable} font-sans antialiased bg-white text-gray-900`}>
 				<Header />
 				{children}
 			</body>
