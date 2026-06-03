@@ -40,16 +40,12 @@ function NavLink({ label, href, pathname }: { label: string; href: string; pathn
 	return (
 		<a
 			href={href}
-			className={`relative px-3.5 py-2 text-base font-semibold rounded-lg transition-all duration-150
-				${isActive
-					? "text-violet-600 bg-violet-50"
-					: "text-gray-600 hover:text-gray-900 hover:bg-gray-100"
-				}`}
+			className="relative px-3.5 py-2 text-base font-semibold text-gray-700 hover:text-gray-900 transition-colors duration-150 group"
 		>
 			{label}
-			{isActive && (
-				<span className="absolute bottom-0 left-1/2 -translate-x-1/2 w-4 h-0.5 bg-violet-500 rounded-full" />
-			)}
+			<span className={`absolute bottom-0 left-0 h-0.5 bg-gray-900 transition-all duration-300
+				${isActive ? "w-full" : "w-0 group-hover:w-full"}`}
+			/>
 		</a>
 	);
 }
@@ -75,7 +71,6 @@ export default function Header() {
 
 				{/* Nav — absolutely centered */}
 				<nav className="hidden md:flex items-center gap-0.5 absolute left-1/2 -translate-x-1/2">
-					{/* Quick links */}
 					{quickLinks.map(({ label, href }) => (
 						<NavLink key={label} label={label} href={href} pathname={pathname} />
 					))}
@@ -85,14 +80,13 @@ export default function Header() {
 						<button
 							onClick={() => setToolsOpen(!toolsOpen)}
 							onBlur={() => setTimeout(() => setToolsOpen(false), 150)}
-							className={`flex items-center gap-1 px-3.5 py-2 text-base font-semibold rounded-lg transition-all duration-150
-								${toolsOpen
-									? "text-violet-600 bg-violet-50"
-									: "text-gray-600 hover:text-gray-900 hover:bg-gray-100"
-								}`}
+							className="relative flex items-center gap-1 px-3.5 py-2 text-base font-semibold text-gray-700 hover:text-gray-900 transition-colors duration-150 group"
 						>
 							Tools
 							<ChevronDown className={`w-3.5 h-3.5 transition-transform duration-200 ${toolsOpen ? "rotate-180" : ""}`} />
+							<span className={`absolute bottom-0 left-0 h-0.5 bg-gray-900 transition-all duration-300
+								${toolsOpen ? "w-full" : "w-0 group-hover:w-full"}`}
+							/>
 						</button>
 
 						{toolsOpen && (
@@ -105,7 +99,7 @@ export default function Header() {
 												<a
 													key={tool}
 													href="#"
-													className="block px-2.5 py-1.5 text-sm font-medium text-gray-600 hover:text-violet-600 hover:bg-violet-50 rounded-lg transition-colors duration-100"
+													className="block px-2.5 py-1.5 text-sm font-medium text-gray-600 hover:text-gray-900 hover:bg-gray-50 rounded-lg transition-colors duration-100"
 												>
 													{tool}
 												</a>
