@@ -124,7 +124,7 @@ export default function Header() {
 						{/* Mega menu */}
 						{toolsOpen && (
 							<div className="fixed left-0 right-0 top-20 bg-white border-b border-gray-100 shadow-md z-50">
-								<div className="max-w-7xl mx-auto px-8 py-4 grid grid-cols-4 gap-4">
+								<div className="w-full px-12 py-4 grid grid-cols-4 gap-0">
 									{toolCategories.map((cat) => (
 										<div key={cat.label}>
 											<p className="text-[11px] font-bold text-gray-400 uppercase tracking-widest mb-2">
