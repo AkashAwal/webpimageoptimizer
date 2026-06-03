@@ -120,7 +120,7 @@ export default function Header() {
 
 				{/* Mega menu — direct child of header, no transform parent */}
 				{toolsOpen && (
-					<div className="w-full bg-white border-t border-gray-100 shadow-md">
+					<div className="w-full bg-white border-t border-gray-100 shadow-md rounded-b-2xl overflow-hidden">
 						<div className="w-full px-12 py-5 grid grid-cols-4">
 							{toolCategories.map((cat, i) => (
 								<div key={cat.label} className={`px-6 ${i !== 0 ? "border-l border-gray-100" : ""}`}>
