@@ -8,23 +8,51 @@ import { ChevronDown } from "lucide-react";
 const toolCategories = [
 	{
 		label: "Compress",
-		icon: "🗜️",
-		tools: ["Compress JPG", "Compress PNG", "Compress WebP", "Compress GIF", "Compress to target size", "Bulk compress"],
+		tools: [
+			{ name: "Compress JPG", color: "bg-orange-500", icon: "🗜" },
+			{ name: "Compress PNG", color: "bg-blue-500", icon: "🗜" },
+			{ name: "Compress WebP", color: "bg-green-500", icon: "🗜" },
+			{ name: "Compress GIF", color: "bg-purple-500", icon: "🗜" },
+			{ name: "Target file size", color: "bg-red-500", icon: "🎯" },
+			{ name: "Bulk compress", color: "bg-yellow-500", icon: "📦" },
+		],
 	},
 	{
 		label: "Convert",
-		icon: "🔄",
-		tools: ["JPG to PNG", "PNG to JPG", "Convert to WebP", "WebP to JPG", "Convert to AVIF", "HEIC to JPG", "PNG to SVG", "Image to PDF"],
+		tools: [
+			{ name: "JPG to PNG", color: "bg-blue-400", icon: "🔄" },
+			{ name: "PNG to JPG", color: "bg-orange-400", icon: "🔄" },
+			{ name: "To WebP", color: "bg-green-400", icon: "🔄" },
+			{ name: "To AVIF", color: "bg-violet-500", icon: "🔄" },
+			{ name: "HEIC to JPG", color: "bg-gray-600", icon: "🔄" },
+			{ name: "PNG to SVG", color: "bg-pink-500", icon: "🔄" },
+			{ name: "Image to PDF", color: "bg-red-600", icon: "📄" },
+			{ name: "PDF to Image", color: "bg-red-400", icon: "📄" },
+		],
 	},
 	{
 		label: "Edit",
-		icon: "✏️",
-		tools: ["Resize", "Crop", "Rotate & Flip", "Add Watermark", "Add Text", "Filters & Effects", "Round Corners"],
+		tools: [
+			{ name: "Resize", color: "bg-blue-500", icon: "↔" },
+			{ name: "Crop", color: "bg-green-600", icon: "✂" },
+			{ name: "Rotate & Flip", color: "bg-yellow-500", icon: "↩" },
+			{ name: "Add Watermark", color: "bg-indigo-500", icon: "💧" },
+			{ name: "Add Text", color: "bg-orange-500", icon: "T" },
+			{ name: "Round Corners", color: "bg-pink-500", icon: "◻" },
+			{ name: "Add Border", color: "bg-teal-500", icon: "⬜" },
+			{ name: "Filters", color: "bg-purple-500", icon: "🎨" },
+		],
 	},
 	{
 		label: "AI Tools",
-		icon: "✨",
-		tools: ["Background Remover", "AI Upscaler", "Object Eraser", "Photo Restoration", "Colorize", "Auto Alt-Text"],
+		tools: [
+			{ name: "Background Remover", color: "bg-violet-600", icon: "✨" },
+			{ name: "AI Upscaler", color: "bg-blue-600", icon: "⬆" },
+			{ name: "Object Eraser", color: "bg-red-500", icon: "🧹" },
+			{ name: "Photo Restoration", color: "bg-amber-500", icon: "🖼" },
+			{ name: "Colorize", color: "bg-pink-600", icon: "🎨" },
+			{ name: "Auto Alt-Text", color: "bg-green-600", icon: "💬" },
+		],
 	},
 ];
 
@@ -73,7 +101,7 @@ export default function Header() {
 					/>
 				</a>
 
-				{/* Nav — absolutely centered */}
+				{/* Nav */}
 				<nav className="hidden md:flex items-center gap-0.5 absolute left-1/2 -translate-x-1/2">
 					{quickLinks.map(({ label, href }) => (
 						<NavLink key={label} label={label} href={href} pathname={pathname} />
@@ -85,9 +113,7 @@ export default function Header() {
 						onMouseEnter={() => setToolsOpen(true)}
 						onMouseLeave={() => setToolsOpen(false)}
 					>
-						<button
-							className="relative flex items-center gap-1 px-3.5 py-2 text-base font-semibold text-gray-700 hover:text-gray-900 transition-colors duration-150 group"
-						>
+						<button className="relative flex items-center gap-1 px-3.5 py-2 text-base font-semibold text-gray-700 hover:text-gray-900 transition-colors duration-150 group">
 							Tools
 							<ChevronDown className={`w-3.5 h-3.5 transition-transform duration-200 ${toolsOpen ? "rotate-180" : ""}`} />
 							<span className={`absolute bottom-0 left-1/2 -translate-x-1/2 h-0.5 bg-gray-900 transition-all duration-300
@@ -97,27 +123,25 @@ export default function Header() {
 
 						{/* Mega menu */}
 						{toolsOpen && (
-							<div className="fixed left-0 right-0 top-20 bg-white border-b border-gray-100 shadow-lg">
-								<div className="max-w-6xl mx-auto px-6 py-8 flex gap-0">
-									{toolCategories.map((cat, i) => (
-										<div
-											key={cat.label}
-											className={`flex-1 px-6 ${i !== 0 ? "border-l border-gray-100" : ""}`}
-										>
-											<div className="flex items-center gap-2 mb-4">
-												<span className="text-lg">{cat.icon}</span>
-												<p className="text-xs font-bold text-gray-400 uppercase tracking-widest">{cat.label}</p>
-											</div>
-											<div className="space-y-0.5">
+							<div className="fixed left-0 right-0 top-20 bg-white border-b border-gray-100 shadow-md z-50">
+								<div className="max-w-7xl mx-auto px-8 py-8 grid grid-cols-4 gap-8">
+									{toolCategories.map((cat) => (
+										<div key={cat.label}>
+											<p className="text-[11px] font-bold text-gray-400 uppercase tracking-widest mb-4">
+												{cat.label}
+											</p>
+											<div className="space-y-1">
 												{cat.tools.map((tool) => (
 													<a
-														key={tool}
+														key={tool.name}
 														href="#"
-														className="block py-1.5 text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors duration-100 group/item"
+														className="flex items-center gap-3 py-1.5 group/item"
 													>
-														<span className="relative">
-															{tool}
-															<span className="absolute -bottom-0.5 left-0 w-0 h-px bg-gray-900 group-hover/item:w-full transition-all duration-200" />
+														<span className={`w-7 h-7 rounded-md ${tool.color} flex items-center justify-center text-white text-xs flex-shrink-0 shadow-sm`}>
+															{tool.icon}
+														</span>
+														<span className="text-sm font-medium text-gray-700 group-hover/item:text-gray-900 transition-colors">
+															{tool.name}
 														</span>
 													</a>
 												))}
