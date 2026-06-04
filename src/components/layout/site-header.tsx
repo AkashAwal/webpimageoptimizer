@@ -22,7 +22,7 @@ const STATIC_LINKS = [
 ] as const;
 
 const linkClass =
-  "text-[13px] text-foreground/80 hover:text-foreground transition-colors px-2.5 py-1";
+  "text-[13px] font-semibold tracking-tight text-foreground/80 hover:text-foreground transition-colors px-2.5 py-1";
 
 export function SiteHeader({ fixed = false }: SiteHeaderProps = {}) {
   const [hidden, setHidden] = useState(false);
@@ -106,7 +106,7 @@ export function SiteHeader({ fixed = false }: SiteHeaderProps = {}) {
           <div className="flex items-center gap-3">
             {/* Akash Awal */}
             <div className="flex flex-col items-center gap-1">
-              <a href="https://akashawal.com" target="_blank" rel="noopener noreferrer" className="text-[11px] font-medium text-foreground hover:text-foreground/70 transition-colors">
+              <a href="https://akashawal.com" target="_blank" rel="noopener noreferrer" className="text-[11px] font-semibold tracking-tight text-foreground hover:text-foreground/70 transition-colors">
                 Akash Awal
               </a>
               <div className="flex items-center gap-1.5 text-muted-foreground">
@@ -121,7 +121,7 @@ export function SiteHeader({ fixed = false }: SiteHeaderProps = {}) {
             <span className="text-muted-foreground/40 text-[11px]">×</span>
             {/* Gray Cup */}
             <div className="flex flex-col items-center gap-1">
-              <a href="https://graycup.com" target="_blank" rel="noopener noreferrer" className="text-[11px] font-medium text-foreground hover:text-foreground/70 transition-colors">
+              <a href="https://graycup.com" target="_blank" rel="noopener noreferrer" className="text-[11px] font-semibold tracking-tight text-foreground hover:text-foreground/70 transition-colors">
                 Gray Cup
               </a>
               <div className="flex items-center gap-1.5 text-muted-foreground">
@@ -153,7 +153,7 @@ export function SiteHeader({ fixed = false }: SiteHeaderProps = {}) {
             <Link
               key={link.href}
               href={link.href}
-              className="text-[13px] text-foreground/80 hover:text-foreground transition-colors py-1"
+              className="text-[13px] font-semibold tracking-tight text-foreground/80 hover:text-foreground transition-colors py-1"
               onClick={() => setMenuOpen(false)}
             >
               {link.label}
@@ -167,7 +167,7 @@ export function SiteHeader({ fixed = false }: SiteHeaderProps = {}) {
                 href={link.href}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-[13px] text-foreground/80 hover:text-foreground transition-colors py-1"
+                className="text-[13px] font-semibold tracking-tight text-foreground/80 hover:text-foreground transition-colors py-1"
                 onClick={() => setMenuOpen(false)}
               >
                 {link.label}
@@ -176,7 +176,7 @@ export function SiteHeader({ fixed = false }: SiteHeaderProps = {}) {
               <Link
                 key={link.href}
                 href={link.href}
-                className="text-[13px] text-foreground/80 hover:text-foreground transition-colors py-1"
+                className="text-[13px] font-semibold tracking-tight text-foreground/80 hover:text-foreground transition-colors py-1"
                 onClick={() => setMenuOpen(false)}
               >
                 {link.label}
