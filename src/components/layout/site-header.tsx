@@ -101,27 +101,38 @@ export function SiteHeader({ fixed = false }: SiteHeaderProps = {}) {
         </nav>
 
         {/* Right side: built-by + social icons */}
-        <div className="hidden sm:flex items-center gap-3 ml-auto">
-          <p className="text-[11px] text-muted-foreground">
-            Built by{" "}
-            <a href="https://akashawal.com" target="_blank" rel="noopener noreferrer" className="font-medium text-foreground hover:text-foreground/70 transition-colors">Akash Awal</a>
-            <span className="mx-1 text-muted-foreground/50">×</span>
-            <a href="https://graycup.com" target="_blank" rel="noopener noreferrer" className="font-medium text-foreground hover:text-foreground/70 transition-colors">Gray Cup</a>
-          </p>
-          <div className="flex items-center gap-2 text-muted-foreground">
-            <a href="https://github.com/akashawal" target="_blank" rel="noopener noreferrer" className="hover:text-foreground transition-colors" aria-label="Akash Awal on GitHub">
-              <GithubLogo size={14} />
-            </a>
-            <a href="https://x.com/akashawal17" target="_blank" rel="noopener noreferrer" className="hover:text-foreground transition-colors" aria-label="Akash Awal on X">
-              <XLogo size={14} />
-            </a>
-            <span className="text-border">|</span>
-            <a href="https://github.com/nermalcat69" target="_blank" rel="noopener noreferrer" className="hover:text-foreground transition-colors" aria-label="Gray Cup on GitHub">
-              <GithubLogo size={14} />
-            </a>
-            <a href="https://x.com/arjunaditya_" target="_blank" rel="noopener noreferrer" className="hover:text-foreground transition-colors" aria-label="Gray Cup on X">
-              <XLogo size={14} />
-            </a>
+        <div className="hidden sm:flex items-center gap-4 ml-auto">
+          <span className="text-[11px] text-muted-foreground">Built by</span>
+          <div className="flex items-center gap-3">
+            {/* Akash Awal */}
+            <div className="flex flex-col items-center gap-1">
+              <a href="https://akashawal.com" target="_blank" rel="noopener noreferrer" className="text-[11px] font-medium text-foreground hover:text-foreground/70 transition-colors">
+                Akash Awal
+              </a>
+              <div className="flex items-center gap-1.5 text-muted-foreground">
+                <a href="https://github.com/akashawal" target="_blank" rel="noopener noreferrer" className="hover:text-foreground transition-colors" aria-label="Akash Awal on GitHub">
+                  <GithubLogo size={13} />
+                </a>
+                <a href="https://x.com/akashawal17" target="_blank" rel="noopener noreferrer" className="hover:text-foreground transition-colors" aria-label="Akash Awal on X">
+                  <XLogo size={13} />
+                </a>
+              </div>
+            </div>
+            <span className="text-muted-foreground/40 text-[11px]">×</span>
+            {/* Gray Cup */}
+            <div className="flex flex-col items-center gap-1">
+              <a href="https://graycup.com" target="_blank" rel="noopener noreferrer" className="text-[11px] font-medium text-foreground hover:text-foreground/70 transition-colors">
+                Gray Cup
+              </a>
+              <div className="flex items-center gap-1.5 text-muted-foreground">
+                <a href="https://github.com/nermalcat69" target="_blank" rel="noopener noreferrer" className="hover:text-foreground transition-colors" aria-label="Gray Cup on GitHub">
+                  <GithubLogo size={13} />
+                </a>
+                <a href="https://x.com/arjunaditya_" target="_blank" rel="noopener noreferrer" className="hover:text-foreground transition-colors" aria-label="Gray Cup on X">
+                  <XLogo size={13} />
+                </a>
+              </div>
+            </div>
           </div>
         </div>
 
