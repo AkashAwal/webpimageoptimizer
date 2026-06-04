@@ -102,7 +102,7 @@ export function SiteHeader({ fixed = false }: SiteHeaderProps = {}) {
 
         {/* Right side: built-by + social icons */}
         <div className="hidden sm:flex items-center gap-4 ml-auto">
-          <span className="text-[11px] text-muted-foreground">Built by</span>
+          <span className="text-[11px] font-semibold tracking-tight text-foreground">Built by</span>
           <div className="flex items-center gap-3">
             {/* Akash Awal */}
             <div className="flex flex-col items-center gap-1">
