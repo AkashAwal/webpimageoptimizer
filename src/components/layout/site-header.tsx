@@ -22,7 +22,7 @@ const STATIC_LINKS = [
 ] as const;
 
 const linkClass =
-  "text-[13px] font-semibold tracking-tight text-foreground/80 hover:text-foreground transition-colors px-2.5 py-1";
+  "text-[18px] font-semibold tracking-tight text-foreground/80 hover:text-foreground transition-colors px-2.5 py-1";
 
 export function SiteHeader({ fixed = false }: SiteHeaderProps = {}) {
   const [hidden, setHidden] = useState(false);
@@ -70,7 +70,7 @@ export function SiteHeader({ fixed = false }: SiteHeaderProps = {}) {
             <circle cx="12" cy="12" r="3.2" stroke="currentColor" strokeWidth="1.8" />
             <path d="M2 8.5h3l2-3h6l2 3h3" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="round" />
           </svg>
-          <span className="text-[15px] font-semibold tracking-tight text-foreground">Pix Garage</span>
+          <span className="text-[20px] font-semibold tracking-tight text-foreground">Pix Garage</span>
         </Link>
 
         {/* Desktop nav — centered */}
@@ -80,7 +80,7 @@ export function SiteHeader({ fixed = false }: SiteHeaderProps = {}) {
               {link.label}
             </Link>
           ))}
-          <span className="mx-1.5 text-neutral-200 select-none text-[13px]">|</span>
+          <span className="mx-1.5 text-neutral-200 select-none text-[18px]">|</span>
           {STATIC_LINKS.map((link) =>
             link.external ? (
               <a
@@ -102,34 +102,34 @@ export function SiteHeader({ fixed = false }: SiteHeaderProps = {}) {
 
         {/* Right side: built-by + social icons */}
         <div className="hidden sm:flex items-center gap-4 ml-auto">
-          <span className="text-[11px] font-semibold tracking-tight text-foreground">Built by</span>
+          <span className="text-[16px] font-semibold tracking-tight text-foreground">Built by</span>
           <div className="flex items-center gap-3">
             {/* Akash Awal */}
             <div className="flex flex-col items-center gap-1">
-              <a href="https://akashawal.com" target="_blank" rel="noopener noreferrer" className="text-[11px] font-semibold tracking-tight text-foreground hover:text-foreground/70 transition-colors">
+              <a href="https://akashawal.com" target="_blank" rel="noopener noreferrer" className="text-[16px] font-semibold tracking-tight text-foreground hover:text-foreground/70 transition-colors">
                 Akash Awal
               </a>
               <div className="flex items-center gap-1.5 text-foreground">
-                <a href="https://github.com/akashawal" target="_blank" rel="noopener noreferrer" className="hover:text-foreground transition-colors" aria-label="Akash Awal on GitHub">
-                  <GithubLogo size={13} />
+                <a href="https://github.com/akashawal" target="_blank" rel="noopener noreferrer" className="hover:opacity-70 transition-opacity" aria-label="Akash Awal on GitHub">
+                  <GithubLogo size={16} />
                 </a>
-                <a href="https://x.com/akashawal17" target="_blank" rel="noopener noreferrer" className="hover:text-foreground transition-colors" aria-label="Akash Awal on X">
-                  <XLogo size={13} />
+                <a href="https://x.com/akashawal17" target="_blank" rel="noopener noreferrer" className="hover:opacity-70 transition-opacity" aria-label="Akash Awal on X">
+                  <XLogo size={16} />
                 </a>
               </div>
             </div>
-            <span className="text-muted-foreground/40 text-[11px]">×</span>
+            <span className="text-muted-foreground/40 text-[16px]">×</span>
             {/* Gray Cup */}
             <div className="flex flex-col items-center gap-1">
-              <a href="https://graycup.com" target="_blank" rel="noopener noreferrer" className="text-[11px] font-semibold tracking-tight text-foreground hover:text-foreground/70 transition-colors">
+              <a href="https://graycup.com" target="_blank" rel="noopener noreferrer" className="text-[16px] font-semibold tracking-tight text-foreground hover:text-foreground/70 transition-colors">
                 Gray Cup
               </a>
               <div className="flex items-center gap-1.5 text-foreground">
-                <a href="https://github.com/nermalcat69" target="_blank" rel="noopener noreferrer" className="hover:text-foreground transition-colors" aria-label="Gray Cup on GitHub">
-                  <GithubLogo size={13} />
+                <a href="https://github.com/nermalcat69" target="_blank" rel="noopener noreferrer" className="hover:opacity-70 transition-opacity" aria-label="Gray Cup on GitHub">
+                  <GithubLogo size={16} />
                 </a>
-                <a href="https://x.com/arjunaditya_" target="_blank" rel="noopener noreferrer" className="hover:text-foreground transition-colors" aria-label="Gray Cup on X">
-                  <XLogo size={13} />
+                <a href="https://x.com/arjunaditya_" target="_blank" rel="noopener noreferrer" className="hover:opacity-70 transition-opacity" aria-label="Gray Cup on X">
+                  <XLogo size={16} />
                 </a>
               </div>
             </div>
@@ -142,7 +142,7 @@ export function SiteHeader({ fixed = false }: SiteHeaderProps = {}) {
           onClick={() => setMenuOpen((o) => !o)}
           aria-label="Toggle menu"
         >
-          {menuOpen ? <XIcon size={20} /> : <List size={20} />}
+          {menuOpen ? <XIcon size={22} /> : <List size={22} />}
         </button>
       </div>
 
@@ -153,7 +153,7 @@ export function SiteHeader({ fixed = false }: SiteHeaderProps = {}) {
             <Link
               key={link.href}
               href={link.href}
-              className="text-[13px] font-semibold tracking-tight text-foreground/80 hover:text-foreground transition-colors py-1"
+              className="text-[18px] font-semibold tracking-tight text-foreground/80 hover:text-foreground transition-colors py-1"
               onClick={() => setMenuOpen(false)}
             >
               {link.label}
@@ -167,7 +167,7 @@ export function SiteHeader({ fixed = false }: SiteHeaderProps = {}) {
                 href={link.href}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-[13px] font-semibold tracking-tight text-foreground/80 hover:text-foreground transition-colors py-1"
+                className="text-[18px] font-semibold tracking-tight text-foreground/80 hover:text-foreground transition-colors py-1"
                 onClick={() => setMenuOpen(false)}
               >
                 {link.label}
@@ -176,7 +176,7 @@ export function SiteHeader({ fixed = false }: SiteHeaderProps = {}) {
               <Link
                 key={link.href}
                 href={link.href}
-                className="text-[13px] font-semibold tracking-tight text-foreground/80 hover:text-foreground transition-colors py-1"
+                className="text-[18px] font-semibold tracking-tight text-foreground/80 hover:text-foreground transition-colors py-1"
                 onClick={() => setMenuOpen(false)}
               >
                 {link.label}
