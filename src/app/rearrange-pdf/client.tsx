@@ -97,50 +97,7 @@ export default function RearrangePdfClient() {
   const activeCount = pages.length - deletedCount;
 
   return (
-    <div className="pt-6">
-      {/* Top bar */}
-      <div className="flex items-center justify-between gap-4 mb-6">
-        <div className="flex items-center gap-2 min-w-0">
-          <Link href="/" className="flex items-center gap-1 text-[12px] text-muted-foreground hover:text-foreground transition-colors shrink-0">
-            <CaretLeft size={11} weight="bold" />All tools
-          </Link>
-          <span className="text-neutral-300 text-[12px]">/</span>
-          <h1 className="text-[14px] font-semibold text-foreground truncate">Rearrange & Remove Pages</h1>
-          {pages.length > 0 && (
-            <span className="hidden sm:inline text-[12px] text-muted-foreground shrink-0">
-              — {activeCount} page{activeCount !== 1 ? "s" : ""}
-              {deletedCount > 0 && <span className="text-red-500"> · {deletedCount} to remove</span>}
-            </span>
-          )}
-        </div>
-
-        {file && !loading && (
-          <div className="flex items-center gap-2 shrink-0">
-            <div className="hidden sm:flex items-center gap-2 text-[12px] text-muted-foreground">
-              <FilePdf size={14} className="text-red-400 shrink-0" />
-              <span className="truncate max-w-[180px]">{file.name}</span>
-              <span className="text-neutral-300">·</span>
-              <span>{formatBytes(file.size)}</span>
-            </div>
-            <button onClick={() => { setFile(null); setPages([]); setResult(null); }}
-              className="rounded-lg p-1.5 text-neutral-400 hover:bg-red-50 hover:text-red-500 transition-colors">
-              <X size={13} />
-            </button>
-            {result ? (
-              <SoftPillButton variant="primary" onClick={() => {
-                const a = document.createElement("a"); a.href = result.url; a.download = "rearranged.pdf"; a.click();
-              }} className="h-8 px-3 text-[12px]">
-                <DownloadSimple size={12} />Download
-              </SoftPillButton>
-            ) : (
-              <SoftPillButton variant="primary" onClick={process} disabled={processing} className="h-8 px-3 text-[12px]">
-                {processing ? <><CircleNotch size={12} className="animate-spin" />Saving…</> : "Save Changes"}
-              </SoftPillButton>
-            )}
-          </div>
-        )}
-      </div>
-
+    <div>
       {/* Landing screen */}
       {!file && (
         <div
@@ -161,6 +118,26 @@ export default function RearrangePdfClient() {
           <p className="text-[13px] text-muted-foreground">or drag and drop your PDF here</p>
         </div>
       )}
+
+      {/* Active: two-column layout */}
+      {file && (
+        <div className="flex min-h-[calc(100vh-4rem)]">
+          {/* Left: page grid */}
+          <div className="flex-1 px-6 sm:px-10 pt-6 pb-10 min-w-0">
+            {/* Nav */}
+            <div className="flex items-center gap-1.5 text-[12px] text-muted-foreground mb-4">
+              <Link href="/" className="flex items-center gap-1 hover:text-foreground transition-colors">
+                <CaretLeft size={11} weight="bold" />All tools
+              </Link>
+              <span>/</span>
+              <span className="text-foreground font-medium">Manage PDF Pages</span>
+              {pages.length > 0 && (
+                <span className="text-muted-foreground">
+                  — {activeCount} page{activeCount !== 1 ? "s" : ""}
+                  {deletedCount > 0 && <span className="text-red-500"> · {deletedCount} to remove</span>}
+                </span>
+              )}
+            </div>
 
       {/* Loading progress */}
       {loading && (
@@ -211,16 +188,64 @@ export default function RearrangePdfClient() {
         </div>
       )}
 
-      {/* Error */}
-      {error && (
-        <p className="mt-3 text-[12px] text-red-600 bg-red-50 rounded-xl px-3 py-2 ring-1 ring-red-100">{error}</p>
-      )}
+            {/* Error */}
+            {error && (
+              <p className="mt-3 text-[12px] text-red-600 bg-red-50 rounded-xl px-3 py-2 ring-1 ring-red-100">{error}</p>
+            )}
+          </div>
 
-      {/* Privacy note */}
-      {file && !loading && (
-        <p className="mt-4 text-center text-[11px] text-muted-foreground/60">
-          All processing happens locally in your browser. No files leave your device.
-        </p>
+          {/* Right: sticky sidebar — instructions */}
+          <div className="w-80 shrink-0 border-l border-border bg-white sticky top-16 h-[calc(100vh-4rem)] flex flex-col p-6 gap-4 overflow-y-auto">
+            <div className="flex items-center justify-between">
+              <h2 className="text-xl font-bold tracking-tight text-foreground">Manage Pages</h2>
+              <button onClick={() => { setFile(null); setPages([]); setResult(null); }}
+                className="rounded-lg p-1.5 text-neutral-400 hover:bg-red-50 hover:text-red-500 transition-colors">
+                <X size={13} />
+              </button>
+            </div>
+
+            {file && (
+              <div className="flex items-center gap-2 rounded-xl px-3 py-2 bg-neutral-50 ring-1 ring-black/5">
+                <FilePdf size={14} className="text-red-400 shrink-0" />
+                <p className="truncate text-[12px] text-muted-foreground">{file.name}</p>
+              </div>
+            )}
+
+            <div className="space-y-3">
+              <p className="text-[11px] font-semibold uppercase tracking-widest text-muted-foreground">How to use</p>
+              {[
+                { n: "1", text: "Drop your PDF — every page is rendered as a thumbnail." },
+                { n: "2", text: "Drag cards to reorder pages into your preferred sequence." },
+                { n: "3", text: "Hover a card and click × to mark a page for removal." },
+                { n: "4", text: "Click Save Changes to download the updated PDF." },
+              ].map(({ n, text }) => (
+                <div key={n} className="flex gap-3">
+                  <span className="flex size-5 shrink-0 items-center justify-center rounded-full bg-neutral-100 text-[11px] font-bold text-neutral-500">{n}</span>
+                  <p className="text-[12px] text-muted-foreground leading-relaxed">{text}</p>
+                </div>
+              ))}
+            </div>
+
+            {result && (
+              <div className="flex items-center gap-3 rounded-xl bg-emerald-50 px-3 py-2.5 ring-1 ring-emerald-100">
+                <div className="size-2 rounded-full bg-emerald-500 shrink-0" />
+                <p className="flex-1 text-[12px] text-emerald-700 font-medium">Ready · {formatBytes(result.blob.size)}</p>
+                <SoftPillButton variant="primary" onClick={() => {
+                  const a = document.createElement("a"); a.href = result.url; a.download = "rearranged.pdf"; a.click();
+                }} className="h-8 px-3 text-[12px]">
+                  <DownloadSimple size={12} />Save
+                </SoftPillButton>
+              </div>
+            )}
+
+            <div className="mt-auto space-y-2">
+              <SoftPillButton variant="primary" onClick={process} disabled={processing || loading} className="w-full h-12 text-[14px]">
+                {processing ? <><CircleNotch size={14} className="animate-spin" />Saving…</> : "Save Changes"}
+              </SoftPillButton>
+              <p className="text-center text-[11px] text-muted-foreground/60">Runs locally · no upload</p>
+            </div>
+          </div>
+        </div>
       )}
 
       <input ref={inputRef} type="file" accept="application/pdf,.pdf" className="hidden"

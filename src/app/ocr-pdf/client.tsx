@@ -106,51 +106,35 @@ export default function OcrPdfClient() {
       )}
 
       {file && (
-              <div className="overflow-hidden rounded-2xl ring-1 ring-black/6 shadow-[0_4px_24px_-6px_rgba(0,0,0,0.10),0_1px_3px_rgba(0,0,0,0.06)] bg-white">
-          <div className="flex items-center gap-2.5 px-4 py-2.5 border-b border-border bg-neutral-50/60">
-            <Link href="/" className="flex items-center gap-1 text-[12px] text-muted-foreground hover:text-foreground transition-colors shrink-0">
-              <CaretLeft size={11} weight="bold" />All tools
-            </Link>
-            <span className="text-neutral-300 text-[12px]">/</span>
-            <h1 className="text-[13px] font-semibold text-foreground">OCR PDF</h1>
-          </div>
-  
-          <div className="p-4 space-y-3">
-            {/* file loaded: active content */}
+        <div className="flex min-h-[calc(100vh-4rem)]">
+          {/* Left: file info + extracted text */}
+          <div className="flex-1 px-6 sm:px-10 pt-6 pb-10 space-y-3 min-w-0">
+            <div className="flex items-center gap-1.5 text-[12px] text-muted-foreground">
+              <Link href="/" className="flex items-center gap-1 hover:text-foreground transition-colors shrink-0">
+                <CaretLeft size={11} weight="bold" />All tools
+              </Link>
+              <span>/</span>
+              <span className="text-foreground font-medium">OCR PDF</span>
+            </div>
             <div className="flex items-center gap-3 rounded-xl px-3 py-2 bg-white ring-1 ring-black/5">
-                <FilePdf size={18} className="shrink-0 text-red-400" />
-                <div className="flex-1 min-w-0">
-                  <p className="truncate text-[12px] font-medium text-foreground">{file.name}</p>
-                  <p className="text-[11px] text-muted-foreground">{formatBytes(file.size)}</p>
-                </div>
-                <button onClick={() => { setFile(null); setText(null); }} className="rounded-lg p-1.5 text-neutral-300 hover:bg-red-50 hover:text-red-500 transition-colors">
-                  <X size={13} />
-                </button>
+              <FilePdf size={18} className="shrink-0 text-red-400" />
+              <div className="flex-1 min-w-0">
+                <p className="truncate text-[12px] font-medium text-foreground">{file.name}</p>
+                <p className="text-[11px] text-muted-foreground">{formatBytes(file.size)}</p>
               </div>
-  
-            {file && (
-              <div className="rounded-xl bg-neutral-50 ring-1 ring-black/5 p-3">
-                <p className="text-[10px] font-semibold uppercase tracking-widest text-muted-foreground mb-1.5">Document language</p>
-                <select value={lang} onChange={e => setLang(e.target.value)}
-                  className="w-full rounded-lg border border-border bg-white px-2 py-1.5 text-[12px] text-foreground outline-none focus:border-foreground/30 transition-colors cursor-pointer">
-                  {LANGS.map(l => <option key={l.id} value={l.id}>{l.label}</option>)}
-                </select>
-                <p className="text-[10px] text-muted-foreground/60 mt-1 leading-tight">Language model downloaded on first use (~10 MB). May take 30�60 s per page on large files.</p>
-              </div>
-            )}
-  
+              <button onClick={() => { setFile(null); setText(null); }} className="rounded-lg p-1.5 text-neutral-300 hover:bg-red-50 hover:text-red-500 transition-colors">
+                <X size={13} />
+              </button>
+            </div>
             {processing && progress && (
               <p className="flex items-center gap-2 text-[12px] text-muted-foreground">
                 <CircleNotch size={13} className="animate-spin shrink-0" />{progress}
               </p>
             )}
-  
-            {error && <p className="text-[12px] text-red-600 bg-red-50 rounded-xl px-3 py-2 ring-1 ring-red-100">{error}</p>}
-  
             {text !== null && (
               <div className="space-y-2">
                 <div className="flex items-center justify-between">
-                  <p className="text-[11px] font-medium text-foreground">Extracted text</p>
+                  <p className="text-[12px] font-semibold text-foreground">Extracted text</p>
                   <div className="flex gap-1.5">
                     <button onClick={copy} className="flex items-center gap-1 rounded-full bg-neutral-100 px-2.5 py-1 text-[11px] font-medium text-neutral-600 hover:bg-neutral-200 transition-colors">
                       {copied ? <Check size={11} className="text-emerald-500" /> : <CopySimple size={11} />}
@@ -162,14 +146,30 @@ export default function OcrPdfClient() {
                   </div>
                 </div>
                 <textarea readOnly value={text}
-                  className="w-full h-48 rounded-xl border border-border bg-neutral-50 px-3 py-2 text-[11px] font-mono text-foreground resize-none outline-none"
+                  className="w-full h-[60vh] rounded-xl border border-border bg-neutral-50 px-3 py-2 text-[12px] font-mono text-foreground resize-none outline-none"
                 />
               </div>
             )}
-  
-            <SoftPillButton variant="primary" onClick={process} disabled={!file || processing} className="w-full h-9 text-[12px]">
-              {processing ? <><CircleNotch size={12} className="animate-spin" />Scanning…</> : "Extract Text (OCR)"}
-            </SoftPillButton>
+          </div>
+
+          {/* Right: sticky sidebar */}
+          <div className="w-80 shrink-0 border-l border-border bg-white sticky top-16 h-[calc(100vh-4rem)] flex flex-col p-6 gap-4 overflow-y-auto">
+            <h2 className="text-xl font-bold tracking-tight text-foreground">OCR PDF</h2>
+            <div>
+              <p className="text-[10px] font-semibold uppercase tracking-widest text-muted-foreground mb-1.5">Document language</p>
+              <select value={lang} onChange={e => setLang(e.target.value)}
+                className="w-full rounded-lg border border-border bg-white px-2 py-1.5 text-[12px] text-foreground outline-none focus:border-foreground/30 transition-colors cursor-pointer">
+                {LANGS.map(l => <option key={l.id} value={l.id}>{l.label}</option>)}
+              </select>
+              <p className="text-[10px] text-muted-foreground/60 mt-1.5 leading-tight">Language model downloaded on first use (~10 MB). May take 30–60 s per page.</p>
+            </div>
+            {error && <p className="text-[12px] text-red-600 bg-red-50 rounded-xl px-3 py-2 ring-1 ring-red-100">{error}</p>}
+            <div className="mt-auto space-y-2">
+              <SoftPillButton variant="primary" onClick={process} disabled={processing} className="w-full h-12 text-[14px]">
+                {processing ? <><CircleNotch size={14} className="animate-spin" />Scanning…</> : "Extract Text (OCR)"}
+              </SoftPillButton>
+              <p className="text-center text-[11px] text-muted-foreground/60">Runs locally · no upload</p>
+            </div>
           </div>
         </div>
       )}

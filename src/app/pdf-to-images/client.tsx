@@ -78,17 +78,18 @@ export default function PdfToImagesClient() {
         </div>
       )}
 
-      {/* Active — card */}
+      {/* Active — two-column */}
       {file && (
-        <div className="overflow-hidden rounded-2xl ring-1 ring-black/6 shadow-[0_4px_24px_-6px_rgba(0,0,0,0.10),0_1px_3px_rgba(0,0,0,0.06)] bg-white">
-          <div className="flex items-center gap-2.5 px-4 py-2.5 border-b border-border bg-neutral-50/60">
-            <Link href="/" className="flex items-center gap-1 text-[12px] text-muted-foreground hover:text-foreground transition-colors shrink-0">
-              <CaretLeft size={11} weight="bold" />All tools
-            </Link>
-            <span className="text-neutral-300 text-[12px]">/</span>
-            <h1 className="text-[13px] font-semibold text-foreground">PDF to Images</h1>
-          </div>
-          <div className="p-4 space-y-3">
+        <div className="flex min-h-[calc(100vh-4rem)]">
+          {/* Left: file info + progress */}
+          <div className="flex-1 px-6 sm:px-10 pt-6 pb-10 space-y-3 min-w-0">
+            <div className="flex items-center gap-1.5 text-[12px] text-muted-foreground mb-2">
+              <Link href="/" className="flex items-center gap-1 hover:text-foreground transition-colors shrink-0">
+                <CaretLeft size={11} weight="bold" />All tools
+              </Link>
+              <span>/</span>
+              <span className="text-foreground font-medium">PDF to Images</span>
+            </div>
             <div className="flex items-center gap-3 rounded-xl px-3 py-2 bg-white ring-1 ring-black/5">
               <FilePdf size={18} className="shrink-0 text-red-400" />
               <div className="flex-1 min-w-0">
@@ -99,47 +100,50 @@ export default function PdfToImagesClient() {
                 <X size={13} />
               </button>
             </div>
-
-            <div className="rounded-xl bg-neutral-50 ring-1 ring-black/5 p-3">
-              <div className="grid grid-cols-2 gap-3">
-                <div>
-                  <p className="text-[10px] font-semibold uppercase tracking-widest text-muted-foreground mb-1.5">Format</p>
-                  <div className="flex gap-1">
-                    {(["jpeg", "png", "webp"] as const).map(f => (
-                      <button key={f} onClick={() => setFormat(f)}
-                        className={cn("flex-1 rounded-lg py-1.5 text-[11px] font-medium uppercase transition-colors",
-                          format === f ? "bg-neutral-900 text-white" : "bg-neutral-100 text-neutral-600 hover:bg-neutral-200")}>
-                        {f === "jpeg" ? "JPG" : f.toUpperCase()}
-                      </button>
-                    ))}
-                  </div>
-                </div>
-                <div>
-                  <div className="flex justify-between mb-1">
-                    <p className="text-[10px] font-semibold uppercase tracking-widest text-muted-foreground">Scale</p>
-                    <span className="text-[11px] text-muted-foreground">{scale}×</span>
-                  </div>
-                  <input type="range" min={1} max={3} step={0.5} value={scale} onChange={e => setScale(Number(e.target.value))}
-                    className="w-full h-1.5 cursor-pointer accent-foreground mt-1" />
-                </div>
-                {format !== "png" && (
-                  <div className="col-span-2">
-                    <div className="flex justify-between mb-1">
-                      <p className="text-[10px] font-semibold uppercase tracking-widest text-muted-foreground">Quality</p>
-                      <span className="text-[11px] text-muted-foreground">{quality}%</span>
-                    </div>
-                    <input type="range" min={60} max={100} value={quality} onChange={e => setQuality(Number(e.target.value))}
-                      className="w-full h-1.5 cursor-pointer accent-foreground" />
-                  </div>
-                )}
-              </div>
-            </div>
-
             {processing && (
               <div className="h-1.5 rounded-full bg-neutral-100 overflow-hidden">
                 <div className="h-full bg-neutral-900 transition-all rounded-full" style={{ width: `${progress}%` }} />
               </div>
             )}
+          </div>
+
+          {/* Right: sticky sidebar — settings */}
+          <div className="w-80 shrink-0 border-l border-border bg-white sticky top-16 h-[calc(100vh-4rem)] flex flex-col p-6 gap-4 overflow-y-auto">
+            <h2 className="text-xl font-bold tracking-tight text-foreground">PDF to Images</h2>
+
+            <div className="space-y-4">
+              <div>
+                <p className="text-[10px] font-semibold uppercase tracking-widest text-muted-foreground mb-1.5">Format</p>
+                <div className="flex gap-1">
+                  {(["jpeg", "png", "webp"] as const).map(f => (
+                    <button key={f} onClick={() => setFormat(f)}
+                      className={cn("flex-1 rounded-lg py-1.5 text-[11px] font-medium uppercase transition-colors",
+                        format === f ? "bg-neutral-900 text-white" : "bg-neutral-100 text-neutral-600 hover:bg-neutral-200")}>
+                      {f === "jpeg" ? "JPG" : f.toUpperCase()}
+                    </button>
+                  ))}
+                </div>
+              </div>
+              <div>
+                <div className="flex justify-between mb-1">
+                  <p className="text-[10px] font-semibold uppercase tracking-widest text-muted-foreground">Scale</p>
+                  <span className="text-[11px] text-muted-foreground">{scale}×</span>
+                </div>
+                <input type="range" min={1} max={3} step={0.5} value={scale} onChange={e => setScale(Number(e.target.value))}
+                  className="w-full h-1.5 cursor-pointer accent-foreground" />
+              </div>
+              {format !== "png" && (
+                <div>
+                  <div className="flex justify-between mb-1">
+                    <p className="text-[10px] font-semibold uppercase tracking-widest text-muted-foreground">Quality</p>
+                    <span className="text-[11px] text-muted-foreground">{quality}%</span>
+                  </div>
+                  <input type="range" min={60} max={100} value={quality} onChange={e => setQuality(Number(e.target.value))}
+                    className="w-full h-1.5 cursor-pointer accent-foreground" />
+                </div>
+              )}
+            </div>
+
             {error && <p className="text-[12px] text-red-600 bg-red-50 rounded-xl px-3 py-2 ring-1 ring-red-100">{error}</p>}
             {result && (
               <div className="flex items-center gap-3 rounded-xl bg-emerald-50 px-3 py-2.5 ring-1 ring-emerald-100">
@@ -152,9 +156,13 @@ export default function PdfToImagesClient() {
                 </SoftPillButton>
               </div>
             )}
-            <SoftPillButton variant="primary" onClick={process} disabled={processing} className="w-full h-9 text-[12px]">
-              {processing ? <><CircleNotch size={12} className="animate-spin" />{progress}% — rendering…</> : "Convert to Images"}
-            </SoftPillButton>
+
+            <div className="mt-auto space-y-2">
+              <SoftPillButton variant="primary" onClick={process} disabled={processing} className="w-full h-12 text-[14px]">
+                {processing ? <><CircleNotch size={14} className="animate-spin" />{progress}% — rendering…</> : "Convert to Images"}
+              </SoftPillButton>
+              <p className="text-center text-[11px] text-muted-foreground/60">Runs locally · no upload</p>
+            </div>
           </div>
         </div>
       )}
