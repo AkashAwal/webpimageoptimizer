@@ -42,7 +42,7 @@ export function SiteHeader({ fixed = false }: SiteHeaderProps = {}) {
         <p className="text-[11px] text-white">
           Built by{" "}
           <a href="https://akashawal.com" target="_blank" rel="noopener noreferrer" className="font-medium text-white hover:text-neutral-300 transition-colors">Akash Awal</a>
-          <span className="mx-1.5 text-neutral-500">×</span>
+          <span className="mx-1.5 text-white">×</span>
           <a href="https://graycup.com" target="_blank" rel="noopener noreferrer" className="font-medium text-white hover:text-neutral-300 transition-colors">Gray Cup Enterprises</a>
         </p>
       </div>
