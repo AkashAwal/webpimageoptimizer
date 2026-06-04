@@ -144,7 +144,7 @@ export default function SplitPdfClient() {
                 {thumbnails.map((thumb, idx) => (
                   <div
                     key={idx}
-                    className="relative rounded-xl overflow-hidden ring-1 ring-black/10 select-none"
+                    className="relative overflow-hidden ring-1 ring-black/10 select-none"
                   >
                     {/* eslint-disable-next-line @next/next/no-img-element */}
                     <img src={thumb} alt={`Page ${idx + 1}`} className="w-full block" />
