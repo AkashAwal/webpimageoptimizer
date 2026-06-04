@@ -13,7 +13,7 @@ export default function Page() {
   return (
     <div className="flex flex-1 flex-col">
       <SiteHeader fixed />
-      <main className="mx-auto w-full max-w-3xl px-6 pb-24 sm:px-10">
+      <main className="mx-auto w-full max-w-6xl px-6 pb-24 sm:px-10">
         <RearrangePdfClient />
         <p className="mt-6 text-center text-[11px] text-muted-foreground/70">All processing happens locally in your browser. No files leave your device.</p>
         <div className="mt-16 space-y-10 text-[14px] leading-relaxed text-muted-foreground">
