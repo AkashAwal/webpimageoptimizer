@@ -117,51 +117,56 @@ export default function CropPdfClient() {
                 </button>
               </div>
 
-              {loadingPreview && (
-                <div className="flex items-center justify-center h-32 rounded-xl ring-1 ring-black/10 text-neutral-400">
-                  <CircleNotch size={20} className="animate-spin" />
+              <div className="flex gap-3 items-start">
+                {/* Left: crop inputs */}
+                <div className="rounded-xl bg-neutral-50 ring-1 ring-black/5 p-3 shrink-0 w-44">
+                  <p className="text-[10px] font-semibold uppercase tracking-widest text-muted-foreground mb-2">Margins to remove (pt)</p>
+                  <div className="grid grid-cols-2 gap-2">
+                    {([["Top", top, setTop], ["Right", right, setRight], ["Bottom", bottom, setBottom], ["Left", left, setLeft]] as const).map(
+                      ([label, val, setter]) => (
+                        <div key={label}>
+                          <p className="text-[10px] text-muted-foreground/70 mb-0.5">{label}</p>
+                          <input type="number" min={0} value={val}
+                            onChange={e => (setter as (v: number) => void)(Number(e.target.value))}
+                            className={inputCls}
+                          />
+                        </div>
+                      )
+                    )}
+                  </div>
+                  <p className="text-[10px] text-muted-foreground/50 mt-1.5 leading-tight">1 pt ≈ 0.35 mm</p>
                 </div>
-              )}
 
-              {!loadingPreview && pageImage && (
-                <div className="relative rounded-xl overflow-hidden ring-1 ring-black/10 select-none">
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src={pageImage} alt="PDF page preview" className="w-full block" />
-                  {topPct > 0 && (
-                    <div className="absolute inset-x-0 top-0 bg-black/40 pointer-events-none transition-all duration-100"
-                      style={{ height: `${topPct}%` }} />
+                {/* Right: live preview */}
+                <div className="flex-1 min-w-0">
+                  {loadingPreview && (
+                    <div className="flex items-center justify-center h-32 rounded-xl ring-1 ring-black/10 text-neutral-400">
+                      <CircleNotch size={20} className="animate-spin" />
+                    </div>
                   )}
-                  {botPct > 0 && (
-                    <div className="absolute inset-x-0 bottom-0 bg-black/40 pointer-events-none transition-all duration-100"
-                      style={{ height: `${botPct}%` }} />
-                  )}
-                  {leftPct > 0 && (
-                    <div className="absolute left-0 bg-black/40 pointer-events-none transition-all duration-100"
-                      style={{ top: `${topPct}%`, bottom: `${botPct}%`, width: `${leftPct}%` }} />
-                  )}
-                  {rightPct > 0 && (
-                    <div className="absolute right-0 bg-black/40 pointer-events-none transition-all duration-100"
-                      style={{ top: `${topPct}%`, bottom: `${botPct}%`, width: `${rightPct}%` }} />
-                  )}
-                </div>
-              )}
-
-              <div className="rounded-xl bg-neutral-50 ring-1 ring-black/5 p-3">
-                <p className="text-[10px] font-semibold uppercase tracking-widest text-muted-foreground mb-2">Margins to remove (pt)</p>
-                <div className="grid grid-cols-2 gap-2">
-                  {([["Top", top, setTop], ["Right", right, setRight], ["Bottom", bottom, setBottom], ["Left", left, setLeft]] as const).map(
-                    ([label, val, setter]) => (
-                      <div key={label}>
-                        <p className="text-[10px] text-muted-foreground/70 mb-0.5">{label}</p>
-                        <input type="number" min={0} value={val}
-                          onChange={e => (setter as (v: number) => void)(Number(e.target.value))}
-                          className={inputCls}
-                        />
-                      </div>
-                    )
+                  {!loadingPreview && pageImage && (
+                    <div className="relative rounded-xl overflow-hidden ring-1 ring-black/10 select-none">
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img src={pageImage} alt="PDF page preview" className="w-full block" />
+                      {topPct > 0 && (
+                        <div className="absolute inset-x-0 top-0 bg-black/40 pointer-events-none transition-all duration-100"
+                          style={{ height: `${topPct}%` }} />
+                      )}
+                      {botPct > 0 && (
+                        <div className="absolute inset-x-0 bottom-0 bg-black/40 pointer-events-none transition-all duration-100"
+                          style={{ height: `${botPct}%` }} />
+                      )}
+                      {leftPct > 0 && (
+                        <div className="absolute left-0 bg-black/40 pointer-events-none transition-all duration-100"
+                          style={{ top: `${topPct}%`, bottom: `${botPct}%`, width: `${leftPct}%` }} />
+                      )}
+                      {rightPct > 0 && (
+                        <div className="absolute right-0 bg-black/40 pointer-events-none transition-all duration-100"
+                          style={{ top: `${topPct}%`, bottom: `${botPct}%`, width: `${rightPct}%` }} />
+                      )}
+                    </div>
                   )}
                 </div>
-                <p className="text-[10px] text-muted-foreground/50 mt-1.5 leading-tight">Adjusts the CropBox of every page. 1 pt ≈ 0.35 mm.</p>
               </div>
             </>
           )}
