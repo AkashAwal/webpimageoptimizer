@@ -185,7 +185,7 @@ export default function PdfToolShell({
 
           {/* Action */}
           <SoftPillButton variant="primary" onClick={handleProcess} disabled={!files.length || processing} className="w-full h-9 text-[12px]">
-            {processing ? <><CircleNotch size={12} className="animate-spin" />Processing⬦</> : processLabel}
+            {processing ? <><CircleNotch size={12} className="animate-spin" />Processing…</> : processLabel}
           </SoftPillButton>
         </div>
       </div>

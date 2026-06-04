@@ -240,7 +240,7 @@ export default function SignPdfClient() {
           )}
 
           <SoftPillButton variant="primary" onClick={process} disabled={!file || processing} className="w-full h-9 text-[12px]">
-            {processing ? <><CircleNotch size={12} className="animate-spin" />Processing⬦</> : "Sign PDF"}
+            {processing ? <><CircleNotch size={12} className="animate-spin" />Processing…</> : "Sign PDF"}
           </SoftPillButton>
         </div>
       </div>

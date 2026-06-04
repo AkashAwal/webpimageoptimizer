@@ -152,7 +152,7 @@ export default function PdfToImagesClient() {
           )}
 
           <SoftPillButton variant="primary" onClick={process} disabled={!file || processing} className="w-full h-9 text-[12px]">
-            {processing ? <><CircleNotch size={12} className="animate-spin" />{progress}% � rendering pages⬦</> : "Convert to Images"}
+            {processing ? <><CircleNotch size={12} className="animate-spin" />{progress}% � rendering pages…</> : "Convert to Images"}
           </SoftPillButton>
         </div>
       </div>

@@ -294,7 +294,7 @@ export default function EditPdfClient() {
 
           {file && (
             <SoftPillButton variant="primary" onClick={save} disabled={processing} className="w-full h-9 text-[12px]">
-              {processing ? <><CircleNotch size={12} className="animate-spin" />Saving⬦</> : "Save Annotated PDF"}
+              {processing ? <><CircleNotch size={12} className="animate-spin" />Saving…</> : "Save Annotated PDF"}
             </SoftPillButton>
           )}
         </div>

@@ -32,12 +32,12 @@ export default function OcrPdfClient() {
 
   const process = async () => {
     if (!file || processing) return;
-    setProcessing(true); setError(null); setText(null); setProgress("Loading PDF renderer⬦");
+    setProcessing(true); setError(null); setText(null); setProgress("Loading PDF renderer…");
     try {
       const { getPdfJs } = await import("@/lib/pdf-utils");
       const { createWorker } = await import("tesseract.js");
 
-      setProgress("Loading OCR engine⬦");
+      setProgress("Loading OCR engine…");
       const worker = await createWorker(lang);
 
       const lib = await getPdfJs();
@@ -46,7 +46,7 @@ export default function OcrPdfClient() {
       const parts: string[] = [];
 
       for (let i = 1; i <= total; i++) {
-        setProgress(`Scanning page ${i} of ${total}⬦`);
+        setProgress(`Scanning page ${i} of ${total}…`);
         const page = await pdf.getPage(i);
         const viewport = page.getViewport({ scale: 2 });
         const canvas = document.createElement("canvas");
@@ -159,7 +159,7 @@ export default function OcrPdfClient() {
           )}
 
           <SoftPillButton variant="primary" onClick={process} disabled={!file || processing} className="w-full h-9 text-[12px]">
-            {processing ? <><CircleNotch size={12} className="animate-spin" />Scanning⬦</> : "Extract Text (OCR)"}
+            {processing ? <><CircleNotch size={12} className="animate-spin" />Scanning…</> : "Extract Text (OCR)"}
           </SoftPillButton>
         </div>
       </div>
