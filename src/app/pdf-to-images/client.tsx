@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 import { useRef, useState } from "react";
 import Link from "next/link";
 import { UploadSimple, FilePdf, DownloadSimple, CircleNotch, CaretLeft, X } from "@phosphor-icons/react";
@@ -71,14 +71,14 @@ export default function PdfToImagesClient() {
 
         <div className="p-4 space-y-3">
           {!file ? (
-            <div className="flex flex-col items-center justify-center gap-3 rounded-xl border-2 border-dashed border-border aspect-square cursor-pointer hover:border-foreground/20 hover:bg-neutral-50/60 transition-colors"
+            <div className="flex flex-col items-center justify-center gap-3 rounded-xl border-2 border-dashed border-border aspect-[10/9] cursor-pointer hover:border-foreground/20 hover:bg-neutral-50/60 transition-colors"
               onClick={() => inputRef.current?.click()}
               onDragOver={e => e.preventDefault()}
               onDrop={e => { e.preventDefault(); const f = e.dataTransfer.files[0]; if (f) { setFile(f); setResult(null); } }}>
               <div className="flex size-11 items-center justify-center rounded-xl bg-neutral-100 text-neutral-500"><UploadSimple size={20} /></div>
               <div className="text-center">
                 <p className="text-[15px] font-semibold text-foreground">Drop your PDF here</p>
-                <p className="mt-1 text-[12px] text-muted-foreground">Each page exported as an image · ZIP download</p>
+                <p className="mt-1 text-[12px] text-muted-foreground">Each page exported as an image Â· ZIP download</p>
               </div>
             </div>
           ) : (
@@ -112,7 +112,7 @@ export default function PdfToImagesClient() {
                 <div>
                   <div className="flex justify-between mb-1">
                     <p className="text-[10px] font-semibold uppercase tracking-widest text-muted-foreground">Scale</p>
-                    <span className="text-[11px] text-muted-foreground">{scale}×</span>
+                    <span className="text-[11px] text-muted-foreground">{scale}Ã—</span>
                   </div>
                   <input type="range" min={1} max={3} step={0.5} value={scale} onChange={e => setScale(Number(e.target.value))}
                     className="w-full h-1.5 cursor-pointer accent-foreground mt-1" />
@@ -142,7 +142,7 @@ export default function PdfToImagesClient() {
           {result && (
             <div className="flex items-center gap-3 rounded-xl bg-emerald-50 px-3 py-2.5 ring-1 ring-emerald-100">
               <div className="size-2 rounded-full bg-emerald-500 shrink-0" />
-              <p className="flex-1 text-[12px] text-emerald-700 font-medium">ZIP ready · {formatBytes(result.blob.size)}</p>
+              <p className="flex-1 text-[12px] text-emerald-700 font-medium">ZIP ready Â· {formatBytes(result.blob.size)}</p>
               <SoftPillButton variant="primary" onClick={() => {
                 const a = document.createElement("a"); a.href = result.url; a.download = "pages.zip"; a.click();
               }} className="h-8 px-3 text-[12px]">
@@ -152,7 +152,7 @@ export default function PdfToImagesClient() {
           )}
 
           <SoftPillButton variant="primary" onClick={process} disabled={!file || processing} className="w-full h-9 text-[12px]">
-            {processing ? <><CircleNotch size={12} className="animate-spin" />{progress}% — rendering pages…</> : "Convert to Images"}
+            {processing ? <><CircleNotch size={12} className="animate-spin" />{progress}% â€” rendering pagesâ€¦</> : "Convert to Images"}
           </SoftPillButton>
         </div>
       </div>

@@ -232,7 +232,7 @@ export default function EditPdfClient() {
 
         <div className="p-4 space-y-3">
           {!file ? (
-            <div className="flex flex-col items-center justify-center gap-3 rounded-xl border-2 border-dashed border-border aspect-square cursor-pointer hover:border-foreground/20 transition-colors"
+            <div className="flex flex-col items-center justify-center gap-3 rounded-xl border-2 border-dashed border-border aspect-[10/9] cursor-pointer hover:border-foreground/20 transition-colors"
               onClick={() => fileInputRef.current?.click()}
               onDragOver={e => e.preventDefault()}
               onDrop={e => { e.preventDefault(); const f = e.dataTransfer.files[0]; if (f) loadFile(f); }}>

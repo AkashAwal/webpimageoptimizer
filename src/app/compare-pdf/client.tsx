@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 import { useRef, useState } from "react";
 import Link from "next/link";
 import { UploadSimple, FilePdf, CircleNotch, CaretLeft, X } from "@phosphor-icons/react";
@@ -57,7 +57,7 @@ export default function ComparePdfClient() {
         {side === "a" ? "Document A" : "Document B"}
       </p>
       {!pdf ? (
-        <div className="flex flex-col items-center justify-center gap-2 rounded-xl border-2 border-dashed border-border aspect-square cursor-pointer hover:border-foreground/20 transition-colors"
+        <div className="flex flex-col items-center justify-center gap-2 rounded-xl border-2 border-dashed border-border aspect-[10/9] cursor-pointer hover:border-foreground/20 transition-colors"
           onClick={() => inputRef.current?.click()}
           onDragOver={e => e.preventDefault()}
           onDrop={e => { e.preventDefault(); const f = e.dataTransfer.files[0]; if (f) loadPdf(f, side); }}>
@@ -70,7 +70,7 @@ export default function ComparePdfClient() {
           <FilePdf size={16} className="shrink-0 text-red-400" />
           <div className="flex-1 min-w-0">
             <p className="truncate text-[11px] font-medium text-foreground">{pdf.file.name}</p>
-            <p className="text-[10px] text-muted-foreground">{pdf.pages} pages · {formatBytes(pdf.file.size)}</p>
+            <p className="text-[10px] text-muted-foreground">{pdf.pages} pages Â· {formatBytes(pdf.file.size)}</p>
           </div>
           <button onClick={() => side === "a" ? setPdfA(null) : setPdfB(null)}
             className="rounded p-1 text-neutral-300 hover:text-red-400 transition-colors"><X size={12} /></button>
@@ -93,10 +93,10 @@ export default function ComparePdfClient() {
           {maxPages > 1 && (
             <div className="ml-auto flex items-center gap-1.5">
               <button onClick={() => setCurrentPage(p => Math.max(1, p - 1))} disabled={currentPage <= 1}
-                className="rounded-lg px-2 py-1 text-[12px] bg-neutral-100 text-neutral-600 hover:bg-neutral-200 disabled:opacity-30 transition-colors">‹</button>
+                className="rounded-lg px-2 py-1 text-[12px] bg-neutral-100 text-neutral-600 hover:bg-neutral-200 disabled:opacity-30 transition-colors">â€¹</button>
               <span className="text-[12px] text-muted-foreground">Page {currentPage} / {maxPages}</span>
               <button onClick={() => setCurrentPage(p => Math.min(maxPages, p + 1))} disabled={currentPage >= maxPages}
-                className="rounded-lg px-2 py-1 text-[12px] bg-neutral-100 text-neutral-600 hover:bg-neutral-200 disabled:opacity-30 transition-colors">›</button>
+                className="rounded-lg px-2 py-1 text-[12px] bg-neutral-100 text-neutral-600 hover:bg-neutral-200 disabled:opacity-30 transition-colors">â€º</button>
             </div>
           )}
         </div>

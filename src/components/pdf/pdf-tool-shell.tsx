@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useCallback, useRef, useState } from "react";
 import Link from "next/link";
@@ -107,16 +107,16 @@ export default function PdfToolShell({
             </Link>
             <span className="text-neutral-300 text-[12px]">/</span>
             <h1 className="text-[13px] font-semibold text-foreground truncate">{title}</h1>
-            <span className="ml-auto text-[11px] text-muted-foreground/50 hidden sm:block shrink-0">No upload · runs in your browser</span>
+            <span className="ml-auto text-[11px] text-muted-foreground/50 hidden sm:block shrink-0">No upload Â· runs in your browser</span>
           </div>
         )}
 
         <div className="p-4 space-y-3">
-          {/* Drop zone — show when empty or accepting multiple */}
+          {/* Drop zone â€” show when empty or accepting multiple */}
           {(files.length === 0 || canAddMore) && (
             <div
               className={cn(
-                "flex flex-col items-center justify-center gap-3 rounded-xl border-2 border-dashed border-border aspect-square cursor-pointer transition-colors",
+                "flex flex-col items-center justify-center gap-3 rounded-xl border-2 border-dashed border-border aspect-[10/9] cursor-pointer transition-colors",
                 dragOver ? "border-foreground/30 bg-neutral-50" : "hover:border-foreground/20 hover:bg-neutral-50/60",
               )}
               onClick={() => inputRef.current?.click()}
@@ -134,7 +134,7 @@ export default function PdfToolShell({
                     : `Add more (${files.length}${maxFiles ? `/${maxFiles}` : ""} added)`}
                 </p>
                 <p className="mt-1 text-[12px] text-muted-foreground">
-                  {acceptLabel} · click to select
+                  {acceptLabel} Â· click to select
                 </p>
               </div>
             </div>
@@ -175,7 +175,7 @@ export default function PdfToolShell({
             <div className="flex items-center gap-3 rounded-xl bg-emerald-50 px-3 py-2.5 ring-1 ring-emerald-100">
               <div className="size-2 rounded-full bg-emerald-500 shrink-0" />
               <p className="flex-1 text-[12px] text-emerald-700 font-medium">
-                {outputMimeLabel} ready · {formatBytes(result.blob.size)}
+                {outputMimeLabel} ready Â· {formatBytes(result.blob.size)}
               </p>
               <SoftPillButton variant="primary" onClick={download} className="h-8 px-3 text-[12px]">
                 <DownloadSimple size={12} />Download
@@ -185,7 +185,7 @@ export default function PdfToolShell({
 
           {/* Action */}
           <SoftPillButton variant="primary" onClick={handleProcess} disabled={!files.length || processing} className="w-full h-9 text-[12px]">
-            {processing ? <><CircleNotch size={12} className="animate-spin" />Processing…</> : processLabel}
+            {processing ? <><CircleNotch size={12} className="animate-spin" />Processingâ€¦</> : processLabel}
           </SoftPillButton>
         </div>
       </div>

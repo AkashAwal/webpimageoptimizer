@@ -79,7 +79,7 @@ export default function RearrangePdfClient() {
 
         <div className="p-4 space-y-3">
           {!file ? (
-            <div className="flex flex-col items-center justify-center gap-3 rounded-xl border-2 border-dashed border-border aspect-square cursor-pointer hover:border-foreground/20 hover:bg-neutral-50/60 transition-colors"
+            <div className="flex flex-col items-center justify-center gap-3 rounded-xl border-2 border-dashed border-border aspect-[10/9] cursor-pointer hover:border-foreground/20 hover:bg-neutral-50/60 transition-colors"
               onClick={() => inputRef.current?.click()}
               onDragOver={e => e.preventDefault()}
               onDrop={onDrop}>
