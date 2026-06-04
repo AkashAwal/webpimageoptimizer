@@ -184,6 +184,22 @@ export default function MergePdfClient() {
               </p>
             </div>
 
+            {/* How to use */}
+            <div className="space-y-3">
+              <p className="text-[11px] font-semibold uppercase tracking-widest text-muted-foreground">How to use</p>
+              {[
+                { n: "1", text: "Click the button below or drag PDFs onto this page to add your files." },
+                { n: "2", text: "Drag the cards to set the order — pages will appear in that order in the final PDF." },
+                { n: "3", text: "Hover a card and click × to remove a file you don't need." },
+                { n: "4", text: "Hit Merge PDFs when you're ready and download the combined file." },
+              ].map(({ n, text }) => (
+                <div key={n} className="flex gap-3">
+                  <span className="flex size-5 shrink-0 items-center justify-center rounded-full bg-neutral-100 text-[11px] font-bold text-neutral-500">{n}</span>
+                  <p className="text-[12px] text-muted-foreground leading-relaxed">{text}</p>
+                </div>
+              ))}
+            </div>
+
             {error && (
               <p className="text-[12px] text-red-600 bg-red-50 rounded-xl px-3 py-2 ring-1 ring-red-100">{error}</p>
             )}
