@@ -1,10 +1,12 @@
 "use client";
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import Link from "next/link";
 import {
   UploadSimple, X, CircleNotch, Check, DownloadSimple,
   FrameCorners, DotsSixVertical, ArrowCounterClockwise, Trash,
   ClipboardText, FolderOpen, SlidersHorizontal, ArrowUp, ArrowDown,
+  CaretLeft,
 } from "@phosphor-icons/react";
 import { cn } from "@/lib/utils";
 import SoftPillButton from "@/components/ui/soft-pill-button";
@@ -234,7 +236,7 @@ function LightboxModal({ src, onClose }: { src: string; onClose: () => void }) {
 
 // ─── Main component ───────────────────────────────────────────────────────────
 
-export default function ConverterShell({ type }: { type: ConvertType }) {
+export default function ConverterShell({ type, title }: { type: ConvertType; title?: string }) {
   const cfg = CONFIG[type];
   const inputRef = useRef<HTMLInputElement>(null);
   const folderInputRef = useRef<HTMLInputElement>(null);
@@ -496,7 +498,24 @@ export default function ConverterShell({ type }: { type: ConvertType }) {
 
   return (
     <div className="-mx-6 sm:-mx-10 overflow-x-auto">
-      <div className="flex min-w-[720px] h-[calc(100vh-220px)] min-h-[580px] overflow-hidden rounded-2xl ring-1 ring-black/6 shadow-[0_4px_24px_-6px_rgba(0,0,0,0.10),0_1px_3px_rgba(0,0,0,0.06)] bg-white">
+      <div className="flex flex-col min-w-[720px] h-[calc(100dvh-66px)] min-h-[520px] overflow-hidden rounded-2xl ring-1 ring-black/6 shadow-[0_4px_24px_-6px_rgba(0,0,0,0.10),0_1px_3px_rgba(0,0,0,0.06)] bg-white">
+
+        {/* ── Optional title bar ───────────────────────────────────────────────── */}
+        {title && (
+          <div className="flex items-center gap-2.5 px-4 py-2.5 border-b border-border shrink-0 bg-neutral-50/60">
+            <Link href="/" className="flex items-center gap-1 text-[12px] text-muted-foreground hover:text-foreground transition-colors shrink-0">
+              <CaretLeft size={11} weight="bold" />All tools
+            </Link>
+            <span className="text-neutral-300 text-[12px]">/</span>
+            <h1 className="text-[13px] font-semibold text-foreground truncate">{title}</h1>
+            <span className="ml-auto text-[11px] text-muted-foreground/50 hidden sm:block shrink-0">
+              Batch · no upload · ZIP download
+            </span>
+          </div>
+        )}
+
+        {/* ── Two-panel area ───────────────────────────────────────────────────── */}
+        <div className="flex flex-1 overflow-hidden">
 
         {/* ── Queue panel ─────────────────────────────────────────────────────── */}
         <div className="flex-1 flex flex-col overflow-hidden">
@@ -886,6 +905,7 @@ export default function ConverterShell({ type }: { type: ConvertType }) {
             <p className="text-center text-[10px] text-muted-foreground/50">Enter to start · Esc to stop</p>
           </div>
         </div>
+        </div>{/* end two-panel area */}
       </div>
 
       {/* Hidden inputs */}

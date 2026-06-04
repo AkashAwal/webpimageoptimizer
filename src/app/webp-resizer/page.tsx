@@ -17,19 +17,7 @@ export default function Page() {
     <div className="flex flex-1 flex-col">
       <SiteHeader fixed />
 
-      <main className="mx-auto w-full max-w-3xl px-6 pb-24 pt-8 sm:px-10">
-        <Link href="/" className="inline-flex items-center gap-1.5 text-[13px] text-muted-foreground hover:text-foreground transition-colors">
-          <CaretLeft size={13} />
-          All tools
-        </Link>
-
-        <div className="mt-6 mb-8">
-          <h1 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl">WebP Resizer</h1>
-          <p className="mt-2 text-[14px] text-muted-foreground">
-            Resize any image to custom dimensions and export as WebP. Accepts PNG, JPG, WebP, GIF. Runs entirely in your browser — no upload.
-          </p>
-        </div>
-
+      <main className="mx-auto w-full max-w-3xl px-6 pb-24 sm:px-10">
         <WebpResizerTool />
 
         <p className="mt-6 text-center text-[11px] text-muted-foreground/70">

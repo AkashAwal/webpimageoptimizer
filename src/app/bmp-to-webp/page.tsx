@@ -17,20 +17,8 @@ export default function Page() {
     <div className="flex flex-1 flex-col">
       <SiteHeader fixed />
 
-      <main className="mx-auto w-full max-w-3xl px-6 pb-24 pt-8 sm:px-10">
-        <Link href="/" className="inline-flex items-center gap-1.5 text-[13px] text-muted-foreground hover:text-foreground transition-colors">
-          <CaretLeft size={13} />
-          All tools
-        </Link>
-
-        <div className="mt-6 mb-8">
-          <h1 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl">BMP to WebP Converter</h1>
-          <p className="mt-2 text-[14px] text-muted-foreground">
-            Convert BMP images to WebP for a dramatic reduction in file size. Runs entirely in your browser — no files uploaded, no account needed.
-          </p>
-        </div>
-
-        <ConverterShell type="bmp-to-webp" />
+      <main className="mx-auto w-full max-w-3xl px-6 pb-24 sm:px-10">
+        <ConverterShell type="bmp-to-webp" title="BMP to WebP Converter" />
 
         <p className="mt-6 text-center text-[11px] text-muted-foreground/70">
           All processing happens locally in your browser. No files leave your device.
