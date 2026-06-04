@@ -220,9 +220,9 @@ function BeforeAfterModal({ item, onClose }: { item: QueueItem; onClose: () => v
 // ─── Presets / quality mapping ────────────────────────────────────────────────
 
 const PRESETS = [
-  { label: "Web",      quality: 80 },
-  { label: "Balanced", quality: 88 },
-  { label: "High",     quality: 94 },
+  { label: "Small File Size",   quality: 75 },
+  { label: "Balanced",          quality: 85 },
+  { label: "Refined Quality",   quality: 93 },
 ] as const;
 
 const Q_MIN = 60, Q_MAX = 95;
@@ -650,19 +650,25 @@ export default function ConverterShell({ type }: { type: ConvertType }) {
             {/* Presets */}
             <div>
               <p className="text-[10px] font-semibold uppercase tracking-widest text-muted-foreground mb-2">Preset</p>
-              <div className="flex gap-1">
+              <div className="flex flex-col gap-1">
                 {PRESETS.map((p) => (
                   <button
                     key={p.label}
                     onClick={() => setSettings((s) => ({ ...s, quality: p.quality }))}
                     className={cn(
-                      "flex-1 rounded-lg py-1.5 text-[11px] font-medium transition-colors",
+                      "flex items-center justify-between rounded-lg px-3 py-2 text-[12px] font-medium transition-colors text-left",
                       settings.quality === p.quality
                         ? "bg-neutral-900 text-white"
                         : "bg-neutral-100 text-neutral-600 hover:bg-neutral-200",
                     )}
                   >
-                    {p.label}
+                    <span>{p.label}</span>
+                    <span className={cn(
+                      "text-[11px] tabular-nums",
+                      settings.quality === p.quality ? "text-white/60" : "text-neutral-400",
+                    )}>
+                      {p.quality}%
+                    </span>
                   </button>
                 ))}
               </div>
