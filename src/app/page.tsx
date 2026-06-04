@@ -195,13 +195,12 @@ function HomeContent() {
           className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3"
         >
           {filteredTools.map((tool) => (
-            <Link
+            <div
               key={tool.href}
-              href={tool.href}
-              className="group flex flex-col gap-4 rounded-2xl bg-white p-6 ring-1 ring-black/6 shadow-[0_4px_24px_-6px_rgba(0,0,0,0.10),0_1px_3px_rgba(0,0,0,0.06)] transition-shadow hover:shadow-[0_8px_32px_-8px_rgba(0,0,0,0.16),0_2px_6px_rgba(0,0,0,0.08)]"
+              className="flex flex-col gap-4 rounded-2xl bg-white p-6 ring-1 ring-black/6 shadow-[0_4px_24px_-6px_rgba(0,0,0,0.10),0_1px_3px_rgba(0,0,0,0.06)]"
             >
               <div className="flex items-start justify-between gap-3">
-                <div className="flex size-11 items-center justify-center rounded-xl bg-neutral-100 text-neutral-600 transition-colors group-hover:bg-neutral-900 group-hover:text-white">
+                <div className="flex size-11 items-center justify-center rounded-xl bg-neutral-100 text-neutral-600">
                   {TOOL_ICONS[tool.href]}
                 </div>
                 <span className="inline-flex items-center rounded-full bg-neutral-100 px-2.5 py-0.5 text-[11px] font-medium text-neutral-600 ring-1 ring-black/5">
@@ -214,11 +213,14 @@ function HomeContent() {
                 <p className="mt-1 text-[13px] leading-relaxed text-muted-foreground">{tool.description}</p>
               </div>
 
-              <SoftPillButton variant="primary" className="w-full h-9 text-[13px]" tabIndex={-1}>
-                Use tool
-                <ArrowRight size={12} className="ml-0.5" />
-              </SoftPillButton>
-            </Link>
+              <Link
+                href={tool.href}
+                className="inline-flex w-full h-9 items-center justify-center gap-2 rounded-full px-3 text-[13px] font-medium leading-none tracking-tight backdrop-blur transition-all active:scale-[0.99] bg-neutral-900/90 text-white ring-1 ring-white/10 hover:bg-neutral-900 shadow-[0_4px_12px_-4px_rgba(0,0,0,0.28),0_1px_2px_rgba(0,0,0,0.12)]"
+              >
+                <span className="giti-shimmer-text-inverted">Use tool</span>
+                <ArrowRight size={12} />
+              </Link>
+            </div>
           ))}
         </motion.div>
       </section>
