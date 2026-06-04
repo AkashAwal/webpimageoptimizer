@@ -11,7 +11,7 @@ function formatBytes(b: number) {
   return `${(b / (1024 * 1024)).toFixed(2)} MB`;
 }
 
-const ANGLES = [90, 180, 270] as const;
+const ANGLES = [0, 90, 180, 270] as const;
 
 export default function RotatePdfClient() {
   const inputRef = useRef<HTMLInputElement>(null);
@@ -19,7 +19,7 @@ export default function RotatePdfClient() {
   const [thumbnails, setThumbnails] = useState<string[]>([]);
   const [loading, setLoading] = useState(false);
   const [progress, setProgress] = useState(0);
-  const [angle, setAngle] = useState<90 | 180 | 270>(90);
+  const [angle, setAngle] = useState<0 | 90 | 180 | 270>(90);
   const [target, setTarget] = useState<"all" | "even" | "odd" | "custom">("all");
   const [customPages, setCustomPages] = useState("");
 
@@ -215,12 +215,12 @@ export default function RotatePdfClient() {
             {/* Rotation */}
             <div className="space-y-3">
               <p className="text-[10px] font-semibold uppercase tracking-widest text-muted-foreground">Rotation</p>
-              <div className="flex gap-1.5">
+              <div className="grid grid-cols-4 gap-1.5">
                 {ANGLES.map(a => (
                   <button key={a} onClick={() => setAngle(a)}
-                    className={cn("flex-1 rounded-lg py-1.5 text-[12px] font-medium transition-colors",
+                    className={cn("rounded-lg py-1.5 text-[12px] font-medium transition-colors",
                       angle === a ? "bg-neutral-900 text-white" : "bg-neutral-100 text-neutral-600 hover:bg-neutral-200")}>
-                    {a}°
+                    {a === 0 ? "Original" : `${a}°`}
                   </button>
                 ))}
               </div>
