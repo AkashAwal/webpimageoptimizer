@@ -57,6 +57,17 @@ const TOOL_ICONS: Record<string, React.ReactNode> = {
   "/webp-to-webp": <ArrowsClockwise size={22} />,
   "/webp-resizer": <ArrowsOut size={22} />,
   "/heic-to-webp": <DeviceMobile size={22} />,
+  "/jpg-to-pdf": <Aperture size={22} />,
+  "/png-to-pdf": <Image size={22} />,
+  "/webp-to-pdf": <ArrowsClockwise size={22} />,
+  "/heic-to-pdf": <DeviceMobile size={22} />,
+  "/bmp-to-pdf": <SquaresFour size={22} />,
+  "/tiff-to-pdf": <Rows size={22} />,
+  "/gif-to-pdf": <FilmStrip size={22} />,
+  "/svg-to-pdf": <PenNib size={22} />,
+  "/avif-to-pdf": <Stack size={22} />,
+  "/ico-to-pdf": <Cursor size={22} />,
+  "/jfif-to-pdf": <Camera size={22} />,
 };
 
 export default function Page() {

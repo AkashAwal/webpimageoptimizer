@@ -16,7 +16,10 @@ import SoftPillButton from "@/components/ui/soft-pill-button";
 export type ConvertType =
   | "png-to-webp" | "jpg-to-webp" | "gif-to-webp" | "avif-to-webp"
   | "bmp-to-webp" | "tiff-to-webp" | "svg-to-webp" | "ico-to-webp"
-  | "jfif-to-webp" | "pdf-to-webp" | "webp-to-webp" | "heic-to-webp";
+  | "jfif-to-webp" | "pdf-to-webp" | "webp-to-webp" | "heic-to-webp"
+  | "jpg-to-pdf" | "png-to-pdf" | "webp-to-pdf" | "heic-to-pdf"
+  | "bmp-to-pdf" | "tiff-to-pdf" | "gif-to-pdf" | "svg-to-pdf"
+  | "avif-to-pdf" | "ico-to-pdf" | "jfif-to-pdf";
 
 type FileStatus = "queued" | "converting" | "done" | "error";
 type SortMode = "added" | "name" | "size" | "savings";
@@ -121,23 +124,83 @@ async function heicConvert(file: File, quality: number, targetW?: number, target
   return canvasConvert(Array.isArray(out) ? out[0] : out, quality, targetW, targetH);
 }
 
+async function canvasToPdf(source: File | Blob, quality: number, targetW?: number, targetH?: number): Promise<Blob> {
+  const bitmap = await createImageBitmap(source).catch((e: unknown) => {
+    throw new Error(e instanceof Error ? e.message : "This file format cannot be decoded in your browser.");
+  });
+  let w = bitmap.width, h = bitmap.height;
+  if (targetW && targetH) { w = targetW; h = targetH; }
+  else if (targetW) { h = Math.round(bitmap.height * (targetW / bitmap.width)); w = targetW; }
+  else if (targetH) { w = Math.round(bitmap.width * (targetH / bitmap.height)); h = targetH; }
+  const canvas = document.createElement("canvas");
+  canvas.width = w; canvas.height = h;
+  canvas.getContext("2d")!.drawImage(bitmap, 0, 0, w, h);
+  bitmap.close();
+  const dataUrl = canvas.toDataURL("image/jpeg", quality / 100);
+  const { jsPDF } = await import("jspdf");
+  const pdf = new jsPDF({ orientation: w >= h ? "landscape" : "portrait", unit: "px", format: [w, h], compress: true });
+  pdf.addImage(dataUrl, "JPEG", 0, 0, w, h);
+  return pdf.output("blob");
+}
+
+async function svgToPdf(file: File, quality: number, targetW?: number, targetH?: number): Promise<Blob> {
+  const url = URL.createObjectURL(file);
+  return new Promise<Blob>((res, rej) => {
+    const img = new window.Image();
+    img.onload = async () => {
+      let w = img.naturalWidth || 800, h = img.naturalHeight || 600;
+      if (targetW && targetH) { w = targetW; h = targetH; }
+      else if (targetW) { h = Math.round(h * (targetW / w)); w = targetW; }
+      else if (targetH) { w = Math.round(w * (targetH / h)); h = targetH; }
+      const canvas = document.createElement("canvas");
+      canvas.width = w; canvas.height = h;
+      canvas.getContext("2d")!.drawImage(img, 0, 0, w, h);
+      URL.revokeObjectURL(url);
+      const dataUrl = canvas.toDataURL("image/jpeg", quality / 100);
+      const { jsPDF } = await import("jspdf");
+      const pdf = new jsPDF({ orientation: w >= h ? "landscape" : "portrait", unit: "px", format: [w, h], compress: true });
+      pdf.addImage(dataUrl, "JPEG", 0, 0, w, h);
+      res(pdf.output("blob"));
+    };
+    img.onerror = () => { URL.revokeObjectURL(url); rej(new Error("Failed to load SVG")); };
+    img.src = url;
+  });
+}
+
+async function heicToPdf(file: File, quality: number, targetW?: number, targetH?: number): Promise<Blob> {
+  const { default: heic2any } = await import("heic2any");
+  const out = await heic2any({ blob: file, toType: "image/png" });
+  return canvasToPdf(Array.isArray(out) ? out[0] : out, quality, targetW, targetH);
+}
+
 // ─── Config ───────────────────────────────────────────────────────────────────
 
 type ConvertFn = (f: File, q: number, w?: number, h?: number) => Promise<Blob>;
 
-const CONFIG: Record<ConvertType, { accept: string; acceptLabel: string; canPreview: boolean; convert: ConvertFn }> = {
-  "png-to-webp":  { accept: "image/png,.png",                             acceptLabel: "PNG files",   canPreview: true,  convert: canvasConvert },
-  "jpg-to-webp":  { accept: "image/jpeg,.jpg,.jpeg",                      acceptLabel: "JPG / JPEG",  canPreview: true,  convert: canvasConvert },
-  "gif-to-webp":  { accept: "image/gif,.gif",                             acceptLabel: "GIF files",   canPreview: true,  convert: canvasConvert },
-  "avif-to-webp": { accept: "image/avif,.avif",                           acceptLabel: "AVIF files",  canPreview: true,  convert: canvasConvert },
-  "bmp-to-webp":  { accept: "image/bmp,.bmp",                             acceptLabel: "BMP files",   canPreview: true,  convert: canvasConvert },
-  "tiff-to-webp": { accept: "image/tiff,.tiff,.tif",                      acceptLabel: "TIFF / TIF",  canPreview: false, convert: canvasConvert },
-  "svg-to-webp":  { accept: "image/svg+xml,.svg",                         acceptLabel: "SVG files",   canPreview: true,  convert: svgConvert    },
-  "ico-to-webp":  { accept: "image/x-icon,image/vnd.microsoft.icon,.ico", acceptLabel: "ICO files",   canPreview: false, convert: canvasConvert },
-  "jfif-to-webp": { accept: "image/jpeg,.jfif",                           acceptLabel: "JFIF files",  canPreview: true,  convert: canvasConvert },
-  "pdf-to-webp":  { accept: "application/pdf,.pdf",                       acceptLabel: "PDF files",   canPreview: false, convert: canvasConvert },
-  "webp-to-webp": { accept: "image/webp,.webp",                           acceptLabel: "WebP files",  canPreview: true,  convert: canvasConvert },
-  "heic-to-webp": { accept: ".heic,.heif,image/heic,image/heif",          acceptLabel: "HEIC / HEIF", canPreview: false, convert: heicConvert   },
+const CONFIG: Record<ConvertType, { accept: string; acceptLabel: string; canPreview: boolean; convert: ConvertFn; outputType: "webp" | "pdf" }> = {
+  "png-to-webp":  { accept: "image/png,.png",                             acceptLabel: "PNG files",   canPreview: true,  convert: canvasConvert, outputType: "webp" },
+  "jpg-to-webp":  { accept: "image/jpeg,.jpg,.jpeg",                      acceptLabel: "JPG / JPEG",  canPreview: true,  convert: canvasConvert, outputType: "webp" },
+  "gif-to-webp":  { accept: "image/gif,.gif",                             acceptLabel: "GIF files",   canPreview: true,  convert: canvasConvert, outputType: "webp" },
+  "avif-to-webp": { accept: "image/avif,.avif",                           acceptLabel: "AVIF files",  canPreview: true,  convert: canvasConvert, outputType: "webp" },
+  "bmp-to-webp":  { accept: "image/bmp,.bmp",                             acceptLabel: "BMP files",   canPreview: true,  convert: canvasConvert, outputType: "webp" },
+  "tiff-to-webp": { accept: "image/tiff,.tiff,.tif",                      acceptLabel: "TIFF / TIF",  canPreview: false, convert: canvasConvert, outputType: "webp" },
+  "svg-to-webp":  { accept: "image/svg+xml,.svg",                         acceptLabel: "SVG files",   canPreview: true,  convert: svgConvert,    outputType: "webp" },
+  "ico-to-webp":  { accept: "image/x-icon,image/vnd.microsoft.icon,.ico", acceptLabel: "ICO files",   canPreview: false, convert: canvasConvert, outputType: "webp" },
+  "jfif-to-webp": { accept: "image/jpeg,.jfif",                           acceptLabel: "JFIF files",  canPreview: true,  convert: canvasConvert, outputType: "webp" },
+  "pdf-to-webp":  { accept: "application/pdf,.pdf",                       acceptLabel: "PDF files",   canPreview: false, convert: canvasConvert, outputType: "webp" },
+  "webp-to-webp": { accept: "image/webp,.webp",                           acceptLabel: "WebP files",  canPreview: true,  convert: canvasConvert, outputType: "webp" },
+  "heic-to-webp": { accept: ".heic,.heif,image/heic,image/heif",          acceptLabel: "HEIC / HEIF", canPreview: false, convert: heicConvert,   outputType: "webp" },
+  "jpg-to-pdf":   { accept: "image/jpeg,.jpg,.jpeg",                      acceptLabel: "JPG / JPEG",  canPreview: true,  convert: canvasToPdf,   outputType: "pdf"  },
+  "png-to-pdf":   { accept: "image/png,.png",                             acceptLabel: "PNG files",   canPreview: true,  convert: canvasToPdf,   outputType: "pdf"  },
+  "webp-to-pdf":  { accept: "image/webp,.webp",                           acceptLabel: "WebP files",  canPreview: true,  convert: canvasToPdf,   outputType: "pdf"  },
+  "heic-to-pdf":  { accept: ".heic,.heif,image/heic,image/heif",          acceptLabel: "HEIC / HEIF", canPreview: false, convert: heicToPdf,     outputType: "pdf"  },
+  "bmp-to-pdf":   { accept: "image/bmp,.bmp",                             acceptLabel: "BMP files",   canPreview: true,  convert: canvasToPdf,   outputType: "pdf"  },
+  "tiff-to-pdf":  { accept: "image/tiff,.tiff,.tif",                      acceptLabel: "TIFF / TIF",  canPreview: false, convert: canvasToPdf,   outputType: "pdf"  },
+  "gif-to-pdf":   { accept: "image/gif,.gif",                             acceptLabel: "GIF files",   canPreview: true,  convert: canvasToPdf,   outputType: "pdf"  },
+  "svg-to-pdf":   { accept: "image/svg+xml,.svg",                         acceptLabel: "SVG files",   canPreview: true,  convert: svgToPdf,      outputType: "pdf"  },
+  "avif-to-pdf":  { accept: "image/avif,.avif",                           acceptLabel: "AVIF files",  canPreview: true,  convert: canvasToPdf,   outputType: "pdf"  },
+  "ico-to-pdf":   { accept: "image/x-icon,image/vnd.microsoft.icon,.ico", acceptLabel: "ICO files",   canPreview: false, convert: canvasToPdf,   outputType: "pdf"  },
+  "jfif-to-pdf":  { accept: "image/jpeg,.jfif",                           acceptLabel: "JFIF files",  canPreview: true,  convert: canvasToPdf,   outputType: "pdf"  },
 };
 
 // ─── Presets / quality mapping ────────────────────────────────────────────────
@@ -408,8 +471,9 @@ export default function ConverterShell({ type, title }: { type: ConvertType; tit
     const idx = filesRef.current.findIndex(f => f.id === item.id);
     const num = (idx < 0 ? 0 : idx) + 1;
     const base = item.file.name.replace(/\.[^.]+$/, "");
-    return settings.namingMode === "original" ? `${base}_${num}.webp` : `${settings.prefix || "image"}_${num}.webp`;
-  }, [settings.namingMode, settings.prefix]);
+    const ext = cfg.outputType;
+    return settings.namingMode === "original" ? `${base}_${num}.${ext}` : `${settings.prefix || "image"}_${num}.${ext}`;
+  }, [settings.namingMode, settings.prefix, cfg.outputType]);
 
   const downloadOne = useCallback((item: QueueItem) => {
     if (!item.result) return;
@@ -706,14 +770,16 @@ export default function ConverterShell({ type, title }: { type: ConvertType; tit
                           {item.status === "done" && (
                             <>
                               <Check size={15} className="text-emerald-500 mx-1" />
-                              {item.previewUrl && (
+                              {item.previewUrl && cfg.outputType === "webp" && (
                                 <button onClick={() => setCompareItemId(item.id)} title="Compare before / after" className="rounded-lg p-1.5 text-neutral-400 hover:bg-neutral-100 hover:text-neutral-700 transition-colors">
                                   <FrameCorners size={16} />
                                 </button>
                               )}
-                              <button onClick={() => copyToClipboard(item)} title="Copy to clipboard" className="rounded-lg p-1.5 text-neutral-400 hover:bg-neutral-100 hover:text-neutral-700 transition-colors">
-                                {copiedId === item.id ? <Check size={15} className="text-emerald-500" /> : <ClipboardText size={15} />}
-                              </button>
+                              {cfg.outputType === "webp" && (
+                                <button onClick={() => copyToClipboard(item)} title="Copy to clipboard" className="rounded-lg p-1.5 text-neutral-400 hover:bg-neutral-100 hover:text-neutral-700 transition-colors">
+                                  {copiedId === item.id ? <Check size={15} className="text-emerald-500" /> : <ClipboardText size={15} />}
+                                </button>
+                              )}
                               <button onClick={() => downloadOne(item)} title="Download" className="rounded-lg p-1.5 text-neutral-400 hover:bg-neutral-100 hover:text-neutral-700 transition-colors">
                                 <DownloadSimple size={16} />
                               </button>
@@ -903,7 +969,7 @@ export default function ConverterShell({ type, title }: { type: ConvertType; tit
               {converting ? (
                 <><CircleNotch size={12} className="animate-spin" />{batchDone} / {batchTotal} — Stop (Esc)</>
               ) : (
-                <>Optimize Now{queuedCount > 0 && <span className="opacity-60 ml-1">({queuedCount})</span>}</>
+                <>{cfg.outputType === "pdf" ? "Convert to PDF" : "Optimize Now"}{queuedCount > 0 && <span className="opacity-60 ml-1">({queuedCount})</span>}</>
               )}
             </SoftPillButton>
             <SoftPillButton variant="secondary" onClick={doneCount > 0 ? downloadZip : undefined} disabled={doneCount === 0} className="w-full h-9 text-[12px]">
