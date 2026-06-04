@@ -191,7 +191,7 @@ export default function CropPdfClient() {
 
             {/* Pages stacked */}
             {!loading && thumbnails.length > 0 && (
-              <div className="space-y-8">
+              <div className="space-y-8 max-w-xl mx-auto">
                 {thumbnails.map((thumb, idx) => {
                   const box = cropBoxes[idx] ?? DEFAULT_BOX;
                   const { x1, y1, x2, y2 } = box;
