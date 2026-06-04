@@ -2,6 +2,7 @@
 import { useCallback, useRef, useState } from "react";
 import Link from "next/link";
 import { Plus, X, DownloadSimple, CircleNotch, CaretLeft, Info } from "@phosphor-icons/react";
+import { cn } from "@/lib/utils";
 import SoftPillButton from "@/components/ui/soft-pill-button";
 
 function formatBytes(b: number) {
@@ -22,6 +23,19 @@ export default function MergePdfClient() {
   const [processing, setProcessing] = useState(false);
   const [result, setResult] = useState<{ blob: Blob; url: string } | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [dragIdx, setDragIdx] = useState<number | null>(null);
+  const [dragOverIdx, setDragOverIdx] = useState<number | null>(null);
+
+  const onItemDrop = (targetIdx: number) => {
+    if (dragIdx === null || dragIdx === targetIdx) return;
+    setItems(prev => {
+      const next = [...prev];
+      const [moved] = next.splice(dragIdx, 1);
+      next.splice(targetIdx, 0, moved);
+      return next;
+    });
+    setDragIdx(null); setDragOverIdx(null);
+  };
 
   const renderThumbnail = async (file: File): Promise<string> => {
     const { getPdfJs } = await import("@/lib/pdf-utils");
@@ -113,25 +127,37 @@ export default function MergePdfClient() {
             </div>
 
             <div className="grid grid-cols-4 gap-4">
-              {items.map(item => (
-                <div key={item.id}>
-                <div className="relative group overflow-hidden ring-1 ring-black/10 bg-white shadow-sm">
-                  {item.thumbnail ? (
-                    // eslint-disable-next-line @next/next/no-img-element
-                    <img src={item.thumbnail} alt={item.file.name} className="w-full block" />
-                  ) : (
-                    <div className="aspect-[3/4] flex items-center justify-center bg-neutral-100">
-                      <CircleNotch size={16} className="animate-spin text-neutral-400" />
-                    </div>
+              {items.map((item, idx) => (
+                <div
+                  key={item.id}
+                  draggable
+                  onDragStart={() => setDragIdx(idx)}
+                  onDragEnd={() => { setDragIdx(null); setDragOverIdx(null); }}
+                  onDragOver={e => { e.preventDefault(); setDragOverIdx(idx); }}
+                  onDrop={() => onItemDrop(idx)}
+                  className={cn(
+                    "cursor-grab active:cursor-grabbing select-none transition-all",
+                    dragIdx === idx && "opacity-30 scale-95",
+                    dragOverIdx === idx && dragIdx !== idx && "outline outline-2 outline-neutral-400",
                   )}
-                  <button
-                    onClick={() => removeItem(item.id)}
-                    className="absolute top-1.5 right-1.5 size-5 rounded-full bg-black/50 text-white flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all"
-                  >
-                    <X size={9} weight="bold" />
-                  </button>
-                </div>
-                <p className="mt-2 text-[13px] font-medium text-foreground truncate">{item.file.name}</p>
+                >
+                  <div className="relative group overflow-hidden ring-1 ring-black/10 bg-white shadow-sm">
+                    {item.thumbnail ? (
+                      // eslint-disable-next-line @next/next/no-img-element
+                      <img src={item.thumbnail} alt={item.file.name} className="w-full block pointer-events-none" />
+                    ) : (
+                      <div className="aspect-[3/4] flex items-center justify-center bg-neutral-100">
+                        <CircleNotch size={16} className="animate-spin text-neutral-400" />
+                      </div>
+                    )}
+                    <button
+                      onClick={e => { e.stopPropagation(); removeItem(item.id); }}
+                      className="absolute top-1.5 right-1.5 size-5 rounded-full bg-black/50 text-white flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all"
+                    >
+                      <X size={9} weight="bold" />
+                    </button>
+                  </div>
+                  <p className="mt-2 text-[13px] font-medium text-foreground truncate">{item.file.name}</p>
                 </div>
               ))}
             </div>
