@@ -148,8 +148,8 @@ export default function SplitPdfClient() {
                   >
                     {/* eslint-disable-next-line @next/next/no-img-element */}
                     <img src={thumb} alt={`Page ${idx + 1}`} className="w-full block" />
-                    <div className="absolute bottom-0 inset-x-0 bg-gradient-to-t from-black/60 to-transparent px-1.5 py-1.5">
-                      <span className="text-[10px] font-semibold text-white">{idx + 1}</span>
+                    <div className="absolute bottom-0 inset-x-0 px-1.5 py-1">
+                      <span className="text-[10px] font-semibold text-neutral-500">{idx + 1}</span>
                     </div>
                   </div>
                 ))}
