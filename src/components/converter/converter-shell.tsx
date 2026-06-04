@@ -497,8 +497,8 @@ export default function ConverterShell({ type, title }: { type: ConvertType; tit
   // ── Render ───────────────────────────────────────────────────────────────────
 
   return (
-    <div className="-mx-6 sm:-mx-10 overflow-x-auto">
-      <div className="flex flex-col min-w-[720px] h-[calc(100dvh-66px)] min-h-[520px] overflow-hidden rounded-2xl ring-1 ring-black/6 shadow-[0_4px_24px_-6px_rgba(0,0,0,0.10),0_1px_3px_rgba(0,0,0,0.06)] bg-white">
+    <div className="w-screen relative left-1/2 -translate-x-1/2 px-4 sm:px-6">
+      <div className="flex flex-col h-[calc(100dvh-66px)] min-h-[520px] overflow-hidden rounded-2xl ring-1 ring-black/6 shadow-[0_4px_24px_-6px_rgba(0,0,0,0.10),0_1px_3px_rgba(0,0,0,0.06)] bg-white">
 
         {/* ── Optional title bar ───────────────────────────────────────────────── */}
         {title && (
