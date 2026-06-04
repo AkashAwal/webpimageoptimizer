@@ -53,6 +53,7 @@ interface Settings {
   pdfFlatten: boolean;
   pdfPageNumbers: boolean;
   pdfWatermark: string;
+  pdfWatermarkPos: "center" | "top-left" | "top-right" | "bottom-left" | "bottom-right";
   pdfPassword: string;
   pdfMetaTitle: string;
   pdfMetaAuthor: string;
@@ -69,6 +70,7 @@ interface PdfOptions {
   fitMode: "contain" | "fill" | "actual";
   pageNumbers: boolean;
   watermark: string;
+  watermarkPos: "center" | "top-left" | "top-right" | "bottom-left" | "bottom-right";
   metaTitle: string;
   metaAuthor: string;
 }
@@ -295,10 +297,20 @@ async function buildPdf(pages: PdfPage[], opts: PdfOptions): Promise<Blob> {
     for (let i = 0; i < total; i++) {
       pdf.setPage(i + 1);
       const { pageW, pageH } = getPageDims(pages[i].w, pages[i].h);
-      const size = Math.max(8, Math.min(pageW, pageH) * 0.09);
-      pdf.setFontSize(size);
       pdf.setTextColor(190, 190, 190);
-      pdf.text(opts.watermark, pageW / 2, pageH / 2, { align: "center", angle: 45 });
+      const pad = Math.max(5, opts.pageSize === "fit" ? 8 : opts.marginMm + 4);
+      if (opts.watermarkPos === "center") {
+        const size = Math.max(8, Math.min(pageW, pageH) * 0.09);
+        pdf.setFontSize(size);
+        pdf.text(opts.watermark, pageW / 2, pageH / 2, { align: "center", angle: 45 });
+      } else {
+        pdf.setFontSize(10);
+        const left  = opts.watermarkPos.includes("left");
+        const top   = opts.watermarkPos.includes("top");
+        const x = left ? pad : pageW - pad;
+        const y = top  ? pad + 6 : pageH - pad;
+        pdf.text(opts.watermark, x, y, { align: left ? "left" : "right" });
+      }
     }
   }
 
@@ -315,7 +327,7 @@ async function fileToPage(file: File, quality: number, targetW?: number, targetH
 const DEFAULT_PDF_OPTS: PdfOptions = {
   compress: true, flatten: false, pageSize: "fit", orientation: "auto",
   marginMm: 10, fitMode: "contain", pageNumbers: false, watermark: "",
-  metaTitle: "", metaAuthor: "",
+  watermarkPos: "center", metaTitle: "", metaAuthor: "",
 };
 
 async function canvasToPdf(file: File, quality: number, targetW?: number, targetH?: number, opts?: PdfOptions): Promise<Blob> {
@@ -492,7 +504,7 @@ export default function ConverterShell({ type, title }: { type: ConvertType; tit
     quality: 85, width: "", height: "", namingMode: "original", prefix: "image", sizeCapKB: "", stripMeta: true,
     pdfType: "standard", pdfPageSize: "fit", pdfOrientation: "auto", pdfMarginMm: 10,
     pdfFitMode: "contain", pdfCompress: true, pdfFlatten: false, pdfPageNumbers: false,
-    pdfWatermark: "", pdfPassword: "", pdfMetaTitle: "", pdfMetaAuthor: "", pdfFilename: "converted",
+    pdfWatermark: "", pdfWatermarkPos: "center", pdfPassword: "", pdfMetaTitle: "", pdfMetaAuthor: "", pdfFilename: "converted",
   });
   const [mergedResult, setMergedResult] = useState<{ blob: Blob; url: string } | null>(null);
 
@@ -598,6 +610,7 @@ export default function ConverterShell({ type, title }: { type: ConvertType; tit
     fitMode: settings.pdfFitMode,
     pageNumbers: settings.pdfPageNumbers,
     watermark: settings.pdfWatermark,
+    watermarkPos: settings.pdfWatermarkPos,
     metaTitle: settings.pdfMetaTitle,
     metaAuthor: settings.pdfMetaAuthor,
   }), [settings]);
@@ -1199,8 +1212,35 @@ export default function ConverterShell({ type, title }: { type: ConvertType; tit
                   <input type="text" placeholder="e.g. CONFIDENTIAL"
                     value={settings.pdfWatermark}
                     onChange={e => setSettings(s => ({ ...s, pdfWatermark: e.target.value }))}
-                    className="w-full rounded-lg border border-border bg-neutral-50 px-2 py-1 text-[12px] text-foreground outline-none focus:border-foreground/30 focus:bg-white transition-colors"
+                    className="w-full rounded-lg border border-border bg-neutral-50 px-2 py-1 text-[12px] text-foreground outline-none focus:border-foreground/30 focus:bg-white transition-colors mb-1.5"
                   />
+                  {/* Position picker — 2×2 corners + center */}
+                  <div className={cn("grid gap-0.5", "grid-cols-[1fr_auto_1fr]")}>
+                    {/* Top row */}
+                    {(["top-left", "top-right"] as const).map((pos, i) => (
+                      <button key={pos}
+                        onClick={() => setSettings(s => ({ ...s, pdfWatermarkPos: pos }))}
+                        className={cn("rounded px-1.5 py-0.5 text-[10px] font-medium transition-colors", i === 1 && "col-start-3",
+                          settings.pdfWatermarkPos === pos ? "bg-neutral-900 text-white" : "bg-neutral-100 text-neutral-500 hover:bg-neutral-200")}>
+                        {i === 0 ? "↖ Top left" : "Top right ↗"}
+                      </button>
+                    ))}
+                    {/* Center */}
+                    <button onClick={() => setSettings(s => ({ ...s, pdfWatermarkPos: "center" }))}
+                      className={cn("col-span-3 rounded px-1.5 py-0.5 text-[10px] font-medium transition-colors",
+                        settings.pdfWatermarkPos === "center" ? "bg-neutral-900 text-white" : "bg-neutral-100 text-neutral-500 hover:bg-neutral-200")}>
+                      ⊙ Center diagonal
+                    </button>
+                    {/* Bottom row */}
+                    {(["bottom-left", "bottom-right"] as const).map((pos, i) => (
+                      <button key={pos}
+                        onClick={() => setSettings(s => ({ ...s, pdfWatermarkPos: pos }))}
+                        className={cn("rounded px-1.5 py-0.5 text-[10px] font-medium transition-colors", i === 1 && "col-start-3",
+                          settings.pdfWatermarkPos === pos ? "bg-neutral-900 text-white" : "bg-neutral-100 text-neutral-500 hover:bg-neutral-200")}>
+                        {i === 0 ? "↙ Bot left" : "Bot right ↘"}
+                      </button>
+                    ))}
+                  </div>
                 </div>
 
                 {/* ── Row: Password | Metadata ── */}
