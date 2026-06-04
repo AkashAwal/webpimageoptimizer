@@ -20,6 +20,7 @@ export default function WatermarkPdfClient() {
   return (
     <PdfToolShell
       title="Watermark PDF"
+      description="Stamp custom text across every page of your PDF."
       processLabel="Add Watermark"
       outputFilename="watermarked.pdf"
       settingsNode={

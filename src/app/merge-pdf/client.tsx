@@ -5,6 +5,7 @@ export default function MergePdfClient() {
   return (
     <PdfToolShell
       title="Merge PDF"
+      description="Combine multiple PDF files into one document."
       acceptMultiple
       processLabel="Merge PDFs"
       outputFilename="merged.pdf"

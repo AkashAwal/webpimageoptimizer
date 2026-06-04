@@ -57,13 +57,18 @@ export default function ComparePdfClient() {
         {side === "a" ? "Document A" : "Document B"}
       </p>
       {!pdf ? (
-        <div className="flex flex-col items-center justify-center gap-2 rounded-xl border-2 border-dashed border-border aspect-[100/81] cursor-pointer hover:border-foreground/20 transition-colors"
-          onClick={() => inputRef.current?.click()}
+        <div
+          className="flex flex-col items-center gap-3 py-6 rounded-xl transition-colors"
           onDragOver={e => e.preventDefault()}
-          onDrop={e => { e.preventDefault(); const f = e.dataTransfer.files[0]; if (f) loadPdf(f, side); }}>
-          {loading === side
-            ? <CircleNotch size={20} className="animate-spin text-neutral-400" />
-            : <><UploadSimple size={18} className="text-neutral-400" /><p className="text-[12px] text-muted-foreground">Drop PDF</p></>}
+          onDrop={e => { e.preventDefault(); const f = e.dataTransfer.files[0]; if (f) loadPdf(f, side); }}
+        >
+          <button
+            onClick={() => inputRef.current?.click()}
+            className="w-full h-12 rounded-2xl bg-foreground text-white text-[13px] font-semibold hover:bg-foreground/90 active:scale-[0.99] transition-all"
+          >
+            {loading === side ? <CircleNotch size={14} className="animate-spin inline" /> : `Select ${side === "a" ? "Document A" : "Document B"}`}
+          </button>
+          <p className="text-[11px] text-muted-foreground">or drag and drop here</p>
         </div>
       ) : (
         <div className="flex items-center gap-2 rounded-xl px-2.5 py-2 bg-white ring-1 ring-black/5">
@@ -102,6 +107,14 @@ export default function ComparePdfClient() {
         </div>
 
         <div className="p-4 space-y-3">
+          {/* Landing heading — only when neither PDF is loaded */}
+          {!pdfA && !pdfB && (
+            <div className="text-center py-6 space-y-1.5">
+              <h2 className="text-[22px] font-bold tracking-tight text-foreground">Compare PDF</h2>
+              <p className="text-[13px] text-muted-foreground">View two PDF files side by side to spot differences.</p>
+            </div>
+          )}
+
           {/* File pickers */}
           <div className="flex gap-3">
             <DropZone side="a" pdf={pdfA} inputRef={inputA as React.RefObject<HTMLInputElement>} />

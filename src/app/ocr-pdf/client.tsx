@@ -96,15 +96,22 @@ export default function OcrPdfClient() {
 
         <div className="p-4 space-y-3">
           {!file ? (
-            <div className="flex flex-col items-center justify-center gap-3 rounded-xl border-2 border-dashed border-border aspect-[100/81] cursor-pointer hover:border-foreground/20 transition-colors"
-              onClick={() => inputRef.current?.click()}
+            <div
+              className="flex flex-col items-center gap-5 py-14 rounded-xl transition-colors"
               onDragOver={e => e.preventDefault()}
-              onDrop={e => { e.preventDefault(); const f = e.dataTransfer.files[0]; if (f) { setFile(f); setText(null); } }}>
-              <div className="flex size-11 items-center justify-center rounded-xl bg-neutral-100 text-neutral-500"><UploadSimple size={20} /></div>
-              <div className="text-center">
-                <p className="text-[15px] font-semibold text-foreground">Drop your PDF here</p>
-                <p className="mt-1 text-[12px] text-muted-foreground">Scanned or image-based PDFs · extracts text</p>
+              onDrop={e => { e.preventDefault(); const f = e.dataTransfer.files[0]; if (f) { setFile(f); setText(null); } }}
+            >
+              <div className="text-center space-y-1.5">
+                <h2 className="text-[22px] font-bold tracking-tight text-foreground">OCR PDF</h2>
+                <p className="text-[13px] text-muted-foreground">Extract text from scanned or image-based PDFs.</p>
               </div>
+              <button
+                onClick={() => inputRef.current?.click()}
+                className="w-full h-14 rounded-2xl bg-foreground text-white text-[14px] font-semibold hover:bg-foreground/90 active:scale-[0.99] transition-all"
+              >
+                Select PDF File
+              </button>
+              <p className="text-[11px] text-muted-foreground">or drag and drop your PDF here</p>
             </div>
           ) : (
             <div className="flex items-center gap-3 rounded-xl px-3 py-2 bg-white ring-1 ring-black/5">

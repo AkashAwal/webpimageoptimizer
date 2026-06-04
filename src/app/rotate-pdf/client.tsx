@@ -12,6 +12,7 @@ export default function RotatePdfClient() {
   return (
     <PdfToolShell
       title="Rotate PDF"
+      description="Fix or change the page orientation of your PDF."
       processLabel="Rotate PDF"
       outputFilename="rotated.pdf"
       settingsNode={

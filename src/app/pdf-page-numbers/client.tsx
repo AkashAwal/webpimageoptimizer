@@ -11,6 +11,7 @@ export default function PdfPageNumbersClient() {
   return (
     <PdfToolShell
       title="PDF Page Numbers"
+      description="Add page numbers to every page of your PDF."
       processLabel="Add Page Numbers"
       outputFilename="numbered.pdf"
       settingsNode={

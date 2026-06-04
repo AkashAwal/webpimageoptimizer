@@ -8,6 +8,7 @@ export default function UnlockPdfClient() {
   return (
     <PdfToolShell
       title="Unlock PDF"
+      description="Remove the password from a PDF you already own."
       processLabel="Remove Password"
       outputFilename="unlocked.pdf"
       settingsNode={

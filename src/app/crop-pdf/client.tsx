@@ -124,18 +124,21 @@ export default function CropPdfClient() {
         <div className="p-4 space-y-3">
           {!file ? (
             <div
-              className="flex flex-col items-center justify-center gap-3 rounded-xl border-2 border-dashed border-border aspect-[100/81] cursor-pointer hover:border-foreground/20 hover:bg-neutral-50/60 transition-colors"
-              onClick={() => inputRef.current?.click()}
+              className="flex flex-col items-center gap-5 py-14 rounded-xl transition-colors"
               onDragOver={e => e.preventDefault()}
               onDrop={e => { e.preventDefault(); const f = e.dataTransfer.files[0]; if (f) loadFile(f); }}
             >
-              <div className="flex size-11 items-center justify-center rounded-xl bg-neutral-100 text-neutral-500">
-                <UploadSimple size={20} />
+              <div className="text-center space-y-1.5">
+                <h2 className="text-[22px] font-bold tracking-tight text-foreground">Crop PDF</h2>
+                <p className="text-[13px] text-muted-foreground">Trim the margins of every page in your PDF.</p>
               </div>
-              <div className="text-center">
-                <p className="text-[15px] font-semibold text-foreground">Drop your PDF here</p>
-                <p className="mt-1 text-[12px] text-muted-foreground">Click to select · PDF only</p>
-              </div>
+              <button
+                onClick={() => inputRef.current?.click()}
+                className="w-full h-14 rounded-2xl bg-foreground text-white text-[14px] font-semibold hover:bg-foreground/90 active:scale-[0.99] transition-all"
+              >
+                Select PDF File
+              </button>
+              <p className="text-[11px] text-muted-foreground">or drag and drop your PDF here</p>
             </div>
           ) : (
             <>

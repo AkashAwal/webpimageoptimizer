@@ -10,6 +10,7 @@ export default function SplitPdfClient() {
   return (
     <PdfToolShell
       title="Split PDF"
+      description="Separate a PDF into individual pages or custom ranges."
       processLabel="Split PDF"
       outputFilename="split.zip"
       outputMime="application/zip"

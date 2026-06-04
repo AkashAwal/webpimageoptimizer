@@ -9,6 +9,7 @@ export default function ProtectPdfClient() {
   return (
     <PdfToolShell
       title="Protect PDF"
+      description="Encrypt your PDF with a password to restrict access."
       processLabel="Add Password"
       outputFilename="protected.pdf"
       settingsNode={

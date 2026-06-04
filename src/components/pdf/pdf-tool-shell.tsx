@@ -19,6 +19,7 @@ export interface PdfFile {
 
 interface Props {
   title?: string;
+  description?: string;
   acceptMultiple?: boolean;
   maxFiles?: number;
   processLabel?: string;
@@ -32,6 +33,7 @@ interface Props {
 
 export default function PdfToolShell({
   title,
+  description,
   acceptMultiple = false,
   maxFiles,
   processLabel = "Process PDF",
@@ -39,7 +41,6 @@ export default function PdfToolShell({
   onProcess,
   outputFilename,
   outputMime = "application/pdf",
-  acceptLabel = "PDF files",
   accept = "application/pdf,.pdf",
 }: Props) {
   const inputRef = useRef<HTMLInputElement>(null);
@@ -100,7 +101,8 @@ export default function PdfToolShell({
     <div className="pt-4">
       <div className="overflow-hidden rounded-2xl ring-1 ring-black/6 shadow-[0_4px_24px_-6px_rgba(0,0,0,0.10),0_1px_3px_rgba(0,0,0,0.06)] bg-white">
 
-        {title && (
+        {/* Nav bar — only shown once a file is loaded */}
+        {files.length > 0 && title && (
           <div className="flex items-center gap-2.5 px-4 py-2.5 border-b border-border bg-neutral-50/60">
             <Link href="/" className="flex items-center gap-1 text-[12px] text-muted-foreground hover:text-foreground transition-colors shrink-0">
               <CaretLeft size={11} weight="bold" />All tools
@@ -112,11 +114,37 @@ export default function PdfToolShell({
         )}
 
         <div className="p-4 space-y-3">
-          {/* Drop zone � show when empty or accepting multiple */}
-          {(files.length === 0 || canAddMore) && (
+
+          {/* Landing screen — empty state */}
+          {files.length === 0 && (
             <div
               className={cn(
-                "flex flex-col items-center justify-center gap-3 rounded-xl border-2 border-dashed border-border aspect-[100/81] cursor-pointer transition-colors",
+                "flex flex-col items-center gap-5 py-14 rounded-xl transition-colors",
+                dragOver && "bg-neutral-50",
+              )}
+              onDragOver={e => { e.preventDefault(); setDragOver(true); }}
+              onDragLeave={e => { if (!e.currentTarget.contains(e.relatedTarget as Node)) setDragOver(false); }}
+              onDrop={e => { e.preventDefault(); setDragOver(false); if (e.dataTransfer.files.length) addFiles(e.dataTransfer.files); }}
+            >
+              <div className="text-center space-y-1.5">
+                {title && <h2 className="text-[22px] font-bold tracking-tight text-foreground">{title}</h2>}
+                {description && <p className="text-[13px] text-muted-foreground">{description}</p>}
+              </div>
+              <button
+                onClick={() => inputRef.current?.click()}
+                className="w-full h-14 rounded-2xl bg-foreground text-white text-[14px] font-semibold hover:bg-foreground/90 active:scale-[0.99] transition-all"
+              >
+                Select PDF File{acceptMultiple ? "s" : ""}
+              </button>
+              <p className="text-[11px] text-muted-foreground">or drag and drop your PDF here</p>
+            </div>
+          )}
+
+          {/* "Add more" drop zone for multi-file tools */}
+          {canAddMore && (
+            <div
+              className={cn(
+                "flex items-center justify-center gap-2 rounded-xl border-2 border-dashed border-border py-3 cursor-pointer transition-colors",
                 dragOver ? "border-foreground/30 bg-neutral-50" : "hover:border-foreground/20 hover:bg-neutral-50/60",
               )}
               onClick={() => inputRef.current?.click()}
@@ -124,19 +152,10 @@ export default function PdfToolShell({
               onDragLeave={e => { if (!e.currentTarget.contains(e.relatedTarget as Node)) setDragOver(false); }}
               onDrop={e => { e.preventDefault(); setDragOver(false); if (e.dataTransfer.files.length) addFiles(e.dataTransfer.files); }}
             >
-              <div className="flex size-11 items-center justify-center rounded-xl bg-neutral-100 text-neutral-500">
-                <UploadSimple size={20} />
-              </div>
-              <div className="text-center">
-                <p className="text-[15px] font-semibold text-foreground">
-                  {files.length === 0
-                    ? acceptMultiple ? "Drop your PDF files here" : "Drop your PDF file here"
-                    : `Add more (${files.length}${maxFiles ? `/${maxFiles}` : ""} added)`}
-                </p>
-                <p className="mt-1 text-[12px] text-muted-foreground">
-                  {acceptLabel} · click to select
-                </p>
-              </div>
+              <UploadSimple size={13} className="text-neutral-400" />
+              <p className="text-[12px] text-muted-foreground">
+                Add more {maxFiles ? `(${files.length}/${maxFiles})` : `(${files.length} added)`}
+              </p>
             </div>
           )}
 
@@ -184,9 +203,11 @@ export default function PdfToolShell({
           )}
 
           {/* Action */}
-          <SoftPillButton variant="primary" onClick={handleProcess} disabled={!files.length || processing} className="w-full h-9 text-[12px]">
-            {processing ? <><CircleNotch size={12} className="animate-spin" />Processing…</> : processLabel}
-          </SoftPillButton>
+          {files.length > 0 && (
+            <SoftPillButton variant="primary" onClick={handleProcess} disabled={processing} className="w-full h-9 text-[12px]">
+              {processing ? <><CircleNotch size={12} className="animate-spin" />Processing…</> : processLabel}
+            </SoftPillButton>
+          )}
         </div>
       </div>
 

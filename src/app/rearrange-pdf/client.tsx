@@ -141,21 +141,24 @@ export default function RearrangePdfClient() {
         )}
       </div>
 
-      {/* Drop zone */}
+      {/* Landing screen */}
       {!file && (
         <div
-          className="flex flex-col items-center justify-center gap-3 rounded-2xl border-2 border-dashed border-border aspect-[100/81] cursor-pointer hover:border-foreground/20 hover:bg-neutral-50/60 transition-colors"
-          onClick={() => inputRef.current?.click()}
+          className="flex flex-col items-center gap-6 py-20 rounded-2xl transition-colors"
           onDragOver={e => e.preventDefault()}
           onDrop={e => { e.preventDefault(); const f = e.dataTransfer.files[0]; if (f) loadFile(f); }}
         >
-          <div className="flex size-12 items-center justify-center rounded-xl bg-neutral-100 text-neutral-500">
-            <UploadSimple size={22} />
+          <div className="text-center space-y-2">
+            <h2 className="text-[26px] font-bold tracking-tight text-foreground">Manage PDF Pages</h2>
+            <p className="text-[14px] text-muted-foreground">Drag to reorder and click × to remove pages — all in one view.</p>
           </div>
-          <div className="text-center">
-            <p className="text-[16px] font-semibold text-foreground">Drop your PDF here</p>
-            <p className="mt-1 text-[13px] text-muted-foreground">Drag to reorder · click × to remove pages</p>
-          </div>
+          <button
+            onClick={() => inputRef.current?.click()}
+            className="w-full max-w-sm h-14 rounded-2xl bg-foreground text-white text-[14px] font-semibold hover:bg-foreground/90 active:scale-[0.99] transition-all"
+          >
+            Select PDF File
+          </button>
+          <p className="text-[12px] text-muted-foreground">or drag and drop your PDF here</p>
         </div>
       )}
 
