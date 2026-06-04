@@ -43,6 +43,18 @@ interface Settings {
   prefix: string;
   sizeCapKB: string;
   stripMeta: boolean;
+  // PDF-specific
+  pdfType: "standard" | "print";
+  pdfCompress: boolean;
+  pdfFlatten: boolean;
+  pdfPassword: string;
+  pdfMerge: boolean;
+}
+
+interface PdfOptions {
+  password?: string;
+  compress: boolean;
+  flatten: boolean;
 }
 
 // ─── Utilities ────────────────────────────────────────────────────────────────
@@ -124,7 +136,11 @@ async function heicConvert(file: File, quality: number, targetW?: number, target
   return canvasConvert(Array.isArray(out) ? out[0] : out, quality, targetW, targetH);
 }
 
-async function canvasToPdf(source: File | Blob, quality: number, targetW?: number, targetH?: number): Promise<Blob> {
+// ─── PDF helpers ──────────────────────────────────────────────────────────────
+
+type PdfPage = { dataUrl: string; w: number; h: number };
+
+async function blobToPage(source: Blob, quality: number, targetW?: number, targetH?: number, flatten = false): Promise<PdfPage> {
   const bitmap = await createImageBitmap(source).catch((e: unknown) => {
     throw new Error(e instanceof Error ? e.message : "This file format cannot be decoded in your browser.");
   });
@@ -134,48 +150,92 @@ async function canvasToPdf(source: File | Blob, quality: number, targetW?: numbe
   else if (targetH) { w = Math.round(bitmap.width * (targetH / bitmap.height)); h = targetH; }
   const canvas = document.createElement("canvas");
   canvas.width = w; canvas.height = h;
-  canvas.getContext("2d")!.drawImage(bitmap, 0, 0, w, h);
+  const ctx = canvas.getContext("2d")!;
+  if (flatten) { ctx.fillStyle = "#ffffff"; ctx.fillRect(0, 0, w, h); }
+  ctx.drawImage(bitmap, 0, 0, w, h);
   bitmap.close();
-  const dataUrl = canvas.toDataURL("image/jpeg", quality / 100);
-  const { jsPDF } = await import("jspdf");
-  const pdf = new jsPDF({ orientation: w >= h ? "landscape" : "portrait", unit: "px", format: [w, h], compress: true });
-  pdf.addImage(dataUrl, "JPEG", 0, 0, w, h);
-  return pdf.output("blob");
+  return { dataUrl: canvas.toDataURL("image/jpeg", quality / 100), w, h };
 }
 
-async function svgToPdf(file: File, quality: number, targetW?: number, targetH?: number): Promise<Blob> {
+async function svgToPage(file: File, quality: number, targetW?: number, targetH?: number, flatten = false): Promise<PdfPage> {
   const url = URL.createObjectURL(file);
-  return new Promise<Blob>((res, rej) => {
+  return new Promise<PdfPage>((res, rej) => {
     const img = new window.Image();
-    img.onload = async () => {
+    img.onload = () => {
       let w = img.naturalWidth || 800, h = img.naturalHeight || 600;
       if (targetW && targetH) { w = targetW; h = targetH; }
       else if (targetW) { h = Math.round(h * (targetW / w)); w = targetW; }
       else if (targetH) { w = Math.round(w * (targetH / h)); h = targetH; }
       const canvas = document.createElement("canvas");
       canvas.width = w; canvas.height = h;
-      canvas.getContext("2d")!.drawImage(img, 0, 0, w, h);
+      const ctx = canvas.getContext("2d")!;
+      if (flatten) { ctx.fillStyle = "#ffffff"; ctx.fillRect(0, 0, w, h); }
+      ctx.drawImage(img, 0, 0, w, h);
       URL.revokeObjectURL(url);
-      const dataUrl = canvas.toDataURL("image/jpeg", quality / 100);
-      const { jsPDF } = await import("jspdf");
-      const pdf = new jsPDF({ orientation: w >= h ? "landscape" : "portrait", unit: "px", format: [w, h], compress: true });
-      pdf.addImage(dataUrl, "JPEG", 0, 0, w, h);
-      res(pdf.output("blob"));
+      res({ dataUrl: canvas.toDataURL("image/jpeg", quality / 100), w, h });
     };
     img.onerror = () => { URL.revokeObjectURL(url); rej(new Error("Failed to load SVG")); };
     img.src = url;
   });
 }
 
-async function heicToPdf(file: File, quality: number, targetW?: number, targetH?: number): Promise<Blob> {
+async function heicToPage(file: File, quality: number, targetW?: number, targetH?: number, flatten = false): Promise<PdfPage> {
   const { default: heic2any } = await import("heic2any");
   const out = await heic2any({ blob: file, toType: "image/png" });
-  return canvasToPdf(Array.isArray(out) ? out[0] : out, quality, targetW, targetH);
+  return blobToPage(Array.isArray(out) ? out[0] : out, quality, targetW, targetH, flatten);
+}
+
+async function buildPdf(pages: PdfPage[], opts: PdfOptions): Promise<Blob> {
+  const { jsPDF } = await import("jspdf");
+  const [first, ...rest] = pages;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const pdfOpts: any = {
+    orientation: first.w >= first.h ? "landscape" : "portrait",
+    unit: "px",
+    format: [first.w, first.h],
+    compress: opts.compress,
+  };
+  if (opts.password) {
+    pdfOpts.encryption = {
+      userPassword: opts.password,
+      ownerPassword: opts.password,
+      userPermissions: ["print", "copy"],
+    };
+  }
+  const pdf = new jsPDF(pdfOpts);
+  pdf.addImage(first.dataUrl, "JPEG", 0, 0, first.w, first.h);
+  for (const page of rest) {
+    pdf.addPage([page.w, page.h], page.w >= page.h ? "landscape" : "portrait");
+    pdf.addImage(page.dataUrl, "JPEG", 0, 0, page.w, page.h);
+  }
+  return pdf.output("blob");
+}
+
+async function fileToPage(file: File, quality: number, targetW?: number, targetH?: number, flatten = false): Promise<PdfPage> {
+  const name = file.name.toLowerCase();
+  if (file.type === "image/svg+xml" || name.endsWith(".svg")) return svgToPage(file, quality, targetW, targetH, flatten);
+  if (name.match(/\.(heic|heif)$/) || file.type === "image/heic" || file.type === "image/heif") return heicToPage(file, quality, targetW, targetH, flatten);
+  return blobToPage(file, quality, targetW, targetH, flatten);
+}
+
+async function canvasToPdf(file: File, quality: number, targetW?: number, targetH?: number, opts?: PdfOptions): Promise<Blob> {
+  const page = await blobToPage(file, quality, targetW, targetH, opts?.flatten);
+  return buildPdf([page], opts ?? { compress: true, flatten: false });
+}
+
+async function svgToPdf(file: File, quality: number, targetW?: number, targetH?: number, opts?: PdfOptions): Promise<Blob> {
+  const page = await svgToPage(file, quality, targetW, targetH, opts?.flatten);
+  return buildPdf([page], opts ?? { compress: true, flatten: false });
+}
+
+async function heicToPdf(file: File, quality: number, targetW?: number, targetH?: number, opts?: PdfOptions): Promise<Blob> {
+  const page = await heicToPage(file, quality, targetW, targetH, opts?.flatten);
+  return buildPdf([page], opts ?? { compress: true, flatten: false });
 }
 
 // ─── Config ───────────────────────────────────────────────────────────────────
 
-type ConvertFn = (f: File, q: number, w?: number, h?: number) => Promise<Blob>;
+type ConvertFn = (f: File, q: number, w?: number, h?: number, opts?: PdfOptions) => Promise<Blob>;
 
 const CONFIG: Record<ConvertType, { accept: string; acceptLabel: string; canPreview: boolean; convert: ConvertFn; outputType: "webp" | "pdf" }> = {
   "png-to-webp":  { accept: "image/png,.png",                             acceptLabel: "PNG files",   canPreview: true,  convert: canvasConvert, outputType: "webp" },
@@ -330,7 +390,9 @@ export default function ConverterShell({ type, title }: { type: ConvertType; tit
 
   const [settings, setSettings] = useState<Settings>({
     quality: 85, width: "", height: "", namingMode: "original", prefix: "image", sizeCapKB: "", stripMeta: true,
+    pdfType: "standard", pdfCompress: true, pdfFlatten: false, pdfPassword: "", pdfMerge: false,
   });
+  const [mergedResult, setMergedResult] = useState<{ blob: Blob; url: string } | null>(null);
 
   // Load persisted settings after mount (avoids SSR/hydration mismatch)
   useEffect(() => {
@@ -424,6 +486,12 @@ export default function ConverterShell({ type, title }: { type: ConvertType; tit
 
   // ── Conversion ───────────────────────────────────────────────────────────────
 
+  const pdfOpts = useCallback((): PdfOptions => ({
+    compress: settings.pdfCompress,
+    flatten: settings.pdfFlatten,
+    password: settings.pdfPassword || undefined,
+  }), [settings.pdfCompress, settings.pdfFlatten, settings.pdfPassword]);
+
   const handleConvert = useCallback(async () => {
     const queued = filesRef.current.filter(f => f.status === "queued");
     if (queued.length === 0 || converting) return;
@@ -436,13 +504,39 @@ export default function ConverterShell({ type, title }: { type: ConvertType; tit
 
     const targetW = settings.width ? parseInt(settings.width) : undefined;
     const targetH = settings.height ? parseInt(settings.height) : undefined;
+    const pdfQuality = settings.pdfType === "print" ? 95 : 80;
 
+    // ── Merge mode: all queued images → one multi-page PDF ──────────────────
+    if (cfg.outputType === "pdf" && settings.pdfMerge) {
+      const pages: PdfPage[] = [];
+      for (const item of queued) {
+        if (abortRef.current) break;
+        setFiles(prev => prev.map(f => f.id === item.id ? { ...f, status: "converting" } : f));
+        try {
+          const page = await fileToPage(item.file, pdfQuality, targetW, targetH, settings.pdfFlatten);
+          pages.push(page);
+          setFiles(prev => prev.map(f => f.id === item.id ? { ...f, status: "done", result: null } : f));
+        } catch (e) {
+          setFiles(prev => prev.map(f => f.id === item.id ? { ...f, status: "error", error: e instanceof Error ? e.message : "Conversion failed" } : f));
+        }
+        setBatchDone(prev => prev + 1);
+      }
+      if (pages.length > 0) {
+        const blob = await buildPdf(pages, pdfOpts());
+        if (mergedResult?.url) URL.revokeObjectURL(mergedResult.url);
+        setMergedResult({ blob, url: URL.createObjectURL(blob) });
+      }
+      setConverting(false);
+      return;
+    }
+
+    // ── Per-file conversion ──────────────────────────────────────────────────
     for (const item of queued) {
       if (abortRef.current) break;
       setFiles(prev => prev.map(f => f.id === item.id ? { ...f, status: "converting" } : f));
-      const quality = fileQuality[item.id] ?? settings.quality;
+      const quality = cfg.outputType === "pdf" ? pdfQuality : (fileQuality[item.id] ?? settings.quality);
       try {
-        const blob = await cfg.convert(item.file, quality, targetW, targetH);
+        const blob = await cfg.convert(item.file, quality, targetW, targetH, cfg.outputType === "pdf" ? pdfOpts() : undefined);
         const url = URL.createObjectURL(blob);
         setFiles(prev => prev.map(f => f.id === item.id ? { ...f, status: "done", result: { blob, url } } : f));
       } catch (e) {
@@ -451,7 +545,7 @@ export default function ConverterShell({ type, title }: { type: ConvertType; tit
       setBatchDone(prev => prev + 1);
     }
     setConverting(false);
-  }, [converting, settings, fileQuality, cfg]);
+  }, [converting, settings, fileQuality, cfg, pdfOpts, mergedResult]);
 
   // ── Keyboard shortcuts ───────────────────────────────────────────────────────
 
@@ -497,6 +591,14 @@ export default function ConverterShell({ type, title }: { type: ConvertType; tit
     a.click();
     URL.revokeObjectURL(url);
   }, [getOutputName]);
+
+  const downloadMergedPdf = useCallback(() => {
+    if (!mergedResult) return;
+    const a = document.createElement("a");
+    a.href = mergedResult.url;
+    a.download = `${settings.prefix || "merged"}.pdf`;
+    a.click();
+  }, [mergedResult, settings.prefix]);
 
   const copyToClipboard = useCallback(async (item: QueueItem) => {
     if (!item.result) return;
@@ -780,9 +882,13 @@ export default function ConverterShell({ type, title }: { type: ConvertType; tit
                                   {copiedId === item.id ? <Check size={15} className="text-emerald-500" /> : <ClipboardText size={15} />}
                                 </button>
                               )}
-                              <button onClick={() => downloadOne(item)} title="Download" className="rounded-lg p-1.5 text-neutral-400 hover:bg-neutral-100 hover:text-neutral-700 transition-colors">
-                                <DownloadSimple size={16} />
-                              </button>
+                              {item.result ? (
+                                <button onClick={() => downloadOne(item)} title="Download" className="rounded-lg p-1.5 text-neutral-400 hover:bg-neutral-100 hover:text-neutral-700 transition-colors">
+                                  <DownloadSimple size={16} />
+                                </button>
+                              ) : cfg.outputType === "pdf" && (
+                                <span className="text-[10px] text-muted-foreground/50 px-1">merged</span>
+                              )}
                             </>
                           )}
                           {item.status === "error" && (
@@ -790,14 +896,16 @@ export default function ConverterShell({ type, title }: { type: ConvertType; tit
                               <ArrowCounterClockwise size={16} />
                             </button>
                           )}
-                          {/* Per-file quality override */}
-                          <button
-                            onClick={() => setExpandedId(isExpanded ? null : item.id)}
-                            title="Override quality for this file"
-                            className={cn("rounded-lg p-1.5 transition-colors", isExpanded ? "bg-neutral-900 text-white" : "text-neutral-300 hover:bg-neutral-100 hover:text-neutral-600")}
-                          >
-                            <SlidersHorizontal size={14} />
-                          </button>
+                          {/* Per-file quality override — WebP only */}
+                          {cfg.outputType === "webp" && (
+                            <button
+                              onClick={() => setExpandedId(isExpanded ? null : item.id)}
+                              title="Override quality for this file"
+                              className={cn("rounded-lg p-1.5 transition-colors", isExpanded ? "bg-neutral-900 text-white" : "text-neutral-300 hover:bg-neutral-100 hover:text-neutral-600")}
+                            >
+                              <SlidersHorizontal size={14} />
+                            </button>
+                          )}
                           <button onClick={() => removeFile(item.id)} aria-label="Remove" className="rounded-lg p-1.5 text-neutral-300 hover:bg-red-50 hover:text-red-500 transition-colors">
                             <Trash size={15} />
                           </button>
@@ -848,108 +956,245 @@ export default function ConverterShell({ type, title }: { type: ConvertType; tit
         <div className="w-[320px] shrink-0 flex flex-col border-l border-border">
           <div className="flex-1 overflow-y-auto p-3 space-y-3.5">
 
-            {/* Presets */}
-            <div>
-              <p className="text-[10px] font-semibold uppercase tracking-widest text-muted-foreground mb-1.5">Preset</p>
-              <div className="flex gap-1.5">
-                {PRESETS.map(p => (
-                  <button
-                    key={p.label}
-                    onClick={() => setSettings(s => ({ ...s, quality: p.quality }))}
-                    className={cn(
-                      "flex-1 flex flex-col items-center rounded-lg px-1 py-1.5 transition-colors",
-                      settings.quality === p.quality ? "bg-neutral-900 text-white" : "bg-neutral-100 text-neutral-600 hover:bg-neutral-200",
-                    )}
-                  >
-                    <span className="text-[11px] font-medium leading-tight text-center">{p.label}</span>
-                    <span className={cn("text-[10px] tabular-nums mt-0.5", settings.quality === p.quality ? "text-white/60" : "text-neutral-400")}>{p.quality}%</span>
-                  </button>
-                ))}
-              </div>
-            </div>
+            {cfg.outputType === "pdf" ? (
+              <>
+                {/* PDF Type */}
+                <div>
+                  <p className="text-[10px] font-semibold uppercase tracking-widest text-muted-foreground mb-1.5">PDF Type</p>
+                  <div className="flex gap-1.5">
+                    {([
+                      { id: "standard", label: "Standard", sub: "Screen & email" },
+                      { id: "print",    label: "Print",    sub: "High fidelity" },
+                    ] as const).map(opt => (
+                      <button
+                        key={opt.id}
+                        onClick={() => setSettings(s => ({ ...s, pdfType: opt.id }))}
+                        className={cn(
+                          "flex-1 flex flex-col items-center rounded-lg px-1 py-1.5 transition-colors",
+                          settings.pdfType === opt.id ? "bg-neutral-900 text-white" : "bg-neutral-100 text-neutral-600 hover:bg-neutral-200",
+                        )}
+                      >
+                        <span className="text-[11px] font-medium leading-tight">{opt.label}</span>
+                        <span className={cn("text-[10px] mt-0.5 leading-tight text-center", settings.pdfType === opt.id ? "text-white/60" : "text-neutral-400")}>{opt.sub}</span>
+                      </button>
+                    ))}
+                  </div>
+                </div>
 
-            {/* Quality bar */}
-            <div>
-              <div className="flex items-center justify-between mb-1">
-                <p className="text-[10px] font-semibold uppercase tracking-widest text-muted-foreground">Quality</p>
-                <span className="text-[11px] tabular-nums text-muted-foreground">{settings.quality}%</span>
-              </div>
-              <input type="range" min={0} max={100} value={qualityToSlider(settings.quality)}
-                onChange={e => setSettings(s => ({ ...s, quality: sliderToQuality(Number(e.target.value)) }))}
-                className="w-full h-1.5 cursor-pointer accent-foreground"
-              />
-              <div className="flex justify-between mt-0.5">
-                <span className="text-[10px] text-muted-foreground/60">Smaller</span>
-                <span className="text-[10px] text-muted-foreground/60">Higher quality</span>
-              </div>
-            </div>
+                {/* Rearrange pages / merge */}
+                <div>
+                  <p className="text-[10px] font-semibold uppercase tracking-widest text-muted-foreground mb-1.5">Pages</p>
+                  <label className="flex items-start gap-2 cursor-pointer select-none">
+                    <input type="checkbox" checked={settings.pdfMerge}
+                      onChange={e => setSettings(s => ({ ...s, pdfMerge: e.target.checked }))}
+                      className="accent-foreground size-3.5 mt-0.5 shrink-0"
+                    />
+                    <div>
+                      <span className="text-[12px] text-foreground">Merge into one PDF</span>
+                      <p className="text-[10px] text-muted-foreground/60 mt-0.5 leading-tight">Drag files in the queue to set page order.</p>
+                    </div>
+                  </label>
+                </div>
 
-            {/* Dimensions */}
-            <div>
-              <p className="text-[10px] font-semibold uppercase tracking-widest text-muted-foreground mb-1.5">Dimensions (px)</p>
-              <div className="flex gap-2">
-                <div className="flex-1">
-                  <p className="text-[10px] text-muted-foreground/70 mb-0.5">W</p>
-                  <input type="number" min={1} placeholder="Auto" value={settings.width}
-                    onChange={e => setSettings(s => ({ ...s, width: e.target.value }))}
+                {/* Compress */}
+                <div>
+                  <p className="text-[10px] font-semibold uppercase tracking-widest text-muted-foreground mb-1.5">Output</p>
+                  <div className="space-y-2">
+                    <label className="flex items-center gap-2 cursor-pointer select-none">
+                      <input type="checkbox" checked={settings.pdfCompress}
+                        onChange={e => setSettings(s => ({ ...s, pdfCompress: e.target.checked }))}
+                        className="accent-foreground size-3.5"
+                      />
+                      <span className="text-[12px] text-foreground">Compress PDF</span>
+                    </label>
+                    <label className="flex items-start gap-2 cursor-pointer select-none">
+                      <input type="checkbox" checked={settings.pdfFlatten}
+                        onChange={e => setSettings(s => ({ ...s, pdfFlatten: e.target.checked }))}
+                        className="accent-foreground size-3.5 mt-0.5 shrink-0"
+                      />
+                      <div>
+                        <span className="text-[12px] text-foreground">Flatten</span>
+                        <p className="text-[10px] text-muted-foreground/60 mt-0.5 leading-tight">Renders transparency on white — required for printing.</p>
+                      </div>
+                    </label>
+                  </div>
+                </div>
+
+                {/* Password */}
+                <div>
+                  <p className="text-[10px] font-semibold uppercase tracking-widest text-muted-foreground mb-1.5">Password</p>
+                  <input
+                    type="password"
+                    placeholder="Leave blank for none"
+                    value={settings.pdfPassword}
+                    onChange={e => setSettings(s => ({ ...s, pdfPassword: e.target.value }))}
                     className="w-full rounded-lg border border-border bg-neutral-50 px-2 py-1 text-[12px] text-foreground outline-none focus:border-foreground/30 focus:bg-white transition-colors"
                   />
                 </div>
-                <div className="flex-1">
-                  <p className="text-[10px] text-muted-foreground/70 mb-0.5">H</p>
-                  <input type="number" min={1} placeholder="Auto" value={settings.height}
-                    onChange={e => setSettings(s => ({ ...s, height: e.target.value }))}
-                    className="w-full rounded-lg border border-border bg-neutral-50 px-2 py-1 text-[12px] text-foreground outline-none focus:border-foreground/30 focus:bg-white transition-colors"
-                  />
-                </div>
-              </div>
-              <p className="text-[10px] text-muted-foreground/50 mt-0.5 leading-tight">One field = aspect ratio preserved.</p>
-            </div>
 
-            {/* Naming */}
-            <div>
-              <p className="text-[10px] font-semibold uppercase tracking-widest text-muted-foreground mb-1.5">File naming</p>
-              <div className="space-y-1.5">
-                <label className="flex items-center gap-2 cursor-pointer">
-                  <input type="radio" name={`naming-${type}`} value="original" checked={settings.namingMode === "original"}
-                    onChange={() => setSettings(s => ({ ...s, namingMode: "original" }))} className="accent-foreground" />
-                  <span className="text-[12px] text-foreground">Original + number</span>
-                </label>
-                <label className="flex items-center gap-2 cursor-pointer">
-                  <input type="radio" name={`naming-${type}`} value="prefix" checked={settings.namingMode === "prefix"}
-                    onChange={() => setSettings(s => ({ ...s, namingMode: "prefix" }))} className="accent-foreground" />
-                  <span className="text-[12px] text-foreground">Custom prefix</span>
-                </label>
-                {settings.namingMode === "prefix" && (
-                  <input type="text" placeholder="image" value={settings.prefix}
-                    onChange={e => setSettings(s => ({ ...s, prefix: e.target.value }))}
-                    className="w-full rounded-lg border border-border bg-neutral-50 px-2 py-1 text-[12px] text-foreground outline-none focus:border-foreground/30 focus:bg-white transition-colors"
-                  />
+                {/* Dimensions */}
+                <div>
+                  <p className="text-[10px] font-semibold uppercase tracking-widest text-muted-foreground mb-1.5">Dimensions (px)</p>
+                  <div className="flex gap-2">
+                    <div className="flex-1">
+                      <p className="text-[10px] text-muted-foreground/70 mb-0.5">W</p>
+                      <input type="number" min={1} placeholder="Auto" value={settings.width}
+                        onChange={e => setSettings(s => ({ ...s, width: e.target.value }))}
+                        className="w-full rounded-lg border border-border bg-neutral-50 px-2 py-1 text-[12px] text-foreground outline-none focus:border-foreground/30 focus:bg-white transition-colors"
+                      />
+                    </div>
+                    <div className="flex-1">
+                      <p className="text-[10px] text-muted-foreground/70 mb-0.5">H</p>
+                      <input type="number" min={1} placeholder="Auto" value={settings.height}
+                        onChange={e => setSettings(s => ({ ...s, height: e.target.value }))}
+                        className="w-full rounded-lg border border-border bg-neutral-50 px-2 py-1 text-[12px] text-foreground outline-none focus:border-foreground/30 focus:bg-white transition-colors"
+                      />
+                    </div>
+                  </div>
+                  <p className="text-[10px] text-muted-foreground/50 mt-0.5 leading-tight">One field = aspect ratio preserved.</p>
+                </div>
+
+                {/* File naming */}
+                {!settings.pdfMerge && (
+                  <div>
+                    <p className="text-[10px] font-semibold uppercase tracking-widest text-muted-foreground mb-1.5">File naming</p>
+                    <div className="space-y-1.5">
+                      <label className="flex items-center gap-2 cursor-pointer">
+                        <input type="radio" name={`naming-${type}`} value="original" checked={settings.namingMode === "original"}
+                          onChange={() => setSettings(s => ({ ...s, namingMode: "original" }))} className="accent-foreground" />
+                        <span className="text-[12px] text-foreground">Original + number</span>
+                      </label>
+                      <label className="flex items-center gap-2 cursor-pointer">
+                        <input type="radio" name={`naming-${type}`} value="prefix" checked={settings.namingMode === "prefix"}
+                          onChange={() => setSettings(s => ({ ...s, namingMode: "prefix" }))} className="accent-foreground" />
+                        <span className="text-[12px] text-foreground">Custom prefix</span>
+                      </label>
+                      {settings.namingMode === "prefix" && (
+                        <input type="text" placeholder="image" value={settings.prefix}
+                          onChange={e => setSettings(s => ({ ...s, prefix: e.target.value }))}
+                          className="w-full rounded-lg border border-border bg-neutral-50 px-2 py-1 text-[12px] text-foreground outline-none focus:border-foreground/30 focus:bg-white transition-colors"
+                        />
+                      )}
+                    </div>
+                  </div>
                 )}
-              </div>
-            </div>
+                {settings.pdfMerge && (
+                  <div>
+                    <p className="text-[10px] font-semibold uppercase tracking-widest text-muted-foreground mb-1.5">Output filename</p>
+                    <input type="text" placeholder="merged" value={settings.prefix}
+                      onChange={e => setSettings(s => ({ ...s, prefix: e.target.value }))}
+                      className="w-full rounded-lg border border-border bg-neutral-50 px-2 py-1 text-[12px] text-foreground outline-none focus:border-foreground/30 focus:bg-white transition-colors"
+                    />
+                    <p className="text-[10px] text-muted-foreground/50 mt-0.5 leading-tight">Saved as {settings.prefix || "merged"}.pdf</p>
+                  </div>
+                )}
+              </>
+            ) : (
+              <>
+                {/* Presets */}
+                <div>
+                  <p className="text-[10px] font-semibold uppercase tracking-widest text-muted-foreground mb-1.5">Preset</p>
+                  <div className="flex gap-1.5">
+                    {PRESETS.map(p => (
+                      <button
+                        key={p.label}
+                        onClick={() => setSettings(s => ({ ...s, quality: p.quality }))}
+                        className={cn(
+                          "flex-1 flex flex-col items-center rounded-lg px-1 py-1.5 transition-colors",
+                          settings.quality === p.quality ? "bg-neutral-900 text-white" : "bg-neutral-100 text-neutral-600 hover:bg-neutral-200",
+                        )}
+                      >
+                        <span className="text-[11px] font-medium leading-tight text-center">{p.label}</span>
+                        <span className={cn("text-[10px] tabular-nums mt-0.5", settings.quality === p.quality ? "text-white/60" : "text-neutral-400")}>{p.quality}%</span>
+                      </button>
+                    ))}
+                  </div>
+                </div>
 
-            {/* Size cap */}
-            <div>
-              <p className="text-[10px] font-semibold uppercase tracking-widest text-muted-foreground mb-1.5">Size cap</p>
-              <div className="flex items-center gap-1.5">
-                <input type="number" min={1} placeholder="e.g. 300" value={settings.sizeCapKB}
-                  onChange={e => setSettings(s => ({ ...s, sizeCapKB: e.target.value }))}
-                  className="flex-1 min-w-0 rounded-lg border border-border bg-neutral-50 px-2 py-1 text-[12px] text-foreground outline-none focus:border-foreground/30 focus:bg-white transition-colors"
-                />
-                <span className="text-[12px] text-muted-foreground shrink-0">KB</span>
-              </div>
-              <p className="text-[10px] text-muted-foreground/50 mt-0.5 leading-tight">Files over this are flagged red.</p>
-            </div>
+                {/* Quality bar */}
+                <div>
+                  <div className="flex items-center justify-between mb-1">
+                    <p className="text-[10px] font-semibold uppercase tracking-widest text-muted-foreground">Quality</p>
+                    <span className="text-[11px] tabular-nums text-muted-foreground">{settings.quality}%</span>
+                  </div>
+                  <input type="range" min={0} max={100} value={qualityToSlider(settings.quality)}
+                    onChange={e => setSettings(s => ({ ...s, quality: sliderToQuality(Number(e.target.value)) }))}
+                    className="w-full h-1.5 cursor-pointer accent-foreground"
+                  />
+                  <div className="flex justify-between mt-0.5">
+                    <span className="text-[10px] text-muted-foreground/60">Smaller</span>
+                    <span className="text-[10px] text-muted-foreground/60">Higher quality</span>
+                  </div>
+                </div>
 
-            {/* Strip metadata */}
-            <label className="flex items-center gap-2 cursor-pointer select-none">
-              <input type="checkbox" checked={settings.stripMeta}
-                onChange={e => setSettings(s => ({ ...s, stripMeta: e.target.checked }))}
-                className="accent-foreground size-3.5"
-              />
-              <span className="text-[12px] text-foreground">Strip metadata</span>
-            </label>
+                {/* Dimensions */}
+                <div>
+                  <p className="text-[10px] font-semibold uppercase tracking-widest text-muted-foreground mb-1.5">Dimensions (px)</p>
+                  <div className="flex gap-2">
+                    <div className="flex-1">
+                      <p className="text-[10px] text-muted-foreground/70 mb-0.5">W</p>
+                      <input type="number" min={1} placeholder="Auto" value={settings.width}
+                        onChange={e => setSettings(s => ({ ...s, width: e.target.value }))}
+                        className="w-full rounded-lg border border-border bg-neutral-50 px-2 py-1 text-[12px] text-foreground outline-none focus:border-foreground/30 focus:bg-white transition-colors"
+                      />
+                    </div>
+                    <div className="flex-1">
+                      <p className="text-[10px] text-muted-foreground/70 mb-0.5">H</p>
+                      <input type="number" min={1} placeholder="Auto" value={settings.height}
+                        onChange={e => setSettings(s => ({ ...s, height: e.target.value }))}
+                        className="w-full rounded-lg border border-border bg-neutral-50 px-2 py-1 text-[12px] text-foreground outline-none focus:border-foreground/30 focus:bg-white transition-colors"
+                      />
+                    </div>
+                  </div>
+                  <p className="text-[10px] text-muted-foreground/50 mt-0.5 leading-tight">One field = aspect ratio preserved.</p>
+                </div>
+
+                {/* Naming */}
+                <div>
+                  <p className="text-[10px] font-semibold uppercase tracking-widest text-muted-foreground mb-1.5">File naming</p>
+                  <div className="space-y-1.5">
+                    <label className="flex items-center gap-2 cursor-pointer">
+                      <input type="radio" name={`naming-${type}`} value="original" checked={settings.namingMode === "original"}
+                        onChange={() => setSettings(s => ({ ...s, namingMode: "original" }))} className="accent-foreground" />
+                      <span className="text-[12px] text-foreground">Original + number</span>
+                    </label>
+                    <label className="flex items-center gap-2 cursor-pointer">
+                      <input type="radio" name={`naming-${type}`} value="prefix" checked={settings.namingMode === "prefix"}
+                        onChange={() => setSettings(s => ({ ...s, namingMode: "prefix" }))} className="accent-foreground" />
+                      <span className="text-[12px] text-foreground">Custom prefix</span>
+                    </label>
+                    {settings.namingMode === "prefix" && (
+                      <input type="text" placeholder="image" value={settings.prefix}
+                        onChange={e => setSettings(s => ({ ...s, prefix: e.target.value }))}
+                        className="w-full rounded-lg border border-border bg-neutral-50 px-2 py-1 text-[12px] text-foreground outline-none focus:border-foreground/30 focus:bg-white transition-colors"
+                      />
+                    )}
+                  </div>
+                </div>
+
+                {/* Size cap */}
+                <div>
+                  <p className="text-[10px] font-semibold uppercase tracking-widest text-muted-foreground mb-1.5">Size cap</p>
+                  <div className="flex items-center gap-1.5">
+                    <input type="number" min={1} placeholder="e.g. 300" value={settings.sizeCapKB}
+                      onChange={e => setSettings(s => ({ ...s, sizeCapKB: e.target.value }))}
+                      className="flex-1 min-w-0 rounded-lg border border-border bg-neutral-50 px-2 py-1 text-[12px] text-foreground outline-none focus:border-foreground/30 focus:bg-white transition-colors"
+                    />
+                    <span className="text-[12px] text-muted-foreground shrink-0">KB</span>
+                  </div>
+                  <p className="text-[10px] text-muted-foreground/50 mt-0.5 leading-tight">Files over this are flagged red.</p>
+                </div>
+
+                {/* Strip metadata */}
+                <label className="flex items-center gap-2 cursor-pointer select-none">
+                  <input type="checkbox" checked={settings.stripMeta}
+                    onChange={e => setSettings(s => ({ ...s, stripMeta: e.target.checked }))}
+                    className="accent-foreground size-3.5"
+                  />
+                  <span className="text-[12px] text-foreground">Strip metadata</span>
+                </label>
+              </>
+            )}
 
           </div>
 
@@ -969,13 +1214,25 @@ export default function ConverterShell({ type, title }: { type: ConvertType; tit
               {converting ? (
                 <><CircleNotch size={12} className="animate-spin" />{batchDone} / {batchTotal} — Stop (Esc)</>
               ) : (
-                <>{cfg.outputType === "pdf" ? "Convert to PDF" : "Optimize Now"}{queuedCount > 0 && <span className="opacity-60 ml-1">({queuedCount})</span>}</>
+                <>
+                  {cfg.outputType === "pdf"
+                    ? (settings.pdfMerge ? "Merge to PDF" : "Convert to PDF")
+                    : "Optimize Now"}
+                  {queuedCount > 0 && <span className="opacity-60 ml-1">({queuedCount})</span>}
+                </>
               )}
             </SoftPillButton>
-            <SoftPillButton variant="secondary" onClick={doneCount > 0 ? downloadZip : undefined} disabled={doneCount === 0} className="w-full h-9 text-[12px]">
-              <DownloadSimple size={12} />
-              {doneCount > 0 ? `Download all as ZIP (${doneCount})` : "Download all as ZIP"}
-            </SoftPillButton>
+            {cfg.outputType === "pdf" && settings.pdfMerge ? (
+              <SoftPillButton variant="secondary" onClick={mergedResult ? downloadMergedPdf : undefined} disabled={!mergedResult} className="w-full h-9 text-[12px]">
+                <DownloadSimple size={12} />
+                {mergedResult ? `Download merged PDF (${files.filter(f => f.status === "done").length} pages)` : "Download merged PDF"}
+              </SoftPillButton>
+            ) : (
+              <SoftPillButton variant="secondary" onClick={doneCount > 0 ? downloadZip : undefined} disabled={doneCount === 0} className="w-full h-9 text-[12px]">
+                <DownloadSimple size={12} />
+                {doneCount > 0 ? `Download all as ZIP (${doneCount})` : "Download all as ZIP"}
+              </SoftPillButton>
+            )}
             <p className="text-center text-[10px] text-muted-foreground/50">Enter to start · Esc to stop</p>
           </div>
         </div>
