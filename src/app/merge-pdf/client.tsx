@@ -98,13 +98,13 @@ export default function MergePdfClient() {
         </div>
       )}
 
-      {/* Active: thumbnails + action panel */}
+      {/* Active: full-viewport, no card */}
       {items.length > 0 && (
-        <div className="overflow-hidden rounded-2xl ring-1 ring-black/6 shadow-[0_4px_24px_-6px_rgba(0,0,0,0.10),0_1px_3px_rgba(0,0,0,0.06)] bg-white flex divide-x divide-border">
+        <div className="flex min-h-[calc(100vh-4rem)] -mx-6 sm:-mx-10">
 
-          {/* Left: thumbnail grid */}
-          <div className="flex-1 p-5 relative">
-            <div className="flex items-center gap-1.5 text-[12px] text-muted-foreground mb-4">
+          {/* Left: thumbnail area, sits on page background */}
+          <div className="flex-1 px-6 sm:px-10 pt-6 pb-10 relative">
+            <div className="flex items-center gap-1.5 text-[12px] text-muted-foreground mb-6">
               <Link href="/" className="flex items-center gap-1 hover:text-foreground transition-colors">
                 <CaretLeft size={11} weight="bold" />All tools
               </Link>
@@ -112,9 +112,9 @@ export default function MergePdfClient() {
               <span className="text-foreground font-medium">Merge PDF</span>
             </div>
 
-            <div className="grid grid-cols-4 gap-3">
+            <div className="grid grid-cols-4 gap-4">
               {items.map(item => (
-                <div key={item.id} className="relative group rounded-xl overflow-hidden ring-1 ring-black/10 bg-neutral-50 shadow-sm">
+                <div key={item.id} className="relative group rounded-xl overflow-hidden ring-1 ring-black/10 bg-white shadow-sm">
                   {item.thumbnail ? (
                     // eslint-disable-next-line @next/next/no-img-element
                     <img src={item.thumbnail} alt={item.file.name} className="w-full block" />
@@ -139,14 +139,14 @@ export default function MergePdfClient() {
             {/* Floating add-more badge */}
             <button
               onClick={() => inputRef.current?.click()}
-              className="absolute top-4 right-4 flex items-center gap-1.5 bg-foreground text-white rounded-full h-8 px-3 text-[12px] font-semibold hover:bg-foreground/80 transition-colors"
+              className="fixed bottom-8 left-1/2 -translate-x-1/2 flex items-center gap-1.5 bg-foreground text-white rounded-full h-9 px-4 text-[13px] font-semibold hover:bg-foreground/80 shadow-lg transition-colors"
             >
-              {items.length} <Plus size={12} />
+              <Plus size={13} /> Add more ({items.length})
             </button>
           </div>
 
-          {/* Right: action panel */}
-          <div className="w-72 shrink-0 bg-neutral-50 p-5 flex flex-col gap-4">
+          {/* Right: sticky full-height action panel */}
+          <div className="w-80 shrink-0 border-l border-border bg-white sticky top-16 h-[calc(100vh-4rem)] flex flex-col p-6 gap-4 overflow-y-auto">
             <h2 className="text-xl font-bold tracking-tight text-foreground">Merge PDF</h2>
 
             <div className="flex gap-2.5 rounded-xl bg-blue-50 border border-blue-100 px-3 py-3">
