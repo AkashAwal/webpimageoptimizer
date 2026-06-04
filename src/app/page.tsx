@@ -106,7 +106,7 @@ export default function Page() {
       </section>
 
       {/* Tool cards */}
-      <section id="tools" className="mx-auto w-full max-w-5xl px-6 pb-24 sm:px-10">
+      <section id="tools" className="mx-auto w-full max-w-7xl px-6 pb-24 sm:px-10">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
