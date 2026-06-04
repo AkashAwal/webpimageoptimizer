@@ -1,26 +1,42 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
-import { motion } from "motion/react";
-import { UploadSimple, X, CircleNotch, Check, ArrowRight } from "@phosphor-icons/react";
+import {
+  UploadSimple, X, CircleNotch, Check, DownloadSimple,
+  ArrowsHorizontal, DotsSixVertical, ArrowCounterClockwise,
+} from "@phosphor-icons/react";
 import { cn } from "@/lib/utils";
 import SoftPillButton from "@/components/ui/soft-pill-button";
 
-export type ConvertType =
-  | "png-to-webp"
-  | "jpg-to-webp"
-  | "gif-to-webp"
-  | "avif-to-webp"
-  | "bmp-to-webp"
-  | "tiff-to-webp"
-  | "svg-to-webp"
-  | "ico-to-webp"
-  | "jfif-to-webp"
-  | "pdf-to-webp"
-  | "webp-to-webp"
-  | "heic-to-webp";
+// ─── Types ────────────────────────────────────────────────────────────────────
 
-type ConvertState = "idle" | "converting" | "done" | "error";
+export type ConvertType =
+  | "png-to-webp" | "jpg-to-webp" | "gif-to-webp" | "avif-to-webp"
+  | "bmp-to-webp" | "tiff-to-webp" | "svg-to-webp" | "ico-to-webp"
+  | "jfif-to-webp" | "pdf-to-webp" | "webp-to-webp" | "heic-to-webp";
+
+type FileStatus = "queued" | "converting" | "done" | "error";
+
+interface QueueItem {
+  id: string;
+  file: File;
+  previewUrl: string | null;
+  status: FileStatus;
+  result: { blob: Blob; url: string } | null;
+  error: string | null;
+}
+
+interface Settings {
+  quality: number;
+  width: string;
+  height: string;
+  namingMode: "original" | "prefix";
+  prefix: string;
+  sizeCapKB: string;
+  stripMeta: boolean;
+}
+
+// ─── Conversion utilities ─────────────────────────────────────────────────────
 
 function formatBytes(bytes: number) {
   if (bytes < 1024) return `${bytes} B`;
@@ -28,12 +44,22 @@ function formatBytes(bytes: number) {
   return `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
 }
 
-async function canvasConvert(source: File | Blob, quality: number): Promise<Blob> {
+async function canvasConvert(
+  source: File | Blob,
+  quality: number,
+  targetW?: number,
+  targetH?: number,
+): Promise<Blob> {
   const bitmap = await createImageBitmap(source);
+  let w = bitmap.width;
+  let h = bitmap.height;
+  if (targetW && targetH) { w = targetW; h = targetH; }
+  else if (targetW) { h = Math.round(bitmap.height * (targetW / bitmap.width)); w = targetW; }
+  else if (targetH) { w = Math.round(bitmap.width * (targetH / bitmap.height)); h = targetH; }
   const canvas = document.createElement("canvas");
-  canvas.width = bitmap.width;
-  canvas.height = bitmap.height;
-  canvas.getContext("2d")!.drawImage(bitmap, 0, 0);
+  canvas.width = w;
+  canvas.height = h;
+  canvas.getContext("2d")!.drawImage(bitmap, 0, 0, w, h);
   bitmap.close();
   return new Promise<Blob>((resolve, reject) =>
     canvas.toBlob(
@@ -44,378 +70,728 @@ async function canvasConvert(source: File | Blob, quality: number): Promise<Blob
   );
 }
 
-async function svgConvert(file: File, quality: number): Promise<Blob> {
+async function svgConvert(file: File, quality: number, targetW?: number, targetH?: number): Promise<Blob> {
   const url = URL.createObjectURL(file);
   return new Promise<Blob>((resolve, reject) => {
     const img = new window.Image();
     img.onload = () => {
-      const w = img.naturalWidth || 800;
-      const h = img.naturalHeight || 600;
+      let w = img.naturalWidth || 800;
+      let h = img.naturalHeight || 600;
+      if (targetW && targetH) { w = targetW; h = targetH; }
+      else if (targetW) { h = Math.round(h * (targetW / w)); w = targetW; }
+      else if (targetH) { w = Math.round(w * (targetH / h)); h = targetH; }
       const canvas = document.createElement("canvas");
-      canvas.width = w;
-      canvas.height = h;
+      canvas.width = w; canvas.height = h;
       canvas.getContext("2d")!.drawImage(img, 0, 0, w, h);
       URL.revokeObjectURL(url);
       canvas.toBlob(
         (b) => (b ? resolve(b) : reject(new Error("Canvas export failed"))),
-        "image/webp",
-        quality / 100,
+        "image/webp", quality / 100,
       );
     };
-    img.onerror = () => {
-      URL.revokeObjectURL(url);
-      reject(new Error("Failed to load SVG — check the file is a valid SVG document."));
-    };
+    img.onerror = () => { URL.revokeObjectURL(url); reject(new Error("Failed to load SVG")); };
     img.src = url;
   });
 }
 
-async function heicConvert(file: File, quality: number): Promise<Blob> {
+async function heicConvert(file: File, quality: number, targetW?: number, targetH?: number): Promise<Blob> {
   const { default: heic2any } = await import("heic2any");
   const out = await heic2any({ blob: file, toType: "image/png" });
   const png = Array.isArray(out) ? out[0] : out;
-  return canvasConvert(png, quality);
+  return canvasConvert(png, quality, targetW, targetH);
 }
 
-const CONFIG = {
-  "png-to-webp": {
-    accept: "image/png,.png",
-    acceptLabel: "PNG files",
-    convert: (f: File, q: number) => canvasConvert(f, q),
-    defaultQuality: 92,
-    canPreview: true,
-  },
-  "jpg-to-webp": {
-    accept: "image/jpeg,.jpg,.jpeg",
-    acceptLabel: "JPG / JPEG files",
-    convert: (f: File, q: number) => canvasConvert(f, q),
-    defaultQuality: 85,
-    canPreview: true,
-  },
-  "gif-to-webp": {
-    accept: "image/gif,.gif",
-    acceptLabel: "GIF files",
-    convert: (f: File, q: number) => canvasConvert(f, q),
-    defaultQuality: 85,
-    canPreview: true,
-  },
-  "avif-to-webp": {
-    accept: "image/avif,.avif",
-    acceptLabel: "AVIF files",
-    convert: (f: File, q: number) => canvasConvert(f, q),
-    defaultQuality: 85,
-    canPreview: true,
-  },
-  "bmp-to-webp": {
-    accept: "image/bmp,.bmp",
-    acceptLabel: "BMP files",
-    convert: (f: File, q: number) => canvasConvert(f, q),
-    defaultQuality: 90,
-    canPreview: true,
-  },
-  "tiff-to-webp": {
-    accept: "image/tiff,.tiff,.tif",
-    acceptLabel: "TIFF / TIF files",
-    convert: (f: File, q: number) => canvasConvert(f, q),
-    defaultQuality: 90,
-    canPreview: false,
-  },
-  "svg-to-webp": {
-    accept: "image/svg+xml,.svg",
-    acceptLabel: "SVG files",
-    convert: svgConvert,
-    defaultQuality: 92,
-    canPreview: true,
-  },
-  "ico-to-webp": {
-    accept: "image/x-icon,image/vnd.microsoft.icon,.ico",
-    acceptLabel: "ICO files",
-    convert: (f: File, q: number) => canvasConvert(f, q),
-    defaultQuality: 92,
-    canPreview: false,
-  },
-  "jfif-to-webp": {
-    accept: "image/jpeg,.jfif",
-    acceptLabel: "JFIF files",
-    convert: (f: File, q: number) => canvasConvert(f, q),
-    defaultQuality: 85,
-    canPreview: true,
-  },
-  "pdf-to-webp": {
-    accept: "application/pdf,.pdf",
-    acceptLabel: "PDF files",
-    convert: (f: File, q: number) => canvasConvert(f, q),
-    defaultQuality: 90,
-    canPreview: false,
-  },
-  "webp-to-webp": {
-    accept: "image/webp,.webp",
-    acceptLabel: "WebP files",
-    convert: (f: File, q: number) => canvasConvert(f, q),
-    defaultQuality: 80,
-    canPreview: true,
-  },
-  "heic-to-webp": {
-    accept: ".heic,.heif,image/heic,image/heif",
-    acceptLabel: "HEIC / HEIF files",
-    convert: heicConvert,
-    defaultQuality: 85,
-    canPreview: false,
-  },
-} satisfies Record<ConvertType, {
-  accept: string;
-  acceptLabel: string;
-  convert: (f: File, q: number) => Promise<Blob>;
-  defaultQuality: number;
-  canPreview: boolean;
-}>;
+// ─── Config ───────────────────────────────────────────────────────────────────
 
-interface ConverterShellProps {
-  type: ConvertType;
-}
+type ConvertFn = (f: File, q: number, w?: number, h?: number) => Promise<Blob>;
 
-export default function ConverterShell({ type }: ConverterShellProps) {
-  const cfg = CONFIG[type];
-  const [file, setFile] = useState<File | null>(null);
-  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
-  const [quality, setQuality] = useState(cfg.defaultQuality);
-  const [convertState, setConvertState] = useState<ConvertState>("idle");
-  const [result, setResult] = useState<{ blob: Blob; url: string } | null>(null);
-  const [error, setError] = useState<string | null>(null);
-  const [dragging, setDragging] = useState(false);
-  const inputRef = useRef<HTMLInputElement>(null);
-  const resultUrlRef = useRef<string | null>(null);
+const CONFIG: Record<ConvertType, { accept: string; acceptLabel: string; canPreview: boolean; convert: ConvertFn }> = {
+  "png-to-webp":  { accept: "image/png,.png",                             acceptLabel: "PNG files",     canPreview: true,  convert: canvasConvert },
+  "jpg-to-webp":  { accept: "image/jpeg,.jpg,.jpeg",                      acceptLabel: "JPG / JPEG",    canPreview: true,  convert: canvasConvert },
+  "gif-to-webp":  { accept: "image/gif,.gif",                             acceptLabel: "GIF files",     canPreview: true,  convert: canvasConvert },
+  "avif-to-webp": { accept: "image/avif,.avif",                           acceptLabel: "AVIF files",    canPreview: true,  convert: canvasConvert },
+  "bmp-to-webp":  { accept: "image/bmp,.bmp",                             acceptLabel: "BMP files",     canPreview: true,  convert: canvasConvert },
+  "tiff-to-webp": { accept: "image/tiff,.tiff,.tif",                      acceptLabel: "TIFF / TIF",    canPreview: false, convert: canvasConvert },
+  "svg-to-webp":  { accept: "image/svg+xml,.svg",                         acceptLabel: "SVG files",     canPreview: true,  convert: svgConvert    },
+  "ico-to-webp":  { accept: "image/x-icon,image/vnd.microsoft.icon,.ico", acceptLabel: "ICO files",     canPreview: false, convert: canvasConvert },
+  "jfif-to-webp": { accept: "image/jpeg,.jfif",                           acceptLabel: "JFIF files",    canPreview: true,  convert: canvasConvert },
+  "pdf-to-webp":  { accept: "application/pdf,.pdf",                       acceptLabel: "PDF files",     canPreview: false, convert: canvasConvert },
+  "webp-to-webp": { accept: "image/webp,.webp",                           acceptLabel: "WebP files",    canPreview: true,  convert: canvasConvert },
+  "heic-to-webp": { accept: ".heic,.heif,image/heic,image/heif",          acceptLabel: "HEIC / HEIF",   canPreview: false, convert: heicConvert   },
+};
 
-  useEffect(() => {
-    return () => {
-      if (previewUrl) URL.revokeObjectURL(previewUrl);
-      if (resultUrlRef.current) URL.revokeObjectURL(resultUrlRef.current);
-    };
+// ─── Before / After modal ─────────────────────────────────────────────────────
+
+function BeforeAfterModal({ item, onClose }: { item: QueueItem; onClose: () => void }) {
+  const [pos, setPos] = useState(50);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const dragging = useRef(false);
+
+  const updatePos = useCallback((clientX: number) => {
+    if (!containerRef.current) return;
+    const rect = containerRef.current.getBoundingClientRect();
+    setPos(Math.max(0, Math.min(100, ((clientX - rect.left) / rect.width) * 100)));
   }, []);
 
-  const loadFile = useCallback(
-    (f: File) => {
-      if (previewUrl) URL.revokeObjectURL(previewUrl);
-      if (resultUrlRef.current) {
-        URL.revokeObjectURL(resultUrlRef.current);
-        resultUrlRef.current = null;
-      }
-      setFile(f);
-      setPreviewUrl(cfg.canPreview ? URL.createObjectURL(f) : null);
-      setConvertState("idle");
-      setResult(null);
-      setError(null);
-    },
-    [cfg.canPreview, previewUrl],
-  );
+  useEffect(() => {
+    const onMove = (e: MouseEvent) => { if (dragging.current) updatePos(e.clientX); };
+    const onTouch = (e: TouchEvent) => { if (dragging.current) updatePos(e.touches[0].clientX); };
+    const onUp = () => { dragging.current = false; };
+    window.addEventListener("mousemove", onMove);
+    window.addEventListener("touchmove", onTouch, { passive: true });
+    window.addEventListener("mouseup", onUp);
+    window.addEventListener("touchend", onUp);
+    return () => {
+      window.removeEventListener("mousemove", onMove);
+      window.removeEventListener("touchmove", onTouch);
+      window.removeEventListener("mouseup", onUp);
+      window.removeEventListener("touchend", onUp);
+    };
+  }, [updatePos]);
 
-  const handleDrop = useCallback(
-    (e: React.DragEvent) => {
-      e.preventDefault();
-      setDragging(false);
-      const f = e.dataTransfer.files[0];
-      if (f) loadFile(f);
-    },
-    [loadFile],
-  );
+  useEffect(() => {
+    const handler = (e: KeyboardEvent) => { if (e.key === "Escape") onClose(); };
+    window.addEventListener("keydown", handler);
+    return () => window.removeEventListener("keydown", handler);
+  }, [onClose]);
 
-  const reset = useCallback(() => {
-    if (previewUrl) URL.revokeObjectURL(previewUrl);
-    if (resultUrlRef.current) URL.revokeObjectURL(resultUrlRef.current);
-    resultUrlRef.current = null;
-    setFile(null);
-    setPreviewUrl(null);
-    setConvertState("idle");
-    setResult(null);
-    setError(null);
-  }, [previewUrl]);
-
-  const handleConvert = async () => {
-    if (!file) return;
-    setConvertState("converting");
-    setError(null);
-    try {
-      const blob = await cfg.convert(file, quality);
-      const url = URL.createObjectURL(blob);
-      resultUrlRef.current = url;
-      setResult({ blob, url });
-      setConvertState("done");
-    } catch (e) {
-      setError(e instanceof Error ? e.message : "Conversion failed");
-      setConvertState("error");
-    }
-  };
-
-  const handleDownload = () => {
-    if (!result || !file) return;
-    const a = document.createElement("a");
-    a.href = result.url;
-    a.download = file.name.replace(/\.[^.]+$/, "") + ".webp";
-    a.click();
-  };
-
-  const savings = result && file ? Math.round((1 - result.blob.size / file.size) * 100) : 0;
+  if (!item.previewUrl || !item.result) return null;
+  const savings = Math.round((1 - item.result.blob.size / item.file.size) * 100);
 
   return (
-    <div className="mx-auto w-full max-w-xl space-y-3">
-      {/* Drop zone */}
-      {!file && (
+    <div
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm"
+      onClick={onClose}
+    >
+      <div
+        ref={containerRef}
+        className="relative bg-neutral-950 rounded-2xl overflow-hidden cursor-ew-resize select-none shadow-2xl"
+        style={{ width: "min(90vw, 900px)", aspectRatio: "16/10" }}
+        onClick={(e) => e.stopPropagation()}
+        onMouseDown={(e) => { dragging.current = true; updatePos(e.clientX); }}
+        onTouchStart={(e) => { dragging.current = true; updatePos(e.touches[0].clientX); }}
+      >
+        {/* After image */}
+        <img
+          src={item.result.url} alt="After" draggable={false}
+          className="absolute inset-0 w-full h-full object-contain pointer-events-none"
+        />
+
+        {/* Before image clipped to left of slider */}
         <div
-          onDrop={handleDrop}
-          onDragOver={(e) => { e.preventDefault(); setDragging(true); }}
-          onDragLeave={() => setDragging(false)}
-          onClick={() => inputRef.current?.click()}
-          className={cn(
-            "flex cursor-pointer flex-col items-center justify-center gap-3 rounded-2xl border-2 border-dashed px-8 py-16 text-center transition-colors select-none",
-            dragging
-              ? "border-foreground/30 bg-neutral-50"
-              : "border-border hover:border-foreground/20 hover:bg-neutral-50/60",
-          )}
+          className="absolute inset-0 overflow-hidden pointer-events-none"
+          style={{ clipPath: `inset(0 ${100 - pos}% 0 0)` }}
         >
-          <div className="flex size-11 items-center justify-center rounded-xl bg-neutral-100 text-neutral-400">
-            <UploadSimple size={20} />
-          </div>
-          <div>
-            <p className="text-[14px] font-medium text-foreground">Drop your file here</p>
-            <p className="mt-0.5 text-[12px] text-muted-foreground">
-              or click to browse · {cfg.acceptLabel}
-            </p>
-          </div>
-          <input
-            ref={inputRef}
-            type="file"
-            accept={cfg.accept}
-            className="hidden"
-            onChange={(e) => {
-              const f = e.target.files?.[0];
-              if (f) loadFile(f);
-              e.target.value = "";
-            }}
+          <img
+            src={item.previewUrl} alt="Before" draggable={false}
+            className="absolute inset-0 w-full h-full object-contain"
           />
         </div>
-      )}
 
-      {/* File info card */}
-      {file && (
-        <div className="overflow-hidden rounded-2xl bg-white ring-1 ring-black/6 shadow-[0_4px_24px_-6px_rgba(0,0,0,0.10),0_1px_3px_rgba(0,0,0,0.06)]">
-          {previewUrl && (
-            <div className="relative h-44 w-full overflow-hidden bg-neutral-100">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                src={previewUrl}
-                alt=""
-                className="h-full w-full object-contain"
-              />
-            </div>
-          )}
-          {!previewUrl && (
-            <div className="flex h-24 items-center justify-center bg-neutral-50">
-              <UploadSimple size={28} className="text-neutral-300" />
-            </div>
-          )}
-          <div className="flex items-center justify-between gap-3 px-4 py-3">
-            <div className="min-w-0">
-              <p className="truncate text-[13px] font-medium text-foreground">{file.name}</p>
-              <p className="mt-0.5 text-[12px] text-muted-foreground">{formatBytes(file.size)}</p>
-            </div>
-            <button
-              onClick={reset}
-              className="shrink-0 rounded-full p-1.5 text-neutral-400 hover:bg-neutral-100 hover:text-neutral-600 transition-colors"
-              aria-label="Remove file"
-            >
-              <X size={13} />
-            </button>
+        {/* Divider line */}
+        <div
+          className="absolute top-0 bottom-0 w-0.5 bg-white shadow-[0_0_12px_rgba(255,255,255,0.5)] pointer-events-none"
+          style={{ left: `${pos}%` }}
+        >
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 size-9 rounded-full bg-white shadow-xl flex items-center justify-center">
+            <ArrowsHorizontal size={14} className="text-neutral-600" />
           </div>
         </div>
-      )}
 
-      {/* Quality slider */}
-      {file && convertState !== "done" && (
-        <div className="rounded-2xl bg-white px-4 py-3 ring-1 ring-black/6 shadow-[0_1px_3px_rgba(0,0,0,0.06)]">
-          <div className="flex items-center justify-between">
-            <span className="text-[12px] font-medium text-foreground">Quality</span>
-            <span className="text-[12px] tabular-nums text-muted-foreground">{quality}%</span>
-          </div>
-          <input
-            type="range"
-            min={50}
-            max={100}
-            value={quality}
-            onChange={(e) => setQuality(Number(e.target.value))}
-            className="mt-2 w-full h-1.5 cursor-pointer accent-foreground"
-          />
+        {/* Labels */}
+        <div className="absolute top-3 left-3 bg-black/60 text-white text-[11px] px-2.5 py-1 rounded-full backdrop-blur-sm pointer-events-none">
+          Before · {formatBytes(item.file.size)}
         </div>
-      )}
+        <div className="absolute top-3 right-3 bg-black/60 text-white text-[11px] px-2.5 py-1 rounded-full backdrop-blur-sm pointer-events-none">
+          After · {formatBytes(item.result.blob.size)}{savings > 0 ? ` · ${savings}% smaller` : ""}
+        </div>
 
-      {/* Convert button */}
-      {file && convertState !== "done" && (
-        <SoftPillButton
-          variant="primary"
-          onClick={handleConvert}
-          disabled={convertState === "converting"}
-          className="w-full h-10 text-[13px]"
+        <button
+          onClick={onClose}
+          className="absolute bottom-3 left-1/2 -translate-x-1/2 bg-black/60 text-white text-[12px] px-4 py-1.5 rounded-full backdrop-blur-sm hover:bg-black/80 transition-colors"
         >
-          {convertState === "converting" ? (
-            <>
-              <CircleNotch size={13} className="animate-spin" />
-              Converting…
-            </>
-          ) : (
-            "Convert to WebP"
-          )}
-        </SoftPillButton>
-      )}
+          Close
+        </button>
+      </div>
+    </div>
+  );
+}
 
-      {/* Error */}
-      {convertState === "error" && error && (
-        <p className="rounded-xl bg-red-50 px-4 py-3 text-[13px] text-red-600 ring-1 ring-red-100">
-          {error}
-        </p>
-      )}
+// ─── Presets / quality mapping ────────────────────────────────────────────────
 
-      {/* Result */}
-      {convertState === "done" && result && file && (
-        <motion.div
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ type: "spring", stiffness: 320, damping: 28 }}
-          className="overflow-hidden rounded-2xl bg-white ring-1 ring-black/6 shadow-[0_4px_24px_-6px_rgba(0,0,0,0.10),0_1px_3px_rgba(0,0,0,0.06)]"
-        >
-          {cfg.canPreview && (
-            <div className="relative h-44 w-full overflow-hidden bg-neutral-100">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src={result.url} alt="" className="h-full w-full object-contain" />
-            </div>
-          )}
-          <div className="p-4 space-y-3">
-            <div className="flex items-center gap-2">
-              <div className="flex size-6 items-center justify-center rounded-full bg-emerald-100 text-emerald-600">
-                <Check size={11} weight="bold" />
+const PRESETS = [
+  { label: "Web",      quality: 80 },
+  { label: "Balanced", quality: 88 },
+  { label: "High",     quality: 94 },
+] as const;
+
+const Q_MIN = 60, Q_MAX = 95;
+const qualityToSlider = (q: number) => Math.round(((q - Q_MIN) / (Q_MAX - Q_MIN)) * 100);
+const sliderToQuality = (s: number) => Math.round(Q_MIN + (s / 100) * (Q_MAX - Q_MIN));
+
+// ─── Main component ───────────────────────────────────────────────────────────
+
+export default function ConverterShell({ type }: { type: ConvertType }) {
+  const cfg = CONFIG[type];
+  const inputRef = useRef<HTMLInputElement>(null);
+  const abortRef = useRef(false);
+
+  const [files, setFiles] = useState<QueueItem[]>([]);
+  const [converting, setConverting] = useState(false);
+  const [compareItemId, setCompareItemId] = useState<string | null>(null);
+  const [draggedId, setDraggedId] = useState<string | null>(null);
+  const [dragOverId, setDragOverId] = useState<string | null>(null);
+  const [dropDragging, setDropDragging] = useState(false);
+
+  const [settings, setSettings] = useState<Settings>({
+    quality: 88,
+    width: "",
+    height: "",
+    namingMode: "original",
+    prefix: "image",
+    sizeCapKB: "",
+    stripMeta: true,
+  });
+
+  // ── File management ──────────────────────────────────────────────────────────
+
+  const addFiles = useCallback(
+    (incoming: FileList | File[]) => {
+      const items: QueueItem[] = Array.from(incoming).map((f) => ({
+        id: crypto.randomUUID(),
+        file: f,
+        previewUrl: cfg.canPreview ? URL.createObjectURL(f) : null,
+        status: "queued" as FileStatus,
+        result: null,
+        error: null,
+      }));
+      setFiles((prev) => [...prev, ...items]);
+    },
+    [cfg.canPreview],
+  );
+
+  const removeFile = useCallback((id: string) => {
+    setFiles((prev) => {
+      const item = prev.find((f) => f.id === id);
+      if (item?.previewUrl) URL.revokeObjectURL(item.previewUrl);
+      if (item?.result?.url) URL.revokeObjectURL(item.result.url);
+      return prev.filter((f) => f.id !== id);
+    });
+  }, []);
+
+  const retryFile = useCallback((id: string) => {
+    setFiles((prev) => prev.map((f) => f.id === id ? { ...f, status: "queued", error: null } : f));
+  }, []);
+
+  const clearAll = useCallback(() => {
+    setFiles((prev) => {
+      prev.forEach((item) => {
+        if (item.previewUrl) URL.revokeObjectURL(item.previewUrl);
+        if (item.result?.url) URL.revokeObjectURL(item.result.url);
+      });
+      return [];
+    });
+  }, []);
+
+  // Cleanup on unmount
+  useEffect(() => {
+    const current = files;
+    return () => {
+      current.forEach((item) => {
+        if (item.previewUrl) URL.revokeObjectURL(item.previewUrl);
+        if (item.result?.url) URL.revokeObjectURL(item.result.url);
+      });
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  // ── Conversion ───────────────────────────────────────────────────────────────
+
+  const handleConvert = useCallback(async () => {
+    const queued = files.filter((f) => f.status === "queued");
+    if (queued.length === 0 || converting) return;
+    setConverting(true);
+    abortRef.current = false;
+
+    const targetW = settings.width ? parseInt(settings.width) : undefined;
+    const targetH = settings.height ? parseInt(settings.height) : undefined;
+
+    for (const item of queued) {
+      if (abortRef.current) break;
+      setFiles((prev) => prev.map((f) => f.id === item.id ? { ...f, status: "converting" } : f));
+      try {
+        const blob = await cfg.convert(item.file, settings.quality, targetW, targetH);
+        const url = URL.createObjectURL(blob);
+        setFiles((prev) =>
+          prev.map((f) => f.id === item.id ? { ...f, status: "done", result: { blob, url } } : f),
+        );
+      } catch (e) {
+        setFiles((prev) =>
+          prev.map((f) =>
+            f.id === item.id
+              ? { ...f, status: "error", error: e instanceof Error ? e.message : "Conversion failed" }
+              : f,
+          ),
+        );
+      }
+    }
+    setConverting(false);
+  }, [files, converting, settings, cfg]);
+
+  // ── Keyboard shortcuts ───────────────────────────────────────────────────────
+
+  useEffect(() => {
+    const handler = (e: KeyboardEvent) => {
+      if (e.target instanceof HTMLInputElement || e.target instanceof HTMLTextAreaElement) return;
+      if (e.key === "Escape" && converting) { abortRef.current = true; }
+      if (e.key === "Enter" && !converting) { handleConvert(); }
+    };
+    window.addEventListener("keydown", handler);
+    return () => window.removeEventListener("keydown", handler);
+  }, [converting, handleConvert]);
+
+  // ── Download ─────────────────────────────────────────────────────────────────
+
+  const getOutputName = useCallback(
+    (item: QueueItem, queueIndex: number) => {
+      const base = item.file.name.replace(/\.[^.]+$/, "");
+      const num = queueIndex + 1;
+      return settings.namingMode === "original"
+        ? `${base}_${num}.webp`
+        : `${settings.prefix || "image"}_${num}.webp`;
+    },
+    [settings.namingMode, settings.prefix],
+  );
+
+  const downloadOne = useCallback(
+    (item: QueueItem) => {
+      if (!item.result) return;
+      const idx = files.indexOf(item);
+      const a = document.createElement("a");
+      a.href = item.result.url;
+      a.download = getOutputName(item, idx);
+      a.click();
+    },
+    [files, getOutputName],
+  );
+
+  const downloadZip = useCallback(async () => {
+    const done = files.filter((f) => f.status === "done" && f.result);
+    if (!done.length) return;
+    const { default: JSZip } = await import("jszip");
+    const zip = new JSZip();
+    done.forEach((item) => {
+      zip.file(getOutputName(item, files.indexOf(item)), item.result!.blob);
+    });
+    const blob = await zip.generateAsync({ type: "blob" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "converted.zip";
+    a.click();
+    URL.revokeObjectURL(url);
+  }, [files, getOutputName]);
+
+  // ── Drag-to-reorder ──────────────────────────────────────────────────────────
+
+  const onItemDragStart = (id: string) => setDraggedId(id);
+  const onItemDragEnd = () => { setDraggedId(null); setDragOverId(null); };
+  const onItemDragOver = (e: React.DragEvent, id: string) => { e.preventDefault(); setDragOverId(id); };
+  const onItemDrop = (targetId: string) => {
+    if (!draggedId || draggedId === targetId) return;
+    setFiles((prev) => {
+      const from = prev.findIndex((f) => f.id === draggedId);
+      const to = prev.findIndex((f) => f.id === targetId);
+      if (from === -1 || to === -1) return prev;
+      const next = [...prev];
+      const [moved] = next.splice(from, 1);
+      next.splice(to, 0, moved);
+      return next;
+    });
+    setDraggedId(null);
+    setDragOverId(null);
+  };
+
+  // ── Helpers ──────────────────────────────────────────────────────────────────
+
+  const capKB = settings.sizeCapKB ? parseFloat(settings.sizeCapKB) : null;
+  const exceedsCap = (item: QueueItem) =>
+    capKB !== null && item.result !== null && item.result.blob.size > capKB * 1024;
+
+  const doneCount = files.filter((f) => f.status === "done").length;
+  const queuedCount = files.filter((f) => f.status === "queued").length;
+  const compareItem = compareItemId ? (files.find((f) => f.id === compareItemId) ?? null) : null;
+
+  // ── Render ───────────────────────────────────────────────────────────────────
+
+  return (
+    <div className="-mx-6 sm:-mx-10 overflow-x-auto">
+      <div className="flex min-w-[680px] h-[calc(100vh-220px)] min-h-[580px] overflow-hidden rounded-2xl ring-1 ring-black/6 shadow-[0_4px_24px_-6px_rgba(0,0,0,0.10),0_1px_3px_rgba(0,0,0,0.06)] bg-white">
+
+        {/* ── Settings panel ──────────────────────────────────────────────────── */}
+        <div className="w-[216px] shrink-0 flex flex-col border-r border-border">
+          <div className="flex-1 overflow-y-auto p-4 space-y-5">
+
+            {/* Presets */}
+            <div>
+              <p className="text-[10px] font-semibold uppercase tracking-widest text-muted-foreground mb-2">Preset</p>
+              <div className="flex gap-1">
+                {PRESETS.map((p) => (
+                  <button
+                    key={p.label}
+                    onClick={() => setSettings((s) => ({ ...s, quality: p.quality }))}
+                    className={cn(
+                      "flex-1 rounded-lg py-1.5 text-[11px] font-medium transition-colors",
+                      settings.quality === p.quality
+                        ? "bg-neutral-900 text-white"
+                        : "bg-neutral-100 text-neutral-600 hover:bg-neutral-200",
+                    )}
+                  >
+                    {p.label}
+                  </button>
+                ))}
               </div>
-              <span className="text-[13px] font-medium text-foreground">Converted successfully</span>
             </div>
 
-            <div className="flex items-center justify-between rounded-xl bg-neutral-50 px-3 py-2.5 text-[12px]">
-              <span className="text-muted-foreground">
-                {formatBytes(file.size)} → {formatBytes(result.blob.size)}
-              </span>
-              {savings > 0 ? (
-                <span className="font-medium text-emerald-600">{savings}% smaller</span>
+            {/* Quality bar */}
+            <div>
+              <div className="flex items-center justify-between mb-1.5">
+                <p className="text-[10px] font-semibold uppercase tracking-widest text-muted-foreground">Quality</p>
+                <span className="text-[11px] tabular-nums text-muted-foreground">{settings.quality}%</span>
+              </div>
+              <input
+                type="range" min={0} max={100}
+                value={qualityToSlider(settings.quality)}
+                onChange={(e) => setSettings((s) => ({ ...s, quality: sliderToQuality(Number(e.target.value)) }))}
+                className="w-full h-1.5 cursor-pointer accent-foreground"
+              />
+              <div className="flex justify-between mt-1">
+                <span className="text-[10px] text-muted-foreground/60">Smaller</span>
+                <span className="text-[10px] text-muted-foreground/60">Higher quality</span>
+              </div>
+            </div>
+
+            {/* Dimensions */}
+            <div>
+              <p className="text-[10px] font-semibold uppercase tracking-widest text-muted-foreground mb-2">Dimensions (px)</p>
+              <div className="flex gap-2">
+                <div className="flex-1">
+                  <p className="text-[10px] text-muted-foreground/70 mb-1">W</p>
+                  <input
+                    type="number" min={1} placeholder="Auto"
+                    value={settings.width}
+                    onChange={(e) => setSettings((s) => ({ ...s, width: e.target.value }))}
+                    className="w-full rounded-lg border border-border bg-neutral-50 px-2 py-1.5 text-[12px] text-foreground outline-none focus:border-foreground/30 focus:bg-white transition-colors"
+                  />
+                </div>
+                <div className="flex-1">
+                  <p className="text-[10px] text-muted-foreground/70 mb-1">H</p>
+                  <input
+                    type="number" min={1} placeholder="Auto"
+                    value={settings.height}
+                    onChange={(e) => setSettings((s) => ({ ...s, height: e.target.value }))}
+                    className="w-full rounded-lg border border-border bg-neutral-50 px-2 py-1.5 text-[12px] text-foreground outline-none focus:border-foreground/30 focus:bg-white transition-colors"
+                  />
+                </div>
+              </div>
+              <p className="text-[10px] text-muted-foreground/50 mt-1 leading-tight">One field = aspect ratio preserved.</p>
+            </div>
+
+            {/* Naming */}
+            <div>
+              <p className="text-[10px] font-semibold uppercase tracking-widest text-muted-foreground mb-2">File naming</p>
+              <div className="space-y-2">
+                <label className="flex items-center gap-2 cursor-pointer">
+                  <input
+                    type="radio" name={`naming-${type}`} value="original"
+                    checked={settings.namingMode === "original"}
+                    onChange={() => setSettings((s) => ({ ...s, namingMode: "original" }))}
+                    className="accent-foreground"
+                  />
+                  <span className="text-[12px] text-foreground">Original + number</span>
+                </label>
+                <label className="flex items-center gap-2 cursor-pointer">
+                  <input
+                    type="radio" name={`naming-${type}`} value="prefix"
+                    checked={settings.namingMode === "prefix"}
+                    onChange={() => setSettings((s) => ({ ...s, namingMode: "prefix" }))}
+                    className="accent-foreground"
+                  />
+                  <span className="text-[12px] text-foreground">Custom prefix</span>
+                </label>
+                {settings.namingMode === "prefix" && (
+                  <input
+                    type="text" placeholder="image"
+                    value={settings.prefix}
+                    onChange={(e) => setSettings((s) => ({ ...s, prefix: e.target.value }))}
+                    className="w-full rounded-lg border border-border bg-neutral-50 px-2 py-1.5 text-[12px] text-foreground outline-none focus:border-foreground/30 focus:bg-white transition-colors"
+                  />
+                )}
+              </div>
+            </div>
+
+            {/* Size cap */}
+            <div>
+              <p className="text-[10px] font-semibold uppercase tracking-widest text-muted-foreground mb-2">Size cap</p>
+              <div className="flex items-center gap-1.5">
+                <input
+                  type="number" min={1} placeholder="e.g. 300"
+                  value={settings.sizeCapKB}
+                  onChange={(e) => setSettings((s) => ({ ...s, sizeCapKB: e.target.value }))}
+                  className="flex-1 min-w-0 rounded-lg border border-border bg-neutral-50 px-2 py-1.5 text-[12px] text-foreground outline-none focus:border-foreground/30 focus:bg-white transition-colors"
+                />
+                <span className="text-[12px] text-muted-foreground shrink-0">KB</span>
+              </div>
+              <p className="text-[10px] text-muted-foreground/50 mt-1 leading-tight">Files over this are flagged red.</p>
+            </div>
+
+            {/* Strip metadata */}
+            <label className="flex items-center gap-2 cursor-pointer select-none">
+              <input
+                type="checkbox"
+                checked={settings.stripMeta}
+                onChange={(e) => setSettings((s) => ({ ...s, stripMeta: e.target.checked }))}
+                className="accent-foreground size-3.5"
+              />
+              <span className="text-[12px] text-foreground">Strip metadata</span>
+            </label>
+
+          </div>
+
+          {/* Sticky action buttons */}
+          <div className="p-3 border-t border-border space-y-2 shrink-0">
+            <SoftPillButton
+              variant="primary"
+              onClick={converting ? () => { abortRef.current = true; } : handleConvert}
+              disabled={!files.length || (!converting && queuedCount === 0)}
+              className="w-full h-9 text-[12px]"
+            >
+              {converting ? (
+                <><CircleNotch size={12} className="animate-spin" />Stop (Esc)</>
               ) : (
-                <span className="font-medium text-amber-600">{Math.abs(savings)}% larger</span>
+                <>Optimize Now{queuedCount > 0 && <span className="opacity-60 ml-1">({queuedCount})</span>}</>
+              )}
+            </SoftPillButton>
+            {doneCount > 0 && (
+              <SoftPillButton
+                variant="secondary"
+                onClick={downloadZip}
+                className="w-full h-9 text-[12px]"
+              >
+                <DownloadSimple size={12} />
+                Download ZIP ({doneCount})
+              </SoftPillButton>
+            )}
+            <p className="text-center text-[10px] text-muted-foreground/50">Enter to start · Esc to stop</p>
+          </div>
+        </div>
+
+        {/* ── Queue panel ─────────────────────────────────────────────────────── */}
+        <div className="flex-1 flex flex-col overflow-hidden">
+
+          {/* Queue header */}
+          <div className="flex items-center justify-between px-4 py-2.5 border-b border-border shrink-0">
+            <div className="flex items-center gap-3 text-[12px]">
+              <span className="font-medium text-foreground">
+                {files.length > 0 ? `${files.length} file${files.length !== 1 ? "s" : ""}` : "Queue"}
+              </span>
+              {doneCount > 0 && <span className="text-emerald-600">{doneCount} done</span>}
+              {queuedCount > 0 && <span className="text-muted-foreground">{queuedCount} queued</span>}
+            </div>
+            <div className="flex items-center gap-3">
+              <button
+                onClick={() => inputRef.current?.click()}
+                className="text-[12px] text-muted-foreground hover:text-foreground transition-colors"
+              >
+                + Add files
+              </button>
+              {files.length > 0 && (
+                <button
+                  onClick={clearAll}
+                  className="text-[12px] text-muted-foreground hover:text-red-500 transition-colors"
+                >
+                  Clear all
+                </button>
               )}
             </div>
-
-            <div className="flex gap-2">
-              <SoftPillButton variant="primary" onClick={handleDownload} className="flex-1 h-9 text-[13px]">
-                Download .webp
-              </SoftPillButton>
-              <SoftPillButton variant="secondary" onClick={reset} className="h-9 px-4 text-[13px]">
-                Convert another
-              </SoftPillButton>
-            </div>
           </div>
-        </motion.div>
+
+          {/* File list / empty drop zone */}
+          <div
+            className={cn(
+              "flex-1 overflow-y-auto",
+              dropDragging && "bg-neutral-50",
+            )}
+            onDragOver={(e) => { e.preventDefault(); setDropDragging(true); }}
+            onDragLeave={(e) => {
+              if (!e.currentTarget.contains(e.relatedTarget as Node)) setDropDragging(false);
+            }}
+            onDrop={(e) => {
+              e.preventDefault();
+              setDropDragging(false);
+              if (e.dataTransfer.files.length) addFiles(e.dataTransfer.files);
+            }}
+          >
+            {files.length === 0 ? (
+              <div
+                className="flex h-full cursor-pointer flex-col items-center justify-center gap-3 m-3 rounded-xl border-2 border-dashed border-border text-center transition-colors hover:border-foreground/20 hover:bg-neutral-50/60"
+                onClick={() => inputRef.current?.click()}
+              >
+                <div className="flex size-11 items-center justify-center rounded-xl bg-neutral-100 text-neutral-400">
+                  <UploadSimple size={20} />
+                </div>
+                <div>
+                  <p className="text-[14px] font-medium text-foreground">Drop files here</p>
+                  <p className="mt-0.5 text-[12px] text-muted-foreground">or click to browse · {cfg.acceptLabel}</p>
+                </div>
+              </div>
+            ) : (
+              <div className="p-3 space-y-1.5">
+                {files.map((item, index) => {
+                  const flagged = exceedsCap(item);
+                  const savings = item.result
+                    ? Math.round((1 - item.result.blob.size / item.file.size) * 100)
+                    : null;
+                  return (
+                    <div
+                      key={item.id}
+                      draggable
+                      onDragStart={() => onItemDragStart(item.id)}
+                      onDragEnd={onItemDragEnd}
+                      onDragOver={(e) => onItemDragOver(e, item.id)}
+                      onDrop={() => onItemDrop(item.id)}
+                      className={cn(
+                        "flex items-center gap-2.5 rounded-xl px-2.5 py-2 transition-all",
+                        "bg-white ring-1 ring-black/5",
+                        item.id === dragOverId && "ring-2 ring-foreground/20 translate-y-px",
+                        item.id === draggedId && "opacity-40",
+                        flagged && "ring-2 ring-red-400/50 bg-red-50/40",
+                      )}
+                    >
+                      {/* Drag handle */}
+                      <DotsSixVertical
+                        size={14}
+                        className="shrink-0 text-neutral-300 cursor-grab active:cursor-grabbing"
+                      />
+
+                      {/* Thumbnail */}
+                      {item.previewUrl ? (
+                        // eslint-disable-next-line @next/next/no-img-element
+                        <img
+                          src={item.previewUrl} alt=""
+                          className="size-9 rounded-md object-cover shrink-0 bg-neutral-100"
+                        />
+                      ) : (
+                        <div className="size-9 rounded-md bg-neutral-100 shrink-0 flex items-center justify-center">
+                          <UploadSimple size={12} className="text-neutral-300" />
+                        </div>
+                      )}
+
+                      {/* Info */}
+                      <div className="flex-1 min-w-0">
+                        <p className="truncate text-[12px] font-medium text-foreground leading-tight">
+                          {getOutputName(item, index)}
+                        </p>
+                        <p className="text-[11px] text-muted-foreground leading-tight mt-0.5">
+                          {formatBytes(item.file.size)}
+                          {item.status === "done" && item.result && (
+                            <>
+                              {" → "}{formatBytes(item.result.blob.size)}
+                              {" · "}
+                              <span className={savings !== null && savings > 0 ? "text-emerald-600" : "text-amber-600"}>
+                                {savings !== null && savings > 0
+                                  ? `${savings}% smaller`
+                                  : `${savings !== null ? Math.abs(savings) : 0}% larger`}
+                              </span>
+                              {flagged && <span className="text-red-500"> · over cap</span>}
+                            </>
+                          )}
+                          {item.status === "error" && (
+                            <span className="text-red-500"> · {item.error}</span>
+                          )}
+                        </p>
+                      </div>
+
+                      {/* Status & actions */}
+                      <div className="flex items-center gap-1 shrink-0">
+                        {item.status === "converting" && (
+                          <CircleNotch size={13} className="animate-spin text-neutral-400" />
+                        )}
+                        {item.status === "queued" && (
+                          <span className="text-[10px] text-muted-foreground/50 pr-1">queued</span>
+                        )}
+                        {item.status === "done" && (
+                          <>
+                            <Check size={13} className="text-emerald-500 mr-0.5" />
+                            {item.previewUrl && (
+                              <button
+                                onClick={() => setCompareItemId(item.id)}
+                                title="Compare before/after"
+                                className="rounded-md p-1 text-neutral-400 hover:bg-neutral-100 hover:text-neutral-600 transition-colors"
+                              >
+                                <ArrowsHorizontal size={13} />
+                              </button>
+                            )}
+                            <button
+                              onClick={() => downloadOne(item)}
+                              title="Download"
+                              className="rounded-md p-1 text-neutral-400 hover:bg-neutral-100 hover:text-neutral-600 transition-colors"
+                            >
+                              <DownloadSimple size={13} />
+                            </button>
+                          </>
+                        )}
+                        {item.status === "error" && (
+                          <button
+                            onClick={() => retryFile(item.id)}
+                            title="Retry"
+                            className="rounded-md p-1 text-neutral-400 hover:bg-neutral-100 hover:text-red-500 transition-colors"
+                          >
+                            <ArrowCounterClockwise size={13} />
+                          </button>
+                        )}
+                        <button
+                          onClick={() => removeFile(item.id)}
+                          aria-label="Remove"
+                          className="rounded-md p-1 text-neutral-300 hover:bg-neutral-100 hover:text-neutral-500 transition-colors"
+                        >
+                          <X size={12} />
+                        </button>
+                      </div>
+                    </div>
+                  );
+                })}
+
+                {/* Add more strip at bottom of list */}
+                <div
+                  className="flex cursor-pointer items-center justify-center gap-2 rounded-xl border border-dashed border-border py-2.5 text-[12px] text-muted-foreground hover:bg-neutral-50/60 hover:border-foreground/20 transition-colors"
+                  onClick={() => inputRef.current?.click()}
+                >
+                  <UploadSimple size={13} />
+                  Add more {cfg.acceptLabel}
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
+
+      {/* Hidden file input */}
+      <input
+        ref={inputRef}
+        type="file"
+        multiple
+        accept={cfg.accept}
+        className="hidden"
+        onChange={(e) => {
+          if (e.target.files?.length) addFiles(e.target.files);
+          e.target.value = "";
+        }}
+      />
+
+      {/* Before/After modal */}
+      {compareItem && (
+        <BeforeAfterModal item={compareItem} onClose={() => setCompareItemId(null)} />
       )}
     </div>
   );
