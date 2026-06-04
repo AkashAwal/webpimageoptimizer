@@ -28,7 +28,7 @@ const baseUnderline =
 
 function navLinkClass(active: boolean) {
   return cn(
-    "text-[13px] font-semibold tracking-tight transition-colors px-2.5 py-1",
+    "text-[13px] font-semibold tracking-tight transition-colors py-1",
     baseUnderline,
     active
       ? "text-foreground after:scale-x-100"
@@ -54,7 +54,7 @@ function NavLinks({ menuOpen, onClose }: { menuOpen: boolean; onClose: () => voi
   return (
     <>
       {/* Desktop nav — centered */}
-      <nav className="hidden sm:flex absolute left-1/2 -translate-x-1/2 items-center gap-0.5">
+      <nav className="hidden sm:flex absolute left-1/2 -translate-x-1/2 items-center gap-4">
         {CATEGORY_LINKS.map((link) => (
           <Link
             key={link.href}
