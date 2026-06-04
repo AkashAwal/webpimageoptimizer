@@ -34,11 +34,15 @@ export default function WatermarkPdfClient() {
           <div className="grid grid-cols-2 gap-3">
             <div>
               <p className="text-[10px] font-semibold uppercase tracking-widest text-muted-foreground mb-1.5">Position</p>
-              <div className="grid grid-cols-3 gap-0.5 w-fit">
+              <div className="grid grid-cols-3 grid-rows-3 gap-0.5 w-fit">
                 {POSITIONS.map(p => (
                   <button key={p.id} onClick={() => setPosition(p.id)}
                     className={cn("size-7 rounded flex items-center justify-center text-[13px] transition-colors",
-                      p.id === "center" && "col-start-2",
+                      p.id === "top-left"     && "col-start-1 row-start-1",
+                      p.id === "top-right"    && "col-start-3 row-start-1",
+                      p.id === "center"       && "col-start-2 row-start-2",
+                      p.id === "bottom-left"  && "col-start-1 row-start-3",
+                      p.id === "bottom-right" && "col-start-3 row-start-3",
                       position === p.id ? "bg-neutral-900 text-white" : "bg-neutral-100 text-neutral-500 hover:bg-neutral-200")}>
                     {p.label}
                   </button>
