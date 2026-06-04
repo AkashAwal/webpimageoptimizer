@@ -112,7 +112,7 @@ export default function CropPdfClient() {
       )}
 
       {/* Right: tool card */}
-      <div className="flex-none w-[40rem] aspect-square overflow-hidden rounded-2xl ring-1 ring-black/6 shadow-[0_4px_24px_-6px_rgba(0,0,0,0.10),0_1px_3px_rgba(0,0,0,0.06)] bg-white flex flex-col">
+      <div className="flex-none w-[40rem] overflow-hidden rounded-2xl ring-1 ring-black/6 shadow-[0_4px_24px_-6px_rgba(0,0,0,0.10),0_1px_3px_rgba(0,0,0,0.06)] bg-white">
         <div className="flex items-center gap-2.5 px-4 py-2.5 border-b border-border bg-neutral-50/60">
           <Link href="/" className="flex items-center gap-1 text-[12px] text-muted-foreground hover:text-foreground transition-colors shrink-0">
             <CaretLeft size={11} weight="bold" />All tools
@@ -121,7 +121,7 @@ export default function CropPdfClient() {
           <h1 className="text-[13px] font-semibold text-foreground">Crop PDF</h1>
         </div>
 
-        <div className="p-4 space-y-3 flex-1 flex flex-col overflow-y-auto">
+        <div className="p-4 space-y-3">
           {!file ? (
             <div
               className="flex flex-col items-center justify-center gap-3 rounded-xl border-2 border-dashed border-border aspect-[100/81] cursor-pointer hover:border-foreground/20 hover:bg-neutral-50/60 transition-colors"
