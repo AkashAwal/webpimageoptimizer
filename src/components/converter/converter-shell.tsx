@@ -461,7 +461,7 @@ export default function ConverterShell({ type }: { type: ConvertType }) {
           {/* File list / empty drop zone */}
           <div
             className={cn(
-              "flex-1 overflow-y-auto",
+              "flex-1 flex flex-col overflow-hidden",
               dropDragging && "bg-neutral-50",
             )}
             onDragOver={(e) => { e.preventDefault(); setDropDragging(true); }}
@@ -476,7 +476,7 @@ export default function ConverterShell({ type }: { type: ConvertType }) {
           >
             {files.length === 0 ? (
               <div
-                className="flex h-full cursor-pointer flex-col items-center justify-center gap-3 m-3 rounded-xl border-2 border-dashed border-border text-center transition-colors hover:border-foreground/20 hover:bg-neutral-50/60"
+                className="flex flex-1 cursor-pointer flex-col items-center justify-center gap-3 m-3 rounded-xl border-2 border-dashed border-border text-center transition-colors hover:border-foreground/20 hover:bg-neutral-50/60"
                 onClick={() => inputRef.current?.click()}
               >
                 <div className="flex size-11 items-center justify-center rounded-xl bg-neutral-100 text-neutral-400">
@@ -488,7 +488,7 @@ export default function ConverterShell({ type }: { type: ConvertType }) {
                 </div>
               </div>
             ) : (
-              <div className="p-3 space-y-1.5">
+              <div className="flex-1 overflow-y-auto p-3 space-y-1.5">
                 {files.map((item, index) => {
                   const flagged = exceedsCap(item);
                   const savings = item.result
