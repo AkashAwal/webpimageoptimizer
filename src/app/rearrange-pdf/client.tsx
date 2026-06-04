@@ -106,7 +106,7 @@ export default function RearrangePdfClient() {
           onDrop={e => { e.preventDefault(); const f = e.dataTransfer.files[0]; if (f) loadFile(f); }}
         >
           <div className="text-center space-y-3 max-w-lg">
-            <h2 className="text-5xl font-bold tracking-tight text-foreground">Manage PDF Pages</h2>
+            <h2 className="text-5xl font-bold tracking-tight text-foreground">Remove or Rearrange Pages</h2>
             <p className="text-[18px] text-muted-foreground">Drag to reorder and click × to remove pages — all in one view.</p>
           </div>
           <button
@@ -130,7 +130,7 @@ export default function RearrangePdfClient() {
                 <CaretLeft size={11} weight="bold" />All tools
               </Link>
               <span>/</span>
-              <span className="text-foreground font-medium">Manage PDF Pages</span>
+              <span className="text-foreground font-medium">Remove or Rearrange Pages</span>
               {pages.length > 0 && (
                 <span className="text-muted-foreground">
                   — {activeCount} page{activeCount !== 1 ? "s" : ""}
@@ -197,7 +197,7 @@ export default function RearrangePdfClient() {
           {/* Right: sticky sidebar — instructions */}
           <div className="w-80 shrink-0 border-l border-border bg-white sticky top-16 h-[calc(100vh-4rem)] flex flex-col p-6 gap-4 overflow-y-auto">
             <div className="flex items-center justify-between">
-              <h2 className="text-xl font-bold tracking-tight text-foreground">Manage Pages</h2>
+              <h2 className="text-xl font-bold tracking-tight text-foreground">Remove or Rearrange Pages</h2>
               <button onClick={() => { setFile(null); setPages([]); setResult(null); }}
                 className="rounded-lg p-1.5 text-neutral-400 hover:bg-red-50 hover:text-red-500 transition-colors">
                 <X size={13} />
