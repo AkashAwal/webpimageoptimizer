@@ -443,9 +443,10 @@ export default function ConverterShell({ type }: { type: ConvertType }) {
             <div className="flex items-center gap-3">
               <button
                 onClick={() => inputRef.current?.click()}
-                className="text-[12px] text-muted-foreground hover:text-foreground transition-colors"
+                className="inline-flex items-center gap-1 rounded-full bg-neutral-100 px-2.5 py-1 text-[12px] font-medium text-neutral-600 hover:bg-neutral-200 transition-colors"
               >
-                + Add files
+                <UploadSimple size={12} />
+                Add files
               </button>
               {files.length > 0 && (
                 <button
@@ -476,15 +477,40 @@ export default function ConverterShell({ type }: { type: ConvertType }) {
           >
             {files.length === 0 ? (
               <div
-                className="flex flex-1 cursor-pointer flex-col items-center justify-center gap-3 m-3 rounded-xl border-2 border-dashed border-border text-center transition-colors hover:border-foreground/20 hover:bg-neutral-50/60"
+                className="flex flex-1 cursor-pointer flex-col items-center justify-center gap-4 m-3 rounded-xl border-2 border-dashed border-border text-center transition-colors hover:border-foreground/20 hover:bg-neutral-50/60"
                 onClick={() => inputRef.current?.click()}
               >
-                <div className="flex size-11 items-center justify-center rounded-xl bg-neutral-100 text-neutral-400">
-                  <UploadSimple size={20} />
+                {/* Stacked icons to suggest multiple files */}
+                <div className="relative">
+                  <div className="absolute -top-1.5 -right-1.5 flex size-8 items-center justify-center rounded-lg bg-neutral-200 text-neutral-500">
+                    <UploadSimple size={14} />
+                  </div>
+                  <div className="absolute -top-0.5 -right-0.5 flex size-8 items-center justify-center rounded-lg bg-neutral-150 text-neutral-500 opacity-60">
+                    <UploadSimple size={14} />
+                  </div>
+                  <div className="flex size-11 items-center justify-center rounded-xl bg-neutral-100 text-neutral-500 relative z-10">
+                    <UploadSimple size={20} />
+                  </div>
                 </div>
+
                 <div>
-                  <p className="text-[14px] font-medium text-foreground">Drop files here</p>
-                  <p className="mt-0.5 text-[12px] text-muted-foreground">or click to browse · {cfg.acceptLabel}</p>
+                  <p className="text-[15px] font-semibold text-foreground">Drop your files here</p>
+                  <p className="mt-1 text-[12px] text-muted-foreground">
+                    Drag in one file or a whole batch · click to multi-select
+                  </p>
+                  <p className="mt-0.5 text-[11px] text-muted-foreground/60">{cfg.acceptLabel}</p>
+                </div>
+
+                {/* Feature pills */}
+                <div className="flex items-center gap-2">
+                  <span className="inline-flex items-center gap-1 rounded-full bg-neutral-100 px-2.5 py-1 text-[11px] font-medium text-neutral-500">
+                    <UploadSimple size={11} />
+                    Bulk upload
+                  </span>
+                  <span className="inline-flex items-center gap-1 rounded-full bg-neutral-100 px-2.5 py-1 text-[11px] font-medium text-neutral-500">
+                    <DownloadSimple size={11} />
+                    ZIP download
+                  </span>
                 </div>
               </div>
             ) : (
@@ -761,16 +787,15 @@ export default function ConverterShell({ type }: { type: ConvertType }) {
                 <>Optimize Now{queuedCount > 0 && <span className="opacity-60 ml-1">({queuedCount})</span>}</>
               )}
             </SoftPillButton>
-            {doneCount > 0 && (
-              <SoftPillButton
-                variant="secondary"
-                onClick={downloadZip}
-                className="w-full h-9 text-[12px]"
-              >
-                <DownloadSimple size={12} />
-                Download ZIP ({doneCount})
-              </SoftPillButton>
-            )}
+            <SoftPillButton
+              variant="secondary"
+              onClick={doneCount > 0 ? downloadZip : undefined}
+              disabled={doneCount === 0}
+              className="w-full h-9 text-[12px]"
+            >
+              <DownloadSimple size={12} />
+              {doneCount > 0 ? `Download all as ZIP (${doneCount})` : "Download all as ZIP"}
+            </SoftPillButton>
             <p className="text-center text-[10px] text-muted-foreground/50">Enter to start · Esc to stop</p>
           </div>
         </div>
