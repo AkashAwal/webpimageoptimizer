@@ -2,6 +2,7 @@ export const CATEGORIES = [
   { id: "all", label: "All" },
   { id: "webp", label: "WebP Tools" },
   { id: "pdf", label: "Image to PDF" },
+  { id: "pdf-tools", label: "PDF Tools" },
 ] as const;
 
 export type CategoryId = (typeof CATEGORIES)[number]["id"];
