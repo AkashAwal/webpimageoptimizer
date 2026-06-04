@@ -114,7 +114,7 @@ export default function MergePdfClient() {
 
             <div className="grid grid-cols-4 gap-4">
               {items.map(item => (
-                <div key={item.id} className="relative group rounded-xl overflow-hidden ring-1 ring-black/10 bg-white shadow-sm">
+                <div key={item.id} className="relative group overflow-hidden ring-1 ring-black/10 bg-white shadow-sm">
                   {item.thumbnail ? (
                     // eslint-disable-next-line @next/next/no-img-element
                     <img src={item.thumbnail} alt={item.file.name} className="w-full block" />
