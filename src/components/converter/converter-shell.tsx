@@ -497,8 +497,8 @@ export default function ConverterShell({ type, title }: { type: ConvertType; tit
   // ── Render ───────────────────────────────────────────────────────────────────
 
   return (
-    <div className="w-screen relative left-1/2 -translate-x-1/2 px-4 sm:px-6">
-      <div className="flex flex-col h-[calc(100dvh-66px)] min-h-[520px] overflow-hidden rounded-2xl ring-1 ring-black/6 shadow-[0_4px_24px_-6px_rgba(0,0,0,0.10),0_1px_3px_rgba(0,0,0,0.06)] bg-white">
+    <div className="w-screen relative left-1/2 -translate-x-1/2 px-4 sm:px-6 py-3 sm:py-4">
+      <div className="flex flex-col h-[calc(100dvh-92px)] sm:h-[calc(100dvh-98px)] min-h-[480px] overflow-hidden rounded-2xl ring-1 ring-black/6 shadow-[0_4px_24px_-6px_rgba(0,0,0,0.10),0_1px_3px_rgba(0,0,0,0.06)] bg-white">
 
         {/* ── Optional title bar ───────────────────────────────────────────────── */}
         {title && (
@@ -771,24 +771,24 @@ export default function ConverterShell({ type, title }: { type: ConvertType; tit
         </div>
 
         {/* ── Settings panel ──────────────────────────────────────────────────── */}
-        <div className="w-[260px] shrink-0 flex flex-col border-l border-border">
-          <div className="flex-1 overflow-y-auto p-4 space-y-5">
+        <div className="w-[320px] shrink-0 flex flex-col border-l border-border">
+          <div className="flex-1 overflow-y-auto p-3 space-y-3.5">
 
             {/* Presets */}
             <div>
-              <p className="text-[10px] font-semibold uppercase tracking-widest text-muted-foreground mb-2">Preset</p>
-              <div className="flex flex-col gap-1">
+              <p className="text-[10px] font-semibold uppercase tracking-widest text-muted-foreground mb-1.5">Preset</p>
+              <div className="flex gap-1.5">
                 {PRESETS.map(p => (
                   <button
                     key={p.label}
                     onClick={() => setSettings(s => ({ ...s, quality: p.quality }))}
                     className={cn(
-                      "flex items-center justify-between rounded-lg px-3 py-2 text-[12px] font-medium transition-colors text-left",
+                      "flex-1 flex flex-col items-center rounded-lg px-1 py-1.5 transition-colors",
                       settings.quality === p.quality ? "bg-neutral-900 text-white" : "bg-neutral-100 text-neutral-600 hover:bg-neutral-200",
                     )}
                   >
-                    <span>{p.label}</span>
-                    <span className={cn("text-[11px] tabular-nums", settings.quality === p.quality ? "text-white/60" : "text-neutral-400")}>{p.quality}%</span>
+                    <span className="text-[11px] font-medium leading-tight text-center">{p.label}</span>
+                    <span className={cn("text-[10px] tabular-nums mt-0.5", settings.quality === p.quality ? "text-white/60" : "text-neutral-400")}>{p.quality}%</span>
                   </button>
                 ))}
               </div>
@@ -796,7 +796,7 @@ export default function ConverterShell({ type, title }: { type: ConvertType; tit
 
             {/* Quality bar */}
             <div>
-              <div className="flex items-center justify-between mb-1.5">
+              <div className="flex items-center justify-between mb-1">
                 <p className="text-[10px] font-semibold uppercase tracking-widest text-muted-foreground">Quality</p>
                 <span className="text-[11px] tabular-nums text-muted-foreground">{settings.quality}%</span>
               </div>
@@ -804,7 +804,7 @@ export default function ConverterShell({ type, title }: { type: ConvertType; tit
                 onChange={e => setSettings(s => ({ ...s, quality: sliderToQuality(Number(e.target.value)) }))}
                 className="w-full h-1.5 cursor-pointer accent-foreground"
               />
-              <div className="flex justify-between mt-1">
+              <div className="flex justify-between mt-0.5">
                 <span className="text-[10px] text-muted-foreground/60">Smaller</span>
                 <span className="text-[10px] text-muted-foreground/60">Higher quality</span>
               </div>
@@ -812,30 +812,30 @@ export default function ConverterShell({ type, title }: { type: ConvertType; tit
 
             {/* Dimensions */}
             <div>
-              <p className="text-[10px] font-semibold uppercase tracking-widest text-muted-foreground mb-2">Dimensions (px)</p>
+              <p className="text-[10px] font-semibold uppercase tracking-widest text-muted-foreground mb-1.5">Dimensions (px)</p>
               <div className="flex gap-2">
                 <div className="flex-1">
-                  <p className="text-[10px] text-muted-foreground/70 mb-1">W</p>
+                  <p className="text-[10px] text-muted-foreground/70 mb-0.5">W</p>
                   <input type="number" min={1} placeholder="Auto" value={settings.width}
                     onChange={e => setSettings(s => ({ ...s, width: e.target.value }))}
-                    className="w-full rounded-lg border border-border bg-neutral-50 px-2 py-1.5 text-[12px] text-foreground outline-none focus:border-foreground/30 focus:bg-white transition-colors"
+                    className="w-full rounded-lg border border-border bg-neutral-50 px-2 py-1 text-[12px] text-foreground outline-none focus:border-foreground/30 focus:bg-white transition-colors"
                   />
                 </div>
                 <div className="flex-1">
-                  <p className="text-[10px] text-muted-foreground/70 mb-1">H</p>
+                  <p className="text-[10px] text-muted-foreground/70 mb-0.5">H</p>
                   <input type="number" min={1} placeholder="Auto" value={settings.height}
                     onChange={e => setSettings(s => ({ ...s, height: e.target.value }))}
-                    className="w-full rounded-lg border border-border bg-neutral-50 px-2 py-1.5 text-[12px] text-foreground outline-none focus:border-foreground/30 focus:bg-white transition-colors"
+                    className="w-full rounded-lg border border-border bg-neutral-50 px-2 py-1 text-[12px] text-foreground outline-none focus:border-foreground/30 focus:bg-white transition-colors"
                   />
                 </div>
               </div>
-              <p className="text-[10px] text-muted-foreground/50 mt-1 leading-tight">One field = aspect ratio preserved.</p>
+              <p className="text-[10px] text-muted-foreground/50 mt-0.5 leading-tight">One field = aspect ratio preserved.</p>
             </div>
 
             {/* Naming */}
             <div>
-              <p className="text-[10px] font-semibold uppercase tracking-widest text-muted-foreground mb-2">File naming</p>
-              <div className="space-y-2">
+              <p className="text-[10px] font-semibold uppercase tracking-widest text-muted-foreground mb-1.5">File naming</p>
+              <div className="space-y-1.5">
                 <label className="flex items-center gap-2 cursor-pointer">
                   <input type="radio" name={`naming-${type}`} value="original" checked={settings.namingMode === "original"}
                     onChange={() => setSettings(s => ({ ...s, namingMode: "original" }))} className="accent-foreground" />
@@ -849,7 +849,7 @@ export default function ConverterShell({ type, title }: { type: ConvertType; tit
                 {settings.namingMode === "prefix" && (
                   <input type="text" placeholder="image" value={settings.prefix}
                     onChange={e => setSettings(s => ({ ...s, prefix: e.target.value }))}
-                    className="w-full rounded-lg border border-border bg-neutral-50 px-2 py-1.5 text-[12px] text-foreground outline-none focus:border-foreground/30 focus:bg-white transition-colors"
+                    className="w-full rounded-lg border border-border bg-neutral-50 px-2 py-1 text-[12px] text-foreground outline-none focus:border-foreground/30 focus:bg-white transition-colors"
                   />
                 )}
               </div>
@@ -857,15 +857,15 @@ export default function ConverterShell({ type, title }: { type: ConvertType; tit
 
             {/* Size cap */}
             <div>
-              <p className="text-[10px] font-semibold uppercase tracking-widest text-muted-foreground mb-2">Size cap</p>
+              <p className="text-[10px] font-semibold uppercase tracking-widest text-muted-foreground mb-1.5">Size cap</p>
               <div className="flex items-center gap-1.5">
                 <input type="number" min={1} placeholder="e.g. 300" value={settings.sizeCapKB}
                   onChange={e => setSettings(s => ({ ...s, sizeCapKB: e.target.value }))}
-                  className="flex-1 min-w-0 rounded-lg border border-border bg-neutral-50 px-2 py-1.5 text-[12px] text-foreground outline-none focus:border-foreground/30 focus:bg-white transition-colors"
+                  className="flex-1 min-w-0 rounded-lg border border-border bg-neutral-50 px-2 py-1 text-[12px] text-foreground outline-none focus:border-foreground/30 focus:bg-white transition-colors"
                 />
                 <span className="text-[12px] text-muted-foreground shrink-0">KB</span>
               </div>
-              <p className="text-[10px] text-muted-foreground/50 mt-1 leading-tight">Files over this are flagged red.</p>
+              <p className="text-[10px] text-muted-foreground/50 mt-0.5 leading-tight">Files over this are flagged red.</p>
             </div>
 
             {/* Strip metadata */}
