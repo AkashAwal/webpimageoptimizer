@@ -22,6 +22,22 @@ export default function RotatePdfClient() {
   const [angle, setAngle] = useState<90 | 180 | 270>(90);
   const [target, setTarget] = useState<"all" | "even" | "odd" | "custom">("all");
   const [customPages, setCustomPages] = useState("");
+
+  const resolveCustomIndices = (total: number): Set<number> => {
+    try {
+      return new Set(customPages.split(",").flatMap(r => {
+        const trimmed = r.trim();
+        if (!trimmed) return [];
+        const match = trimmed.match(/^(\d+)(?:-(\d+))?$/);
+        if (!match) return [];
+        const from = parseInt(match[1]) - 1;
+        const to = match[2] ? parseInt(match[2]) - 1 : from;
+        const indices = [];
+        for (let i = Math.max(0, from); i <= Math.min(total - 1, to); i++) indices.push(i);
+        return indices;
+      }));
+    } catch { return new Set(); }
+  };
   const [processing, setProcessing] = useState(false);
   const [result, setResult] = useState<{ blob: Blob; url: string } | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -59,15 +75,9 @@ export default function RotatePdfClient() {
     setProcessing(true); setError(null);
     try {
       const { PDFDocument, degrees } = await import("pdf-lib");
-      const { parsePageRanges } = await import("@/lib/pdf-utils");
       const doc = await PDFDocument.load(await file.arrayBuffer());
       const total = doc.getPageCount();
-
-      let targetIndices: Set<number> | null = null;
-      if (target === "custom") {
-        const indices = customPages.split(",").flatMap(r => parsePageRanges(r.trim(), total));
-        targetIndices = new Set(indices);
-      }
+      const targetIndices = target === "custom" ? resolveCustomIndices(total) : null;
 
       doc.getPages().forEach((page, i) => {
         const n = i + 1;
@@ -147,21 +157,30 @@ export default function RotatePdfClient() {
               <div className="grid grid-cols-4 gap-3">
                 {thumbnails.map((thumb, idx) => {
                   const n = idx + 1;
+                  const customSet = target === "custom" ? resolveCustomIndices(thumbnails.length) : null;
                   const highlighted =
                     target === "all" ||
                     (target === "even" && n % 2 === 0) ||
-                    (target === "odd" && n % 2 !== 0);
+                    (target === "odd" && n % 2 !== 0) ||
+                    (target === "custom" && (customSet?.has(idx) ?? false));
+                  const rotateDeg = highlighted ? angle : 0;
+                  const scale = (rotateDeg === 90 || rotateDeg === 270) ? 0.75 : 1;
                   return (
                     <div
                       key={idx}
                       className={cn(
-                        "relative overflow-hidden ring-1 select-none transition-all",
-                        highlighted ? "ring-neutral-900 ring-2" : "ring-black/10 opacity-40",
+                        "relative aspect-[3/4] overflow-hidden ring-1 select-none bg-neutral-100 transition-[ring,opacity] duration-200",
+                        highlighted ? "ring-2 ring-neutral-900" : "ring-black/10 opacity-40",
                       )}
                     >
                       {/* eslint-disable-next-line @next/next/no-img-element */}
-                      <img src={thumb} alt={`Page ${n}`} className="w-full block" />
-                      <div className="absolute bottom-0 inset-x-0 px-1.5 py-1">
+                      <img
+                        src={thumb}
+                        alt={`Page ${n}`}
+                        className="absolute inset-0 w-full h-full object-contain transition-transform duration-300"
+                        style={{ transform: `rotate(${rotateDeg}deg) scale(${scale})` }}
+                      />
+                      <div className="absolute bottom-0 inset-x-0 px-1.5 py-1 z-10">
                         <span className="text-[10px] font-semibold text-neutral-500">{n}</span>
                       </div>
                     </div>
