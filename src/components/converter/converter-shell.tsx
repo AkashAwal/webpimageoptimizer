@@ -52,6 +52,7 @@ interface Settings {
   pdfCompress: boolean;
   pdfFlatten: boolean;
   pdfPageNumbers: boolean;
+  pdfImageAlign: "top-left" | "top-center" | "top-right" | "middle-left" | "middle-center" | "middle-right" | "bottom-left" | "bottom-center" | "bottom-right";
   pdfWatermark: string;
   pdfWatermarkPos: "center" | "top-left" | "top-right" | "bottom-left" | "bottom-right";
   pdfPassword: string;
@@ -69,6 +70,7 @@ interface PdfOptions {
   marginMm: number;
   fitMode: "contain" | "fill" | "actual";
   pageNumbers: boolean;
+  imageAlign: "top-left" | "top-center" | "top-right" | "middle-left" | "middle-center" | "middle-right" | "bottom-left" | "bottom-center" | "bottom-right";
   watermark: string;
   watermarkPos: "center" | "top-left" | "top-right" | "bottom-left" | "bottom-right";
   metaTitle: string;
@@ -244,8 +246,10 @@ async function buildPdf(pages: PdfPage[], opts: PdfOptions): Promise<Blob> {
     } else {
       dw = Math.min(imgWmm, availW); dh = Math.min(imgHmm, availH);
     }
-    dx = m + (availW - dw) / 2;
-    dy = m + (availH - dh) / 2;
+    const ha = opts.imageAlign.includes("left") ? "left" : opts.imageAlign.includes("right") ? "right" : "center";
+    const va = opts.imageAlign.includes("top") ? "top" : opts.imageAlign.includes("bottom") ? "bottom" : "middle";
+    dx = ha === "left" ? m : ha === "right" ? m + availW - dw : m + (availW - dw) / 2;
+    dy = va === "top"  ? m : va === "bottom" ? m + availH - dh : m + (availH - dh) / 2;
     pdf.addImage(page.dataUrl, "JPEG", dx, dy, dw, dh);
   }
 
@@ -326,8 +330,8 @@ async function fileToPage(file: File, quality: number, targetW?: number, targetH
 
 const DEFAULT_PDF_OPTS: PdfOptions = {
   compress: true, flatten: false, pageSize: "fit", orientation: "auto",
-  marginMm: 10, fitMode: "contain", pageNumbers: false, watermark: "",
-  watermarkPos: "center", metaTitle: "", metaAuthor: "",
+  marginMm: 10, fitMode: "contain", imageAlign: "middle-center", pageNumbers: false,
+  watermark: "", watermarkPos: "center", metaTitle: "", metaAuthor: "",
 };
 
 async function canvasToPdf(file: File, quality: number, targetW?: number, targetH?: number, opts?: PdfOptions): Promise<Blob> {
@@ -504,7 +508,7 @@ export default function ConverterShell({ type, title }: { type: ConvertType; tit
     quality: 85, width: "", height: "", namingMode: "original", prefix: "image", sizeCapKB: "", stripMeta: true,
     pdfType: "standard", pdfPageSize: "fit", pdfOrientation: "auto", pdfMarginMm: 10,
     pdfFitMode: "contain", pdfCompress: true, pdfFlatten: false, pdfPageNumbers: false,
-    pdfWatermark: "", pdfWatermarkPos: "center", pdfPassword: "", pdfMetaTitle: "", pdfMetaAuthor: "", pdfFilename: "converted",
+    pdfImageAlign: "middle-center", pdfWatermark: "", pdfWatermarkPos: "center", pdfPassword: "", pdfMetaTitle: "", pdfMetaAuthor: "", pdfFilename: "converted",
   });
   const [mergedResult, setMergedResult] = useState<{ blob: Blob; url: string } | null>(null);
 
@@ -609,6 +613,7 @@ export default function ConverterShell({ type, title }: { type: ConvertType; tit
     marginMm: settings.pdfMarginMm,
     fitMode: settings.pdfFitMode,
     pageNumbers: settings.pdfPageNumbers,
+    imageAlign: settings.pdfImageAlign,
     watermark: settings.pdfWatermark,
     watermarkPos: settings.pdfWatermarkPos,
     metaTitle: settings.pdfMetaTitle,
@@ -1170,6 +1175,22 @@ export default function ConverterShell({ type, title }: { type: ConvertType; tit
                     <span className="text-[10px] text-muted-foreground/60">40 mm</span>
                   </div>
                 </div>
+
+                {/* ── Row: Alignment (full width, only when standard page size) ── */}
+                {settings.pdfPageSize !== "fit" && (
+                  <div className="col-span-2 flex items-center gap-3">
+                    <p className="text-[10px] font-semibold uppercase tracking-widest text-muted-foreground shrink-0">Alignment</p>
+                    <div className="grid grid-cols-3 gap-0.5">
+                      {(["top-left","top-center","top-right","middle-left","middle-center","middle-right","bottom-left","bottom-center","bottom-right"] as const).map(pos => (
+                        <button key={pos} onClick={() => setSettings(s => ({ ...s, pdfImageAlign: pos }))}
+                          className={cn("size-6 rounded flex items-center justify-center transition-colors",
+                            settings.pdfImageAlign === pos ? "bg-neutral-900" : "bg-neutral-100 hover:bg-neutral-200")}>
+                          <div className={cn("size-1.5 rounded-full", settings.pdfImageAlign === pos ? "bg-white" : "bg-neutral-400")} />
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                )}
 
                 {/* ── Row: Pages (full width) ── */}
                 <div className="col-span-2 flex items-center justify-between gap-4 rounded-lg bg-neutral-50 px-3 py-2 ring-1 ring-black/5">
