@@ -112,7 +112,7 @@ export default function CropPdfClient() {
       )}
 
       {/* Right: tool card */}
-      <div className="flex-none w-80 overflow-hidden rounded-2xl ring-1 ring-black/6 shadow-[0_4px_24px_-6px_rgba(0,0,0,0.10),0_1px_3px_rgba(0,0,0,0.06)] bg-white">
+      <div className="flex-none w-[40rem] overflow-hidden rounded-2xl ring-1 ring-black/6 shadow-[0_4px_24px_-6px_rgba(0,0,0,0.10),0_1px_3px_rgba(0,0,0,0.06)] bg-white">
         <div className="flex items-center gap-2.5 px-4 py-2.5 border-b border-border bg-neutral-50/60">
           <Link href="/" className="flex items-center gap-1 text-[12px] text-muted-foreground hover:text-foreground transition-colors shrink-0">
             <CaretLeft size={11} weight="bold" />All tools
@@ -152,7 +152,15 @@ export default function CropPdfClient() {
               </div>
 
               <div className="rounded-xl bg-neutral-50 ring-1 ring-black/5 p-3">
-                <p className="text-[10px] font-semibold uppercase tracking-widest text-muted-foreground mb-2">Margins to remove (pt)</p>
+                <div className="flex items-center justify-between mb-2">
+                  <p className="text-[10px] font-semibold uppercase tracking-widest text-muted-foreground">Margins to remove (pt)</p>
+                  <button
+                    onClick={() => { setTop(0); setRight(0); setBottom(0); setLeft(0); }}
+                    className="text-[11px] text-muted-foreground hover:text-foreground transition-colors"
+                  >
+                    Reset
+                  </button>
+                </div>
                 <div className="grid grid-cols-2 gap-2">
                   {([["Top", top, setTop], ["Right", right, setRight], ["Bottom", bottom, setBottom], ["Left", left, setLeft]] as const).map(
                     ([label, val, setter]) => (
