@@ -16,7 +16,9 @@ export default function OcrPdfClient() {
   const [file, setFile] = useState<File | null>(null);
   const [lang, setLang] = useState("eng");
   const [processing, setProcessing] = useState(false);
-  const [progress, setProgress] = useState("");
+  const [progressPage, setProgressPage] = useState(0);
+  const [progressTotal, setProgressTotal] = useState(0);
+  const [progressLabel, setProgressLabel] = useState("");
   const [text, setText] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [copied, setCopied] = useState(false);
@@ -32,21 +34,23 @@ export default function OcrPdfClient() {
 
   const process = async () => {
     if (!file || processing) return;
-    setProcessing(true); setError(null); setText(null); setProgress("Loading PDF renderer…");
+    setProcessing(true); setError(null); setText(null);
+    setProgressPage(0); setProgressTotal(0); setProgressLabel("Loading OCR engine…");
     try {
       const { getPdfJs } = await import("@/lib/pdf-utils");
       const { createWorker } = await import("tesseract.js");
 
-      setProgress("Loading OCR engine…");
       const worker = await createWorker(lang);
 
       const lib = await getPdfJs();
       const pdf = await lib.getDocument({ data: await file.arrayBuffer() }).promise;
       const total = pdf.numPages;
+      setProgressTotal(total);
       const parts: string[] = [];
 
       for (let i = 1; i <= total; i++) {
-        setProgress(`Scanning page ${i} of ${total}…`);
+        setProgressPage(i - 1);
+        setProgressLabel(`Scanning page ${i} of ${total}…`);
         const page = await pdf.getPage(i);
         const viewport = page.getViewport({ scale: 2 });
         const canvas = document.createElement("canvas");
@@ -55,14 +59,15 @@ export default function OcrPdfClient() {
         const { data: { text: t } } = await worker.recognize(canvas);
         parts.push(`--- Page ${i} ---\n${t.trim()}`);
         page.cleanup();
+        setProgressPage(i);
       }
 
       await worker.terminate();
       setText(parts.join("\n\n"));
-      setProgress("");
+      setProgressLabel("");
     } catch (e) {
       setError(e instanceof Error ? e.message : "OCR failed.");
-      setProgress("");
+      setProgressLabel("");
     } finally {
       setProcessing(false);
     }
@@ -92,7 +97,7 @@ export default function OcrPdfClient() {
                 onDrop={e => { e.preventDefault(); const f = e.dataTransfer.files[0]; if (f) { setFile(f); setText(null); } }}
               >
                 <div className="text-center space-y-3 max-w-lg">
-                  <h2 className="text-5xl font-bold tracking-tight text-foreground">OCR PDF</h2>
+                  <h2 className="text-5xl font-bold tracking-tight text-foreground">Extract Text from PDF</h2>
                   <p className="text-[18px] text-muted-foreground">Extract text from scanned or image-based PDFs.</p>
                 </div>
                 <button
@@ -114,7 +119,7 @@ export default function OcrPdfClient() {
                 <CaretLeft size={11} weight="bold" />All tools
               </Link>
               <span>/</span>
-              <span className="text-foreground font-medium">OCR PDF</span>
+              <span className="text-foreground font-medium">Extract Text from PDF</span>
             </div>
             <div className="flex items-center gap-3 rounded-xl px-3 py-2 bg-white ring-1 ring-black/5">
               <FilePdf size={18} className="shrink-0 text-red-400" />
@@ -126,9 +131,24 @@ export default function OcrPdfClient() {
                 <X size={13} />
               </button>
             </div>
-            {processing && progress && (
-              <p className="flex items-center gap-2 text-[12px] text-muted-foreground">
-                <CircleNotch size={13} className="animate-spin shrink-0" />{progress}
+            {processing && progressTotal > 0 && (
+              <div className="space-y-3 py-6">
+                <div className="flex items-end justify-between mb-1">
+                  <p className="text-[13px] font-medium text-foreground">{progressLabel}</p>
+                  <p className="text-[12px] text-muted-foreground tabular-nums">{progressPage} / {progressTotal}</p>
+                </div>
+                <div className="h-3 rounded-full bg-neutral-100 overflow-hidden">
+                  <div
+                    className="h-full bg-neutral-900 rounded-full transition-all duration-300"
+                    style={{ width: `${progressTotal > 0 ? (progressPage / progressTotal) * 100 : 0}%` }}
+                  />
+                </div>
+                <p className="text-[11px] text-muted-foreground/60">OCR runs locally — large PDFs may take a few minutes.</p>
+              </div>
+            )}
+            {processing && progressTotal === 0 && (
+              <p className="flex items-center gap-2 py-4 text-[12px] text-muted-foreground">
+                <CircleNotch size={13} className="animate-spin shrink-0" />{progressLabel}
               </p>
             )}
             {text !== null && (
@@ -154,7 +174,7 @@ export default function OcrPdfClient() {
 
           {/* Right: sticky sidebar */}
           <div className="w-80 shrink-0 border-l border-border bg-white sticky top-16 h-[calc(100vh-4rem)] flex flex-col p-6 gap-4 overflow-y-auto">
-            <h2 className="text-xl font-bold tracking-tight text-foreground">OCR PDF</h2>
+            <h2 className="text-xl font-bold tracking-tight text-foreground">Extract Text</h2>
             <div>
               <p className="text-[10px] font-semibold uppercase tracking-widest text-muted-foreground mb-1.5">Document language</p>
               <select value={lang} onChange={e => setLang(e.target.value)}

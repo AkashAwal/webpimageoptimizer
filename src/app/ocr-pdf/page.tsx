@@ -5,7 +5,7 @@ import OcrPdfClient from "./client";
 import { OtherTools } from "@/components/converter/other-tools";
 
 export const metadata: Metadata = {
-  title: "OCR PDF — Extract Text from Scanned PDF Free, In-Browser",
+  title: "Extract Text from PDF — OCR, Free, In-Browser, No Upload",
   description: "Extract text from scanned or image-based PDFs using OCR directly in your browser. Supports 6 languages. Copy or download the result as a text file. Free, no upload.",
 };
 
