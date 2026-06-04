@@ -123,9 +123,6 @@ export default function MergePdfClient() {
                       <CircleNotch size={16} className="animate-spin text-neutral-400" />
                     </div>
                   )}
-                  <div className="absolute bottom-0 inset-x-0 bg-gradient-to-t from-black/60 to-transparent px-2 py-2">
-                    <p className="text-[9px] text-white truncate">{item.file.name}</p>
-                  </div>
                   <button
                     onClick={() => removeItem(item.id)}
                     className="absolute top-1.5 right-1.5 size-5 rounded-full bg-black/50 text-white flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all"
@@ -133,6 +130,7 @@ export default function MergePdfClient() {
                     <X size={9} weight="bold" />
                   </button>
                 </div>
+                <p className="mt-1.5 text-[10px] text-muted-foreground truncate">{item.file.name}</p>
               ))}
             </div>
 
