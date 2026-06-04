@@ -1,7 +1,7 @@
 "use client";
 import { useRef, useState } from "react";
 import Link from "next/link";
-import { UploadSimple, FilePdf, DownloadSimple, CircleNotch, CaretLeft, X } from "@phosphor-icons/react";
+import { FilePdf, DownloadSimple, CircleNotch, CaretLeft, X } from "@phosphor-icons/react";
 import { cn } from "@/lib/utils";
 import SoftPillButton from "@/components/ui/soft-pill-button";
 
@@ -34,7 +34,6 @@ export default function PdfToImagesClient() {
       const zip = new JSZip();
       const ext = format === "jpeg" ? "jpg" : format;
       const mime = `image/${format}`;
-
       for (let i = 1; i <= total; i++) {
         const page = await pdf.getPage(i);
         const viewport = page.getViewport({ scale });
@@ -42,12 +41,10 @@ export default function PdfToImagesClient() {
         canvas.width = viewport.width; canvas.height = viewport.height;
         await page.render({ canvasContext: canvas.getContext("2d")!, viewport, canvas }).promise;
         const dataUrl = canvas.toDataURL(mime, quality / 100);
-        const base64 = dataUrl.split(",")[1];
-        zip.file(`page_${String(i).padStart(3, "0")}.${ext}`, base64, { base64: true });
+        zip.file(`page_${String(i).padStart(3, "0")}.${ext}`, dataUrl.split(",")[1], { base64: true });
         setProgress(Math.round((i / total) * 100));
         page.cleanup();
       }
-
       const blob = await zip.generateAsync({ type: "blob" });
       if (result?.url) URL.revokeObjectURL(result.url);
       setResult({ blob, url: URL.createObjectURL(blob) });
@@ -60,35 +57,38 @@ export default function PdfToImagesClient() {
 
   return (
     <div className="pt-4">
-      <div className="overflow-hidden rounded-2xl ring-1 ring-black/6 shadow-[0_4px_24px_-6px_rgba(0,0,0,0.10),0_1px_3px_rgba(0,0,0,0.06)] bg-white">
-        <div className="flex items-center gap-2.5 px-4 py-2.5 border-b border-border bg-neutral-50/60">
-          <Link href="/" className="flex items-center gap-1 text-[12px] text-muted-foreground hover:text-foreground transition-colors shrink-0">
-            <CaretLeft size={11} weight="bold" />All tools
-          </Link>
-          <span className="text-neutral-300 text-[12px]">/</span>
-          <h1 className="text-[13px] font-semibold text-foreground">PDF to Images</h1>
+      {/* Landing — no card */}
+      {!file && (
+        <div
+          className="flex flex-col items-center justify-center gap-8 min-h-[calc(100vh-8rem)] transition-colors"
+          onDragOver={e => e.preventDefault()}
+          onDrop={e => { e.preventDefault(); const f = e.dataTransfer.files[0]; if (f) { setFile(f); setResult(null); } }}
+        >
+          <div className="text-center space-y-3 max-w-lg">
+            <h2 className="text-5xl font-bold tracking-tight text-foreground">PDF to Images</h2>
+            <p className="text-[18px] text-muted-foreground">Export every PDF page as a JPG, PNG, or WebP image.</p>
+          </div>
+          <button
+            onClick={() => inputRef.current?.click()}
+            className="w-full max-w-md h-16 rounded-2xl bg-foreground text-white text-[16px] font-semibold hover:bg-foreground/90 active:scale-[0.99] transition-all"
+          >
+            Select PDF File
+          </button>
+          <p className="text-[13px] text-muted-foreground">or drag and drop your PDF here</p>
         </div>
+      )}
 
-        <div className="p-4 space-y-3">
-          {!file ? (
-            <div
-              className="flex flex-col items-center justify-center gap-8 min-h-[calc(100vh-8rem)] rounded-xl transition-colors"
-              onDragOver={e => e.preventDefault()}
-              onDrop={e => { e.preventDefault(); const f = e.dataTransfer.files[0]; if (f) { setFile(f); setResult(null); } }}
-            >
-              <div className="text-center space-y-3 max-w-lg">
-                <h2 className="text-5xl font-bold tracking-tight text-foreground">PDF to Images</h2>
-                <p className="text-[18px] text-muted-foreground">Export every PDF page as a JPG, PNG, or WebP image.</p>
-              </div>
-              <button
-                onClick={() => inputRef.current?.click()}
-                className="w-full max-w-md h-16 rounded-2xl bg-foreground text-white text-[16px] font-semibold hover:bg-foreground/90 active:scale-[0.99] transition-all"
-              >
-                Select PDF File
-              </button>
-              <p className="text-[13px] text-muted-foreground">or drag and drop your PDF here</p>
-            </div>
-          ) : (
+      {/* Active — card */}
+      {file && (
+        <div className="overflow-hidden rounded-2xl ring-1 ring-black/6 shadow-[0_4px_24px_-6px_rgba(0,0,0,0.10),0_1px_3px_rgba(0,0,0,0.06)] bg-white">
+          <div className="flex items-center gap-2.5 px-4 py-2.5 border-b border-border bg-neutral-50/60">
+            <Link href="/" className="flex items-center gap-1 text-[12px] text-muted-foreground hover:text-foreground transition-colors shrink-0">
+              <CaretLeft size={11} weight="bold" />All tools
+            </Link>
+            <span className="text-neutral-300 text-[12px]">/</span>
+            <h1 className="text-[13px] font-semibold text-foreground">PDF to Images</h1>
+          </div>
+          <div className="p-4 space-y-3">
             <div className="flex items-center gap-3 rounded-xl px-3 py-2 bg-white ring-1 ring-black/5">
               <FilePdf size={18} className="shrink-0 text-red-400" />
               <div className="flex-1 min-w-0">
@@ -99,9 +99,7 @@ export default function PdfToImagesClient() {
                 <X size={13} />
               </button>
             </div>
-          )}
 
-          {file && (
             <div className="rounded-xl bg-neutral-50 ring-1 ring-black/5 p-3">
               <div className="grid grid-cols-2 gap-3">
                 <div>
@@ -119,7 +117,7 @@ export default function PdfToImagesClient() {
                 <div>
                   <div className="flex justify-between mb-1">
                     <p className="text-[10px] font-semibold uppercase tracking-widest text-muted-foreground">Scale</p>
-                    <span className="text-[11px] text-muted-foreground">{scale}�</span>
+                    <span className="text-[11px] text-muted-foreground">{scale}×</span>
                   </div>
                   <input type="range" min={1} max={3} step={0.5} value={scale} onChange={e => setScale(Number(e.target.value))}
                     className="w-full h-1.5 cursor-pointer accent-foreground mt-1" />
@@ -136,33 +134,31 @@ export default function PdfToImagesClient() {
                 )}
               </div>
             </div>
-          )}
 
-          {processing && (
-            <div className="h-1.5 rounded-full bg-neutral-100 overflow-hidden">
-              <div className="h-full bg-neutral-900 transition-all rounded-full" style={{ width: `${progress}%` }} />
-            </div>
-          )}
-
-          {error && <p className="text-[12px] text-red-600 bg-red-50 rounded-xl px-3 py-2 ring-1 ring-red-100">{error}</p>}
-
-          {result && (
-            <div className="flex items-center gap-3 rounded-xl bg-emerald-50 px-3 py-2.5 ring-1 ring-emerald-100">
-              <div className="size-2 rounded-full bg-emerald-500 shrink-0" />
-              <p className="flex-1 text-[12px] text-emerald-700 font-medium">ZIP ready · {formatBytes(result.blob.size)}</p>
-              <SoftPillButton variant="primary" onClick={() => {
-                const a = document.createElement("a"); a.href = result.url; a.download = "pages.zip"; a.click();
-              }} className="h-8 px-3 text-[12px]">
-                <DownloadSimple size={12} />Download
-              </SoftPillButton>
-            </div>
-          )}
-
-          <SoftPillButton variant="primary" onClick={process} disabled={!file || processing} className="w-full h-9 text-[12px]">
-            {processing ? <><CircleNotch size={12} className="animate-spin" />{progress}% � rendering pages…</> : "Convert to Images"}
-          </SoftPillButton>
+            {processing && (
+              <div className="h-1.5 rounded-full bg-neutral-100 overflow-hidden">
+                <div className="h-full bg-neutral-900 transition-all rounded-full" style={{ width: `${progress}%` }} />
+              </div>
+            )}
+            {error && <p className="text-[12px] text-red-600 bg-red-50 rounded-xl px-3 py-2 ring-1 ring-red-100">{error}</p>}
+            {result && (
+              <div className="flex items-center gap-3 rounded-xl bg-emerald-50 px-3 py-2.5 ring-1 ring-emerald-100">
+                <div className="size-2 rounded-full bg-emerald-500 shrink-0" />
+                <p className="flex-1 text-[12px] text-emerald-700 font-medium">ZIP ready · {formatBytes(result.blob.size)}</p>
+                <SoftPillButton variant="primary" onClick={() => {
+                  const a = document.createElement("a"); a.href = result.url; a.download = "pages.zip"; a.click();
+                }} className="h-8 px-3 text-[12px]">
+                  <DownloadSimple size={12} />Download
+                </SoftPillButton>
+              </div>
+            )}
+            <SoftPillButton variant="primary" onClick={process} disabled={processing} className="w-full h-9 text-[12px]">
+              {processing ? <><CircleNotch size={12} className="animate-spin" />{progress}% — rendering…</> : "Convert to Images"}
+            </SoftPillButton>
+          </div>
         </div>
-      </div>
+      )}
+
       <input ref={inputRef} type="file" accept="application/pdf,.pdf" className="hidden"
         onChange={e => { if (e.target.files?.[0]) { setFile(e.target.files[0]); setResult(null); } e.target.value = ""; }} />
     </div>

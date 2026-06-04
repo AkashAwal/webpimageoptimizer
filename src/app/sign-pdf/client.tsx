@@ -124,137 +124,140 @@ export default function SignPdfClient() {
 
   return (
     <div className="pt-4">
-      <div className="overflow-hidden rounded-2xl ring-1 ring-black/6 shadow-[0_4px_24px_-6px_rgba(0,0,0,0.10),0_1px_3px_rgba(0,0,0,0.06)] bg-white">
-        <div className="flex items-center gap-2.5 px-4 py-2.5 border-b border-border bg-neutral-50/60">
-          <Link href="/" className="flex items-center gap-1 text-[12px] text-muted-foreground hover:text-foreground transition-colors shrink-0">
-            <CaretLeft size={11} weight="bold" />All tools
-          </Link>
-          <span className="text-neutral-300 text-[12px]">/</span>
-          <h1 className="text-[13px] font-semibold text-foreground">Sign PDF</h1>
-        </div>
-
-        <div className="p-4 space-y-3">
-          {/* File */}
-          {!file ? (
-            <div
-              className="flex flex-col items-center justify-center gap-8 min-h-[calc(100vh-8rem)] rounded-xl transition-colors"
-              onDragOver={e => e.preventDefault()}
-              onDrop={e => { e.preventDefault(); const f = e.dataTransfer.files[0]; if (f) loadFile(f); }}
-            >
-              <div className="text-center space-y-3 max-w-lg">
-                <h2 className="text-5xl font-bold tracking-tight text-foreground">Sign PDF</h2>
-                <p className="text-[18px] text-muted-foreground">Draw or type your signature onto any page of a PDF.</p>
-              </div>
-              <button
-                onClick={() => fileInputRef.current?.click()}
-                className="w-full max-w-md h-16 rounded-2xl bg-foreground text-white text-[16px] font-semibold hover:bg-foreground/90 active:scale-[0.99] transition-all"
+      {!file && (
+        <div
+                className="flex flex-col items-center justify-center gap-8 min-h-[calc(100vh-8rem)] rounded-xl transition-colors"
+                onDragOver={e => e.preventDefault()}
+                onDrop={e => { e.preventDefault(); const f = e.dataTransfer.files[0]; if (f) loadFile(f); }}
               >
-                Select PDF File
-              </button>
-              <p className="text-[13px] text-muted-foreground">or drag and drop your PDF here</p>
-            </div>
-          ) : (
+                <div className="text-center space-y-3 max-w-lg">
+                  <h2 className="text-5xl font-bold tracking-tight text-foreground">Sign PDF</h2>
+                  <p className="text-[18px] text-muted-foreground">Draw or type your signature onto any page of a PDF.</p>
+                </div>
+                <button
+                  onClick={() => fileInputRef.current?.click()}
+                  className="w-full max-w-md h-16 rounded-2xl bg-foreground text-white text-[16px] font-semibold hover:bg-foreground/90 active:scale-[0.99] transition-all"
+                >
+                  Select PDF File
+                </button>
+                <p className="text-[13px] text-muted-foreground">or drag and drop your PDF here</p>
+              </div>
+      )}
+
+      {file && (
+              <div className="overflow-hidden rounded-2xl ring-1 ring-black/6 shadow-[0_4px_24px_-6px_rgba(0,0,0,0.10),0_1px_3px_rgba(0,0,0,0.06)] bg-white">
+          <div className="flex items-center gap-2.5 px-4 py-2.5 border-b border-border bg-neutral-50/60">
+            <Link href="/" className="flex items-center gap-1 text-[12px] text-muted-foreground hover:text-foreground transition-colors shrink-0">
+              <CaretLeft size={11} weight="bold" />All tools
+            </Link>
+            <span className="text-neutral-300 text-[12px]">/</span>
+            <h1 className="text-[13px] font-semibold text-foreground">Sign PDF</h1>
+          </div>
+  
+          <div className="p-4 space-y-3">
+            {/* File */}
+            {/* file loaded: active content */}
             <div className="flex items-center gap-3 rounded-xl px-3 py-2 bg-white ring-1 ring-black/5">
-              <FilePdf size={18} className="shrink-0 text-red-400" />
-              <div className="flex-1 min-w-0">
-                <p className="truncate text-[12px] font-medium text-foreground">{file.name}</p>
-                <p className="text-[11px] text-muted-foreground">{totalPages} pages · {formatBytes(file.size)}</p>
-              </div>
-              <button onClick={() => { setFile(null); setTotalPages(0); setResult(null); }}
-                className="rounded-lg p-1.5 text-neutral-300 hover:bg-red-50 hover:text-red-500 transition-colors">
-                <X size={13} />
-              </button>
-            </div>
-          )}
-
-          {file && (
-            <div className="rounded-xl bg-neutral-50 ring-1 ring-black/5 p-3 space-y-3">
-              {/* Sig mode */}
-              <div>
-                <p className="text-[10px] font-semibold uppercase tracking-widest text-muted-foreground mb-1.5">Signature</p>
-                <div className="flex gap-1.5 mb-2">
-                  {(["draw", "type"] as const).map(m => (
-                    <button key={m} onClick={() => setMode(m)}
-                      className={cn("flex-1 rounded-lg py-1.5 text-[12px] font-medium capitalize transition-colors",
-                        mode === m ? "bg-neutral-900 text-white" : "bg-neutral-100 text-neutral-600 hover:bg-neutral-200")}>
-                      {m === "draw" ? "Draw" : "Type"}
-                    </button>
-                  ))}
+                <FilePdf size={18} className="shrink-0 text-red-400" />
+                <div className="flex-1 min-w-0">
+                  <p className="truncate text-[12px] font-medium text-foreground">{file.name}</p>
+                  <p className="text-[11px] text-muted-foreground">{totalPages} pages · {formatBytes(file.size)}</p>
                 </div>
-                {mode === "draw" ? (
-                  <div className="relative">
-                    <canvas ref={sigCanvasRef} width={500} height={120}
-                      className="w-full rounded-lg border border-border bg-white cursor-crosshair touch-none"
-                      onMouseDown={startDraw} onMouseMove={draw} onMouseUp={() => setIsDrawing(false)} onMouseLeave={() => setIsDrawing(false)}
-                      onTouchStart={startDraw} onTouchMove={draw} onTouchEnd={() => setIsDrawing(false)}
-                    />
-                    <button onClick={clearCanvas} className="absolute top-2 right-2 rounded-lg p-1.5 bg-white ring-1 ring-black/10 text-neutral-400 hover:text-neutral-600 transition-colors">
-                      <Eraser size={13} />
-                    </button>
-                    <p className="text-[10px] text-muted-foreground/60 mt-1">Draw your signature above</p>
+                <button onClick={() => { setFile(null); setTotalPages(0); setResult(null); }}
+                  className="rounded-lg p-1.5 text-neutral-300 hover:bg-red-50 hover:text-red-500 transition-colors">
+                  <X size={13} />
+                </button>
+              </div>
+  
+            {file && (
+              <div className="rounded-xl bg-neutral-50 ring-1 ring-black/5 p-3 space-y-3">
+                {/* Sig mode */}
+                <div>
+                  <p className="text-[10px] font-semibold uppercase tracking-widest text-muted-foreground mb-1.5">Signature</p>
+                  <div className="flex gap-1.5 mb-2">
+                    {(["draw", "type"] as const).map(m => (
+                      <button key={m} onClick={() => setMode(m)}
+                        className={cn("flex-1 rounded-lg py-1.5 text-[12px] font-medium capitalize transition-colors",
+                          mode === m ? "bg-neutral-900 text-white" : "bg-neutral-100 text-neutral-600 hover:bg-neutral-200")}>
+                        {m === "draw" ? "Draw" : "Type"}
+                      </button>
+                    ))}
                   </div>
-                ) : (
-                  <input type="text" placeholder="Type your name"
-                    value={typedSig} onChange={e => setTypedSig(e.target.value)}
-                    className="w-full rounded-lg border border-border bg-white px-2 py-2 text-[18px] text-foreground outline-none focus:border-foreground/30 transition-colors"
-                    style={{ fontFamily: "Georgia, serif", fontStyle: "italic" }}
-                  />
-                )}
-              </div>
-
-              {/* Placement */}
-              <div className="grid grid-cols-3 gap-3">
-                <div>
-                  <p className="text-[10px] font-semibold uppercase tracking-widest text-muted-foreground mb-1.5">Page</p>
-                  <input type="number" min={1} max={totalPages || 1} value={page} onChange={e => setPage(Number(e.target.value))}
-                    className="w-full rounded-lg border border-border bg-white px-2 py-1.5 text-[12px] text-foreground outline-none focus:border-foreground/30 transition-colors"
-                  />
+                  {mode === "draw" ? (
+                    <div className="relative">
+                      <canvas ref={sigCanvasRef} width={500} height={120}
+                        className="w-full rounded-lg border border-border bg-white cursor-crosshair touch-none"
+                        onMouseDown={startDraw} onMouseMove={draw} onMouseUp={() => setIsDrawing(false)} onMouseLeave={() => setIsDrawing(false)}
+                        onTouchStart={startDraw} onTouchMove={draw} onTouchEnd={() => setIsDrawing(false)}
+                      />
+                      <button onClick={clearCanvas} className="absolute top-2 right-2 rounded-lg p-1.5 bg-white ring-1 ring-black/10 text-neutral-400 hover:text-neutral-600 transition-colors">
+                        <Eraser size={13} />
+                      </button>
+                      <p className="text-[10px] text-muted-foreground/60 mt-1">Draw your signature above</p>
+                    </div>
+                  ) : (
+                    <input type="text" placeholder="Type your name"
+                      value={typedSig} onChange={e => setTypedSig(e.target.value)}
+                      className="w-full rounded-lg border border-border bg-white px-2 py-2 text-[18px] text-foreground outline-none focus:border-foreground/30 transition-colors"
+                      style={{ fontFamily: "Georgia, serif", fontStyle: "italic" }}
+                    />
+                  )}
+                </div>
+  
+                {/* Placement */}
+                <div className="grid grid-cols-3 gap-3">
+                  <div>
+                    <p className="text-[10px] font-semibold uppercase tracking-widest text-muted-foreground mb-1.5">Page</p>
+                    <input type="number" min={1} max={totalPages || 1} value={page} onChange={e => setPage(Number(e.target.value))}
+                      className="w-full rounded-lg border border-border bg-white px-2 py-1.5 text-[12px] text-foreground outline-none focus:border-foreground/30 transition-colors"
+                    />
+                  </div>
+                  <div>
+                    <p className="text-[10px] font-semibold uppercase tracking-widest text-muted-foreground mb-1.5">X pos %</p>
+                    <input type="number" min={0} max={100} value={xPct} onChange={e => setXPct(Number(e.target.value))}
+                      className="w-full rounded-lg border border-border bg-white px-2 py-1.5 text-[12px] text-foreground outline-none focus:border-foreground/30 transition-colors"
+                    />
+                  </div>
+                  <div>
+                    <p className="text-[10px] font-semibold uppercase tracking-widest text-muted-foreground mb-1.5">Y pos %</p>
+                    <input type="number" min={0} max={100} value={yPct} onChange={e => setYPct(Number(e.target.value))}
+                      className="w-full rounded-lg border border-border bg-white px-2 py-1.5 text-[12px] text-foreground outline-none focus:border-foreground/30 transition-colors"
+                    />
+                  </div>
                 </div>
                 <div>
-                  <p className="text-[10px] font-semibold uppercase tracking-widest text-muted-foreground mb-1.5">X pos %</p>
-                  <input type="number" min={0} max={100} value={xPct} onChange={e => setXPct(Number(e.target.value))}
-                    className="w-full rounded-lg border border-border bg-white px-2 py-1.5 text-[12px] text-foreground outline-none focus:border-foreground/30 transition-colors"
-                  />
-                </div>
-                <div>
-                  <p className="text-[10px] font-semibold uppercase tracking-widest text-muted-foreground mb-1.5">Y pos %</p>
-                  <input type="number" min={0} max={100} value={yPct} onChange={e => setYPct(Number(e.target.value))}
-                    className="w-full rounded-lg border border-border bg-white px-2 py-1.5 text-[12px] text-foreground outline-none focus:border-foreground/30 transition-colors"
-                  />
+                  <div className="flex justify-between mb-1">
+                    <p className="text-[10px] font-semibold uppercase tracking-widest text-muted-foreground">Signature size</p>
+                    <span className="text-[11px] text-muted-foreground">{sigScale}% of page width</span>
+                  </div>
+                  <input type="range" min={5} max={80} value={sigScale} onChange={e => setSigScale(Number(e.target.value))}
+                    className="w-full h-1.5 cursor-pointer accent-foreground" />
                 </div>
               </div>
-              <div>
-                <div className="flex justify-between mb-1">
-                  <p className="text-[10px] font-semibold uppercase tracking-widest text-muted-foreground">Signature size</p>
-                  <span className="text-[11px] text-muted-foreground">{sigScale}% of page width</span>
-                </div>
-                <input type="range" min={5} max={80} value={sigScale} onChange={e => setSigScale(Number(e.target.value))}
-                  className="w-full h-1.5 cursor-pointer accent-foreground" />
+            )}
+  
+            {error && <p className="text-[12px] text-red-600 bg-red-50 rounded-xl px-3 py-2 ring-1 ring-red-100">{error}</p>}
+  
+            {result && (
+              <div className="flex items-center gap-3 rounded-xl bg-emerald-50 px-3 py-2.5 ring-1 ring-emerald-100">
+                <div className="size-2 rounded-full bg-emerald-500 shrink-0" />
+                <p className="flex-1 text-[12px] text-emerald-700 font-medium">Signed PDF ready · {formatBytes(result.blob.size)}</p>
+                <SoftPillButton variant="primary" onClick={() => {
+                  const a = document.createElement("a"); a.href = result.url; a.download = "signed.pdf"; a.click();
+                }} className="h-8 px-3 text-[12px]">
+                  <DownloadSimple size={12} />Download
+                </SoftPillButton>
               </div>
-            </div>
-          )}
-
-          {error && <p className="text-[12px] text-red-600 bg-red-50 rounded-xl px-3 py-2 ring-1 ring-red-100">{error}</p>}
-
-          {result && (
-            <div className="flex items-center gap-3 rounded-xl bg-emerald-50 px-3 py-2.5 ring-1 ring-emerald-100">
-              <div className="size-2 rounded-full bg-emerald-500 shrink-0" />
-              <p className="flex-1 text-[12px] text-emerald-700 font-medium">Signed PDF ready · {formatBytes(result.blob.size)}</p>
-              <SoftPillButton variant="primary" onClick={() => {
-                const a = document.createElement("a"); a.href = result.url; a.download = "signed.pdf"; a.click();
-              }} className="h-8 px-3 text-[12px]">
-                <DownloadSimple size={12} />Download
-              </SoftPillButton>
-            </div>
-          )}
-
-          <SoftPillButton variant="primary" onClick={process} disabled={!file || processing} className="w-full h-9 text-[12px]">
-            {processing ? <><CircleNotch size={12} className="animate-spin" />Processing…</> : "Sign PDF"}
-          </SoftPillButton>
+            )}
+  
+            <SoftPillButton variant="primary" onClick={process} disabled={!file || processing} className="w-full h-9 text-[12px]">
+              {processing ? <><CircleNotch size={12} className="animate-spin" />Processing…</> : "Sign PDF"}
+            </SoftPillButton>
+          </div>
         </div>
+        <input ref={fileInputRef} type="file" accept="application/pdf,.pdf" className="hidden"
+          onChange={e => { if (e.target.files?.[0]) loadFile(e.target.files[0]); e.target.value = ""; }} />
       </div>
-      <input ref={fileInputRef} type="file" accept="application/pdf,.pdf" className="hidden"
-        onChange={e => { if (e.target.files?.[0]) loadFile(e.target.files[0]); e.target.value = ""; }} />
-    </div>
+      )}
   );
 }

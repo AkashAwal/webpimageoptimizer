@@ -99,49 +99,48 @@ export default function PdfToolShell({
 
   return (
     <div className="pt-4">
-      <div className="overflow-hidden rounded-2xl ring-1 ring-black/6 shadow-[0_4px_24px_-6px_rgba(0,0,0,0.10),0_1px_3px_rgba(0,0,0,0.06)] bg-white">
 
-        {/* Nav bar — only shown once a file is loaded */}
-        {files.length > 0 && title && (
-          <div className="flex items-center gap-2.5 px-4 py-2.5 border-b border-border bg-neutral-50/60">
-            <Link href="/" className="flex items-center gap-1 text-[12px] text-muted-foreground hover:text-foreground transition-colors shrink-0">
-              <CaretLeft size={11} weight="bold" />All tools
-            </Link>
-            <span className="text-neutral-300 text-[12px]">/</span>
-            <h1 className="text-[13px] font-semibold text-foreground truncate">{title}</h1>
-            <span className="ml-auto text-[11px] text-muted-foreground/50 hidden sm:block shrink-0">No upload · runs in your browser</span>
+      {/* Landing screen — no card, sits directly on the page */}
+      {files.length === 0 && (
+        <div
+          className={cn(
+            "flex flex-col items-center justify-center gap-8 min-h-[calc(100vh-8rem)] transition-colors",
+            dragOver && "bg-neutral-50/60 rounded-2xl",
+          )}
+          onDragOver={e => { e.preventDefault(); setDragOver(true); }}
+          onDragLeave={e => { if (!e.currentTarget.contains(e.relatedTarget as Node)) setDragOver(false); }}
+          onDrop={e => { e.preventDefault(); setDragOver(false); if (e.dataTransfer.files.length) addFiles(e.dataTransfer.files); }}
+        >
+          <div className="text-center space-y-3 max-w-lg">
+            {title && <h2 className="text-5xl font-bold tracking-tight text-foreground">{title}</h2>}
+            {description && <p className="text-[18px] text-muted-foreground">{description}</p>}
           </div>
-        )}
+          <button
+            onClick={() => inputRef.current?.click()}
+            className="w-full max-w-md h-16 rounded-2xl bg-foreground text-white text-[16px] font-semibold hover:bg-foreground/90 active:scale-[0.99] transition-all"
+          >
+            Select PDF File{acceptMultiple ? "s" : ""}
+          </button>
+          <p className="text-[13px] text-muted-foreground">or drag and drop your PDF here</p>
+        </div>
+      )}
 
-        {/* Landing screen — empty state */}
-        {files.length === 0 && (
-          <div className="p-4">
-            <div
-              className={cn(
-                "flex flex-col items-center justify-center gap-8 min-h-[calc(100vh-8rem)] rounded-xl transition-colors",
-                dragOver && "bg-neutral-50",
-              )}
-              onDragOver={e => { e.preventDefault(); setDragOver(true); }}
-              onDragLeave={e => { if (!e.currentTarget.contains(e.relatedTarget as Node)) setDragOver(false); }}
-              onDrop={e => { e.preventDefault(); setDragOver(false); if (e.dataTransfer.files.length) addFiles(e.dataTransfer.files); }}
-            >
-              <div className="text-center space-y-3 max-w-lg">
-                {title && <h2 className="text-5xl font-bold tracking-tight text-foreground">{title}</h2>}
-                {description && <p className="text-[18px] text-muted-foreground">{description}</p>}
-              </div>
-              <button
-                onClick={() => inputRef.current?.click()}
-                className="w-full max-w-md h-16 rounded-2xl bg-foreground text-white text-[16px] font-semibold hover:bg-foreground/90 active:scale-[0.99] transition-all"
-              >
-                Select PDF File{acceptMultiple ? "s" : ""}
-              </button>
-              <p className="text-[13px] text-muted-foreground">or drag and drop your PDF here</p>
+      {/* Active state — card with two-column layout */}
+      {files.length > 0 && (
+        <div className="overflow-hidden rounded-2xl ring-1 ring-black/6 shadow-[0_4px_24px_-6px_rgba(0,0,0,0.10),0_1px_3px_rgba(0,0,0,0.06)] bg-white">
+
+          {/* Nav bar */}
+          {title && (
+            <div className="flex items-center gap-2.5 px-4 py-2.5 border-b border-border bg-neutral-50/60">
+              <Link href="/" className="flex items-center gap-1 text-[12px] text-muted-foreground hover:text-foreground transition-colors shrink-0">
+                <CaretLeft size={11} weight="bold" />All tools
+              </Link>
+              <span className="text-neutral-300 text-[12px]">/</span>
+              <h1 className="text-[13px] font-semibold text-foreground truncate">{title}</h1>
+              <span className="ml-auto text-[11px] text-muted-foreground/50 hidden sm:block shrink-0">No upload · runs in your browser</span>
             </div>
-          </div>
-        )}
+          )}
 
-        {/* Active state — two-column layout when settings exist */}
-        {files.length > 0 && (
           <div className={cn("flex", settingsNode ? "divide-x divide-border" : "")}>
 
             {/* Left: main content */}
@@ -213,8 +212,8 @@ export default function PdfToolShell({
               </div>
             )}
           </div>
-        )}
-      </div>
+        </div>
+      )}
 
       <input ref={inputRef} type="file" accept={accept} multiple={acceptMultiple} className="hidden"
         onChange={e => { if (e.target.files?.length) addFiles(e.target.files); e.target.value = ""; }}

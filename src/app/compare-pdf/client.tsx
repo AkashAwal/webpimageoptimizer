@@ -88,6 +88,25 @@ export default function ComparePdfClient() {
 
   return (
     <div className="pt-4">
+      {/* Landing heading — no card, shown before any file is loaded */}
+      {!pdfA && !pdfB && (
+        <div className="flex flex-col items-center justify-center gap-8 min-h-[calc(100vh-8rem)] transition-colors">
+          <div className="text-center space-y-3 max-w-lg">
+            <h2 className="text-5xl font-bold tracking-tight text-foreground">Compare PDF</h2>
+            <p className="text-[18px] text-muted-foreground">View two PDF files side by side to spot differences.</p>
+          </div>
+          <div className="flex gap-3 w-full max-w-md">
+            <button onClick={() => inputA.current?.click()} className="flex-1 h-16 rounded-2xl bg-foreground text-white text-[15px] font-semibold hover:bg-foreground/90 active:scale-[0.99] transition-all">
+              Select Document A
+            </button>
+            <button onClick={() => inputB.current?.click()} className="flex-1 h-16 rounded-2xl bg-foreground text-white text-[15px] font-semibold hover:bg-foreground/90 active:scale-[0.99] transition-all">
+              Select Document B
+            </button>
+          </div>
+          <p className="text-[13px] text-muted-foreground">or drag and drop PDFs onto the document slots below</p>
+        </div>
+      )}
+
       <div className="overflow-hidden rounded-2xl ring-1 ring-black/6 shadow-[0_4px_24px_-6px_rgba(0,0,0,0.10),0_1px_3px_rgba(0,0,0,0.06)] bg-white">
         <div className="flex items-center gap-2.5 px-4 py-2.5 border-b border-border bg-neutral-50/60">
           <Link href="/" className="flex items-center gap-1 text-[12px] text-muted-foreground hover:text-foreground transition-colors shrink-0">
@@ -107,14 +126,6 @@ export default function ComparePdfClient() {
         </div>
 
         <div className="p-4 space-y-3">
-          {/* Landing heading — only when neither PDF is loaded */}
-          {!pdfA && !pdfB && (
-            <div className="text-center py-6 space-y-1.5">
-              <h2 className="text-[22px] font-bold tracking-tight text-foreground">Compare PDF</h2>
-              <p className="text-[13px] text-muted-foreground">View two PDF files side by side to spot differences.</p>
-            </div>
-          )}
-
           {/* File pickers */}
           <div className="flex gap-3">
             <DropZone side="a" pdf={pdfA} inputRef={inputA as React.RefObject<HTMLInputElement>} />

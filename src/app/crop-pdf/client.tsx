@@ -76,10 +76,34 @@ export default function CropPdfClient() {
   const inputCls = "w-full rounded-lg border border-border bg-white px-2 py-1.5 text-[12px] text-foreground outline-none focus:border-foreground/30 transition-colors";
 
   return (
-    <div className="pt-4 flex gap-4 items-start">
+    <div className="pt-4">
+      {/* Landing — no card */}
+      {!file && (
+        <div
+          className="flex flex-col items-center justify-center gap-8 min-h-[calc(100vh-8rem)] transition-colors"
+          onDragOver={e => e.preventDefault()}
+          onDrop={e => { e.preventDefault(); const f = e.dataTransfer.files[0]; if (f) loadFile(f); }}
+        >
+          <div className="text-center space-y-3 max-w-lg">
+            <h2 className="text-5xl font-bold tracking-tight text-foreground">Crop PDF</h2>
+            <p className="text-[18px] text-muted-foreground">Trim the margins of every page in your PDF.</p>
+          </div>
+          <button
+            onClick={() => inputRef.current?.click()}
+            className="w-full max-w-md h-16 rounded-2xl bg-foreground text-white text-[16px] font-semibold hover:bg-foreground/90 active:scale-[0.99] transition-all"
+          >
+            Select PDF File
+          </button>
+          <p className="text-[13px] text-muted-foreground">or drag and drop your PDF here</p>
+        </div>
+      )}
+
+      {/* Active — two-column layout */}
+      {file && (
+        <div className="flex gap-4 items-start">
 
       {/* Left: live preview column */}
-      {file && (
+      {(
         <div className="flex-1 min-w-0">
           {loadingPreview && (
             <div className="flex items-center justify-center h-48 rounded-2xl ring-1 ring-black/6 bg-white text-neutral-400">
@@ -122,25 +146,6 @@ export default function CropPdfClient() {
         </div>
 
         <div className="p-4 space-y-3">
-          {!file ? (
-            <div
-              className="flex flex-col items-center justify-center gap-8 min-h-[calc(100vh-8rem)] rounded-xl transition-colors"
-              onDragOver={e => e.preventDefault()}
-              onDrop={e => { e.preventDefault(); const f = e.dataTransfer.files[0]; if (f) loadFile(f); }}
-            >
-              <div className="text-center space-y-3 max-w-lg">
-                <h2 className="text-5xl font-bold tracking-tight text-foreground">Crop PDF</h2>
-                <p className="text-[18px] text-muted-foreground">Trim the margins of every page in your PDF.</p>
-              </div>
-              <button
-                onClick={() => inputRef.current?.click()}
-                className="w-full max-w-md h-16 rounded-2xl bg-foreground text-white text-[16px] font-semibold hover:bg-foreground/90 active:scale-[0.99] transition-all"
-              >
-                Select PDF File
-              </button>
-              <p className="text-[13px] text-muted-foreground">or drag and drop your PDF here</p>
-            </div>
-          ) : (
             <>
               <div className="flex items-center gap-3 rounded-xl px-3 py-2 bg-white ring-1 ring-black/5">
                 <FilePdf size={18} className="shrink-0 text-red-400" />
@@ -198,13 +203,13 @@ export default function CropPdfClient() {
             </div>
           )}
 
-          {file && (
-            <SoftPillButton variant="primary" onClick={process} disabled={processing || loadingPreview} className="w-full h-9 text-[12px]">
-              {processing ? <><CircleNotch size={12} className="animate-spin" />Processing…</> : "Crop PDF"}
-            </SoftPillButton>
-          )}
+          <SoftPillButton variant="primary" onClick={process} disabled={processing || loadingPreview} className="w-full h-9 text-[12px]">
+            {processing ? <><CircleNotch size={12} className="animate-spin" />Processing…</> : "Crop PDF"}
+          </SoftPillButton>
         </div>
       </div>
+        </div>
+      )}
 
       <input ref={inputRef} type="file" accept="application/pdf,.pdf" className="hidden"
         onChange={e => { if (e.target.files?.[0]) loadFile(e.target.files[0]); e.target.value = ""; }} />

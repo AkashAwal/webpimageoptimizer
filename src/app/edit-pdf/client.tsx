@@ -212,104 +212,107 @@ export default function EditPdfClient() {
 
   return (
     <div className="pt-4">
-      <div className="overflow-hidden rounded-2xl ring-1 ring-black/6 shadow-[0_4px_24px_-6px_rgba(0,0,0,0.10),0_1px_3px_rgba(0,0,0,0.06)] bg-white">
-        <div className="flex items-center gap-2.5 px-4 py-2.5 border-b border-border bg-neutral-50/60">
-          <Link href="/" className="flex items-center gap-1 text-[12px] text-muted-foreground hover:text-foreground transition-colors shrink-0">
-            <CaretLeft size={11} weight="bold" />All tools
-          </Link>
-          <span className="text-neutral-300 text-[12px]">/</span>
-          <h1 className="text-[13px] font-semibold text-foreground">Edit PDF</h1>
-          {totalPages > 0 && (
-            <div className="ml-auto flex items-center gap-1.5">
-              <button onClick={() => currentPage > 1 && changePage(currentPage - 1)} disabled={currentPage <= 1}
-                className="rounded-lg px-2 py-1 text-[12px] bg-neutral-100 text-neutral-600 hover:bg-neutral-200 disabled:opacity-30 transition-colors">⬹</button>
-              <span className="text-[12px] text-muted-foreground">{currentPage} / {totalPages}</span>
-              <button onClick={() => currentPage < totalPages && changePage(currentPage + 1)} disabled={currentPage >= totalPages}
-                className="rounded-lg px-2 py-1 text-[12px] bg-neutral-100 text-neutral-600 hover:bg-neutral-200 disabled:opacity-30 transition-colors">⬺</button>
-            </div>
-          )}
-        </div>
-
-        <div className="p-4 space-y-3">
-          {!file ? (
-            <div
-              className="flex flex-col items-center justify-center gap-8 min-h-[calc(100vh-8rem)] rounded-xl transition-colors"
-              onDragOver={e => e.preventDefault()}
-              onDrop={e => { e.preventDefault(); const f = e.dataTransfer.files[0]; if (f) loadFile(f); }}
-            >
-              <div className="text-center space-y-3 max-w-lg">
-                <h2 className="text-5xl font-bold tracking-tight text-foreground">Edit PDF</h2>
-                <p className="text-[18px] text-muted-foreground">Annotate, highlight, and draw on any page of a PDF.</p>
-              </div>
-              <button
-                onClick={() => fileInputRef.current?.click()}
-                className="w-full max-w-md h-16 rounded-2xl bg-foreground text-white text-[16px] font-semibold hover:bg-foreground/90 active:scale-[0.99] transition-all"
+      {!file && (
+        <div
+                className="flex flex-col items-center justify-center gap-8 min-h-[calc(100vh-8rem)] rounded-xl transition-colors"
+                onDragOver={e => e.preventDefault()}
+                onDrop={e => { e.preventDefault(); const f = e.dataTransfer.files[0]; if (f) loadFile(f); }}
               >
-                Select PDF File
-              </button>
-              <p className="text-[13px] text-muted-foreground">or drag and drop your PDF here</p>
-            </div>
-          ) : (
-            <>
-              {/* Toolbar */}
-              <div className="flex items-center gap-2 flex-wrap">
-                <div className="flex gap-1">
-                  {TOOLS.map(t => (
-                    <button key={t.id} onClick={() => setTool(t.id)} title={t.label}
-                      className={cn("flex items-center gap-1 rounded-lg px-2 py-1.5 text-[11px] font-medium transition-colors",
-                        tool === t.id ? "bg-neutral-900 text-white" : "bg-neutral-100 text-neutral-600 hover:bg-neutral-200")}>
-                      {t.icon}<span className="hidden sm:inline">{t.label}</span>
-                    </button>
-                  ))}
+                <div className="text-center space-y-3 max-w-lg">
+                  <h2 className="text-5xl font-bold tracking-tight text-foreground">Edit PDF</h2>
+                  <p className="text-[18px] text-muted-foreground">Annotate, highlight, and draw on any page of a PDF.</p>
                 </div>
-                <input type="color" value={color} onChange={e => setColor(e.target.value)}
-                  className="size-7 rounded cursor-pointer border border-border" title="Colour" />
-                <button onClick={() => setAnnotations(prev => prev.slice(0, -1))}
-                  className="ml-auto rounded-lg px-2 py-1.5 text-[11px] bg-neutral-100 text-neutral-600 hover:bg-neutral-200 transition-colors">Undo</button>
-                <button onClick={() => setAnnotations([])}
-                  className="rounded-lg px-2 py-1.5 text-[11px] bg-neutral-100 text-neutral-600 hover:bg-neutral-200 transition-colors">Clear page</button>
+                <button
+                  onClick={() => fileInputRef.current?.click()}
+                  className="w-full max-w-md h-16 rounded-2xl bg-foreground text-white text-[16px] font-semibold hover:bg-foreground/90 active:scale-[0.99] transition-all"
+                >
+                  Select PDF File
+                </button>
+                <p className="text-[13px] text-muted-foreground">or drag and drop your PDF here</p>
               </div>
+      )}
 
-              {/* Canvas */}
-              <div className="rounded-xl overflow-hidden ring-1 ring-black/10 cursor-crosshair max-h-[60vh] overflow-y-auto">
-                <canvas ref={canvasRef}
-                  onMouseDown={onMouseDown} onMouseMove={onMouseMove} onMouseUp={onMouseUp}
-                  className="w-full"
-                />
+      {file && (
+              <div className="overflow-hidden rounded-2xl ring-1 ring-black/6 shadow-[0_4px_24px_-6px_rgba(0,0,0,0.10),0_1px_3px_rgba(0,0,0,0.06)] bg-white">
+          <div className="flex items-center gap-2.5 px-4 py-2.5 border-b border-border bg-neutral-50/60">
+            <Link href="/" className="flex items-center gap-1 text-[12px] text-muted-foreground hover:text-foreground transition-colors shrink-0">
+              <CaretLeft size={11} weight="bold" />All tools
+            </Link>
+            <span className="text-neutral-300 text-[12px]">/</span>
+            <h1 className="text-[13px] font-semibold text-foreground">Edit PDF</h1>
+            {totalPages > 0 && (
+              <div className="ml-auto flex items-center gap-1.5">
+                <button onClick={() => currentPage > 1 && changePage(currentPage - 1)} disabled={currentPage <= 1}
+                  className="rounded-lg px-2 py-1 text-[12px] bg-neutral-100 text-neutral-600 hover:bg-neutral-200 disabled:opacity-30 transition-colors">⬹</button>
+                <span className="text-[12px] text-muted-foreground">{currentPage} / {totalPages}</span>
+                <button onClick={() => currentPage < totalPages && changePage(currentPage + 1)} disabled={currentPage >= totalPages}
+                  className="rounded-lg px-2 py-1 text-[12px] bg-neutral-100 text-neutral-600 hover:bg-neutral-200 disabled:opacity-30 transition-colors">⬺</button>
               </div>
-
-              <div className="flex items-center gap-2 text-[11px] text-muted-foreground/60">
-                <FilePdf size={13} className="text-red-400" />
-                {file.name} · {formatBytes(file.size)}
-                <button onClick={() => { setFile(null); setPageImage(null); setAnnotations([]); setPageAnns({}); setResult(null); }}
-                  className="ml-auto text-neutral-400 hover:text-red-500 transition-colors"><X size={13} /></button>
+            )}
+          </div>
+  
+          <div className="p-4 space-y-3">
+            {/* file loaded: active content */}
+            <>
+                {/* Toolbar */}
+                <div className="flex items-center gap-2 flex-wrap">
+                  <div className="flex gap-1">
+                    {TOOLS.map(t => (
+                      <button key={t.id} onClick={() => setTool(t.id)} title={t.label}
+                        className={cn("flex items-center gap-1 rounded-lg px-2 py-1.5 text-[11px] font-medium transition-colors",
+                          tool === t.id ? "bg-neutral-900 text-white" : "bg-neutral-100 text-neutral-600 hover:bg-neutral-200")}>
+                        {t.icon}<span className="hidden sm:inline">{t.label}</span>
+                      </button>
+                    ))}
+                  </div>
+                  <input type="color" value={color} onChange={e => setColor(e.target.value)}
+                    className="size-7 rounded cursor-pointer border border-border" title="Colour" />
+                  <button onClick={() => setAnnotations(prev => prev.slice(0, -1))}
+                    className="ml-auto rounded-lg px-2 py-1.5 text-[11px] bg-neutral-100 text-neutral-600 hover:bg-neutral-200 transition-colors">Undo</button>
+                  <button onClick={() => setAnnotations([])}
+                    className="rounded-lg px-2 py-1.5 text-[11px] bg-neutral-100 text-neutral-600 hover:bg-neutral-200 transition-colors">Clear page</button>
+                </div>
+  
+                {/* Canvas */}
+                <div className="rounded-xl overflow-hidden ring-1 ring-black/10 cursor-crosshair max-h-[60vh] overflow-y-auto">
+                  <canvas ref={canvasRef}
+                    onMouseDown={onMouseDown} onMouseMove={onMouseMove} onMouseUp={onMouseUp}
+                    className="w-full"
+                  />
+                </div>
+  
+                <div className="flex items-center gap-2 text-[11px] text-muted-foreground/60">
+                  <FilePdf size={13} className="text-red-400" />
+                  {file.name} · {formatBytes(file.size)}
+                  <button onClick={() => { setFile(null); setPageImage(null); setAnnotations([]); setPageAnns({}); setResult(null); }}
+                    className="ml-auto text-neutral-400 hover:text-red-500 transition-colors"><X size={13} /></button>
+                </div>
+              </>
+  
+            {error && <p className="text-[12px] text-red-600 bg-red-50 rounded-xl px-3 py-2 ring-1 ring-red-100">{error}</p>}
+  
+            {result && (
+              <div className="flex items-center gap-3 rounded-xl bg-emerald-50 px-3 py-2.5 ring-1 ring-emerald-100">
+                <div className="size-2 rounded-full bg-emerald-500 shrink-0" />
+                <p className="flex-1 text-[12px] text-emerald-700 font-medium">PDF saved · {formatBytes(result.blob.size)}</p>
+                <SoftPillButton variant="primary" onClick={() => {
+                  const a = document.createElement("a"); a.href = result.url; a.download = "edited.pdf"; a.click();
+                }} className="h-8 px-3 text-[12px]">
+                  <DownloadSimple size={12} />Download
+                </SoftPillButton>
               </div>
-            </>
-          )}
-
-          {error && <p className="text-[12px] text-red-600 bg-red-50 rounded-xl px-3 py-2 ring-1 ring-red-100">{error}</p>}
-
-          {result && (
-            <div className="flex items-center gap-3 rounded-xl bg-emerald-50 px-3 py-2.5 ring-1 ring-emerald-100">
-              <div className="size-2 rounded-full bg-emerald-500 shrink-0" />
-              <p className="flex-1 text-[12px] text-emerald-700 font-medium">PDF saved · {formatBytes(result.blob.size)}</p>
-              <SoftPillButton variant="primary" onClick={() => {
-                const a = document.createElement("a"); a.href = result.url; a.download = "edited.pdf"; a.click();
-              }} className="h-8 px-3 text-[12px]">
-                <DownloadSimple size={12} />Download
+            )}
+  
+            {file && (
+              <SoftPillButton variant="primary" onClick={save} disabled={processing} className="w-full h-9 text-[12px]">
+                {processing ? <><CircleNotch size={12} className="animate-spin" />Saving…</> : "Save Annotated PDF"}
               </SoftPillButton>
-            </div>
-          )}
-
-          {file && (
-            <SoftPillButton variant="primary" onClick={save} disabled={processing} className="w-full h-9 text-[12px]">
-              {processing ? <><CircleNotch size={12} className="animate-spin" />Saving…</> : "Save Annotated PDF"}
-            </SoftPillButton>
-          )}
+            )}
+          </div>
         </div>
+        <input ref={fileInputRef} type="file" accept="application/pdf,.pdf" className="hidden"
+          onChange={e => { if (e.target.files?.[0]) loadFile(e.target.files[0]); e.target.value = ""; }} />
       </div>
-      <input ref={fileInputRef} type="file" accept="application/pdf,.pdf" className="hidden"
-        onChange={e => { if (e.target.files?.[0]) loadFile(e.target.files[0]); e.target.value = ""; }} />
-    </div>
+      )}
   );
 }
