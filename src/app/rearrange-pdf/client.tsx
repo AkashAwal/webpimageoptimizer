@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 import { useCallback, useRef, useState } from "react";
 import Link from "next/link";
 import { UploadSimple, FilePdf, DotsSixVertical, DownloadSimple, CircleNotch, CaretLeft, X } from "@phosphor-icons/react";
@@ -88,7 +88,7 @@ export default function RearrangePdfClient() {
               </div>
               <div className="text-center">
                 <p className="text-[15px] font-semibold text-foreground">Drop your PDF here</p>
-                <p className="mt-1 text-[12px] text-muted-foreground">Click to select Â· PDF only</p>
+                <p className="mt-1 text-[12px] text-muted-foreground">Click to select · PDF only</p>
               </div>
             </div>
           ) : (
@@ -97,7 +97,7 @@ export default function RearrangePdfClient() {
                 <FilePdf size={18} className="shrink-0 text-red-400" />
                 <div className="flex-1 min-w-0">
                   <p className="truncate text-[12px] font-medium text-foreground">{file.name}</p>
-                  <p className="text-[11px] text-muted-foreground">{order.length} pages Â· {formatBytes(file.size)}</p>
+                  <p className="text-[11px] text-muted-foreground">{order.length} pages · {formatBytes(file.size)}</p>
                 </div>
                 <button onClick={() => { setFile(null); setOrder([]); setResult(null); }}
                   className="rounded-lg p-1.5 text-neutral-300 hover:bg-red-50 hover:text-red-500 transition-colors">
@@ -132,7 +132,7 @@ export default function RearrangePdfClient() {
           {result && (
             <div className="flex items-center gap-3 rounded-xl bg-emerald-50 px-3 py-2.5 ring-1 ring-emerald-100">
               <div className="size-2 rounded-full bg-emerald-500 shrink-0" />
-              <p className="flex-1 text-[12px] text-emerald-700 font-medium">Ready Â· {formatBytes(result.blob.size)}</p>
+              <p className="flex-1 text-[12px] text-emerald-700 font-medium">Ready · {formatBytes(result.blob.size)}</p>
               <SoftPillButton variant="primary" onClick={() => {
                 const a = document.createElement("a"); a.href = result.url; a.download = "rearranged.pdf"; a.click();
               }} className="h-8 px-3 text-[12px]">
@@ -142,7 +142,7 @@ export default function RearrangePdfClient() {
           )}
 
           <SoftPillButton variant="primary" onClick={process} disabled={!file || processing} className="w-full h-9 text-[12px]">
-            {processing ? <><CircleNotch size={12} className="animate-spin" />Processingâ€¦</> : "Save New Order"}
+            {processing ? <><CircleNotch size={12} className="animate-spin" />Processing⬦</> : "Save New Order"}
           </SoftPillButton>
         </div>
       </div>

@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 import { useCallback, useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { UploadSimple, FilePdf, DownloadSimple, CircleNotch, CaretLeft, X, TextT, Rectangle, Circle, Highlighter, PencilSimple, Eraser } from "@phosphor-icons/react";
@@ -222,10 +222,10 @@ export default function EditPdfClient() {
           {totalPages > 0 && (
             <div className="ml-auto flex items-center gap-1.5">
               <button onClick={() => currentPage > 1 && changePage(currentPage - 1)} disabled={currentPage <= 1}
-                className="rounded-lg px-2 py-1 text-[12px] bg-neutral-100 text-neutral-600 hover:bg-neutral-200 disabled:opacity-30 transition-colors">â€¹</button>
+                className="rounded-lg px-2 py-1 text-[12px] bg-neutral-100 text-neutral-600 hover:bg-neutral-200 disabled:opacity-30 transition-colors">⬹</button>
               <span className="text-[12px] text-muted-foreground">{currentPage} / {totalPages}</span>
               <button onClick={() => currentPage < totalPages && changePage(currentPage + 1)} disabled={currentPage >= totalPages}
-                className="rounded-lg px-2 py-1 text-[12px] bg-neutral-100 text-neutral-600 hover:bg-neutral-200 disabled:opacity-30 transition-colors">â€º</button>
+                className="rounded-lg px-2 py-1 text-[12px] bg-neutral-100 text-neutral-600 hover:bg-neutral-200 disabled:opacity-30 transition-colors">⬺</button>
             </div>
           )}
         </div>
@@ -271,7 +271,7 @@ export default function EditPdfClient() {
 
               <div className="flex items-center gap-2 text-[11px] text-muted-foreground/60">
                 <FilePdf size={13} className="text-red-400" />
-                {file.name} Â· {formatBytes(file.size)}
+                {file.name} · {formatBytes(file.size)}
                 <button onClick={() => { setFile(null); setPageImage(null); setAnnotations([]); setPageAnns({}); setResult(null); }}
                   className="ml-auto text-neutral-400 hover:text-red-500 transition-colors"><X size={13} /></button>
               </div>
@@ -283,7 +283,7 @@ export default function EditPdfClient() {
           {result && (
             <div className="flex items-center gap-3 rounded-xl bg-emerald-50 px-3 py-2.5 ring-1 ring-emerald-100">
               <div className="size-2 rounded-full bg-emerald-500 shrink-0" />
-              <p className="flex-1 text-[12px] text-emerald-700 font-medium">PDF saved Â· {formatBytes(result.blob.size)}</p>
+              <p className="flex-1 text-[12px] text-emerald-700 font-medium">PDF saved · {formatBytes(result.blob.size)}</p>
               <SoftPillButton variant="primary" onClick={() => {
                 const a = document.createElement("a"); a.href = result.url; a.download = "edited.pdf"; a.click();
               }} className="h-8 px-3 text-[12px]">
@@ -294,7 +294,7 @@ export default function EditPdfClient() {
 
           {file && (
             <SoftPillButton variant="primary" onClick={save} disabled={processing} className="w-full h-9 text-[12px]">
-              {processing ? <><CircleNotch size={12} className="animate-spin" />Savingâ€¦</> : "Save Annotated PDF"}
+              {processing ? <><CircleNotch size={12} className="animate-spin" />Saving⬦</> : "Save Annotated PDF"}
             </SoftPillButton>
           )}
         </div>

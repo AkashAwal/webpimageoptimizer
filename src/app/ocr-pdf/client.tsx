@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 import { useRef, useState } from "react";
 import Link from "next/link";
 import { UploadSimple, FilePdf, DownloadSimple, CircleNotch, CaretLeft, X, CopySimple, Check } from "@phosphor-icons/react";
@@ -32,12 +32,12 @@ export default function OcrPdfClient() {
 
   const process = async () => {
     if (!file || processing) return;
-    setProcessing(true); setError(null); setText(null); setProgress("Loading PDF rendererâ€¦");
+    setProcessing(true); setError(null); setText(null); setProgress("Loading PDF renderer⬦");
     try {
       const { getPdfJs } = await import("@/lib/pdf-utils");
       const { createWorker } = await import("tesseract.js");
 
-      setProgress("Loading OCR engineâ€¦");
+      setProgress("Loading OCR engine⬦");
       const worker = await createWorker(lang);
 
       const lib = await getPdfJs();
@@ -46,7 +46,7 @@ export default function OcrPdfClient() {
       const parts: string[] = [];
 
       for (let i = 1; i <= total; i++) {
-        setProgress(`Scanning page ${i} of ${total}â€¦`);
+        setProgress(`Scanning page ${i} of ${total}⬦`);
         const page = await pdf.getPage(i);
         const viewport = page.getViewport({ scale: 2 });
         const canvas = document.createElement("canvas");
@@ -103,7 +103,7 @@ export default function OcrPdfClient() {
               <div className="flex size-11 items-center justify-center rounded-xl bg-neutral-100 text-neutral-500"><UploadSimple size={20} /></div>
               <div className="text-center">
                 <p className="text-[15px] font-semibold text-foreground">Drop your PDF here</p>
-                <p className="mt-1 text-[12px] text-muted-foreground">Scanned or image-based PDFs Â· extracts text</p>
+                <p className="mt-1 text-[12px] text-muted-foreground">Scanned or image-based PDFs · extracts text</p>
               </div>
             </div>
           ) : (
@@ -126,7 +126,7 @@ export default function OcrPdfClient() {
                 className="w-full rounded-lg border border-border bg-white px-2 py-1.5 text-[12px] text-foreground outline-none focus:border-foreground/30 transition-colors cursor-pointer">
                 {LANGS.map(l => <option key={l.id} value={l.id}>{l.label}</option>)}
               </select>
-              <p className="text-[10px] text-muted-foreground/60 mt-1 leading-tight">Language model downloaded on first use (~10 MB). May take 30â€“60 s per page on large files.</p>
+              <p className="text-[10px] text-muted-foreground/60 mt-1 leading-tight">Language model downloaded on first use (~10 MB). May take 30�60 s per page on large files.</p>
             </div>
           )}
 
@@ -159,7 +159,7 @@ export default function OcrPdfClient() {
           )}
 
           <SoftPillButton variant="primary" onClick={process} disabled={!file || processing} className="w-full h-9 text-[12px]">
-            {processing ? <><CircleNotch size={12} className="animate-spin" />Scanningâ€¦</> : "Extract Text (OCR)"}
+            {processing ? <><CircleNotch size={12} className="animate-spin" />Scanning⬦</> : "Extract Text (OCR)"}
           </SoftPillButton>
         </div>
       </div>
