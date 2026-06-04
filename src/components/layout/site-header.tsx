@@ -22,7 +22,7 @@ const STATIC_LINKS = [
 ] as const;
 
 const linkClass =
-  "text-[13px] text-muted-foreground hover:text-foreground transition-colors px-2.5 py-1";
+  "text-[13px] text-foreground/80 hover:text-foreground transition-colors px-2.5 py-1";
 
 export function SiteHeader({ fixed = false }: SiteHeaderProps = {}) {
   const [hidden, setHidden] = useState(false);
@@ -90,7 +90,7 @@ export function SiteHeader({ fixed = false }: SiteHeaderProps = {}) {
       </div>
 
       {/* Main nav */}
-      <div className="flex w-full items-center justify-between px-6 py-4 sm:px-10">
+      <div className="relative flex w-full items-center px-6 py-4 sm:px-10">
         <Link href="/" aria-label="Pix Garage" className="flex items-center gap-2">
           <svg
             width="26"
@@ -107,8 +107,8 @@ export function SiteHeader({ fixed = false }: SiteHeaderProps = {}) {
           <span className="text-[15px] font-semibold tracking-tight text-foreground">Pix Garage</span>
         </Link>
 
-        {/* Desktop nav */}
-        <nav className="hidden sm:flex items-center gap-0.5">
+        {/* Desktop nav — centered */}
+        <nav className="hidden sm:flex absolute left-1/2 -translate-x-1/2 items-center gap-0.5">
           {CATEGORY_LINKS.map((link) => (
             <Link key={link.href} href={link.href} className={linkClass}>
               {link.label}
@@ -134,9 +134,9 @@ export function SiteHeader({ fixed = false }: SiteHeaderProps = {}) {
           )}
         </nav>
 
-        {/* Mobile hamburger */}
+        {/* Mobile hamburger — pushed to the right */}
         <button
-          className="sm:hidden text-muted-foreground hover:text-foreground transition-colors"
+          className="sm:hidden ml-auto text-muted-foreground hover:text-foreground transition-colors"
           onClick={() => setMenuOpen((o) => !o)}
           aria-label="Toggle menu"
         >
@@ -151,7 +151,7 @@ export function SiteHeader({ fixed = false }: SiteHeaderProps = {}) {
             <Link
               key={link.href}
               href={link.href}
-              className="text-[13px] text-muted-foreground hover:text-foreground transition-colors py-1"
+              className="text-[13px] text-foreground/80 hover:text-foreground transition-colors py-1"
               onClick={() => setMenuOpen(false)}
             >
               {link.label}
@@ -165,7 +165,7 @@ export function SiteHeader({ fixed = false }: SiteHeaderProps = {}) {
                 href={link.href}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-[13px] text-muted-foreground hover:text-foreground transition-colors py-1"
+                className="text-[13px] text-foreground/80 hover:text-foreground transition-colors py-1"
                 onClick={() => setMenuOpen(false)}
               >
                 {link.label}
@@ -174,7 +174,7 @@ export function SiteHeader({ fixed = false }: SiteHeaderProps = {}) {
               <Link
                 key={link.href}
                 href={link.href}
-                className="text-[13px] text-muted-foreground hover:text-foreground transition-colors py-1"
+                className="text-[13px] text-foreground/80 hover:text-foreground transition-colors py-1"
                 onClick={() => setMenuOpen(false)}
               >
                 {link.label}
