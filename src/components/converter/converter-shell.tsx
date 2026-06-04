@@ -1063,33 +1063,35 @@ export default function ConverterShell({ type, title }: { type: ConvertType; tit
         </div>
 
         {/* ── Settings panel ──────────────────────────────────────────────────── */}
-        <div className="w-[320px] shrink-0 flex flex-col border-l border-border">
+        <div className={cn("shrink-0 flex flex-col border-l border-border", cfg.outputType === "pdf" ? "w-[560px]" : "w-[320px]")}>
           <div className="flex-1 overflow-y-auto p-3 space-y-3.5">
 
             {cfg.outputType === "pdf" ? (
-              <>
-                {/* PDF Type */}
-                <div>
+              <div className="grid grid-cols-2 gap-x-3 gap-y-3.5">
+
+                {/* ── Row: PDF Type (full width) ── */}
+                <div className="col-span-2">
                   <p className="text-[10px] font-semibold uppercase tracking-widest text-muted-foreground mb-1.5">PDF Type</p>
                   <div className="flex gap-1.5">
                     {([
                       { id: "standard", label: "Standard", sub: "Screen & email" },
-                      { id: "print",    label: "Print",    sub: "High fidelity" },
+                      { id: "print",    label: "Print",    sub: "High fidelity"  },
                     ] as const).map(opt => (
                       <button key={opt.id} onClick={() => setSettings(s => ({ ...s, pdfType: opt.id }))}
                         className={cn("flex-1 flex flex-col items-center rounded-lg px-1 py-1.5 transition-colors",
                           settings.pdfType === opt.id ? "bg-neutral-900 text-white" : "bg-neutral-100 text-neutral-600 hover:bg-neutral-200")}>
                         <span className="text-[11px] font-medium leading-tight">{opt.label}</span>
-                        <span className={cn("text-[10px] mt-0.5 text-center", settings.pdfType === opt.id ? "text-white/60" : "text-neutral-400")}>{opt.sub}</span>
+                        <span className={cn("text-[10px] mt-0.5", settings.pdfType === opt.id ? "text-white/60" : "text-neutral-400")}>{opt.sub}</span>
                       </button>
                     ))}
                   </div>
                 </div>
 
-                {/* Page layout */}
+                {/* ── Row: Page Size | Image Fit ── */}
                 <div>
                   <p className="text-[10px] font-semibold uppercase tracking-widest text-muted-foreground mb-1.5">Page size</p>
-                  <select value={settings.pdfPageSize} onChange={e => setSettings(s => ({ ...s, pdfPageSize: e.target.value as Settings["pdfPageSize"] }))}
+                  <select value={settings.pdfPageSize}
+                    onChange={e => setSettings(s => ({ ...s, pdfPageSize: e.target.value as Settings["pdfPageSize"] }))}
                     className="w-full rounded-lg border border-border bg-neutral-50 px-2 py-1 text-[12px] text-foreground outline-none focus:border-foreground/30 focus:bg-white transition-colors cursor-pointer">
                     <option value="fit">Fit to image</option>
                     <option value="a4">A4 (210 × 297 mm)</option>
@@ -1099,67 +1101,67 @@ export default function ConverterShell({ type, title }: { type: ConvertType; tit
                   </select>
                 </div>
 
-                {settings.pdfPageSize !== "fit" && (
-                  <>
-                    {/* Fit mode */}
-                    <div>
-                      <p className="text-[10px] font-semibold uppercase tracking-widest text-muted-foreground mb-1.5">Image fit</p>
-                      <div className="flex gap-1.5">
-                        {([
-                          { id: "contain", label: "Contain" },
-                          { id: "fill",    label: "Fill"    },
-                          { id: "actual",  label: "1 : 1"   },
-                        ] as const).map(opt => (
-                          <button key={opt.id} onClick={() => setSettings(s => ({ ...s, pdfFitMode: opt.id }))}
-                            className={cn("flex-1 rounded-lg px-1 py-1.5 text-[11px] font-medium transition-colors",
-                              settings.pdfFitMode === opt.id ? "bg-neutral-900 text-white" : "bg-neutral-100 text-neutral-600 hover:bg-neutral-200")}>
-                            {opt.label}
-                          </button>
-                        ))}
-                      </div>
-                    </div>
-
-                    {/* Orientation */}
-                    <div>
-                      <p className="text-[10px] font-semibold uppercase tracking-widest text-muted-foreground mb-1.5">Orientation</p>
-                      <div className="flex gap-1.5">
-                        {([
-                          { id: "auto",      label: "Auto"      },
-                          { id: "portrait",  label: "Portrait"  },
-                          { id: "landscape", label: "Landscape" },
-                        ] as const).map(opt => (
-                          <button key={opt.id} onClick={() => setSettings(s => ({ ...s, pdfOrientation: opt.id }))}
-                            className={cn("flex-1 rounded-lg px-1 py-1.5 text-[11px] font-medium transition-colors",
-                              settings.pdfOrientation === opt.id ? "bg-neutral-900 text-white" : "bg-neutral-100 text-neutral-600 hover:bg-neutral-200")}>
-                            {opt.label}
-                          </button>
-                        ))}
-                      </div>
-                    </div>
-
-                    {/* Margin */}
-                    <div>
-                      <div className="flex items-center justify-between mb-1">
-                        <p className="text-[10px] font-semibold uppercase tracking-widest text-muted-foreground">Margin</p>
-                        <span className="text-[11px] tabular-nums text-muted-foreground">{settings.pdfMarginMm} mm</span>
-                      </div>
-                      <input type="range" min={0} max={40} value={settings.pdfMarginMm}
-                        onChange={e => setSettings(s => ({ ...s, pdfMarginMm: Number(e.target.value) }))}
-                        className="w-full h-1.5 cursor-pointer accent-foreground"
-                      />
-                      <div className="flex justify-between mt-0.5">
-                        <span className="text-[10px] text-muted-foreground/60">None</span>
-                        <span className="text-[10px] text-muted-foreground/60">40 mm</span>
-                      </div>
-                    </div>
-                  </>
-                )}
-
-                {/* Pages */}
                 <div>
-                  <p className="text-[10px] font-semibold uppercase tracking-widest text-muted-foreground mb-1.5">Pages</p>
-                  <p className="text-[11px] text-muted-foreground/70 leading-relaxed mb-2">Drag files in the queue to set page order.</p>
-                  <label className="flex items-center gap-2 cursor-pointer select-none">
+                  <p className="text-[10px] font-semibold uppercase tracking-widest text-muted-foreground mb-1.5">Image fit</p>
+                  <div className="flex gap-1.5">
+                    {([
+                      { id: "contain", label: "Contain", disabled: settings.pdfPageSize === "fit" },
+                      { id: "fill",    label: "Fill",    disabled: settings.pdfPageSize === "fit" },
+                      { id: "actual",  label: "1 : 1",   disabled: settings.pdfPageSize === "fit" },
+                    ] as const).map(opt => (
+                      <button key={opt.id}
+                        onClick={() => !opt.disabled && setSettings(s => ({ ...s, pdfFitMode: opt.id }))}
+                        disabled={opt.disabled}
+                        className={cn("flex-1 rounded-lg px-1 py-1.5 text-[11px] font-medium transition-colors",
+                          opt.disabled ? "bg-neutral-50 text-neutral-300 cursor-not-allowed" :
+                          settings.pdfFitMode === opt.id ? "bg-neutral-900 text-white" : "bg-neutral-100 text-neutral-600 hover:bg-neutral-200")}>
+                        {opt.label}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                {/* ── Row: Orientation | Margin ── */}
+                <div>
+                  <p className="text-[10px] font-semibold uppercase tracking-widest text-muted-foreground mb-1.5">Orientation</p>
+                  <div className="flex gap-1.5">
+                    {([
+                      { id: "auto",      label: "Auto" },
+                      { id: "portrait",  label: "Port" },
+                      { id: "landscape", label: "Land" },
+                    ] as const).map(opt => (
+                      <button key={opt.id}
+                        onClick={() => settings.pdfPageSize !== "fit" && setSettings(s => ({ ...s, pdfOrientation: opt.id }))}
+                        disabled={settings.pdfPageSize === "fit"}
+                        className={cn("flex-1 rounded-lg px-1 py-1.5 text-[11px] font-medium transition-colors",
+                          settings.pdfPageSize === "fit" ? "bg-neutral-50 text-neutral-300 cursor-not-allowed" :
+                          settings.pdfOrientation === opt.id ? "bg-neutral-900 text-white" : "bg-neutral-100 text-neutral-600 hover:bg-neutral-200")}>
+                        {opt.label}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                <div>
+                  <div className="flex items-center justify-between mb-1">
+                    <p className="text-[10px] font-semibold uppercase tracking-widest text-muted-foreground">Margin</p>
+                    <span className={cn("text-[11px] tabular-nums", settings.pdfPageSize === "fit" ? "text-muted-foreground/30" : "text-muted-foreground")}>{settings.pdfMarginMm} mm</span>
+                  </div>
+                  <input type="range" min={0} max={40} value={settings.pdfMarginMm}
+                    disabled={settings.pdfPageSize === "fit"}
+                    onChange={e => setSettings(s => ({ ...s, pdfMarginMm: Number(e.target.value) }))}
+                    className="w-full h-1.5 cursor-pointer accent-foreground disabled:opacity-30 disabled:cursor-not-allowed"
+                  />
+                  <div className="flex justify-between mt-0.5">
+                    <span className="text-[10px] text-muted-foreground/60">None</span>
+                    <span className="text-[10px] text-muted-foreground/60">40 mm</span>
+                  </div>
+                </div>
+
+                {/* ── Row: Pages (full width) ── */}
+                <div className="col-span-2 flex items-center justify-between gap-4 rounded-lg bg-neutral-50 px-3 py-2 ring-1 ring-black/5">
+                  <p className="text-[11px] text-muted-foreground/70 leading-relaxed">Drag files in the queue to set page order.</p>
+                  <label className="flex items-center gap-1.5 cursor-pointer select-none shrink-0">
                     <input type="checkbox" checked={settings.pdfPageNumbers}
                       onChange={e => setSettings(s => ({ ...s, pdfPageNumbers: e.target.checked }))}
                       className="accent-foreground size-3.5"
@@ -1168,7 +1170,7 @@ export default function ConverterShell({ type, title }: { type: ConvertType; tit
                   </label>
                 </div>
 
-                {/* Output */}
+                {/* ── Row: Output | Watermark ── */}
                 <div>
                   <p className="text-[10px] font-semibold uppercase tracking-widest text-muted-foreground mb-1.5">Output</p>
                   <div className="space-y-2">
@@ -1186,13 +1188,12 @@ export default function ConverterShell({ type, title }: { type: ConvertType; tit
                       />
                       <div>
                         <span className="text-[12px] text-foreground">Flatten</span>
-                        <p className="text-[10px] text-muted-foreground/60 mt-0.5 leading-tight">Renders transparency on white — required for printing.</p>
+                        <p className="text-[10px] text-muted-foreground/60 mt-0.5 leading-tight">White background — required for printing.</p>
                       </div>
                     </label>
                   </div>
                 </div>
 
-                {/* Watermark */}
                 <div>
                   <p className="text-[10px] font-semibold uppercase tracking-widest text-muted-foreground mb-1.5">Watermark</p>
                   <input type="text" placeholder="e.g. CONFIDENTIAL"
@@ -1202,7 +1203,7 @@ export default function ConverterShell({ type, title }: { type: ConvertType; tit
                   />
                 </div>
 
-                {/* Security */}
+                {/* ── Row: Password | Metadata ── */}
                 <div>
                   <p className="text-[10px] font-semibold uppercase tracking-widest text-muted-foreground mb-1.5">Password</p>
                   <input type="password" placeholder="Leave blank for none"
@@ -1212,7 +1213,6 @@ export default function ConverterShell({ type, title }: { type: ConvertType; tit
                   />
                 </div>
 
-                {/* Metadata */}
                 <div>
                   <p className="text-[10px] font-semibold uppercase tracking-widest text-muted-foreground mb-1.5">Metadata</p>
                   <div className="space-y-1.5">
@@ -1229,7 +1229,7 @@ export default function ConverterShell({ type, title }: { type: ConvertType; tit
                   </div>
                 </div>
 
-                {/* Source dimensions */}
+                {/* ── Row: Source dimensions | Output filename ── */}
                 <div>
                   <p className="text-[10px] font-semibold uppercase tracking-widest text-muted-foreground mb-1.5">Source dimensions (px)</p>
                   <div className="flex gap-2">
@@ -1251,7 +1251,6 @@ export default function ConverterShell({ type, title }: { type: ConvertType; tit
                   <p className="text-[10px] text-muted-foreground/50 mt-0.5 leading-tight">One field = aspect ratio preserved.</p>
                 </div>
 
-                {/* Output filename */}
                 <div>
                   <p className="text-[10px] font-semibold uppercase tracking-widest text-muted-foreground mb-1.5">Output filename</p>
                   <input type="text" placeholder="converted" value={settings.pdfFilename}
@@ -1260,7 +1259,8 @@ export default function ConverterShell({ type, title }: { type: ConvertType; tit
                   />
                   <p className="text-[10px] text-muted-foreground/50 mt-0.5 leading-tight">Saved as {settings.pdfFilename || "converted"}.pdf</p>
                 </div>
-              </>
+
+              </div>
             ) : (
               <>
                 {/* Presets */}
