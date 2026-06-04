@@ -14,4 +14,13 @@ export {
   CircleNotch,
   Lock,
   LockOpen,
+  FilmStrip,
+  Stack,
+  SquaresFour,
+  Rows,
+  PenNib,
+  Cursor,
+  Camera,
+  FilePdf,
+  ArrowsClockwise,
 } from "@phosphor-icons/react";

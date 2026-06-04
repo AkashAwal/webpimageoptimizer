@@ -3,7 +3,22 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { motion, type Variants } from "motion/react";
-import { Image, Aperture, ArrowsOut, DeviceMobile, ArrowRight } from "@phosphor-icons/react";
+import {
+  Image,
+  Aperture,
+  ArrowsOut,
+  DeviceMobile,
+  ArrowRight,
+  FilmStrip,
+  Stack,
+  SquaresFour,
+  Rows,
+  PenNib,
+  Cursor,
+  Camera,
+  FilePdf,
+  ArrowsClockwise,
+} from "@phosphor-icons/react";
 
 import { SiteHeader } from "@/components/layout/site-header";
 import { SiteFooter } from "@/components/layout/site-footer";
@@ -31,6 +46,15 @@ const itemVariants: Variants = {
 const TOOL_ICONS: Record<string, React.ReactNode> = {
   "/png-to-webp": <Image size={22} />,
   "/jpg-to-webp": <Aperture size={22} />,
+  "/gif-to-webp": <FilmStrip size={22} />,
+  "/avif-to-webp": <Stack size={22} />,
+  "/bmp-to-webp": <SquaresFour size={22} />,
+  "/tiff-to-webp": <Rows size={22} />,
+  "/svg-to-webp": <PenNib size={22} />,
+  "/ico-to-webp": <Cursor size={22} />,
+  "/jfif-to-webp": <Camera size={22} />,
+  "/pdf-to-webp": <FilePdf size={22} />,
+  "/webp-to-webp": <ArrowsClockwise size={22} />,
   "/webp-resizer": <ArrowsOut size={22} />,
   "/heic-to-webp": <DeviceMobile size={22} />,
 };

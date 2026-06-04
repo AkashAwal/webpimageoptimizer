@@ -6,7 +6,20 @@ import { UploadSimple, X, CircleNotch, Check, ArrowRight } from "@phosphor-icons
 import { cn } from "@/lib/utils";
 import SoftPillButton from "@/components/ui/soft-pill-button";
 
-export type ConvertType = "png-to-webp" | "jpg-to-webp" | "heic-to-webp";
+export type ConvertType =
+  | "png-to-webp"
+  | "jpg-to-webp"
+  | "gif-to-webp"
+  | "avif-to-webp"
+  | "bmp-to-webp"
+  | "tiff-to-webp"
+  | "svg-to-webp"
+  | "ico-to-webp"
+  | "jfif-to-webp"
+  | "pdf-to-webp"
+  | "webp-to-webp"
+  | "heic-to-webp";
+
 type ConvertState = "idle" | "converting" | "done" | "error";
 
 function formatBytes(bytes: number) {
@@ -31,6 +44,32 @@ async function canvasConvert(source: File | Blob, quality: number): Promise<Blob
   );
 }
 
+async function svgConvert(file: File, quality: number): Promise<Blob> {
+  const url = URL.createObjectURL(file);
+  return new Promise<Blob>((resolve, reject) => {
+    const img = new window.Image();
+    img.onload = () => {
+      const w = img.naturalWidth || 800;
+      const h = img.naturalHeight || 600;
+      const canvas = document.createElement("canvas");
+      canvas.width = w;
+      canvas.height = h;
+      canvas.getContext("2d")!.drawImage(img, 0, 0, w, h);
+      URL.revokeObjectURL(url);
+      canvas.toBlob(
+        (b) => (b ? resolve(b) : reject(new Error("Canvas export failed"))),
+        "image/webp",
+        quality / 100,
+      );
+    };
+    img.onerror = () => {
+      URL.revokeObjectURL(url);
+      reject(new Error("Failed to load SVG — check the file is a valid SVG document."));
+    };
+    img.src = url;
+  });
+}
+
 async function heicConvert(file: File, quality: number): Promise<Blob> {
   const { default: heic2any } = await import("heic2any");
   const out = await heic2any({ blob: file, toType: "image/png" });
@@ -51,6 +90,69 @@ const CONFIG = {
     acceptLabel: "JPG / JPEG files",
     convert: (f: File, q: number) => canvasConvert(f, q),
     defaultQuality: 85,
+    canPreview: true,
+  },
+  "gif-to-webp": {
+    accept: "image/gif,.gif",
+    acceptLabel: "GIF files",
+    convert: (f: File, q: number) => canvasConvert(f, q),
+    defaultQuality: 85,
+    canPreview: true,
+  },
+  "avif-to-webp": {
+    accept: "image/avif,.avif",
+    acceptLabel: "AVIF files",
+    convert: (f: File, q: number) => canvasConvert(f, q),
+    defaultQuality: 85,
+    canPreview: true,
+  },
+  "bmp-to-webp": {
+    accept: "image/bmp,.bmp",
+    acceptLabel: "BMP files",
+    convert: (f: File, q: number) => canvasConvert(f, q),
+    defaultQuality: 90,
+    canPreview: true,
+  },
+  "tiff-to-webp": {
+    accept: "image/tiff,.tiff,.tif",
+    acceptLabel: "TIFF / TIF files",
+    convert: (f: File, q: number) => canvasConvert(f, q),
+    defaultQuality: 90,
+    canPreview: false,
+  },
+  "svg-to-webp": {
+    accept: "image/svg+xml,.svg",
+    acceptLabel: "SVG files",
+    convert: svgConvert,
+    defaultQuality: 92,
+    canPreview: true,
+  },
+  "ico-to-webp": {
+    accept: "image/x-icon,image/vnd.microsoft.icon,.ico",
+    acceptLabel: "ICO files",
+    convert: (f: File, q: number) => canvasConvert(f, q),
+    defaultQuality: 92,
+    canPreview: false,
+  },
+  "jfif-to-webp": {
+    accept: "image/jpeg,.jfif",
+    acceptLabel: "JFIF files",
+    convert: (f: File, q: number) => canvasConvert(f, q),
+    defaultQuality: 85,
+    canPreview: true,
+  },
+  "pdf-to-webp": {
+    accept: "application/pdf,.pdf",
+    acceptLabel: "PDF files",
+    convert: (f: File, q: number) => canvasConvert(f, q),
+    defaultQuality: 90,
+    canPreview: false,
+  },
+  "webp-to-webp": {
+    accept: "image/webp,.webp",
+    acceptLabel: "WebP files",
+    convert: (f: File, q: number) => canvasConvert(f, q),
+    defaultQuality: 80,
     canPreview: true,
   },
   "heic-to-webp": {
@@ -279,7 +381,6 @@ export default function ConverterShell({ type }: ConverterShellProps) {
           transition={{ type: "spring", stiffness: 320, damping: 28 }}
           className="overflow-hidden rounded-2xl bg-white ring-1 ring-black/6 shadow-[0_4px_24px_-6px_rgba(0,0,0,0.10),0_1px_3px_rgba(0,0,0,0.06)]"
         >
-          {/* Converted image preview */}
           {cfg.canPreview && (
             <div className="relative h-44 w-full overflow-hidden bg-neutral-100">
               {/* eslint-disable-next-line @next/next/no-img-element */}
