@@ -40,9 +40,10 @@ export function SiteHeader({ fixed = false }: SiteHeaderProps = {}) {
       {/* Pre-header strip */}
       <div className="w-full bg-neutral-950 px-6 py-1.5 sm:px-10">
         <p className="text-[11px] text-neutral-400">
-          Built by <span className="font-medium text-neutral-200">Akash Awal</span>
+          Built by{" "}
+          <a href="https://akashawal.com" target="_blank" rel="noopener noreferrer" className="font-medium text-neutral-200 hover:text-white transition-colors">Akash Awal</a>
           <span className="mx-1.5 text-neutral-600">×</span>
-          <span className="font-medium text-neutral-200">Gray Cup Enterprises</span>
+          <a href="https://graycup.com" target="_blank" rel="noopener noreferrer" className="font-medium text-neutral-200 hover:text-white transition-colors">Gray Cup Enterprises</a>
         </p>
       </div>
 
