@@ -48,7 +48,7 @@ interface Settings {
   pdfCompress: boolean;
   pdfFlatten: boolean;
   pdfPassword: string;
-  pdfMerge: boolean;
+  pdfFilename: string;
 }
 
 interface PdfOptions {
@@ -390,7 +390,7 @@ export default function ConverterShell({ type, title }: { type: ConvertType; tit
 
   const [settings, setSettings] = useState<Settings>({
     quality: 85, width: "", height: "", namingMode: "original", prefix: "image", sizeCapKB: "", stripMeta: true,
-    pdfType: "standard", pdfCompress: true, pdfFlatten: false, pdfPassword: "", pdfMerge: false,
+    pdfType: "standard", pdfCompress: true, pdfFlatten: false, pdfPassword: "", pdfFilename: "converted",
   });
   const [mergedResult, setMergedResult] = useState<{ blob: Blob; url: string } | null>(null);
 
@@ -506,8 +506,8 @@ export default function ConverterShell({ type, title }: { type: ConvertType; tit
     const targetH = settings.height ? parseInt(settings.height) : undefined;
     const pdfQuality = settings.pdfType === "print" ? 95 : 80;
 
-    // ── Merge mode: all queued images → one multi-page PDF ──────────────────
-    if (cfg.outputType === "pdf" && settings.pdfMerge) {
+    // ── PDF: all queued images → one multi-page PDF ──────────────────────────
+    if (cfg.outputType === "pdf") {
       const pages: PdfPage[] = [];
       for (const item of queued) {
         if (abortRef.current) break;
@@ -530,13 +530,13 @@ export default function ConverterShell({ type, title }: { type: ConvertType; tit
       return;
     }
 
-    // ── Per-file conversion ──────────────────────────────────────────────────
+    // ── WebP: per-file conversion ─────────────────────────────────────────────
     for (const item of queued) {
       if (abortRef.current) break;
       setFiles(prev => prev.map(f => f.id === item.id ? { ...f, status: "converting" } : f));
-      const quality = cfg.outputType === "pdf" ? pdfQuality : (fileQuality[item.id] ?? settings.quality);
+      const quality = fileQuality[item.id] ?? settings.quality;
       try {
-        const blob = await cfg.convert(item.file, quality, targetW, targetH, cfg.outputType === "pdf" ? pdfOpts() : undefined);
+        const blob = await cfg.convert(item.file, quality, targetW, targetH);
         const url = URL.createObjectURL(blob);
         setFiles(prev => prev.map(f => f.id === item.id ? { ...f, status: "done", result: { blob, url } } : f));
       } catch (e) {
@@ -596,9 +596,9 @@ export default function ConverterShell({ type, title }: { type: ConvertType; tit
     if (!mergedResult) return;
     const a = document.createElement("a");
     a.href = mergedResult.url;
-    a.download = `${settings.prefix || "merged"}.pdf`;
+    a.download = `${settings.pdfFilename || "converted"}.pdf`;
     a.click();
-  }, [mergedResult, settings.prefix]);
+  }, [mergedResult, settings.pdfFilename]);
 
   const copyToClipboard = useCallback(async (item: QueueItem) => {
     if (!item.result) return;
@@ -981,19 +981,10 @@ export default function ConverterShell({ type, title }: { type: ConvertType; tit
                   </div>
                 </div>
 
-                {/* Rearrange pages / merge */}
+                {/* Pages note */}
                 <div>
                   <p className="text-[10px] font-semibold uppercase tracking-widest text-muted-foreground mb-1.5">Pages</p>
-                  <label className="flex items-start gap-2 cursor-pointer select-none">
-                    <input type="checkbox" checked={settings.pdfMerge}
-                      onChange={e => setSettings(s => ({ ...s, pdfMerge: e.target.checked }))}
-                      className="accent-foreground size-3.5 mt-0.5 shrink-0"
-                    />
-                    <div>
-                      <span className="text-[12px] text-foreground">Merge into one PDF</span>
-                      <p className="text-[10px] text-muted-foreground/60 mt-0.5 leading-tight">Drag files in the queue to set page order.</p>
-                    </div>
-                  </label>
+                  <p className="text-[11px] text-muted-foreground/70 leading-relaxed">All queued images are combined into one PDF. Drag files in the queue to set page order.</p>
                 </div>
 
                 {/* Compress */}
@@ -1054,40 +1045,15 @@ export default function ConverterShell({ type, title }: { type: ConvertType; tit
                   <p className="text-[10px] text-muted-foreground/50 mt-0.5 leading-tight">One field = aspect ratio preserved.</p>
                 </div>
 
-                {/* File naming */}
-                {!settings.pdfMerge && (
-                  <div>
-                    <p className="text-[10px] font-semibold uppercase tracking-widest text-muted-foreground mb-1.5">File naming</p>
-                    <div className="space-y-1.5">
-                      <label className="flex items-center gap-2 cursor-pointer">
-                        <input type="radio" name={`naming-${type}`} value="original" checked={settings.namingMode === "original"}
-                          onChange={() => setSettings(s => ({ ...s, namingMode: "original" }))} className="accent-foreground" />
-                        <span className="text-[12px] text-foreground">Original + number</span>
-                      </label>
-                      <label className="flex items-center gap-2 cursor-pointer">
-                        <input type="radio" name={`naming-${type}`} value="prefix" checked={settings.namingMode === "prefix"}
-                          onChange={() => setSettings(s => ({ ...s, namingMode: "prefix" }))} className="accent-foreground" />
-                        <span className="text-[12px] text-foreground">Custom prefix</span>
-                      </label>
-                      {settings.namingMode === "prefix" && (
-                        <input type="text" placeholder="image" value={settings.prefix}
-                          onChange={e => setSettings(s => ({ ...s, prefix: e.target.value }))}
-                          className="w-full rounded-lg border border-border bg-neutral-50 px-2 py-1 text-[12px] text-foreground outline-none focus:border-foreground/30 focus:bg-white transition-colors"
-                        />
-                      )}
-                    </div>
-                  </div>
-                )}
-                {settings.pdfMerge && (
-                  <div>
-                    <p className="text-[10px] font-semibold uppercase tracking-widest text-muted-foreground mb-1.5">Output filename</p>
-                    <input type="text" placeholder="merged" value={settings.prefix}
-                      onChange={e => setSettings(s => ({ ...s, prefix: e.target.value }))}
-                      className="w-full rounded-lg border border-border bg-neutral-50 px-2 py-1 text-[12px] text-foreground outline-none focus:border-foreground/30 focus:bg-white transition-colors"
-                    />
-                    <p className="text-[10px] text-muted-foreground/50 mt-0.5 leading-tight">Saved as {settings.prefix || "merged"}.pdf</p>
-                  </div>
-                )}
+                {/* Output filename */}
+                <div>
+                  <p className="text-[10px] font-semibold uppercase tracking-widest text-muted-foreground mb-1.5">Output filename</p>
+                  <input type="text" placeholder="converted" value={settings.pdfFilename}
+                    onChange={e => setSettings(s => ({ ...s, pdfFilename: e.target.value }))}
+                    className="w-full rounded-lg border border-border bg-neutral-50 px-2 py-1 text-[12px] text-foreground outline-none focus:border-foreground/30 focus:bg-white transition-colors"
+                  />
+                  <p className="text-[10px] text-muted-foreground/50 mt-0.5 leading-tight">Saved as {settings.pdfFilename || "converted"}.pdf</p>
+                </div>
               </>
             ) : (
               <>
@@ -1215,17 +1181,15 @@ export default function ConverterShell({ type, title }: { type: ConvertType; tit
                 <><CircleNotch size={12} className="animate-spin" />{batchDone} / {batchTotal} — Stop (Esc)</>
               ) : (
                 <>
-                  {cfg.outputType === "pdf"
-                    ? (settings.pdfMerge ? "Merge to PDF" : "Convert to PDF")
-                    : "Optimize Now"}
+                  {cfg.outputType === "pdf" ? "Convert to PDF" : "Optimize Now"}
                   {queuedCount > 0 && <span className="opacity-60 ml-1">({queuedCount})</span>}
                 </>
               )}
             </SoftPillButton>
-            {cfg.outputType === "pdf" && settings.pdfMerge ? (
+            {cfg.outputType === "pdf" ? (
               <SoftPillButton variant="secondary" onClick={mergedResult ? downloadMergedPdf : undefined} disabled={!mergedResult} className="w-full h-9 text-[12px]">
                 <DownloadSimple size={12} />
-                {mergedResult ? `Download merged PDF (${files.filter(f => f.status === "done").length} pages)` : "Download merged PDF"}
+                {mergedResult ? `Download PDF (${files.filter(f => f.status === "done").length} pages)` : "Download PDF"}
               </SoftPillButton>
             ) : (
               <SoftPillButton variant="secondary" onClick={doneCount > 0 ? downloadZip : undefined} disabled={doneCount === 0} className="w-full h-9 text-[12px]">
