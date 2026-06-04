@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 import { useState } from "react";
 import PdfToolShell from "@/components/pdf/pdf-tool-shell";
 import { cn } from "@/lib/utils";
@@ -37,9 +37,9 @@ export default function PdfPageNumbersClient() {
               <p className="text-[10px] font-semibold uppercase tracking-widest text-muted-foreground mb-1.5">Format</p>
               <div className="space-y-1">
                 {([
-                  { id: "n", label: "1, 2, 3 …" },
-                  { id: "n/total", label: "1/10, 2/10 …" },
-                  { id: "page n", label: "Page 1, Page 2 …" },
+                  { id: "n", label: "1, 2, 3 â€¦" },
+                  { id: "n/total", label: "1/10, 2/10 â€¦" },
+                  { id: "page n", label: "Page 1, Page 2 â€¦" },
                 ] as const).map(f => (
                   <label key={f.id} className="flex items-center gap-2 cursor-pointer">
                     <input type="radio" name="format" checked={format === f.id} onChange={() => setFormat(f.id)} className="accent-foreground" />
@@ -84,7 +84,7 @@ export default function PdfPageNumbersClient() {
           page.drawText(label, { x, y, size: fontSize, font, color: rgb(0.4, 0.4, 0.4) });
         });
 
-        return new Blob([await doc.save()], { type: "application/pdf" });
+        return new Blob([(await doc.save()) as unknown as BlobPart], { type: "application/pdf" });
       }}
     />
   );

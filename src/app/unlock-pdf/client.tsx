@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 import { useState } from "react";
 import PdfToolShell from "@/components/pdf/pdf-tool-shell";
 
@@ -25,10 +25,12 @@ export default function UnlockPdfClient() {
       onProcess={async (files) => {
         const { PDFDocument } = await import("pdf-lib");
         try {
+          // pdf-lib 1.17.1 supports password at runtime but types omit it
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
           const doc = await PDFDocument.load(await files[0].arrayBuffer(), {
             password: password || undefined,
-          });
-          return new Blob([await doc.save()], { type: "application/pdf" });
+          } as any);
+          return new Blob([(await doc.save()) as unknown as BlobPart], { type: "application/pdf" });
         } catch {
           throw new Error("Incorrect password or this PDF is not password-protected.");
         }

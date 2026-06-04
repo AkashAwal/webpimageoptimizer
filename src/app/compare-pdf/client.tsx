@@ -35,7 +35,7 @@ export default function ComparePdfClient() {
         const viewport = page.getViewport({ scale: 1.5 });
         const canvas = document.createElement("canvas");
         canvas.width = viewport.width; canvas.height = viewport.height;
-        await page.render({ canvasContext: canvas.getContext("2d")!, viewport }).promise;
+        await page.render({ canvasContext: canvas.getContext("2d")!, viewport, canvas }).promise;
         images.push(canvas.toDataURL());
         page.cleanup();
       }

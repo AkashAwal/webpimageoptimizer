@@ -19,7 +19,7 @@ export async function renderPageToCanvas(file: File, pageNum: number, scale = 1.
   const canvas = document.createElement("canvas");
   canvas.width = viewport.width;
   canvas.height = viewport.height;
-  await page.render({ canvasContext: canvas.getContext("2d")!, viewport }).promise;
+  await page.render({ canvasContext: canvas.getContext("2d")!, viewport, canvas }).promise;
   page.cleanup();
   return canvas;
 }
@@ -31,7 +31,7 @@ export async function getPdfPageCount(file: File): Promise<number> {
 }
 
 export function pdfBlob(bytes: Uint8Array): Blob {
-  return new Blob([bytes], { type: "application/pdf" });
+  return new Blob([bytes as unknown as BlobPart], { type: "application/pdf" });
 }
 
 export function parsePageRanges(input: string, total: number): number[] {

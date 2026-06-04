@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 import PdfToolShell from "@/components/pdf/pdf-tool-shell";
 
 export default function MergePdfClient() {
@@ -16,7 +16,7 @@ export default function MergePdfClient() {
           const pages = await merged.copyPages(doc, doc.getPageIndices());
           pages.forEach(p => merged.addPage(p));
         }
-        return new Blob([await merged.save()], { type: "application/pdf" });
+        return new Blob([(await merged.save()) as unknown as BlobPart], { type: "application/pdf" });
       }}
     />
   );

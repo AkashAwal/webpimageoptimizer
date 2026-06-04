@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 import { useState } from "react";
 import PdfToolShell from "@/components/pdf/pdf-tool-shell";
 import { cn } from "@/lib/utils";
@@ -23,7 +23,7 @@ export default function RotatePdfClient() {
                 <button key={a} onClick={() => setAngle(a)}
                   className={cn("flex-1 rounded-lg py-1.5 text-[12px] font-medium transition-colors",
                     angle === a ? "bg-neutral-900 text-white" : "bg-neutral-100 text-neutral-600 hover:bg-neutral-200")}>
-                  {a}°
+                  {a}Â°
                 </button>
               ))}
             </div>
@@ -52,7 +52,7 @@ export default function RotatePdfClient() {
             page.setRotation(degrees((cur + angle) % 360));
           }
         });
-        return new Blob([await doc.save()], { type: "application/pdf" });
+        return new Blob([(await doc.save()) as unknown as BlobPart], { type: "application/pdf" });
       }}
     />
   );

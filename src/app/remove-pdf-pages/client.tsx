@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 import { useState } from "react";
 import PdfToolShell from "@/components/pdf/pdf-tool-shell";
 
@@ -36,7 +36,7 @@ export default function RemovePdfPagesClient() {
         const kept = await out.copyPages(doc, toKeep);
         kept.forEach(p => out.addPage(p));
 
-        return new Blob([await out.save()], { type: "application/pdf" });
+        return new Blob([(await out.save()) as unknown as BlobPart], { type: "application/pdf" });
       }}
     />
   );

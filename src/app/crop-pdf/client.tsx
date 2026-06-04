@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 import { useState } from "react";
 import PdfToolShell from "@/components/pdf/pdf-tool-shell";
 
@@ -31,7 +31,7 @@ export default function CropPdfClient() {
               )
             )}
           </div>
-          <p className="text-[10px] text-muted-foreground/50 mt-1.5 leading-tight">Adjusts the CropBox of every page. 1 pt ≈ 0.35 mm.</p>
+          <p className="text-[10px] text-muted-foreground/50 mt-1.5 leading-tight">Adjusts the CropBox of every page. 1 pt â‰ˆ 0.35 mm.</p>
         </div>
       }
       onProcess={async (files) => {
@@ -41,7 +41,7 @@ export default function CropPdfClient() {
           const { width, height } = page.getSize();
           page.setCropBox(left, bottom, width - left - right, height - top - bottom);
         });
-        return new Blob([await doc.save()], { type: "application/pdf" });
+        return new Blob([(await doc.save()) as unknown as BlobPart], { type: "application/pdf" });
       }}
     />
   );

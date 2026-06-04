@@ -51,7 +51,7 @@ export default function OcrPdfClient() {
         const viewport = page.getViewport({ scale: 2 });
         const canvas = document.createElement("canvas");
         canvas.width = viewport.width; canvas.height = viewport.height;
-        await page.render({ canvasContext: canvas.getContext("2d")!, viewport }).promise;
+        await page.render({ canvasContext: canvas.getContext("2d")!, viewport, canvas }).promise;
         const { data: { text: t } } = await worker.recognize(canvas);
         parts.push(`--- Page ${i} ---\n${t.trim()}`);
         page.cleanup();

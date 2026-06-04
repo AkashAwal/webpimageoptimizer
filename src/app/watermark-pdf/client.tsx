@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 import { useState } from "react";
 import PdfToolShell from "@/components/pdf/pdf-tool-shell";
 import { cn } from "@/lib/utils";
@@ -12,9 +12,9 @@ export default function WatermarkPdfClient() {
   const [size, setSize] = useState(48);
 
   const POSITIONS: { id: Position; label: string }[] = [
-    { id: "top-left", label: "↖" }, { id: "top-right", label: "↗" },
-    { id: "center", label: "⊙" },
-    { id: "bottom-left", label: "↙" }, { id: "bottom-right", label: "↘" },
+    { id: "top-left", label: "â†–" }, { id: "top-right", label: "â†—" },
+    { id: "center", label: "âŠ™" },
+    { id: "bottom-left", label: "â†™" }, { id: "bottom-right", label: "â†˜" },
   ];
 
   return (
@@ -101,7 +101,7 @@ export default function WatermarkPdfClient() {
           });
         });
 
-        return new Blob([await doc.save()], { type: "application/pdf" });
+        return new Blob([(await doc.save()) as unknown as BlobPart], { type: "application/pdf" });
       }}
     />
   );

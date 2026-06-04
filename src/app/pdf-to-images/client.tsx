@@ -40,7 +40,7 @@ export default function PdfToImagesClient() {
         const viewport = page.getViewport({ scale });
         const canvas = document.createElement("canvas");
         canvas.width = viewport.width; canvas.height = viewport.height;
-        await page.render({ canvasContext: canvas.getContext("2d")!, viewport }).promise;
+        await page.render({ canvasContext: canvas.getContext("2d")!, viewport, canvas }).promise;
         const dataUrl = canvas.toDataURL(mime, quality / 100);
         const base64 = dataUrl.split(",")[1];
         zip.file(`page_${String(i).padStart(3, "0")}.${ext}`, base64, { base64: true });

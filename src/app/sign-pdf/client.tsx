@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 import { useCallback, useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { UploadSimple, FilePdf, DownloadSimple, CircleNotch, CaretLeft, X, Eraser } from "@phosphor-icons/react";
@@ -112,7 +112,7 @@ export default function SignPdfClient() {
       const y = height * (1 - yPct / 100) - sigH;
 
       target.drawImage(img, { x, y, width: sigW, height: sigH });
-      const blob = new Blob([await doc.save()], { type: "application/pdf" });
+      const blob = new Blob([(await doc.save()) as unknown as BlobPart], { type: "application/pdf" });
       if (result?.url) URL.revokeObjectURL(result.url);
       setResult({ blob, url: URL.createObjectURL(blob) });
     } catch (e) {
@@ -149,7 +149,7 @@ export default function SignPdfClient() {
               <FilePdf size={18} className="shrink-0 text-red-400" />
               <div className="flex-1 min-w-0">
                 <p className="truncate text-[12px] font-medium text-foreground">{file.name}</p>
-                <p className="text-[11px] text-muted-foreground">{totalPages} pages · {formatBytes(file.size)}</p>
+                <p className="text-[11px] text-muted-foreground">{totalPages} pages Â· {formatBytes(file.size)}</p>
               </div>
               <button onClick={() => { setFile(null); setTotalPages(0); setResult(null); }}
                 className="rounded-lg p-1.5 text-neutral-300 hover:bg-red-50 hover:text-red-500 transition-colors">
@@ -230,7 +230,7 @@ export default function SignPdfClient() {
           {result && (
             <div className="flex items-center gap-3 rounded-xl bg-emerald-50 px-3 py-2.5 ring-1 ring-emerald-100">
               <div className="size-2 rounded-full bg-emerald-500 shrink-0" />
-              <p className="flex-1 text-[12px] text-emerald-700 font-medium">Signed PDF ready · {formatBytes(result.blob.size)}</p>
+              <p className="flex-1 text-[12px] text-emerald-700 font-medium">Signed PDF ready Â· {formatBytes(result.blob.size)}</p>
               <SoftPillButton variant="primary" onClick={() => {
                 const a = document.createElement("a"); a.href = result.url; a.download = "signed.pdf"; a.click();
               }} className="h-8 px-3 text-[12px]">
@@ -240,7 +240,7 @@ export default function SignPdfClient() {
           )}
 
           <SoftPillButton variant="primary" onClick={process} disabled={!file || processing} className="w-full h-9 text-[12px]">
-            {processing ? <><CircleNotch size={12} className="animate-spin" />Processing…</> : "Sign PDF"}
+            {processing ? <><CircleNotch size={12} className="animate-spin" />Processingâ€¦</> : "Sign PDF"}
           </SoftPillButton>
         </div>
       </div>

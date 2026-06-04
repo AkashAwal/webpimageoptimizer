@@ -19,6 +19,20 @@ import {
   FilePdf,
   ArrowsClockwise,
   FileCode,
+  Plus,
+  Scissors,
+  ArrowClockwise,
+  Lock,
+  LockOpen,
+  Stamp,
+  Hash,
+  Crop,
+  MinusCircle,
+  ArrowsDownUp,
+  Images,
+  PencilSimple,
+  MagnifyingGlass,
+  Columns,
 } from "@phosphor-icons/react";
 
 import { SiteHeader } from "@/components/layout/site-header";
@@ -70,6 +84,21 @@ const TOOL_ICONS: Record<string, React.ReactNode> = {
   "/avif-to-pdf": <Stack size={22} />,
   "/ico-to-pdf": <Cursor size={22} />,
   "/jfif-to-pdf": <Camera size={22} />,
+  "/merge-pdf": <Plus size={22} />,
+  "/split-pdf": <Scissors size={22} />,
+  "/rotate-pdf": <ArrowClockwise size={22} />,
+  "/protect-pdf": <Lock size={22} />,
+  "/unlock-pdf": <LockOpen size={22} />,
+  "/watermark-pdf": <Stamp size={22} />,
+  "/pdf-page-numbers": <Hash size={22} />,
+  "/crop-pdf": <Crop size={22} />,
+  "/remove-pdf-pages": <MinusCircle size={22} />,
+  "/rearrange-pdf": <ArrowsDownUp size={22} />,
+  "/pdf-to-images": <Images size={22} />,
+  "/sign-pdf": <PencilSimple size={22} />,
+  "/ocr-pdf": <MagnifyingGlass size={22} />,
+  "/edit-pdf": <PencilSimple size={22} />,
+  "/compare-pdf": <Columns size={22} />,
 };
 
 export default function Page() {
