@@ -146,7 +146,6 @@ export default function CropPdfClient() {
         </div>
 
         <div className="p-4 space-y-3">
-            <>
               <div className="flex items-center gap-3 rounded-xl px-3 py-2 bg-white ring-1 ring-black/5">
                 <FilePdf size={18} className="shrink-0 text-red-400" />
                 <div className="flex-1 min-w-0">
@@ -184,8 +183,6 @@ export default function CropPdfClient() {
                 </div>
                 <p className="text-[10px] text-muted-foreground/50 mt-1.5 leading-tight">Adjusts the CropBox of every page. 1 pt ≈ 0.35 mm.</p>
               </div>
-            </>
-          )}
 
           {error && (
             <p className="text-[12px] text-red-600 bg-red-50 rounded-xl px-3 py-2 ring-1 ring-red-100">{error}</p>
