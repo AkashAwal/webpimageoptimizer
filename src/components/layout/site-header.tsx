@@ -46,6 +46,9 @@ export function SiteHeader({ fixed = false }: SiteHeaderProps = {}) {
           <span className="mx-1.5 text-white">×</span>
           <a href="https://graycup.com" target="_blank" rel="noopener noreferrer" className="font-medium text-white hover:text-neutral-300 transition-colors">Gray Cup Enterprises</a>
         </p>
+        <a href="https://graycup.com" target="_blank" rel="noopener noreferrer" className="text-[11px] text-white/60 hover:text-white transition-colors">
+          Explore Gray Cup →
+        </a>
         <div className="flex items-center gap-3 text-white">
           <div className="flex items-center gap-2">
             <span className="text-[11px] font-medium">Akash Awal</span>
