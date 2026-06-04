@@ -426,165 +426,7 @@ export default function ConverterShell({ type }: { type: ConvertType }) {
 
   return (
     <div className="-mx-6 sm:-mx-10 overflow-x-auto">
-      <div className="flex min-w-[680px] h-[calc(100vh-220px)] min-h-[580px] overflow-hidden rounded-2xl ring-1 ring-black/6 shadow-[0_4px_24px_-6px_rgba(0,0,0,0.10),0_1px_3px_rgba(0,0,0,0.06)] bg-white">
-
-        {/* ── Settings panel ──────────────────────────────────────────────────── */}
-        <div className="w-[216px] shrink-0 flex flex-col border-r border-border">
-          <div className="flex-1 overflow-y-auto p-4 space-y-5">
-
-            {/* Presets */}
-            <div>
-              <p className="text-[10px] font-semibold uppercase tracking-widest text-muted-foreground mb-2">Preset</p>
-              <div className="flex gap-1">
-                {PRESETS.map((p) => (
-                  <button
-                    key={p.label}
-                    onClick={() => setSettings((s) => ({ ...s, quality: p.quality }))}
-                    className={cn(
-                      "flex-1 rounded-lg py-1.5 text-[11px] font-medium transition-colors",
-                      settings.quality === p.quality
-                        ? "bg-neutral-900 text-white"
-                        : "bg-neutral-100 text-neutral-600 hover:bg-neutral-200",
-                    )}
-                  >
-                    {p.label}
-                  </button>
-                ))}
-              </div>
-            </div>
-
-            {/* Quality bar */}
-            <div>
-              <div className="flex items-center justify-between mb-1.5">
-                <p className="text-[10px] font-semibold uppercase tracking-widest text-muted-foreground">Quality</p>
-                <span className="text-[11px] tabular-nums text-muted-foreground">{settings.quality}%</span>
-              </div>
-              <input
-                type="range" min={0} max={100}
-                value={qualityToSlider(settings.quality)}
-                onChange={(e) => setSettings((s) => ({ ...s, quality: sliderToQuality(Number(e.target.value)) }))}
-                className="w-full h-1.5 cursor-pointer accent-foreground"
-              />
-              <div className="flex justify-between mt-1">
-                <span className="text-[10px] text-muted-foreground/60">Smaller</span>
-                <span className="text-[10px] text-muted-foreground/60">Higher quality</span>
-              </div>
-            </div>
-
-            {/* Dimensions */}
-            <div>
-              <p className="text-[10px] font-semibold uppercase tracking-widest text-muted-foreground mb-2">Dimensions (px)</p>
-              <div className="flex gap-2">
-                <div className="flex-1">
-                  <p className="text-[10px] text-muted-foreground/70 mb-1">W</p>
-                  <input
-                    type="number" min={1} placeholder="Auto"
-                    value={settings.width}
-                    onChange={(e) => setSettings((s) => ({ ...s, width: e.target.value }))}
-                    className="w-full rounded-lg border border-border bg-neutral-50 px-2 py-1.5 text-[12px] text-foreground outline-none focus:border-foreground/30 focus:bg-white transition-colors"
-                  />
-                </div>
-                <div className="flex-1">
-                  <p className="text-[10px] text-muted-foreground/70 mb-1">H</p>
-                  <input
-                    type="number" min={1} placeholder="Auto"
-                    value={settings.height}
-                    onChange={(e) => setSettings((s) => ({ ...s, height: e.target.value }))}
-                    className="w-full rounded-lg border border-border bg-neutral-50 px-2 py-1.5 text-[12px] text-foreground outline-none focus:border-foreground/30 focus:bg-white transition-colors"
-                  />
-                </div>
-              </div>
-              <p className="text-[10px] text-muted-foreground/50 mt-1 leading-tight">One field = aspect ratio preserved.</p>
-            </div>
-
-            {/* Naming */}
-            <div>
-              <p className="text-[10px] font-semibold uppercase tracking-widest text-muted-foreground mb-2">File naming</p>
-              <div className="space-y-2">
-                <label className="flex items-center gap-2 cursor-pointer">
-                  <input
-                    type="radio" name={`naming-${type}`} value="original"
-                    checked={settings.namingMode === "original"}
-                    onChange={() => setSettings((s) => ({ ...s, namingMode: "original" }))}
-                    className="accent-foreground"
-                  />
-                  <span className="text-[12px] text-foreground">Original + number</span>
-                </label>
-                <label className="flex items-center gap-2 cursor-pointer">
-                  <input
-                    type="radio" name={`naming-${type}`} value="prefix"
-                    checked={settings.namingMode === "prefix"}
-                    onChange={() => setSettings((s) => ({ ...s, namingMode: "prefix" }))}
-                    className="accent-foreground"
-                  />
-                  <span className="text-[12px] text-foreground">Custom prefix</span>
-                </label>
-                {settings.namingMode === "prefix" && (
-                  <input
-                    type="text" placeholder="image"
-                    value={settings.prefix}
-                    onChange={(e) => setSettings((s) => ({ ...s, prefix: e.target.value }))}
-                    className="w-full rounded-lg border border-border bg-neutral-50 px-2 py-1.5 text-[12px] text-foreground outline-none focus:border-foreground/30 focus:bg-white transition-colors"
-                  />
-                )}
-              </div>
-            </div>
-
-            {/* Size cap */}
-            <div>
-              <p className="text-[10px] font-semibold uppercase tracking-widest text-muted-foreground mb-2">Size cap</p>
-              <div className="flex items-center gap-1.5">
-                <input
-                  type="number" min={1} placeholder="e.g. 300"
-                  value={settings.sizeCapKB}
-                  onChange={(e) => setSettings((s) => ({ ...s, sizeCapKB: e.target.value }))}
-                  className="flex-1 min-w-0 rounded-lg border border-border bg-neutral-50 px-2 py-1.5 text-[12px] text-foreground outline-none focus:border-foreground/30 focus:bg-white transition-colors"
-                />
-                <span className="text-[12px] text-muted-foreground shrink-0">KB</span>
-              </div>
-              <p className="text-[10px] text-muted-foreground/50 mt-1 leading-tight">Files over this are flagged red.</p>
-            </div>
-
-            {/* Strip metadata */}
-            <label className="flex items-center gap-2 cursor-pointer select-none">
-              <input
-                type="checkbox"
-                checked={settings.stripMeta}
-                onChange={(e) => setSettings((s) => ({ ...s, stripMeta: e.target.checked }))}
-                className="accent-foreground size-3.5"
-              />
-              <span className="text-[12px] text-foreground">Strip metadata</span>
-            </label>
-
-          </div>
-
-          {/* Sticky action buttons */}
-          <div className="p-3 border-t border-border space-y-2 shrink-0">
-            <SoftPillButton
-              variant="primary"
-              onClick={converting ? () => { abortRef.current = true; } : handleConvert}
-              disabled={!files.length || (!converting && queuedCount === 0)}
-              className="w-full h-9 text-[12px]"
-            >
-              {converting ? (
-                <><CircleNotch size={12} className="animate-spin" />Stop (Esc)</>
-              ) : (
-                <>Optimize Now{queuedCount > 0 && <span className="opacity-60 ml-1">({queuedCount})</span>}</>
-              )}
-            </SoftPillButton>
-            {doneCount > 0 && (
-              <SoftPillButton
-                variant="secondary"
-                onClick={downloadZip}
-                className="w-full h-9 text-[12px]"
-              >
-                <DownloadSimple size={12} />
-                Download ZIP ({doneCount})
-              </SoftPillButton>
-            )}
-            <p className="text-center text-[10px] text-muted-foreground/50">Enter to start · Esc to stop</p>
-          </div>
-        </div>
+      <div className="flex min-w-[720px] h-[calc(100vh-220px)] min-h-[580px] overflow-hidden rounded-2xl ring-1 ring-black/6 shadow-[0_4px_24px_-6px_rgba(0,0,0,0.10),0_1px_3px_rgba(0,0,0,0.06)] bg-white">
 
         {/* ── Queue panel ─────────────────────────────────────────────────────── */}
         <div className="flex-1 flex flex-col overflow-hidden">
@@ -774,6 +616,165 @@ export default function ConverterShell({ type }: { type: ConvertType }) {
             )}
           </div>
         </div>
+
+        {/* ── Settings panel ──────────────────────────────────────────────────── */}
+        <div className="w-[260px] shrink-0 flex flex-col border-l border-border">
+          <div className="flex-1 overflow-y-auto p-4 space-y-5">
+
+            {/* Presets */}
+            <div>
+              <p className="text-[10px] font-semibold uppercase tracking-widest text-muted-foreground mb-2">Preset</p>
+              <div className="flex gap-1">
+                {PRESETS.map((p) => (
+                  <button
+                    key={p.label}
+                    onClick={() => setSettings((s) => ({ ...s, quality: p.quality }))}
+                    className={cn(
+                      "flex-1 rounded-lg py-1.5 text-[11px] font-medium transition-colors",
+                      settings.quality === p.quality
+                        ? "bg-neutral-900 text-white"
+                        : "bg-neutral-100 text-neutral-600 hover:bg-neutral-200",
+                    )}
+                  >
+                    {p.label}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* Quality bar */}
+            <div>
+              <div className="flex items-center justify-between mb-1.5">
+                <p className="text-[10px] font-semibold uppercase tracking-widest text-muted-foreground">Quality</p>
+                <span className="text-[11px] tabular-nums text-muted-foreground">{settings.quality}%</span>
+              </div>
+              <input
+                type="range" min={0} max={100}
+                value={qualityToSlider(settings.quality)}
+                onChange={(e) => setSettings((s) => ({ ...s, quality: sliderToQuality(Number(e.target.value)) }))}
+                className="w-full h-1.5 cursor-pointer accent-foreground"
+              />
+              <div className="flex justify-between mt-1">
+                <span className="text-[10px] text-muted-foreground/60">Smaller</span>
+                <span className="text-[10px] text-muted-foreground/60">Higher quality</span>
+              </div>
+            </div>
+
+            {/* Dimensions */}
+            <div>
+              <p className="text-[10px] font-semibold uppercase tracking-widest text-muted-foreground mb-2">Dimensions (px)</p>
+              <div className="flex gap-2">
+                <div className="flex-1">
+                  <p className="text-[10px] text-muted-foreground/70 mb-1">W</p>
+                  <input
+                    type="number" min={1} placeholder="Auto"
+                    value={settings.width}
+                    onChange={(e) => setSettings((s) => ({ ...s, width: e.target.value }))}
+                    className="w-full rounded-lg border border-border bg-neutral-50 px-2 py-1.5 text-[12px] text-foreground outline-none focus:border-foreground/30 focus:bg-white transition-colors"
+                  />
+                </div>
+                <div className="flex-1">
+                  <p className="text-[10px] text-muted-foreground/70 mb-1">H</p>
+                  <input
+                    type="number" min={1} placeholder="Auto"
+                    value={settings.height}
+                    onChange={(e) => setSettings((s) => ({ ...s, height: e.target.value }))}
+                    className="w-full rounded-lg border border-border bg-neutral-50 px-2 py-1.5 text-[12px] text-foreground outline-none focus:border-foreground/30 focus:bg-white transition-colors"
+                  />
+                </div>
+              </div>
+              <p className="text-[10px] text-muted-foreground/50 mt-1 leading-tight">One field = aspect ratio preserved.</p>
+            </div>
+
+            {/* Naming */}
+            <div>
+              <p className="text-[10px] font-semibold uppercase tracking-widest text-muted-foreground mb-2">File naming</p>
+              <div className="space-y-2">
+                <label className="flex items-center gap-2 cursor-pointer">
+                  <input
+                    type="radio" name={`naming-${type}`} value="original"
+                    checked={settings.namingMode === "original"}
+                    onChange={() => setSettings((s) => ({ ...s, namingMode: "original" }))}
+                    className="accent-foreground"
+                  />
+                  <span className="text-[12px] text-foreground">Original + number</span>
+                </label>
+                <label className="flex items-center gap-2 cursor-pointer">
+                  <input
+                    type="radio" name={`naming-${type}`} value="prefix"
+                    checked={settings.namingMode === "prefix"}
+                    onChange={() => setSettings((s) => ({ ...s, namingMode: "prefix" }))}
+                    className="accent-foreground"
+                  />
+                  <span className="text-[12px] text-foreground">Custom prefix</span>
+                </label>
+                {settings.namingMode === "prefix" && (
+                  <input
+                    type="text" placeholder="image"
+                    value={settings.prefix}
+                    onChange={(e) => setSettings((s) => ({ ...s, prefix: e.target.value }))}
+                    className="w-full rounded-lg border border-border bg-neutral-50 px-2 py-1.5 text-[12px] text-foreground outline-none focus:border-foreground/30 focus:bg-white transition-colors"
+                  />
+                )}
+              </div>
+            </div>
+
+            {/* Size cap */}
+            <div>
+              <p className="text-[10px] font-semibold uppercase tracking-widest text-muted-foreground mb-2">Size cap</p>
+              <div className="flex items-center gap-1.5">
+                <input
+                  type="number" min={1} placeholder="e.g. 300"
+                  value={settings.sizeCapKB}
+                  onChange={(e) => setSettings((s) => ({ ...s, sizeCapKB: e.target.value }))}
+                  className="flex-1 min-w-0 rounded-lg border border-border bg-neutral-50 px-2 py-1.5 text-[12px] text-foreground outline-none focus:border-foreground/30 focus:bg-white transition-colors"
+                />
+                <span className="text-[12px] text-muted-foreground shrink-0">KB</span>
+              </div>
+              <p className="text-[10px] text-muted-foreground/50 mt-1 leading-tight">Files over this are flagged red.</p>
+            </div>
+
+            {/* Strip metadata */}
+            <label className="flex items-center gap-2 cursor-pointer select-none">
+              <input
+                type="checkbox"
+                checked={settings.stripMeta}
+                onChange={(e) => setSettings((s) => ({ ...s, stripMeta: e.target.checked }))}
+                className="accent-foreground size-3.5"
+              />
+              <span className="text-[12px] text-foreground">Strip metadata</span>
+            </label>
+
+          </div>
+
+          {/* Sticky action buttons */}
+          <div className="p-3 border-t border-border space-y-2 shrink-0">
+            <SoftPillButton
+              variant="primary"
+              onClick={converting ? () => { abortRef.current = true; } : handleConvert}
+              disabled={!files.length || (!converting && queuedCount === 0)}
+              className="w-full h-9 text-[12px]"
+            >
+              {converting ? (
+                <><CircleNotch size={12} className="animate-spin" />Stop (Esc)</>
+              ) : (
+                <>Optimize Now{queuedCount > 0 && <span className="opacity-60 ml-1">({queuedCount})</span>}</>
+              )}
+            </SoftPillButton>
+            {doneCount > 0 && (
+              <SoftPillButton
+                variant="secondary"
+                onClick={downloadZip}
+                className="w-full h-9 text-[12px]"
+              >
+                <DownloadSimple size={12} />
+                Download ZIP ({doneCount})
+              </SoftPillButton>
+            )}
+            <p className="text-center text-[10px] text-muted-foreground/50">Enter to start · Esc to stop</p>
+          </div>
+        </div>
+
       </div>
 
       {/* Hidden file input */}
