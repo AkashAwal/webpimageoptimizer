@@ -310,9 +310,10 @@ export default function EditPdfClient() {
             )}
           </div>
         </div>
-        <input ref={fileInputRef} type="file" accept="application/pdf,.pdf" className="hidden"
-          onChange={e => { if (e.target.files?.[0]) loadFile(e.target.files[0]); e.target.value = ""; }} />
       </div>
       )}
+
+      <input ref={fileInputRef} type="file" accept="application/pdf,.pdf" className="hidden"
+        onChange={e => { if (e.target.files?.[0]) loadFile(e.target.files[0]); e.target.value = ""; }} />
   );
 }
