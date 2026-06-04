@@ -55,40 +55,6 @@ export function SiteHeader({ fixed = false }: SiteHeaderProps = {}) {
       }
       style={fixed ? { transform: hidden ? "translateY(-100%)" : "translateY(0)" } : undefined}
     >
-      {/* Pre-header strip */}
-      <div className="w-full bg-neutral-950 px-6 py-1.5 sm:px-10 flex items-center justify-between">
-        <p className="text-[11px] text-white">
-          Built by{" "}
-          <a href="https://akashawal.com" target="_blank" rel="noopener noreferrer" className="font-medium text-white hover:text-neutral-300 transition-colors">Akash Awal</a>
-          <span className="mx-1.5 text-white">×</span>
-          <a href="https://graycup.com" target="_blank" rel="noopener noreferrer" className="font-medium text-white hover:text-neutral-300 transition-colors">Gray Cup Enterprises</a>
-        </p>
-        <a href="https://graycup.com" target="_blank" rel="noopener noreferrer" className="text-[11px] text-white hover:text-neutral-300 transition-colors hidden sm:block">
-          Explore Gray Cup →
-        </a>
-        <div className="flex items-center gap-3 text-white">
-          <div className="flex items-center gap-2">
-            <span className="text-[11px] font-medium hidden sm:inline">Akash Awal</span>
-            <a href="https://github.com/akashawal" target="_blank" rel="noopener noreferrer" className="hover:text-neutral-300 transition-colors" aria-label="Akash Awal on GitHub">
-              <GithubLogo size={13} />
-            </a>
-            <a href="https://x.com/akashawal17" target="_blank" rel="noopener noreferrer" className="hover:text-neutral-300 transition-colors" aria-label="Akash Awal on X">
-              <XLogo size={13} />
-            </a>
-          </div>
-          <span className="text-white/30">|</span>
-          <div className="flex items-center gap-2">
-            <span className="text-[11px] font-medium hidden sm:inline">Gray Cup</span>
-            <a href="https://github.com/nermalcat69" target="_blank" rel="noopener noreferrer" className="hover:text-neutral-300 transition-colors" aria-label="Gray Cup on GitHub">
-              <GithubLogo size={13} />
-            </a>
-            <a href="https://x.com/arjunaditya_" target="_blank" rel="noopener noreferrer" className="hover:text-neutral-300 transition-colors" aria-label="Gray Cup on X">
-              <XLogo size={13} />
-            </a>
-          </div>
-        </div>
-      </div>
-
       {/* Main nav */}
       <div className="relative flex w-full items-center px-6 py-4 sm:px-10">
         <Link href="/" aria-label="Pix Garage" className="flex items-center gap-2">
@@ -134,7 +100,32 @@ export function SiteHeader({ fixed = false }: SiteHeaderProps = {}) {
           )}
         </nav>
 
-        {/* Mobile hamburger — pushed to the right */}
+        {/* Right side: built-by + social icons */}
+        <div className="hidden sm:flex items-center gap-3 ml-auto">
+          <p className="text-[11px] text-muted-foreground">
+            Built by{" "}
+            <a href="https://akashawal.com" target="_blank" rel="noopener noreferrer" className="font-medium text-foreground hover:text-foreground/70 transition-colors">Akash Awal</a>
+            <span className="mx-1 text-muted-foreground/50">×</span>
+            <a href="https://graycup.com" target="_blank" rel="noopener noreferrer" className="font-medium text-foreground hover:text-foreground/70 transition-colors">Gray Cup</a>
+          </p>
+          <div className="flex items-center gap-2 text-muted-foreground">
+            <a href="https://github.com/akashawal" target="_blank" rel="noopener noreferrer" className="hover:text-foreground transition-colors" aria-label="Akash Awal on GitHub">
+              <GithubLogo size={14} />
+            </a>
+            <a href="https://x.com/akashawal17" target="_blank" rel="noopener noreferrer" className="hover:text-foreground transition-colors" aria-label="Akash Awal on X">
+              <XLogo size={14} />
+            </a>
+            <span className="text-border">|</span>
+            <a href="https://github.com/nermalcat69" target="_blank" rel="noopener noreferrer" className="hover:text-foreground transition-colors" aria-label="Gray Cup on GitHub">
+              <GithubLogo size={14} />
+            </a>
+            <a href="https://x.com/arjunaditya_" target="_blank" rel="noopener noreferrer" className="hover:text-foreground transition-colors" aria-label="Gray Cup on X">
+              <XLogo size={14} />
+            </a>
+          </div>
+        </div>
+
+        {/* Mobile hamburger */}
         <button
           className="sm:hidden ml-auto text-muted-foreground hover:text-foreground transition-colors"
           onClick={() => setMenuOpen((o) => !o)}
