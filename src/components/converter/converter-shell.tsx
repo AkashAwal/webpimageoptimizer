@@ -3,7 +3,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import {
   UploadSimple, X, CircleNotch, Check, DownloadSimple,
-  ArrowsHorizontal, DotsSixVertical, ArrowCounterClockwise,
+  FrameCorners, DotsSixVertical, ArrowCounterClockwise, Trash,
 } from "@phosphor-icons/react";
 import { cn } from "@/lib/utils";
 import SoftPillButton from "@/components/ui/soft-pill-button";
@@ -194,7 +194,7 @@ function BeforeAfterModal({ item, onClose }: { item: QueueItem; onClose: () => v
           style={{ left: `${pos}%` }}
         >
           <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 size-9 rounded-full bg-white shadow-xl flex items-center justify-center">
-            <ArrowsHorizontal size={14} className="text-neutral-600" />
+            <FrameCorners size={16} className="text-neutral-600" />
           </div>
         </div>
 
@@ -545,7 +545,7 @@ export default function ConverterShell({ type }: { type: ConvertType }) {
                                   ? `${savings}% smaller`
                                   : `${savings !== null ? Math.abs(savings) : 0}% larger`}
                               </span>
-                              {flagged && <span className="text-red-500"> · over cap</span>}
+                              {flagged && <span className="text-red-500"> · exceeds {capKB}KB limit</span>}
                             </>
                           )}
                           {item.status === "error" && (
@@ -557,47 +557,47 @@ export default function ConverterShell({ type }: { type: ConvertType }) {
                       {/* Status & actions */}
                       <div className="flex items-center gap-1 shrink-0">
                         {item.status === "converting" && (
-                          <CircleNotch size={13} className="animate-spin text-neutral-400" />
+                          <CircleNotch size={15} className="animate-spin text-neutral-400 mx-1" />
                         )}
                         {item.status === "queued" && (
-                          <span className="text-[10px] text-muted-foreground/50 pr-1">queued</span>
+                          <span className="text-[10px] text-muted-foreground/50 px-1">queued</span>
                         )}
                         {item.status === "done" && (
                           <>
-                            <Check size={13} className="text-emerald-500 mr-0.5" />
+                            <Check size={15} className="text-emerald-500 mx-1" />
                             {item.previewUrl && (
                               <button
                                 onClick={() => setCompareItemId(item.id)}
-                                title="Compare before/after"
-                                className="rounded-md p-1 text-neutral-400 hover:bg-neutral-100 hover:text-neutral-600 transition-colors"
+                                title="Compare before / after"
+                                className="rounded-lg p-1.5 text-neutral-400 hover:bg-neutral-100 hover:text-neutral-700 transition-colors"
                               >
-                                <ArrowsHorizontal size={13} />
+                                <FrameCorners size={16} />
                               </button>
                             )}
                             <button
                               onClick={() => downloadOne(item)}
                               title="Download"
-                              className="rounded-md p-1 text-neutral-400 hover:bg-neutral-100 hover:text-neutral-600 transition-colors"
+                              className="rounded-lg p-1.5 text-neutral-400 hover:bg-neutral-100 hover:text-neutral-700 transition-colors"
                             >
-                              <DownloadSimple size={13} />
+                              <DownloadSimple size={16} />
                             </button>
                           </>
                         )}
                         {item.status === "error" && (
                           <button
                             onClick={() => retryFile(item.id)}
-                            title="Retry"
-                            className="rounded-md p-1 text-neutral-400 hover:bg-neutral-100 hover:text-red-500 transition-colors"
+                            title="Retry conversion"
+                            className="rounded-lg p-1.5 text-neutral-400 hover:bg-neutral-100 hover:text-amber-600 transition-colors"
                           >
-                            <ArrowCounterClockwise size={13} />
+                            <ArrowCounterClockwise size={16} />
                           </button>
                         )}
                         <button
                           onClick={() => removeFile(item.id)}
-                          aria-label="Remove"
-                          className="rounded-md p-1 text-neutral-300 hover:bg-neutral-100 hover:text-neutral-500 transition-colors"
+                          aria-label="Remove file"
+                          className="rounded-lg p-1.5 text-neutral-300 hover:bg-red-50 hover:text-red-500 transition-colors"
                         >
-                          <X size={12} />
+                          <Trash size={15} />
                         </button>
                       </div>
                     </div>
