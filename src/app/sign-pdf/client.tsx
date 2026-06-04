@@ -123,7 +123,7 @@ export default function SignPdfClient() {
   };
 
   return (
-    <div className="w-screen relative left-1/2 -translate-x-1/2 px-4 sm:px-6 py-3 sm:py-4">
+    <div className="pt-4">
       <div className="overflow-hidden rounded-2xl ring-1 ring-black/6 shadow-[0_4px_24px_-6px_rgba(0,0,0,0.10),0_1px_3px_rgba(0,0,0,0.06)] bg-white">
         <div className="flex items-center gap-2.5 px-4 py-2.5 border-b border-border bg-neutral-50/60">
           <Link href="/" className="flex items-center gap-1 text-[12px] text-muted-foreground hover:text-foreground transition-colors shrink-0">
@@ -136,7 +136,7 @@ export default function SignPdfClient() {
         <div className="p-4 space-y-3">
           {/* File */}
           {!file ? (
-            <div className="flex flex-col items-center justify-center gap-3 rounded-xl border-2 border-dashed border-border py-10 cursor-pointer hover:border-foreground/20 transition-colors"
+            <div className="flex flex-col items-center justify-center gap-3 rounded-xl border-2 border-dashed border-border aspect-square cursor-pointer hover:border-foreground/20 transition-colors"
               onClick={() => fileInputRef.current?.click()}
               onDragOver={e => e.preventDefault()}
               onDrop={e => { e.preventDefault(); const f = e.dataTransfer.files[0]; if (f) loadFile(f); }}>

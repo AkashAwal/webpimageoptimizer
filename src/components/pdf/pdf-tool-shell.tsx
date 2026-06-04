@@ -97,7 +97,7 @@ export default function PdfToolShell({
   const outputMimeLabel = outputMime === "application/zip" ? "ZIP" : ext;
 
   return (
-    <div className="w-screen relative left-1/2 -translate-x-1/2 px-4 sm:px-6 py-3 sm:py-4">
+    <div className="pt-4">
       <div className="overflow-hidden rounded-2xl ring-1 ring-black/6 shadow-[0_4px_24px_-6px_rgba(0,0,0,0.10),0_1px_3px_rgba(0,0,0,0.06)] bg-white">
 
         {title && (
@@ -116,7 +116,7 @@ export default function PdfToolShell({
           {(files.length === 0 || canAddMore) && (
             <div
               className={cn(
-                "flex flex-col items-center justify-center gap-3 rounded-xl border-2 border-dashed border-border py-10 cursor-pointer transition-colors",
+                "flex flex-col items-center justify-center gap-3 rounded-xl border-2 border-dashed border-border aspect-square cursor-pointer transition-colors",
                 dragOver ? "border-foreground/30 bg-neutral-50" : "hover:border-foreground/20 hover:bg-neutral-50/60",
               )}
               onClick={() => inputRef.current?.click()}
