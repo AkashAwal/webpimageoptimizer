@@ -57,7 +57,7 @@ export default function ComparePdfClient() {
         {side === "a" ? "Document A" : "Document B"}
       </p>
       {!pdf ? (
-        <div className="flex flex-col items-center justify-center gap-2 rounded-xl border-2 border-dashed border-border aspect-[10/9] cursor-pointer hover:border-foreground/20 transition-colors"
+        <div className="flex flex-col items-center justify-center gap-2 rounded-xl border-2 border-dashed border-border aspect-[100/81] cursor-pointer hover:border-foreground/20 transition-colors"
           onClick={() => inputRef.current?.click()}
           onDragOver={e => e.preventDefault()}
           onDrop={e => { e.preventDefault(); const f = e.dataTransfer.files[0]; if (f) loadPdf(f, side); }}>

@@ -71,7 +71,7 @@ export default function PdfToImagesClient() {
 
         <div className="p-4 space-y-3">
           {!file ? (
-            <div className="flex flex-col items-center justify-center gap-3 rounded-xl border-2 border-dashed border-border aspect-[10/9] cursor-pointer hover:border-foreground/20 hover:bg-neutral-50/60 transition-colors"
+            <div className="flex flex-col items-center justify-center gap-3 rounded-xl border-2 border-dashed border-border aspect-[100/81] cursor-pointer hover:border-foreground/20 hover:bg-neutral-50/60 transition-colors"
               onClick={() => inputRef.current?.click()}
               onDragOver={e => e.preventDefault()}
               onDrop={e => { e.preventDefault(); const f = e.dataTransfer.files[0]; if (f) { setFile(f); setResult(null); } }}>

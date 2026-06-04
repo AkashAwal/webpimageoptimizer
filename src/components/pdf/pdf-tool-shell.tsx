@@ -116,7 +116,7 @@ export default function PdfToolShell({
           {(files.length === 0 || canAddMore) && (
             <div
               className={cn(
-                "flex flex-col items-center justify-center gap-3 rounded-xl border-2 border-dashed border-border aspect-[10/9] cursor-pointer transition-colors",
+                "flex flex-col items-center justify-center gap-3 rounded-xl border-2 border-dashed border-border aspect-[100/81] cursor-pointer transition-colors",
                 dragOver ? "border-foreground/30 bg-neutral-50" : "hover:border-foreground/20 hover:bg-neutral-50/60",
               )}
               onClick={() => inputRef.current?.click()}
