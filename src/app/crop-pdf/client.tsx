@@ -121,7 +121,7 @@ export default function CropPdfClient() {
           <h1 className="text-[13px] font-semibold text-foreground">Crop PDF</h1>
         </div>
 
-        <div className="p-4 space-y-3 flex-1 flex flex-col justify-between overflow-y-auto">
+        <div className="p-4 space-y-3 flex-1 flex flex-col overflow-y-auto">
           {!file ? (
             <div
               className="flex flex-col items-center justify-center gap-3 rounded-xl border-2 border-dashed border-border aspect-[100/81] cursor-pointer hover:border-foreground/20 hover:bg-neutral-50/60 transition-colors"
