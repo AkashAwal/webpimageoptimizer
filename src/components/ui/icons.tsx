@@ -23,4 +23,5 @@ export {
   Camera,
   FilePdf,
   ArrowsClockwise,
+  ShieldCheck,
 } from "@phosphor-icons/react";

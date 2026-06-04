@@ -44,6 +44,7 @@ const PAGES = [
   { path: "/edit-pdf", priority: 0.9 },
   { path: "/compare-pdf", priority: 0.9 },
   { path: "/about", priority: 0.5 },
+  { path: "/security", priority: 0.4 },
   { path: "/contact", priority: 0.4 },
   { path: "/privacy", priority: 0.3 },
 ];

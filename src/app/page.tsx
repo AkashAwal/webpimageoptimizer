@@ -1,7 +1,8 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import Link from "next/link";
+import { useSearchParams, useRouter } from "next/navigation";
 import { motion, type Variants } from "motion/react";
 import {
   Image,
@@ -101,7 +102,9 @@ const TOOL_ICONS: Record<string, React.ReactNode> = {
   "/compare-pdf": <Columns size={22} />,
 };
 
-export default function Page() {
+function HomeContent() {
+  const searchParams = useSearchParams();
+  const router = useRouter();
   const [entered, setEntered] = useState(false);
   const [activeCategory, setActiveCategory] = useState<CategoryId>("all");
 
@@ -109,6 +112,16 @@ export default function Page() {
     const id = requestAnimationFrame(() => setEntered(true));
     return () => cancelAnimationFrame(id);
   }, []);
+
+  useEffect(() => {
+    const cat = searchParams.get("category") as CategoryId;
+    setActiveCategory(cat && CATEGORIES.some((c) => c.id === cat) ? cat : "all");
+  }, [searchParams]);
+
+  const handleCategoryChange = (cat: CategoryId) => {
+    setActiveCategory(cat);
+    router.replace(cat === "all" ? "/" : `/?category=${cat}`, { scroll: false });
+  };
 
   const filteredTools = activeCategory === "all" ? TOOLS : TOOLS.filter((t) => t.category === activeCategory);
 
@@ -162,7 +175,7 @@ export default function Page() {
           {CATEGORIES.map((cat) => (
             <button
               key={cat.id}
-              onClick={() => setActiveCategory(cat.id)}
+              onClick={() => handleCategoryChange(cat.id)}
               className={cn(
                 "h-8 rounded-full px-4 text-[13px] font-medium transition-colors",
                 activeCategory === cat.id
@@ -212,5 +225,13 @@ export default function Page() {
 
       <SiteFooter />
     </div>
+  );
+}
+
+export default function Page() {
+  return (
+    <Suspense>
+      <HomeContent />
+    </Suspense>
   );
 }

@@ -2,14 +2,31 @@
 
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
-import { GithubLogo, XLogo } from "@phosphor-icons/react";
+import { GithubLogo, XLogo, List, X as XIcon } from "@phosphor-icons/react";
 
 type SiteHeaderProps = {
   fixed?: boolean;
 };
 
+const CATEGORY_LINKS = [
+  { label: "WebP Tools", href: "/?category=webp" },
+  { label: "Image to PDF", href: "/?category=pdf" },
+  { label: "PDF Tools", href: "/?category=pdf-tools" },
+] as const;
+
+const STATIC_LINKS = [
+  { label: "About", href: "/about", external: false },
+  { label: "Security", href: "/security", external: false },
+  { label: "Gray Cup", href: "https://graycup.com", external: true },
+  { label: "Contact", href: "/contact", external: false },
+] as const;
+
+const linkClass =
+  "text-[13px] text-muted-foreground hover:text-foreground transition-colors px-2.5 py-1";
+
 export function SiteHeader({ fixed = false }: SiteHeaderProps = {}) {
   const [hidden, setHidden] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
   const lastScrollY = useRef(0);
 
   useEffect(() => {
@@ -46,12 +63,12 @@ export function SiteHeader({ fixed = false }: SiteHeaderProps = {}) {
           <span className="mx-1.5 text-white">×</span>
           <a href="https://graycup.com" target="_blank" rel="noopener noreferrer" className="font-medium text-white hover:text-neutral-300 transition-colors">Gray Cup Enterprises</a>
         </p>
-        <a href="https://graycup.com" target="_blank" rel="noopener noreferrer" className="text-[11px] text-white hover:text-neutral-300 transition-colors">
+        <a href="https://graycup.com" target="_blank" rel="noopener noreferrer" className="text-[11px] text-white hover:text-neutral-300 transition-colors hidden sm:block">
           Explore Gray Cup →
         </a>
         <div className="flex items-center gap-3 text-white">
           <div className="flex items-center gap-2">
-            <span className="text-[11px] font-medium">Akash Awal</span>
+            <span className="text-[11px] font-medium hidden sm:inline">Akash Awal</span>
             <a href="https://github.com/akashawal" target="_blank" rel="noopener noreferrer" className="hover:text-neutral-300 transition-colors" aria-label="Akash Awal on GitHub">
               <GithubLogo size={13} />
             </a>
@@ -61,7 +78,7 @@ export function SiteHeader({ fixed = false }: SiteHeaderProps = {}) {
           </div>
           <span className="text-white/30">|</span>
           <div className="flex items-center gap-2">
-            <span className="text-[11px] font-medium">Gray Cup</span>
+            <span className="text-[11px] font-medium hidden sm:inline">Gray Cup</span>
             <a href="https://github.com/nermalcat69" target="_blank" rel="noopener noreferrer" className="hover:text-neutral-300 transition-colors" aria-label="Gray Cup on GitHub">
               <GithubLogo size={13} />
             </a>
@@ -72,30 +89,100 @@ export function SiteHeader({ fixed = false }: SiteHeaderProps = {}) {
         </div>
       </div>
 
-      <div className="flex w-full items-center justify-between px-6 py-5 sm:px-10">
-      <Link href="/" aria-label="Pix Garage" className="flex items-center gap-2">
-        <svg
-          width="26"
-          height="26"
-          viewBox="0 0 24 24"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-          className="text-foreground"
-        >
-          <rect x="2" y="4" width="20" height="16" rx="3" stroke="currentColor" strokeWidth="1.8" />
-          <circle cx="12" cy="12" r="3.2" stroke="currentColor" strokeWidth="1.8" />
-          <path d="M2 8.5h3l2-3h6l2 3h3" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="round" />
-        </svg>
-        <span className="text-[15px] font-semibold tracking-tight text-foreground">Pix Garage</span>
-      </Link>
+      {/* Main nav */}
+      <div className="flex w-full items-center justify-between px-6 py-4 sm:px-10">
+        <Link href="/" aria-label="Pix Garage" className="flex items-center gap-2">
+          <svg
+            width="26"
+            height="26"
+            viewBox="0 0 24 24"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+            className="text-foreground"
+          >
+            <rect x="2" y="4" width="20" height="16" rx="3" stroke="currentColor" strokeWidth="1.8" />
+            <circle cx="12" cy="12" r="3.2" stroke="currentColor" strokeWidth="1.8" />
+            <path d="M2 8.5h3l2-3h6l2 3h3" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="round" />
+          </svg>
+          <span className="text-[15px] font-semibold tracking-tight text-foreground">Pix Garage</span>
+        </Link>
 
-      <Link
-        href="/"
-        className="text-[13px] text-muted-foreground hover:text-foreground transition-colors"
-      >
-        All tools
-      </Link>
+        {/* Desktop nav */}
+        <nav className="hidden sm:flex items-center gap-0.5">
+          {CATEGORY_LINKS.map((link) => (
+            <Link key={link.href} href={link.href} className={linkClass}>
+              {link.label}
+            </Link>
+          ))}
+          <span className="mx-1.5 text-neutral-200 select-none text-[13px]">|</span>
+          {STATIC_LINKS.map((link) =>
+            link.external ? (
+              <a
+                key={link.href}
+                href={link.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                className={linkClass}
+              >
+                {link.label}
+              </a>
+            ) : (
+              <Link key={link.href} href={link.href} className={linkClass}>
+                {link.label}
+              </Link>
+            )
+          )}
+        </nav>
+
+        {/* Mobile hamburger */}
+        <button
+          className="sm:hidden text-muted-foreground hover:text-foreground transition-colors"
+          onClick={() => setMenuOpen((o) => !o)}
+          aria-label="Toggle menu"
+        >
+          {menuOpen ? <XIcon size={20} /> : <List size={20} />}
+        </button>
       </div>
+
+      {/* Mobile menu */}
+      {menuOpen && (
+        <div className="sm:hidden border-t border-border bg-background px-6 py-4 flex flex-col gap-2.5">
+          {CATEGORY_LINKS.map((link) => (
+            <Link
+              key={link.href}
+              href={link.href}
+              className="text-[13px] text-muted-foreground hover:text-foreground transition-colors py-1"
+              onClick={() => setMenuOpen(false)}
+            >
+              {link.label}
+            </Link>
+          ))}
+          <div className="my-1 border-t border-border/60" />
+          {STATIC_LINKS.map((link) =>
+            link.external ? (
+              <a
+                key={link.href}
+                href={link.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-[13px] text-muted-foreground hover:text-foreground transition-colors py-1"
+                onClick={() => setMenuOpen(false)}
+              >
+                {link.label}
+              </a>
+            ) : (
+              <Link
+                key={link.href}
+                href={link.href}
+                className="text-[13px] text-muted-foreground hover:text-foreground transition-colors py-1"
+                onClick={() => setMenuOpen(false)}
+              >
+                {link.label}
+              </Link>
+            )
+          )}
+        </div>
+      )}
     </header>
   );
 }
