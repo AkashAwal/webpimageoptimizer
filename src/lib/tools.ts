@@ -1,3 +1,11 @@
+export const CATEGORIES = [
+  { id: "all", label: "All" },
+  { id: "webp", label: "WebP Tools" },
+  { id: "pdf", label: "Image to PDF" },
+] as const;
+
+export type CategoryId = (typeof CATEGORIES)[number]["id"];
+
 export const TOOLS = [
   {
     href: "/png-to-webp",
@@ -5,6 +13,7 @@ export const TOOLS = [
     shortName: "PNG to WebP Converter",
     description: "Convert PNG images to WebP format. Dramatically smaller files at the same visual quality.",
     badge: "Lossless source",
+    category: "webp" as CategoryId,
   },
   {
     href: "/jpg-to-webp",
@@ -12,6 +21,7 @@ export const TOOLS = [
     shortName: "JPG to WebP Converter",
     description: "Convert JPEG photos to WebP. Up to 34% smaller than JPEG at comparable quality.",
     badge: "Lossy optimized",
+    category: "webp" as CategoryId,
   },
   {
     href: "/gif-to-webp",
@@ -19,6 +29,7 @@ export const TOOLS = [
     shortName: "GIF to WebP Converter",
     description: "Convert GIF images to WebP for smaller static frames and more efficient compression.",
     badge: "Static frame",
+    category: "webp" as CategoryId,
   },
   {
     href: "/avif-to-webp",
@@ -26,6 +37,7 @@ export const TOOLS = [
     shortName: "AVIF to WebP Converter",
     description: "Convert AVIF images to WebP for broader browser compatibility. No upload required.",
     badge: "Modern format",
+    category: "webp" as CategoryId,
   },
   {
     href: "/bmp-to-webp",
@@ -33,6 +45,7 @@ export const TOOLS = [
     shortName: "BMP to WebP Converter",
     description: "Convert uncompressed BMP files to WebP. Achieve massive size reduction instantly.",
     badge: "Uncompressed in",
+    category: "webp" as CategoryId,
   },
   {
     href: "/tiff-to-webp",
@@ -40,6 +53,7 @@ export const TOOLS = [
     shortName: "TIFF to WebP Converter",
     description: "Convert high-resolution TIFF images to lightweight WebP for web use.",
     badge: "High-res source",
+    category: "webp" as CategoryId,
   },
   {
     href: "/svg-to-webp",
@@ -47,6 +61,7 @@ export const TOOLS = [
     shortName: "SVG to WebP Converter",
     description: "Rasterize SVG vector graphics to WebP. Crisp output at your chosen quality.",
     badge: "Vector to raster",
+    category: "webp" as CategoryId,
   },
   {
     href: "/ico-to-webp",
@@ -54,6 +69,7 @@ export const TOOLS = [
     shortName: "ICO to WebP Converter",
     description: "Extract and convert ICO icon files to WebP. Great for repurposing favicons.",
     badge: "Icon extract",
+    category: "webp" as CategoryId,
   },
   {
     href: "/jfif-to-webp",
@@ -61,6 +77,7 @@ export const TOOLS = [
     shortName: "JFIF to WebP Converter",
     description: "Convert JFIF photos to WebP. JFIF is a JPEG variant — get up to 34% smaller files.",
     badge: "JPEG variant",
+    category: "webp" as CategoryId,
   },
   {
     href: "/pdf-to-webp",
@@ -68,6 +85,7 @@ export const TOOLS = [
     shortName: "PDF to WebP Converter",
     description: "Convert the first page of a PDF document to a WebP image for thumbnails and previews.",
     badge: "First page",
+    category: "webp" as CategoryId,
   },
   {
     href: "/webp-to-webp",
@@ -75,6 +93,7 @@ export const TOOLS = [
     shortName: "WebP Re-optimizer",
     description: "Re-compress an existing WebP file at a different quality level to fine-tune file size.",
     badge: "Re-compress",
+    category: "webp" as CategoryId,
   },
   {
     href: "/webp-resizer",
@@ -82,6 +101,7 @@ export const TOOLS = [
     shortName: "Image to WebP Resizer",
     description: "Resize any image to custom dimensions and export as WebP. Aspect ratio lock included.",
     badge: "Any format in",
+    category: "webp" as CategoryId,
   },
   {
     href: "/heic-to-webp",
@@ -89,6 +109,7 @@ export const TOOLS = [
     shortName: "HEIC to WebP Converter",
     description: "Convert iPhone HEIC photos to WebP. Works in Chrome and Firefox via WebAssembly.",
     badge: "Cross-browser",
+    category: "webp" as CategoryId,
   },
 ] as const;
 

@@ -24,7 +24,7 @@ import { SiteHeader } from "@/components/layout/site-header";
 import { SiteFooter } from "@/components/layout/site-footer";
 import SoftPillButton from "@/components/ui/soft-pill-button";
 import { cn } from "@/lib/utils";
-import { TOOLS } from "@/lib/tools";
+import { TOOLS, CATEGORIES, type CategoryId } from "@/lib/tools";
 
 const containerVariants: Variants = {
   hidden: { opacity: 0 },
@@ -61,11 +61,14 @@ const TOOL_ICONS: Record<string, React.ReactNode> = {
 
 export default function Page() {
   const [entered, setEntered] = useState(false);
+  const [activeCategory, setActiveCategory] = useState<CategoryId>("all");
 
   useEffect(() => {
     const id = requestAnimationFrame(() => setEntered(true));
     return () => cancelAnimationFrame(id);
   }, []);
+
+  const filteredTools = activeCategory === "all" ? TOOLS : TOOLS.filter((t) => t.category === activeCategory);
 
   return (
     <div className="relative flex flex-1 flex-col">
@@ -107,13 +110,36 @@ export default function Page() {
 
       {/* Tool cards */}
       <section id="tools" className="mx-auto w-full max-w-7xl px-6 pb-24 sm:px-10">
+        {/* Category tabs */}
+        <motion.div
+          initial={{ opacity: 0, y: 12 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.38, type: "spring", stiffness: 300, damping: 28 }}
+          className="mb-6 flex flex-wrap gap-2"
+        >
+          {CATEGORIES.map((cat) => (
+            <button
+              key={cat.id}
+              onClick={() => setActiveCategory(cat.id)}
+              className={cn(
+                "h-8 rounded-full px-4 text-[13px] font-medium transition-colors",
+                activeCategory === cat.id
+                  ? "bg-foreground text-white"
+                  : "bg-neutral-100 text-neutral-600 hover:bg-neutral-200",
+              )}
+            >
+              {cat.label}
+            </button>
+          ))}
+        </motion.div>
+
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.45, type: "spring", stiffness: 280, damping: 26 }}
           className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3"
         >
-          {TOOLS.map((tool) => (
+          {filteredTools.map((tool) => (
             <Link
               key={tool.href}
               href={tool.href}
