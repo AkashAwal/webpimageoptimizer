@@ -24,7 +24,7 @@ export default function RotatePdfClient() {
                 <button key={a} onClick={() => setAngle(a)}
                   className={cn("flex-1 rounded-lg py-1.5 text-[12px] font-medium transition-colors",
                     angle === a ? "bg-neutral-900 text-white" : "bg-neutral-100 text-neutral-600 hover:bg-neutral-200")}>
-                  {a}Â°
+                  {a}°
                 </button>
               ))}
             </div>
