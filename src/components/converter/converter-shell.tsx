@@ -1215,32 +1215,28 @@ export default function ConverterShell({ type, title }: { type: ConvertType; tit
                     className="w-full rounded-lg border border-border bg-neutral-50 px-2 py-1 text-[12px] text-foreground outline-none focus:border-foreground/30 focus:bg-white transition-colors mb-1.5"
                   />
                   {/* Position picker — 2×2 corners + center */}
-                  <div className={cn("grid gap-0.5", "grid-cols-[1fr_auto_1fr]")}>
-                    {/* Top row */}
-                    {(["top-left", "top-right"] as const).map((pos, i) => (
-                      <button key={pos}
-                        onClick={() => setSettings(s => ({ ...s, pdfWatermarkPos: pos }))}
-                        className={cn("rounded px-1.5 py-0.5 text-[10px] font-medium transition-colors", i === 1 && "col-start-3",
-                          settings.pdfWatermarkPos === pos ? "bg-neutral-900 text-white" : "bg-neutral-100 text-neutral-500 hover:bg-neutral-200")}>
-                        {i === 0 ? "↖ Top left" : "Top right ↗"}
-                      </button>
-                    ))}
-                    {/* Center */}
-                    <button onClick={() => setSettings(s => ({ ...s, pdfWatermarkPos: "center" }))}
-                      className={cn("col-span-3 rounded px-1.5 py-0.5 text-[10px] font-medium transition-colors",
-                        settings.pdfWatermarkPos === "center" ? "bg-neutral-900 text-white" : "bg-neutral-100 text-neutral-500 hover:bg-neutral-200")}>
-                      ⊙ Center diagonal
-                    </button>
-                    {/* Bottom row */}
-                    {(["bottom-left", "bottom-right"] as const).map((pos, i) => (
-                      <button key={pos}
-                        onClick={() => setSettings(s => ({ ...s, pdfWatermarkPos: pos }))}
-                        className={cn("rounded px-1.5 py-0.5 text-[10px] font-medium transition-colors", i === 1 && "col-start-3",
-                          settings.pdfWatermarkPos === pos ? "bg-neutral-900 text-white" : "bg-neutral-100 text-neutral-500 hover:bg-neutral-200")}>
-                        {i === 0 ? "↙ Bot left" : "Bot right ↘"}
-                      </button>
-                    ))}
-                  </div>
+                  {(() => {
+                    const empty = !settings.pdfWatermark;
+                    const btnCls = (pos: string) => cn(
+                      "rounded px-1.5 py-0.5 text-[10px] font-medium transition-colors",
+                      empty
+                        ? "bg-neutral-50 text-neutral-300 cursor-not-allowed"
+                        : settings.pdfWatermarkPos === pos
+                          ? "bg-neutral-900 text-white"
+                          : "bg-neutral-100 text-neutral-500 hover:bg-neutral-200",
+                    );
+                    const set = (pos: Settings["pdfWatermarkPos"]) =>
+                      !empty && setSettings(s => ({ ...s, pdfWatermarkPos: pos }));
+                    return (
+                      <div className="grid grid-cols-[1fr_auto_1fr] gap-0.5">
+                        <button disabled={empty} onClick={() => set("top-left")}    className={btnCls("top-left")}>↖ Top left</button>
+                        <button disabled={empty} onClick={() => set("top-right")}   className={cn(btnCls("top-right"), "col-start-3")}>Top right ↗</button>
+                        <button disabled={empty} onClick={() => set("center")}      className={cn(btnCls("center"), "col-span-3")}>⊙ Center diagonal</button>
+                        <button disabled={empty} onClick={() => set("bottom-left")} className={btnCls("bottom-left")}>↙ Bot left</button>
+                        <button disabled={empty} onClick={() => set("bottom-right")}className={cn(btnCls("bottom-right"), "col-start-3")}>Bot right ↘</button>
+                      </div>
+                    );
+                  })()}
                 </div>
 
                 {/* ── Row: Password | Metadata ── */}
