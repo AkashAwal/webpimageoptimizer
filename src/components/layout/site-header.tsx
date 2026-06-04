@@ -48,7 +48,7 @@ export function SiteHeader({ fixed = false }: SiteHeaderProps = {}) {
         </p>
         <div className="flex items-center gap-3 text-white">
           <div className="flex items-center gap-2">
-            <span className="text-[11px] font-medium">AA</span>
+            <span className="text-[11px] font-medium">Akash Awal</span>
             <a href="https://github.com/akashawal" target="_blank" rel="noopener noreferrer" className="hover:text-neutral-300 transition-colors" aria-label="Akash Awal on GitHub">
               <GithubLogo size={13} />
             </a>
@@ -58,7 +58,7 @@ export function SiteHeader({ fixed = false }: SiteHeaderProps = {}) {
           </div>
           <span className="text-white/30">|</span>
           <div className="flex items-center gap-2">
-            <span className="text-[11px] font-medium">GC</span>
+            <span className="text-[11px] font-medium">Gray Cup</span>
             <a href="https://github.com/nermalcat69" target="_blank" rel="noopener noreferrer" className="hover:text-neutral-300 transition-colors" aria-label="Gray Cup on GitHub">
               <GithubLogo size={13} />
             </a>
