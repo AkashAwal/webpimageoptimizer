@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
+import { GithubLogo, XLogo } from "@phosphor-icons/react";
 
 type SiteHeaderProps = {
   fixed?: boolean;
@@ -38,13 +39,32 @@ export function SiteHeader({ fixed = false }: SiteHeaderProps = {}) {
       style={fixed ? { transform: hidden ? "translateY(-100%)" : "translateY(0)" } : undefined}
     >
       {/* Pre-header strip */}
-      <div className="w-full bg-neutral-950 px-6 py-1.5 sm:px-10">
+      <div className="w-full bg-neutral-950 px-6 py-1.5 sm:px-10 flex items-center justify-between">
         <p className="text-[11px] text-white">
           Built by{" "}
           <a href="https://akashawal.com" target="_blank" rel="noopener noreferrer" className="font-medium text-white hover:text-neutral-300 transition-colors">Akash Awal</a>
           <span className="mx-1.5 text-white">×</span>
           <a href="https://graycup.com" target="_blank" rel="noopener noreferrer" className="font-medium text-white hover:text-neutral-300 transition-colors">Gray Cup Enterprises</a>
         </p>
+        <div className="flex items-center gap-3">
+          <div className="flex items-center gap-1.5">
+            <a href="https://github.com/akashawal" target="_blank" rel="noopener noreferrer" className="text-neutral-400 hover:text-white transition-colors" aria-label="Akash Awal on GitHub">
+              <GithubLogo size={13} />
+            </a>
+            <a href="https://x.com/akashawal17" target="_blank" rel="noopener noreferrer" className="text-neutral-400 hover:text-white transition-colors" aria-label="Akash Awal on X">
+              <XLogo size={13} />
+            </a>
+          </div>
+          <span className="text-neutral-700">·</span>
+          <div className="flex items-center gap-1.5">
+            <a href="https://github.com/nermalcat69" target="_blank" rel="noopener noreferrer" className="text-neutral-400 hover:text-white transition-colors" aria-label="Gray Cup Enterprises on GitHub">
+              <GithubLogo size={13} />
+            </a>
+            <a href="https://x.com/arjunaditya_" target="_blank" rel="noopener noreferrer" className="text-neutral-400 hover:text-white transition-colors" aria-label="Gray Cup Enterprises on X">
+              <XLogo size={13} />
+            </a>
+          </div>
+        </div>
       </div>
 
       <div className="flex w-full items-center justify-between px-6 py-5 sm:px-10">
