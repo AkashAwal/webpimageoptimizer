@@ -109,7 +109,7 @@ export function SiteHeader({ fixed = false }: SiteHeaderProps = {}) {
               <a href="https://akashawal.com" target="_blank" rel="noopener noreferrer" className="text-[11px] font-semibold tracking-tight text-foreground hover:text-foreground/70 transition-colors">
                 Akash Awal
               </a>
-              <div className="flex items-center gap-1.5 text-muted-foreground">
+              <div className="flex items-center gap-1.5 text-foreground">
                 <a href="https://github.com/akashawal" target="_blank" rel="noopener noreferrer" className="hover:text-foreground transition-colors" aria-label="Akash Awal on GitHub">
                   <GithubLogo size={13} />
                 </a>
@@ -124,7 +124,7 @@ export function SiteHeader({ fixed = false }: SiteHeaderProps = {}) {
               <a href="https://graycup.com" target="_blank" rel="noopener noreferrer" className="text-[11px] font-semibold tracking-tight text-foreground hover:text-foreground/70 transition-colors">
                 Gray Cup
               </a>
-              <div className="flex items-center gap-1.5 text-muted-foreground">
+              <div className="flex items-center gap-1.5 text-foreground">
                 <a href="https://github.com/nermalcat69" target="_blank" rel="noopener noreferrer" className="hover:text-foreground transition-colors" aria-label="Gray Cup on GitHub">
                   <GithubLogo size={13} />
                 </a>
