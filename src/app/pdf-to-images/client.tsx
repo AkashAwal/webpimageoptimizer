@@ -72,21 +72,21 @@ export default function PdfToImagesClient() {
         <div className="p-4 space-y-3">
           {!file ? (
             <div
-              className="flex flex-col items-center gap-5 py-14 rounded-xl transition-colors"
+              className="flex flex-col items-center justify-center gap-8 min-h-[calc(100vh-8rem)] rounded-xl transition-colors"
               onDragOver={e => e.preventDefault()}
               onDrop={e => { e.preventDefault(); const f = e.dataTransfer.files[0]; if (f) { setFile(f); setResult(null); } }}
             >
-              <div className="text-center space-y-1.5">
-                <h2 className="text-[22px] font-bold tracking-tight text-foreground">PDF to Images</h2>
-                <p className="text-[13px] text-muted-foreground">Export every PDF page as a JPG, PNG, or WebP image.</p>
+              <div className="text-center space-y-3 max-w-lg">
+                <h2 className="text-5xl font-bold tracking-tight text-foreground">PDF to Images</h2>
+                <p className="text-[18px] text-muted-foreground">Export every PDF page as a JPG, PNG, or WebP image.</p>
               </div>
               <button
                 onClick={() => inputRef.current?.click()}
-                className="w-full h-14 rounded-2xl bg-foreground text-white text-[14px] font-semibold hover:bg-foreground/90 active:scale-[0.99] transition-all"
+                className="w-full max-w-md h-16 rounded-2xl bg-foreground text-white text-[16px] font-semibold hover:bg-foreground/90 active:scale-[0.99] transition-all"
               >
                 Select PDF File
               </button>
-              <p className="text-[11px] text-muted-foreground">or drag and drop your PDF here</p>
+              <p className="text-[13px] text-muted-foreground">or drag and drop your PDF here</p>
             </div>
           ) : (
             <div className="flex items-center gap-3 rounded-xl px-3 py-2 bg-white ring-1 ring-black/5">

@@ -119,24 +119,24 @@ export default function PdfToolShell({
           {files.length === 0 && (
             <div
               className={cn(
-                "flex flex-col items-center gap-5 py-14 rounded-xl transition-colors",
+                "flex flex-col items-center justify-center gap-8 min-h-[calc(100vh-8rem)] rounded-xl transition-colors",
                 dragOver && "bg-neutral-50",
               )}
               onDragOver={e => { e.preventDefault(); setDragOver(true); }}
               onDragLeave={e => { if (!e.currentTarget.contains(e.relatedTarget as Node)) setDragOver(false); }}
               onDrop={e => { e.preventDefault(); setDragOver(false); if (e.dataTransfer.files.length) addFiles(e.dataTransfer.files); }}
             >
-              <div className="text-center space-y-1.5">
-                {title && <h2 className="text-[22px] font-bold tracking-tight text-foreground">{title}</h2>}
-                {description && <p className="text-[13px] text-muted-foreground">{description}</p>}
+              <div className="text-center space-y-3 max-w-lg">
+                {title && <h2 className="text-5xl font-bold tracking-tight text-foreground">{title}</h2>}
+                {description && <p className="text-[18px] text-muted-foreground">{description}</p>}
               </div>
               <button
                 onClick={() => inputRef.current?.click()}
-                className="w-full h-14 rounded-2xl bg-foreground text-white text-[14px] font-semibold hover:bg-foreground/90 active:scale-[0.99] transition-all"
+                className="w-full max-w-md h-16 rounded-2xl bg-foreground text-white text-[16px] font-semibold hover:bg-foreground/90 active:scale-[0.99] transition-all"
               >
                 Select PDF File{acceptMultiple ? "s" : ""}
               </button>
-              <p className="text-[11px] text-muted-foreground">or drag and drop your PDF here</p>
+              <p className="text-[13px] text-muted-foreground">or drag and drop your PDF here</p>
             </div>
           )}
 
