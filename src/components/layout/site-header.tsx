@@ -1,17 +1,19 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { Suspense, useEffect, useRef, useState } from "react";
 import Link from "next/link";
+import { usePathname, useSearchParams } from "next/navigation";
 import { GithubLogo, XLogo, List, X as XIcon } from "@phosphor-icons/react";
+import { cn } from "@/lib/utils";
 
 type SiteHeaderProps = {
   fixed?: boolean;
 };
 
 const CATEGORY_LINKS = [
-  { label: "WebP Tools", href: "/?category=webp" },
-  { label: "Image to PDF", href: "/?category=pdf" },
-  { label: "PDF Tools", href: "/?category=pdf-tools" },
+  { label: "WebP Tools", href: "/?category=webp", category: "webp" },
+  { label: "Image to PDF", href: "/?category=pdf", category: "pdf" },
+  { label: "PDF Tools", href: "/?category=pdf-tools", category: "pdf-tools" },
 ] as const;
 
 const STATIC_LINKS = [
@@ -21,8 +23,111 @@ const STATIC_LINKS = [
   { label: "Contact", href: "/contact", external: false },
 ] as const;
 
-const linkClass =
-  "text-[13px] font-semibold tracking-tight text-foreground/80 hover:text-foreground transition-colors px-2.5 py-1";
+const baseLinkClass =
+  "text-[13px] font-semibold tracking-tight transition-colors px-2.5 py-1 underline-offset-4 decoration-foreground";
+
+function navLinkClass(active: boolean) {
+  return cn(
+    baseLinkClass,
+    active
+      ? "text-foreground underline"
+      : "text-foreground/80 hover:text-foreground hover:underline",
+  );
+}
+
+function mobileLinkClass(active: boolean) {
+  return cn(
+    "text-[13px] font-semibold tracking-tight transition-colors py-1 underline-offset-4 decoration-foreground",
+    active
+      ? "text-foreground underline"
+      : "text-foreground/80 hover:text-foreground hover:underline",
+  );
+}
+
+function NavLinks({ menuOpen, onClose }: { menuOpen: boolean; onClose: () => void }) {
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+  const activeCategory = searchParams.get("category");
+
+  return (
+    <>
+      {/* Desktop nav — centered */}
+      <nav className="hidden sm:flex absolute left-1/2 -translate-x-1/2 items-center gap-0.5">
+        {CATEGORY_LINKS.map((link) => (
+          <Link
+            key={link.href}
+            href={link.href}
+            className={navLinkClass(pathname === "/" && activeCategory === link.category)}
+          >
+            {link.label}
+          </Link>
+        ))}
+        <span className="mx-1.5 select-none text-[13px] text-neutral-200">|</span>
+        {STATIC_LINKS.map((link) =>
+          link.external ? (
+            <a
+              key={link.href}
+              href={link.href}
+              target="_blank"
+              rel="noopener noreferrer"
+              className={navLinkClass(false)}
+            >
+              {link.label}
+            </a>
+          ) : (
+            <Link
+              key={link.href}
+              href={link.href}
+              className={navLinkClass(pathname === link.href)}
+            >
+              {link.label}
+            </Link>
+          )
+        )}
+      </nav>
+
+      {/* Mobile menu */}
+      {menuOpen && (
+        <div className="sm:hidden border-b border-border bg-background px-6 py-4 flex flex-col gap-2.5 w-full">
+          {CATEGORY_LINKS.map((link) => (
+            <Link
+              key={link.href}
+              href={link.href}
+              className={mobileLinkClass(pathname === "/" && activeCategory === link.category)}
+              onClick={onClose}
+            >
+              {link.label}
+            </Link>
+          ))}
+          <div className="my-1 border-t border-border/60" />
+          {STATIC_LINKS.map((link) =>
+            link.external ? (
+              <a
+                key={link.href}
+                href={link.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                className={mobileLinkClass(false)}
+                onClick={onClose}
+              >
+                {link.label}
+              </a>
+            ) : (
+              <Link
+                key={link.href}
+                href={link.href}
+                className={mobileLinkClass(pathname === link.href)}
+                onClick={onClose}
+              >
+                {link.label}
+              </Link>
+            )
+          )}
+        </div>
+      )}
+    </>
+  );
+}
 
 export function SiteHeader({ fixed = false }: SiteHeaderProps = {}) {
   const [hidden, setHidden] = useState(false);
@@ -56,7 +161,7 @@ export function SiteHeader({ fixed = false }: SiteHeaderProps = {}) {
       style={fixed ? { transform: hidden ? "translateY(-100%)" : "translateY(0)" } : undefined}
     >
       {/* Main nav */}
-      <div className="relative flex w-full items-center px-6 py-4 sm:px-10">
+      <div className="relative flex w-full items-center px-6 py-4 sm:px-10 border-b border-border">
         <Link href="/" aria-label="Pix Garage" className="flex items-center gap-2">
           <svg
             width="26"
@@ -73,32 +178,9 @@ export function SiteHeader({ fixed = false }: SiteHeaderProps = {}) {
           <span className="text-[15px] font-semibold tracking-tight text-foreground">Pix Garage</span>
         </Link>
 
-        {/* Desktop nav — centered */}
-        <nav className="hidden sm:flex absolute left-1/2 -translate-x-1/2 items-center gap-0.5">
-          {CATEGORY_LINKS.map((link) => (
-            <Link key={link.href} href={link.href} className={linkClass}>
-              {link.label}
-            </Link>
-          ))}
-          <span className="mx-1.5 text-neutral-200 select-none text-[13px]">|</span>
-          {STATIC_LINKS.map((link) =>
-            link.external ? (
-              <a
-                key={link.href}
-                href={link.href}
-                target="_blank"
-                rel="noopener noreferrer"
-                className={linkClass}
-              >
-                {link.label}
-              </a>
-            ) : (
-              <Link key={link.href} href={link.href} className={linkClass}>
-                {link.label}
-              </Link>
-            )
-          )}
-        </nav>
+        <Suspense>
+          <NavLinks menuOpen={menuOpen} onClose={() => setMenuOpen(false)} />
+        </Suspense>
 
         {/* Right side: built-by + social icons */}
         <div className="hidden sm:flex items-center gap-4 ml-auto">
@@ -118,7 +200,7 @@ export function SiteHeader({ fixed = false }: SiteHeaderProps = {}) {
                 </a>
               </div>
             </div>
-            <span className="text-muted-foreground/40 text-[16px]">×</span>
+            <span className="text-border text-[11px]">|</span>
             {/* Gray Cup */}
             <div className="flex flex-col items-center gap-1">
               <a href="https://graycup.com" target="_blank" rel="noopener noreferrer" className="text-[11px] font-semibold tracking-tight text-foreground hover:text-foreground/70 transition-colors">
@@ -145,46 +227,6 @@ export function SiteHeader({ fixed = false }: SiteHeaderProps = {}) {
           {menuOpen ? <XIcon size={20} /> : <List size={20} />}
         </button>
       </div>
-
-      {/* Mobile menu */}
-      {menuOpen && (
-        <div className="sm:hidden border-t border-border bg-background px-6 py-4 flex flex-col gap-2.5">
-          {CATEGORY_LINKS.map((link) => (
-            <Link
-              key={link.href}
-              href={link.href}
-              className="text-[13px] font-semibold tracking-tight text-foreground/80 hover:text-foreground transition-colors py-1"
-              onClick={() => setMenuOpen(false)}
-            >
-              {link.label}
-            </Link>
-          ))}
-          <div className="my-1 border-t border-border/60" />
-          {STATIC_LINKS.map((link) =>
-            link.external ? (
-              <a
-                key={link.href}
-                href={link.href}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-[13px] font-semibold tracking-tight text-foreground/80 hover:text-foreground transition-colors py-1"
-                onClick={() => setMenuOpen(false)}
-              >
-                {link.label}
-              </a>
-            ) : (
-              <Link
-                key={link.href}
-                href={link.href}
-                className="text-[13px] font-semibold tracking-tight text-foreground/80 hover:text-foreground transition-colors py-1"
-                onClick={() => setMenuOpen(false)}
-              >
-                {link.label}
-              </Link>
-            )
-          )}
-        </div>
-      )}
     </header>
   );
 }
