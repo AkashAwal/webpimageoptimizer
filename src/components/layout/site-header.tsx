@@ -38,11 +38,11 @@ export function SiteHeader({ fixed = false }: SiteHeaderProps = {}) {
       style={fixed ? { transform: hidden ? "translateY(-100%)" : "translateY(0)" } : undefined}
     >
       {/* Pre-header strip */}
-      <div className="w-full border-b border-black/6 px-6 py-1.5 sm:px-10">
-        <p className="text-[11px] text-muted-foreground/70">
-          Built by <span className="font-medium text-muted-foreground">Akash Awal</span>
-          <span className="mx-1.5 text-muted-foreground/40">×</span>
-          <span className="font-medium text-muted-foreground">Gray Cup Enterprises</span>
+      <div className="w-full bg-neutral-950 px-6 py-1.5 sm:px-10">
+        <p className="text-[11px] text-neutral-400">
+          Built by <span className="font-medium text-neutral-200">Akash Awal</span>
+          <span className="mx-1.5 text-neutral-600">×</span>
+          <span className="font-medium text-neutral-200">Gray Cup Enterprises</span>
         </p>
       </div>
 
