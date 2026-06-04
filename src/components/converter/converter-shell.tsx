@@ -45,9 +45,17 @@ interface Settings {
   stripMeta: boolean;
   // PDF-specific
   pdfType: "standard" | "print";
+  pdfPageSize: "fit" | "a4" | "letter" | "legal" | "a3";
+  pdfOrientation: "auto" | "portrait" | "landscape";
+  pdfMarginMm: number;
+  pdfFitMode: "contain" | "fill" | "actual";
   pdfCompress: boolean;
   pdfFlatten: boolean;
+  pdfPageNumbers: boolean;
+  pdfWatermark: string;
   pdfPassword: string;
+  pdfMetaTitle: string;
+  pdfMetaAuthor: string;
   pdfFilename: string;
 }
 
@@ -55,6 +63,14 @@ interface PdfOptions {
   password?: string;
   compress: boolean;
   flatten: boolean;
+  pageSize: "fit" | "a4" | "letter" | "legal" | "a3";
+  orientation: "auto" | "portrait" | "landscape";
+  marginMm: number;
+  fitMode: "contain" | "fill" | "actual";
+  pageNumbers: boolean;
+  watermark: string;
+  metaTitle: string;
+  metaAuthor: string;
 }
 
 // ─── Utilities ────────────────────────────────────────────────────────────────
@@ -185,29 +201,107 @@ async function heicToPage(file: File, quality: number, targetW?: number, targetH
   return blobToPage(Array.isArray(out) ? out[0] : out, quality, targetW, targetH, flatten);
 }
 
+// 1px at 96 DPI = 25.4/96 mm
+const MM_PER_PX = 25.4 / 96;
+
+const PAGE_DIMS_MM: Record<string, [number, number]> = {
+  a4:     [210,    297],
+  a3:     [297,    420],
+  letter: [215.9,  279.4],
+  legal:  [215.9,  355.6],
+};
+
 async function buildPdf(pages: PdfPage[], opts: PdfOptions): Promise<Blob> {
   const { jsPDF } = await import("jspdf");
-  const [first, ...rest] = pages;
+
+  function getPageDims(imgW: number, imgH: number): { pageW: number; pageH: number } {
+    if (opts.pageSize === "fit") return { pageW: imgW * MM_PER_PX, pageH: imgH * MM_PER_PX };
+    let [pw, ph] = PAGE_DIMS_MM[opts.pageSize];
+    const landscape = opts.orientation === "landscape" || (opts.orientation === "auto" && imgW > imgH);
+    if (landscape) [pw, ph] = [ph, pw];
+    return { pageW: pw, pageH: ph };
+  }
+
+  function placeImage(pdf: InstanceType<typeof jsPDF>, page: PdfPage, pageW: number, pageH: number) {
+    if (opts.pageSize === "fit") {
+      pdf.addImage(page.dataUrl, "JPEG", 0, 0, pageW, pageH);
+      return;
+    }
+    const m = opts.marginMm;
+    const availW = pageW - m * 2;
+    const availH = pageH - m * 2;
+    const imgWmm = page.w * MM_PER_PX;
+    const imgHmm = page.h * MM_PER_PX;
+    let dw: number, dh: number, dx: number, dy: number;
+    if (opts.fitMode === "contain") {
+      const s = Math.min(availW / imgWmm, availH / imgHmm);
+      dw = imgWmm * s; dh = imgHmm * s;
+    } else if (opts.fitMode === "fill") {
+      const s = Math.max(availW / imgWmm, availH / imgHmm);
+      dw = imgWmm * s; dh = imgHmm * s;
+    } else {
+      dw = Math.min(imgWmm, availW); dh = Math.min(imgHmm, availH);
+    }
+    dx = m + (availW - dw) / 2;
+    dy = m + (availH - dh) / 2;
+    pdf.addImage(page.dataUrl, "JPEG", dx, dy, dw, dh);
+  }
+
+  const first = pages[0];
+  const firstDims = getPageDims(first.w, first.h);
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const pdfOpts: any = {
-    orientation: first.w >= first.h ? "landscape" : "portrait",
-    unit: "px",
-    format: [first.w, first.h],
+  const initOpts: any = {
+    orientation: firstDims.pageW >= firstDims.pageH ? "landscape" : "portrait",
+    unit: "mm",
+    format: [firstDims.pageW, firstDims.pageH],
     compress: opts.compress,
   };
   if (opts.password) {
-    pdfOpts.encryption = {
+    initOpts.encryption = {
       userPassword: opts.password,
       ownerPassword: opts.password,
       userPermissions: ["print", "copy"],
     };
   }
-  const pdf = new jsPDF(pdfOpts);
-  pdf.addImage(first.dataUrl, "JPEG", 0, 0, first.w, first.h);
-  for (const page of rest) {
-    pdf.addPage([page.w, page.h], page.w >= page.h ? "landscape" : "portrait");
-    pdf.addImage(page.dataUrl, "JPEG", 0, 0, page.w, page.h);
+
+  const pdf = new jsPDF(initOpts);
+
+  if (opts.metaTitle || opts.metaAuthor) {
+    pdf.setProperties({ title: opts.metaTitle, author: opts.metaAuthor });
   }
+
+  // Add pages
+  pages.forEach((page, i) => {
+    const { pageW, pageH } = getPageDims(page.w, page.h);
+    if (i > 0) pdf.addPage([pageW, pageH], pageW >= pageH ? "landscape" : "portrait");
+    placeImage(pdf, page, pageW, pageH);
+  });
+
+  const total = pages.length;
+
+  // Page numbers
+  if (opts.pageNumbers) {
+    for (let i = 0; i < total; i++) {
+      pdf.setPage(i + 1);
+      const { pageW, pageH } = getPageDims(pages[i].w, pages[i].h);
+      pdf.setFontSize(8);
+      pdf.setTextColor(140, 140, 140);
+      pdf.text(`${i + 1} / ${total}`, pageW / 2, pageH - 5, { align: "center" });
+    }
+  }
+
+  // Watermark
+  if (opts.watermark) {
+    for (let i = 0; i < total; i++) {
+      pdf.setPage(i + 1);
+      const { pageW, pageH } = getPageDims(pages[i].w, pages[i].h);
+      const size = Math.max(8, Math.min(pageW, pageH) * 0.09);
+      pdf.setFontSize(size);
+      pdf.setTextColor(190, 190, 190);
+      pdf.text(opts.watermark, pageW / 2, pageH / 2, { align: "center", angle: 45 });
+    }
+  }
+
   return pdf.output("blob");
 }
 
@@ -218,19 +312,25 @@ async function fileToPage(file: File, quality: number, targetW?: number, targetH
   return blobToPage(file, quality, targetW, targetH, flatten);
 }
 
+const DEFAULT_PDF_OPTS: PdfOptions = {
+  compress: true, flatten: false, pageSize: "fit", orientation: "auto",
+  marginMm: 10, fitMode: "contain", pageNumbers: false, watermark: "",
+  metaTitle: "", metaAuthor: "",
+};
+
 async function canvasToPdf(file: File, quality: number, targetW?: number, targetH?: number, opts?: PdfOptions): Promise<Blob> {
   const page = await blobToPage(file, quality, targetW, targetH, opts?.flatten);
-  return buildPdf([page], opts ?? { compress: true, flatten: false });
+  return buildPdf([page], opts ?? DEFAULT_PDF_OPTS);
 }
 
 async function svgToPdf(file: File, quality: number, targetW?: number, targetH?: number, opts?: PdfOptions): Promise<Blob> {
   const page = await svgToPage(file, quality, targetW, targetH, opts?.flatten);
-  return buildPdf([page], opts ?? { compress: true, flatten: false });
+  return buildPdf([page], opts ?? DEFAULT_PDF_OPTS);
 }
 
 async function heicToPdf(file: File, quality: number, targetW?: number, targetH?: number, opts?: PdfOptions): Promise<Blob> {
   const page = await heicToPage(file, quality, targetW, targetH, opts?.flatten);
-  return buildPdf([page], opts ?? { compress: true, flatten: false });
+  return buildPdf([page], opts ?? DEFAULT_PDF_OPTS);
 }
 
 // ─── Config ───────────────────────────────────────────────────────────────────
@@ -390,7 +490,9 @@ export default function ConverterShell({ type, title }: { type: ConvertType; tit
 
   const [settings, setSettings] = useState<Settings>({
     quality: 85, width: "", height: "", namingMode: "original", prefix: "image", sizeCapKB: "", stripMeta: true,
-    pdfType: "standard", pdfCompress: true, pdfFlatten: false, pdfPassword: "", pdfFilename: "converted",
+    pdfType: "standard", pdfPageSize: "fit", pdfOrientation: "auto", pdfMarginMm: 10,
+    pdfFitMode: "contain", pdfCompress: true, pdfFlatten: false, pdfPageNumbers: false,
+    pdfWatermark: "", pdfPassword: "", pdfMetaTitle: "", pdfMetaAuthor: "", pdfFilename: "converted",
   });
   const [mergedResult, setMergedResult] = useState<{ blob: Blob; url: string } | null>(null);
 
@@ -490,7 +592,15 @@ export default function ConverterShell({ type, title }: { type: ConvertType; tit
     compress: settings.pdfCompress,
     flatten: settings.pdfFlatten,
     password: settings.pdfPassword || undefined,
-  }), [settings.pdfCompress, settings.pdfFlatten, settings.pdfPassword]);
+    pageSize: settings.pdfPageSize,
+    orientation: settings.pdfOrientation,
+    marginMm: settings.pdfMarginMm,
+    fitMode: settings.pdfFitMode,
+    pageNumbers: settings.pdfPageNumbers,
+    watermark: settings.pdfWatermark,
+    metaTitle: settings.pdfMetaTitle,
+    metaAuthor: settings.pdfMetaAuthor,
+  }), [settings]);
 
   const handleConvert = useCallback(async () => {
     const queued = filesRef.current.filter(f => f.status === "queued");
@@ -966,28 +1076,99 @@ export default function ConverterShell({ type, title }: { type: ConvertType; tit
                       { id: "standard", label: "Standard", sub: "Screen & email" },
                       { id: "print",    label: "Print",    sub: "High fidelity" },
                     ] as const).map(opt => (
-                      <button
-                        key={opt.id}
-                        onClick={() => setSettings(s => ({ ...s, pdfType: opt.id }))}
-                        className={cn(
-                          "flex-1 flex flex-col items-center rounded-lg px-1 py-1.5 transition-colors",
-                          settings.pdfType === opt.id ? "bg-neutral-900 text-white" : "bg-neutral-100 text-neutral-600 hover:bg-neutral-200",
-                        )}
-                      >
+                      <button key={opt.id} onClick={() => setSettings(s => ({ ...s, pdfType: opt.id }))}
+                        className={cn("flex-1 flex flex-col items-center rounded-lg px-1 py-1.5 transition-colors",
+                          settings.pdfType === opt.id ? "bg-neutral-900 text-white" : "bg-neutral-100 text-neutral-600 hover:bg-neutral-200")}>
                         <span className="text-[11px] font-medium leading-tight">{opt.label}</span>
-                        <span className={cn("text-[10px] mt-0.5 leading-tight text-center", settings.pdfType === opt.id ? "text-white/60" : "text-neutral-400")}>{opt.sub}</span>
+                        <span className={cn("text-[10px] mt-0.5 text-center", settings.pdfType === opt.id ? "text-white/60" : "text-neutral-400")}>{opt.sub}</span>
                       </button>
                     ))}
                   </div>
                 </div>
 
-                {/* Pages note */}
+                {/* Page layout */}
                 <div>
-                  <p className="text-[10px] font-semibold uppercase tracking-widest text-muted-foreground mb-1.5">Pages</p>
-                  <p className="text-[11px] text-muted-foreground/70 leading-relaxed">All queued images are combined into one PDF. Drag files in the queue to set page order.</p>
+                  <p className="text-[10px] font-semibold uppercase tracking-widest text-muted-foreground mb-1.5">Page size</p>
+                  <select value={settings.pdfPageSize} onChange={e => setSettings(s => ({ ...s, pdfPageSize: e.target.value as Settings["pdfPageSize"] }))}
+                    className="w-full rounded-lg border border-border bg-neutral-50 px-2 py-1 text-[12px] text-foreground outline-none focus:border-foreground/30 focus:bg-white transition-colors cursor-pointer">
+                    <option value="fit">Fit to image</option>
+                    <option value="a4">A4 (210 × 297 mm)</option>
+                    <option value="letter">Letter (216 × 279 mm)</option>
+                    <option value="legal">Legal (216 × 356 mm)</option>
+                    <option value="a3">A3 (297 × 420 mm)</option>
+                  </select>
                 </div>
 
-                {/* Compress */}
+                {settings.pdfPageSize !== "fit" && (
+                  <>
+                    {/* Fit mode */}
+                    <div>
+                      <p className="text-[10px] font-semibold uppercase tracking-widest text-muted-foreground mb-1.5">Image fit</p>
+                      <div className="flex gap-1.5">
+                        {([
+                          { id: "contain", label: "Contain" },
+                          { id: "fill",    label: "Fill"    },
+                          { id: "actual",  label: "1 : 1"   },
+                        ] as const).map(opt => (
+                          <button key={opt.id} onClick={() => setSettings(s => ({ ...s, pdfFitMode: opt.id }))}
+                            className={cn("flex-1 rounded-lg px-1 py-1.5 text-[11px] font-medium transition-colors",
+                              settings.pdfFitMode === opt.id ? "bg-neutral-900 text-white" : "bg-neutral-100 text-neutral-600 hover:bg-neutral-200")}>
+                            {opt.label}
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+
+                    {/* Orientation */}
+                    <div>
+                      <p className="text-[10px] font-semibold uppercase tracking-widest text-muted-foreground mb-1.5">Orientation</p>
+                      <div className="flex gap-1.5">
+                        {([
+                          { id: "auto",      label: "Auto"      },
+                          { id: "portrait",  label: "Portrait"  },
+                          { id: "landscape", label: "Landscape" },
+                        ] as const).map(opt => (
+                          <button key={opt.id} onClick={() => setSettings(s => ({ ...s, pdfOrientation: opt.id }))}
+                            className={cn("flex-1 rounded-lg px-1 py-1.5 text-[11px] font-medium transition-colors",
+                              settings.pdfOrientation === opt.id ? "bg-neutral-900 text-white" : "bg-neutral-100 text-neutral-600 hover:bg-neutral-200")}>
+                            {opt.label}
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+
+                    {/* Margin */}
+                    <div>
+                      <div className="flex items-center justify-between mb-1">
+                        <p className="text-[10px] font-semibold uppercase tracking-widest text-muted-foreground">Margin</p>
+                        <span className="text-[11px] tabular-nums text-muted-foreground">{settings.pdfMarginMm} mm</span>
+                      </div>
+                      <input type="range" min={0} max={40} value={settings.pdfMarginMm}
+                        onChange={e => setSettings(s => ({ ...s, pdfMarginMm: Number(e.target.value) }))}
+                        className="w-full h-1.5 cursor-pointer accent-foreground"
+                      />
+                      <div className="flex justify-between mt-0.5">
+                        <span className="text-[10px] text-muted-foreground/60">None</span>
+                        <span className="text-[10px] text-muted-foreground/60">40 mm</span>
+                      </div>
+                    </div>
+                  </>
+                )}
+
+                {/* Pages */}
+                <div>
+                  <p className="text-[10px] font-semibold uppercase tracking-widest text-muted-foreground mb-1.5">Pages</p>
+                  <p className="text-[11px] text-muted-foreground/70 leading-relaxed mb-2">Drag files in the queue to set page order.</p>
+                  <label className="flex items-center gap-2 cursor-pointer select-none">
+                    <input type="checkbox" checked={settings.pdfPageNumbers}
+                      onChange={e => setSettings(s => ({ ...s, pdfPageNumbers: e.target.checked }))}
+                      className="accent-foreground size-3.5"
+                    />
+                    <span className="text-[12px] text-foreground">Page numbers</span>
+                  </label>
+                </div>
+
+                {/* Output */}
                 <div>
                   <p className="text-[10px] font-semibold uppercase tracking-widest text-muted-foreground mb-1.5">Output</p>
                   <div className="space-y-2">
@@ -1011,21 +1192,46 @@ export default function ConverterShell({ type, title }: { type: ConvertType; tit
                   </div>
                 </div>
 
-                {/* Password */}
+                {/* Watermark */}
+                <div>
+                  <p className="text-[10px] font-semibold uppercase tracking-widest text-muted-foreground mb-1.5">Watermark</p>
+                  <input type="text" placeholder="e.g. CONFIDENTIAL"
+                    value={settings.pdfWatermark}
+                    onChange={e => setSettings(s => ({ ...s, pdfWatermark: e.target.value }))}
+                    className="w-full rounded-lg border border-border bg-neutral-50 px-2 py-1 text-[12px] text-foreground outline-none focus:border-foreground/30 focus:bg-white transition-colors"
+                  />
+                </div>
+
+                {/* Security */}
                 <div>
                   <p className="text-[10px] font-semibold uppercase tracking-widest text-muted-foreground mb-1.5">Password</p>
-                  <input
-                    type="password"
-                    placeholder="Leave blank for none"
+                  <input type="password" placeholder="Leave blank for none"
                     value={settings.pdfPassword}
                     onChange={e => setSettings(s => ({ ...s, pdfPassword: e.target.value }))}
                     className="w-full rounded-lg border border-border bg-neutral-50 px-2 py-1 text-[12px] text-foreground outline-none focus:border-foreground/30 focus:bg-white transition-colors"
                   />
                 </div>
 
-                {/* Dimensions */}
+                {/* Metadata */}
                 <div>
-                  <p className="text-[10px] font-semibold uppercase tracking-widest text-muted-foreground mb-1.5">Dimensions (px)</p>
+                  <p className="text-[10px] font-semibold uppercase tracking-widest text-muted-foreground mb-1.5">Metadata</p>
+                  <div className="space-y-1.5">
+                    <input type="text" placeholder="Title"
+                      value={settings.pdfMetaTitle}
+                      onChange={e => setSettings(s => ({ ...s, pdfMetaTitle: e.target.value }))}
+                      className="w-full rounded-lg border border-border bg-neutral-50 px-2 py-1 text-[12px] text-foreground outline-none focus:border-foreground/30 focus:bg-white transition-colors"
+                    />
+                    <input type="text" placeholder="Author"
+                      value={settings.pdfMetaAuthor}
+                      onChange={e => setSettings(s => ({ ...s, pdfMetaAuthor: e.target.value }))}
+                      className="w-full rounded-lg border border-border bg-neutral-50 px-2 py-1 text-[12px] text-foreground outline-none focus:border-foreground/30 focus:bg-white transition-colors"
+                    />
+                  </div>
+                </div>
+
+                {/* Source dimensions */}
+                <div>
+                  <p className="text-[10px] font-semibold uppercase tracking-widest text-muted-foreground mb-1.5">Source dimensions (px)</p>
                   <div className="flex gap-2">
                     <div className="flex-1">
                       <p className="text-[10px] text-muted-foreground/70 mb-0.5">W</p>
