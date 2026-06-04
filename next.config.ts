@@ -1,10 +1,9 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  turbopack: {
-    resolveAlias: {
-      canvas: "./src/lib/canvas-stub.ts",
-    },
+  webpack: (config) => {
+    config.resolve.alias.canvas = false;
+    return config;
   },
   devIndicators: false,
   images: {
