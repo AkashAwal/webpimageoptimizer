@@ -161,7 +161,7 @@ export default function RearrangePdfClient() {
               onDragOver={e => { e.preventDefault(); setDragOverIdx(idx); }}
               onDrop={() => onItemDrop(idx)}
               className={cn(
-                "relative group rounded-xl overflow-hidden ring-1 cursor-grab active:cursor-grabbing transition-all select-none",
+                "relative group overflow-hidden ring-1 cursor-grab active:cursor-grabbing transition-all select-none",
                 page.deleted ? "ring-red-200 opacity-40" : "ring-black/10 hover:ring-black/20",
                 dragIdx === idx && "opacity-30 scale-95",
                 dragOverIdx === idx && dragIdx !== idx && "ring-2 ring-neutral-400 scale-[1.02]",
@@ -170,8 +170,8 @@ export default function RearrangePdfClient() {
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img src={page.thumbnail} alt={`Page ${idx + 1}`} className="w-full block" />
 
-              <div className="absolute bottom-0 inset-x-0 bg-gradient-to-t from-black/60 to-transparent px-1.5 py-1.5">
-                <span className="text-[10px] font-semibold text-white">{idx + 1}</span>
+              <div className="absolute bottom-0 inset-x-0 px-1.5 py-1">
+                <span className="text-[10px] font-semibold text-neutral-500">{idx + 1}</span>
               </div>
 
               <button
