@@ -37,7 +37,6 @@ const PAGES = [
   { path: "/watermark-pdf", priority: 0.9 },
   { path: "/pdf-page-numbers", priority: 0.9 },
   { path: "/crop-pdf", priority: 0.9 },
-  { path: "/remove-pdf-pages", priority: 0.9 },
   { path: "/rearrange-pdf", priority: 0.9 },
   { path: "/pdf-to-images", priority: 0.9 },
   { path: "/sign-pdf", priority: 0.9 },
