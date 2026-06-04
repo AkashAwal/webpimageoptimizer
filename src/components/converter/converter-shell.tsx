@@ -79,7 +79,9 @@ async function collectFilesFromDataTransfer(items: DataTransferItemList): Promis
 // ─── Conversion functions ─────────────────────────────────────────────────────
 
 async function canvasConvert(source: File | Blob, quality: number, targetW?: number, targetH?: number): Promise<Blob> {
-  const bitmap = await createImageBitmap(source);
+  const bitmap = await createImageBitmap(source).catch((e: unknown) => {
+    throw new Error(e instanceof Error ? e.message : "This file format cannot be decoded in your browser.");
+  });
   let w = bitmap.width, h = bitmap.height;
   if (targetW && targetH) { w = targetW; h = targetH; }
   else if (targetW) { h = Math.round(bitmap.height * (targetW / bitmap.width)); w = targetW; }
@@ -610,9 +612,11 @@ export default function ConverterShell({ type, title }: { type: ConvertType; tit
             onDrop={async e => {
               e.preventDefault();
               setDropDragging(false);
-              const collected = await collectFilesFromDataTransfer(e.dataTransfer.items);
-              if (collected.length) addFiles(collected);
-              else if (e.dataTransfer.files.length) addFiles(e.dataTransfer.files);
+              try {
+                const collected = await collectFilesFromDataTransfer(e.dataTransfer.items);
+                if (collected.length) { addFiles(collected); return; }
+              } catch { /* folder traversal failed — fall back to flat file list */ }
+              if (e.dataTransfer.files.length) addFiles(e.dataTransfer.files);
             }}
           >
             {files.length === 0 ? (
@@ -669,7 +673,11 @@ export default function ConverterShell({ type, title }: { type: ConvertType; tit
                         >
                           {item.previewUrl ? (
                             // eslint-disable-next-line @next/next/no-img-element
-                            <img src={item.previewUrl} alt="" className="size-9 rounded-md object-cover bg-neutral-100 hover:opacity-80 transition-opacity" />
+                            <img
+                              src={item.previewUrl} alt=""
+                              className="size-9 rounded-md object-cover bg-neutral-100 hover:opacity-80 transition-opacity"
+                              onError={e => { (e.currentTarget as HTMLImageElement).style.display = "none"; }}
+                            />
                           ) : (
                             <div className="size-9 rounded-md bg-neutral-100 flex items-center justify-center"><UploadSimple size={12} className="text-neutral-300" /></div>
                           )}
