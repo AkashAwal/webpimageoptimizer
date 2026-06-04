@@ -18,6 +18,7 @@ import {
   Camera,
   FilePdf,
   ArrowsClockwise,
+  FileCode,
 } from "@phosphor-icons/react";
 
 import { SiteHeader } from "@/components/layout/site-header";
@@ -57,6 +58,7 @@ const TOOL_ICONS: Record<string, React.ReactNode> = {
   "/webp-to-webp": <ArrowsClockwise size={22} />,
   "/webp-resizer": <ArrowsOut size={22} />,
   "/heic-to-webp": <DeviceMobile size={22} />,
+  "/html-to-pdf": <FileCode size={22} />,
   "/jpg-to-pdf": <Aperture size={22} />,
   "/png-to-pdf": <Image size={22} />,
   "/webp-to-pdf": <ArrowsClockwise size={22} />,

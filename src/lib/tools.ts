@@ -112,6 +112,14 @@ export const TOOLS = [
     category: "webp" as CategoryId,
   },
   {
+    href: "/html-to-pdf",
+    name: "HTML → PDF",
+    shortName: "HTML to PDF Converter",
+    description: "Convert HTML files to PDF in your browser. Drop any .html file for a private, instant, no-upload conversion.",
+    badge: "No upload",
+    category: "pdf" as CategoryId,
+  },
+  {
     href: "/jpg-to-pdf",
     name: "JPG → PDF",
     shortName: "JPG to PDF Converter",

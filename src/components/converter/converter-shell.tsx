@@ -17,6 +17,7 @@ export type ConvertType =
   | "png-to-webp" | "jpg-to-webp" | "gif-to-webp" | "avif-to-webp"
   | "bmp-to-webp" | "tiff-to-webp" | "svg-to-webp" | "ico-to-webp"
   | "jfif-to-webp" | "pdf-to-webp" | "webp-to-webp" | "heic-to-webp"
+  | "html-to-pdf"
   | "jpg-to-pdf" | "png-to-pdf" | "webp-to-pdf" | "heic-to-pdf"
   | "bmp-to-pdf" | "tiff-to-pdf" | "gif-to-pdf" | "svg-to-pdf"
   | "avif-to-pdf" | "ico-to-pdf" | "jfif-to-pdf";
@@ -321,11 +322,39 @@ async function buildPdf(pages: PdfPage[], opts: PdfOptions): Promise<Blob> {
   return pdf.output("blob");
 }
 
+async function htmlToPage(file: File, quality: number, targetW?: number): Promise<PdfPage> {
+  const html = await file.text();
+  // Strip script tags — user content rendered in DOM should not execute JS
+  const safe = html.replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, "");
+  const renderW = targetW || 800;
+  const el = document.createElement("div");
+  el.style.cssText = `position:fixed;left:-9999px;top:0;width:${renderW}px;background:#fff;`;
+  el.innerHTML = safe;
+  document.body.appendChild(el);
+  try {
+    const { default: html2canvas } = await import("html2canvas");
+    const canvas = await html2canvas(el, {
+      useCORS: true, allowTaint: true, scale: 1,
+      width: renderW, windowWidth: renderW,
+      backgroundColor: "#ffffff", logging: false,
+    });
+    return { dataUrl: canvas.toDataURL("image/jpeg", quality / 100), w: canvas.width, h: canvas.height };
+  } finally {
+    document.body.removeChild(el);
+  }
+}
+
 async function fileToPage(file: File, quality: number, targetW?: number, targetH?: number, flatten = false): Promise<PdfPage> {
   const name = file.name.toLowerCase();
+  if (file.type === "text/html" || name.endsWith(".html") || name.endsWith(".htm")) return htmlToPage(file, quality, targetW);
   if (file.type === "image/svg+xml" || name.endsWith(".svg")) return svgToPage(file, quality, targetW, targetH, flatten);
   if (name.match(/\.(heic|heif)$/) || file.type === "image/heic" || file.type === "image/heif") return heicToPage(file, quality, targetW, targetH, flatten);
   return blobToPage(file, quality, targetW, targetH, flatten);
+}
+
+async function htmlToPdf(file: File, quality: number, targetW?: number, _targetH?: number, opts?: PdfOptions): Promise<Blob> {
+  const page = await htmlToPage(file, quality, targetW);
+  return buildPdf([page], opts ?? DEFAULT_PDF_OPTS);
 }
 
 const DEFAULT_PDF_OPTS: PdfOptions = {
@@ -366,6 +395,7 @@ const CONFIG: Record<ConvertType, { accept: string; acceptLabel: string; canPrev
   "pdf-to-webp":  { accept: "application/pdf,.pdf",                       acceptLabel: "PDF files",   canPreview: false, convert: canvasConvert, outputType: "webp" },
   "webp-to-webp": { accept: "image/webp,.webp",                           acceptLabel: "WebP files",  canPreview: true,  convert: canvasConvert, outputType: "webp" },
   "heic-to-webp": { accept: ".heic,.heif,image/heic,image/heif",          acceptLabel: "HEIC / HEIF", canPreview: false, convert: heicConvert,   outputType: "webp" },
+  "html-to-pdf":  { accept: "text/html,.html,.htm",                       acceptLabel: "HTML files",  canPreview: false, convert: htmlToPdf,     outputType: "pdf"  },
   "jpg-to-pdf":   { accept: "image/jpeg,.jpg,.jpeg",                      acceptLabel: "JPG / JPEG",  canPreview: true,  convert: canvasToPdf,   outputType: "pdf"  },
   "png-to-pdf":   { accept: "image/png,.png",                             acceptLabel: "PNG files",   canPreview: true,  convert: canvasToPdf,   outputType: "pdf"  },
   "webp-to-pdf":  { accept: "image/webp,.webp",                           acceptLabel: "WebP files",  canPreview: true,  convert: canvasToPdf,   outputType: "pdf"  },

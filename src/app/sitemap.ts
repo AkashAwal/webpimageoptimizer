@@ -17,6 +17,7 @@ const PAGES = [
   { path: "/webp-to-webp", priority: 0.9 },
   { path: "/webp-resizer", priority: 0.9 },
   { path: "/heic-to-webp", priority: 0.9 },
+  { path: "/html-to-pdf", priority: 0.9 },
   { path: "/jpg-to-pdf", priority: 0.9 },
   { path: "/png-to-pdf", priority: 0.9 },
   { path: "/webp-to-pdf", priority: 0.9 },
