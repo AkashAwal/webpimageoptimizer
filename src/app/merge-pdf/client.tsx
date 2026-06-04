@@ -131,7 +131,7 @@ export default function MergePdfClient() {
                     <X size={9} weight="bold" />
                   </button>
                 </div>
-                <p className="mt-1.5 text-[10px] text-muted-foreground truncate">{item.file.name}</p>
+                <p className="mt-2 text-[13px] font-medium text-foreground truncate">{item.file.name}</p>
                 </div>
               ))}
             </div>
