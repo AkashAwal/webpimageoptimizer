@@ -273,19 +273,11 @@ export const TOOLS = [
     category: "pdf-tools" as CategoryId,
   },
   {
-    href: "/remove-pdf-pages",
-    name: "Remove PDF Pages",
-    shortName: "Delete PDF Pages",
-    description: "Delete specific pages or ranges from a PDF. Enter page numbers like 2, 4-6 and download.",
-    badge: "Delete pages",
-    category: "pdf-tools" as CategoryId,
-  },
-  {
     href: "/rearrange-pdf",
-    name: "Rearrange PDF",
-    shortName: "Reorder PDF Pages",
-    description: "Drag and drop to reorder pages in a PDF. Change the sequence of any page and download.",
-    badge: "Reorder",
+    name: "Manage PDF Pages",
+    shortName: "Rearrange & Remove PDF Pages",
+    description: "Drag to reorder pages and click to remove them. See all pages as thumbnails in one view.",
+    badge: "Reorder & remove",
     category: "pdf-tools" as CategoryId,
   },
   {
