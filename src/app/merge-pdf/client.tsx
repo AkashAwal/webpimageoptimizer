@@ -76,11 +76,11 @@ export default function MergePdfClient() {
   };
 
   return (
-    <div className="pt-4">
+    <div>
       {/* Landing */}
       {items.length === 0 && (
         <div
-          className="flex flex-col items-center justify-center gap-8 min-h-[calc(100vh-8rem)] transition-colors"
+          className="flex flex-col items-center justify-center gap-8 min-h-[calc(100vh-8rem)] transition-colors px-6 sm:px-10"
           onDragOver={e => e.preventDefault()}
           onDrop={e => { e.preventDefault(); if (e.dataTransfer.files.length) addFiles(e.dataTransfer.files); }}
         >
@@ -100,7 +100,7 @@ export default function MergePdfClient() {
 
       {/* Active: full-viewport, no card */}
       {items.length > 0 && (
-        <div className="flex min-h-[calc(100vh-4rem)] -mx-6 sm:-mx-10">
+        <div className="flex min-h-[calc(100vh-4rem)]">
 
           {/* Left: thumbnail area, sits on page background */}
           <div className="flex-1 px-6 sm:px-10 pt-6 pb-10 relative">
