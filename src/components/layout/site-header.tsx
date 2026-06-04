@@ -46,21 +46,23 @@ export function SiteHeader({ fixed = false }: SiteHeaderProps = {}) {
           <span className="mx-1.5 text-white">×</span>
           <a href="https://graycup.com" target="_blank" rel="noopener noreferrer" className="font-medium text-white hover:text-neutral-300 transition-colors">Gray Cup Enterprises</a>
         </p>
-        <div className="flex items-center gap-3">
-          <div className="flex items-center gap-1.5">
-            <a href="https://github.com/akashawal" target="_blank" rel="noopener noreferrer" className="text-neutral-400 hover:text-white transition-colors" aria-label="Akash Awal on GitHub">
+        <div className="flex items-center gap-3 text-white">
+          <div className="flex items-center gap-2">
+            <span className="text-[11px] font-medium">AA</span>
+            <a href="https://github.com/akashawal" target="_blank" rel="noopener noreferrer" className="hover:text-neutral-300 transition-colors" aria-label="Akash Awal on GitHub">
               <GithubLogo size={13} />
             </a>
-            <a href="https://x.com/akashawal17" target="_blank" rel="noopener noreferrer" className="text-neutral-400 hover:text-white transition-colors" aria-label="Akash Awal on X">
+            <a href="https://x.com/akashawal17" target="_blank" rel="noopener noreferrer" className="hover:text-neutral-300 transition-colors" aria-label="Akash Awal on X">
               <XLogo size={13} />
             </a>
           </div>
-          <span className="text-neutral-700">·</span>
-          <div className="flex items-center gap-1.5">
-            <a href="https://github.com/nermalcat69" target="_blank" rel="noopener noreferrer" className="text-neutral-400 hover:text-white transition-colors" aria-label="Gray Cup Enterprises on GitHub">
+          <span className="text-white/30">|</span>
+          <div className="flex items-center gap-2">
+            <span className="text-[11px] font-medium">GC</span>
+            <a href="https://github.com/nermalcat69" target="_blank" rel="noopener noreferrer" className="hover:text-neutral-300 transition-colors" aria-label="Gray Cup on GitHub">
               <GithubLogo size={13} />
             </a>
-            <a href="https://x.com/arjunaditya_" target="_blank" rel="noopener noreferrer" className="text-neutral-400 hover:text-white transition-colors" aria-label="Gray Cup Enterprises on X">
+            <a href="https://x.com/arjunaditya_" target="_blank" rel="noopener noreferrer" className="hover:text-neutral-300 transition-colors" aria-label="Gray Cup on X">
               <XLogo size={13} />
             </a>
           </div>
