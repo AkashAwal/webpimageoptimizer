@@ -94,8 +94,10 @@
 }
 
 @keyframes giti-shimmer {
-  from { background-position: 100% 50%; }
-  to { background-position: 0% 50%; }
+  0%     { background-position: 100% 50%; }
+  35.5%  { background-position: 0% 50%; }
+  35.6%  { background-position: 100% 50%; }
+  100%   { background-position: 100% 50%; }
 }
 
 .giti-shimmer-text {
@@ -110,17 +112,15 @@
     var(--foreground) 100%
   );
   background-size: 300% 100%;
-  background-position: 0% 50%;
   background-repeat: no-repeat;
   background-clip: text;
   -webkit-background-clip: text;
   color: transparent;
   -webkit-text-fill-color: transparent;
   animation-name: giti-shimmer;
-  animation-duration: 1.6s;
+  animation-duration: 4.5s;
   animation-timing-function: cubic-bezier(0.45, 0, 0.55, 1);
-  animation-iteration-count: 1;
-  animation-fill-mode: forwards;
+  animation-iteration-count: infinite;
 }
 
 @keyframes flower-wobble {
