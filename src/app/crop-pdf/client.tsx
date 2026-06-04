@@ -78,7 +78,40 @@ export default function CropPdfClient() {
   return (
     <div className="pt-4 flex gap-4 items-start">
 
-      {/* Left: tool card */}
+      {/* Left: live preview column */}
+      {file && (
+        <div className="flex-1 min-w-0">
+          {loadingPreview && (
+            <div className="flex items-center justify-center h-48 rounded-2xl ring-1 ring-black/6 bg-white text-neutral-400">
+              <CircleNotch size={20} className="animate-spin" />
+            </div>
+          )}
+          {!loadingPreview && pageImage && (
+            <div className="relative rounded-2xl overflow-hidden ring-1 ring-black/6 shadow-[0_4px_24px_-6px_rgba(0,0,0,0.10),0_1px_3px_rgba(0,0,0,0.06)] select-none">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src={pageImage} alt="PDF page preview" className="w-full block" />
+              {topPct > 0 && (
+                <div className="absolute inset-x-0 top-0 bg-black/40 pointer-events-none transition-all duration-100"
+                  style={{ height: `${topPct}%` }} />
+              )}
+              {botPct > 0 && (
+                <div className="absolute inset-x-0 bottom-0 bg-black/40 pointer-events-none transition-all duration-100"
+                  style={{ height: `${botPct}%` }} />
+              )}
+              {leftPct > 0 && (
+                <div className="absolute left-0 bg-black/40 pointer-events-none transition-all duration-100"
+                  style={{ top: `${topPct}%`, bottom: `${botPct}%`, width: `${leftPct}%` }} />
+              )}
+              {rightPct > 0 && (
+                <div className="absolute right-0 bg-black/40 pointer-events-none transition-all duration-100"
+                  style={{ top: `${topPct}%`, bottom: `${botPct}%`, width: `${rightPct}%` }} />
+              )}
+            </div>
+          )}
+        </div>
+      )}
+
+      {/* Right: tool card */}
       <div className="flex-none w-80 overflow-hidden rounded-2xl ring-1 ring-black/6 shadow-[0_4px_24px_-6px_rgba(0,0,0,0.10),0_1px_3px_rgba(0,0,0,0.06)] bg-white">
         <div className="flex items-center gap-2.5 px-4 py-2.5 border-b border-border bg-neutral-50/60">
           <Link href="/" className="flex items-center gap-1 text-[12px] text-muted-foreground hover:text-foreground transition-colors shrink-0">
@@ -161,39 +194,6 @@ export default function CropPdfClient() {
           )}
         </div>
       </div>
-
-      {/* Right: live preview column */}
-      {file && (
-        <div className="flex-1 min-w-0 pt-0">
-          {loadingPreview && (
-            <div className="flex items-center justify-center h-48 rounded-2xl ring-1 ring-black/6 bg-white text-neutral-400">
-              <CircleNotch size={20} className="animate-spin" />
-            </div>
-          )}
-          {!loadingPreview && pageImage && (
-            <div className="relative rounded-2xl overflow-hidden ring-1 ring-black/6 shadow-[0_4px_24px_-6px_rgba(0,0,0,0.10),0_1px_3px_rgba(0,0,0,0.06)] select-none">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src={pageImage} alt="PDF page preview" className="w-full block" />
-              {topPct > 0 && (
-                <div className="absolute inset-x-0 top-0 bg-black/40 pointer-events-none transition-all duration-100"
-                  style={{ height: `${topPct}%` }} />
-              )}
-              {botPct > 0 && (
-                <div className="absolute inset-x-0 bottom-0 bg-black/40 pointer-events-none transition-all duration-100"
-                  style={{ height: `${botPct}%` }} />
-              )}
-              {leftPct > 0 && (
-                <div className="absolute left-0 bg-black/40 pointer-events-none transition-all duration-100"
-                  style={{ top: `${topPct}%`, bottom: `${botPct}%`, width: `${leftPct}%` }} />
-              )}
-              {rightPct > 0 && (
-                <div className="absolute right-0 bg-black/40 pointer-events-none transition-all duration-100"
-                  style={{ top: `${topPct}%`, bottom: `${botPct}%`, width: `${rightPct}%` }} />
-              )}
-            </div>
-          )}
-        </div>
-      )}
 
       <input ref={inputRef} type="file" accept="application/pdf,.pdf" className="hidden"
         onChange={e => { if (e.target.files?.[0]) loadFile(e.target.files[0]); e.target.value = ""; }} />
