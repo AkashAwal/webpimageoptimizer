@@ -23,24 +23,26 @@ const STATIC_LINKS = [
   { label: "Contact", href: "/contact", external: false },
 ] as const;
 
-const baseLinkClass =
-  "text-[13px] font-semibold tracking-tight transition-colors px-2.5 py-1 underline-offset-4 decoration-foreground";
+const baseUnderline =
+  "relative after:absolute after:bottom-0 after:left-0 after:h-px after:w-full after:bg-foreground after:origin-left after:transition-transform after:duration-200 after:ease-out";
 
 function navLinkClass(active: boolean) {
   return cn(
-    baseLinkClass,
+    "text-[13px] font-semibold tracking-tight transition-colors px-2.5 py-1",
+    baseUnderline,
     active
-      ? "text-foreground underline"
-      : "text-foreground/80 hover:text-foreground hover:underline",
+      ? "text-foreground after:scale-x-100"
+      : "text-foreground/80 hover:text-foreground after:scale-x-0 hover:after:scale-x-100",
   );
 }
 
 function mobileLinkClass(active: boolean) {
   return cn(
-    "text-[13px] font-semibold tracking-tight transition-colors py-1 underline-offset-4 decoration-foreground",
+    "text-[13px] font-semibold tracking-tight transition-colors py-1",
+    baseUnderline,
     active
-      ? "text-foreground underline"
-      : "text-foreground/80 hover:text-foreground hover:underline",
+      ? "text-foreground after:scale-x-100"
+      : "text-foreground/80 hover:text-foreground after:scale-x-0 hover:after:scale-x-100",
   );
 }
 
