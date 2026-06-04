@@ -32,11 +32,21 @@ export function SiteHeader({ fixed = false }: SiteHeaderProps = {}) {
     <header
       className={
         fixed
-          ? "sticky top-0 z-50 flex w-full items-center justify-between bg-background/80 px-6 py-5 backdrop-blur sm:px-10 transition-transform duration-300 ease-out will-change-transform"
-          : "relative z-10 flex w-full items-center justify-between px-6 py-5 sm:px-10"
+          ? "sticky top-0 z-50 flex w-full flex-col bg-background/80 backdrop-blur transition-transform duration-300 ease-out will-change-transform"
+          : "relative z-10 flex w-full flex-col"
       }
       style={fixed ? { transform: hidden ? "translateY(-100%)" : "translateY(0)" } : undefined}
     >
+      {/* Pre-header strip */}
+      <div className="w-full border-b border-black/6 px-6 py-1.5 sm:px-10">
+        <p className="text-[11px] text-muted-foreground/70">
+          Built by <span className="font-medium text-muted-foreground">Akash Awal</span>
+          <span className="mx-1.5 text-muted-foreground/40">×</span>
+          <span className="font-medium text-muted-foreground">Gray Cup Enterprises</span>
+        </p>
+      </div>
+
+      <div className="flex w-full items-center justify-between px-6 py-5 sm:px-10">
       <Link href="/" aria-label="Pix Garage" className="flex items-center gap-2">
         <svg
           width="26"
@@ -59,6 +69,7 @@ export function SiteHeader({ fixed = false }: SiteHeaderProps = {}) {
       >
         All tools
       </Link>
+      </div>
     </header>
   );
 }
