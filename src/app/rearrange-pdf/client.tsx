@@ -41,7 +41,7 @@ export default function RearrangePdfClient() {
       const items: PageItem[] = [];
       for (let i = 1; i <= total; i++) {
         const page = await pdf.getPage(i);
-        const vp = page.getViewport({ scale: 0.4 });
+        const vp = page.getViewport({ scale: 0.8 });
         const canvas = document.createElement("canvas");
         canvas.width = vp.width; canvas.height = vp.height;
         await page.render({ canvasContext: canvas.getContext("2d")!, viewport: vp, canvas }).promise;
@@ -171,7 +171,7 @@ export default function RearrangePdfClient() {
 
       {/* Page grid */}
       {!loading && pages.length > 0 && (
-        <div className="grid grid-cols-4 gap-3 sm:grid-cols-6 lg:grid-cols-8">
+        <div className="grid grid-cols-4 gap-3">
           {pages.map((page, idx) => (
             <div
               key={`${idx}-${page.originalIndex}`}
@@ -181,7 +181,7 @@ export default function RearrangePdfClient() {
               onDragOver={e => { e.preventDefault(); setDragOverIdx(idx); }}
               onDrop={() => onItemDrop(idx)}
               className={cn(
-                "relative group rounded-xl overflow-hidden ring-1 cursor-grab active:cursor-grabbing transition-all select-none",
+                "relative group overflow-hidden ring-1 cursor-grab active:cursor-grabbing transition-all select-none",
                 page.deleted ? "ring-red-200 opacity-40" : "ring-black/10 hover:ring-black/20",
                 dragIdx === idx && "opacity-30 scale-95",
                 dragOverIdx === idx && dragIdx !== idx && "ring-2 ring-neutral-400 scale-[1.02]",
