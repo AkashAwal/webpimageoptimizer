@@ -199,6 +199,12 @@
   animation: giti-shimmer 2s cubic-bezier(0.45, 0, 0.55, 1) 1 forwards;
 }
 
+.dark .giti-shimmer-pill {
+  background-image: none;
+  background-color: #ffffff;
+  animation: none;
+}
+
 
 @keyframes flower-wobble {
   0%, 100% { transform: rotate(-6deg); }
