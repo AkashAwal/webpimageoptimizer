@@ -168,8 +168,8 @@ export function QrCodeWithLogoClient() {
               <div key={c.label} className="space-y-1">
                 <label className={labelCls}>{c.label}</label>
                 <div className="flex items-center gap-2">
-                  <input type="color" value={c.val} onChange={e => c.set(e.target.value)} className="size-8 rounded-lg border border-border cursor-pointer" />
-                  <span className="text-[12px] text-muted-foreground font-mono">{c.val}</span>
+                  <input type="color" value={c.val} onChange={e => c.set(e.target.value)} className="size-8 rounded-lg border border-neutral-200 cursor-pointer" />
+                  <span className="text-[12px] text-neutral-600 font-mono">{c.val}</span>
                 </div>
               </div>
             ))}

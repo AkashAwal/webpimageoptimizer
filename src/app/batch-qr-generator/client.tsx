@@ -140,15 +140,15 @@ export function BatchQrGeneratorClient() {
           <div className="space-y-1">
             <label className={labelCls}>Foreground</label>
             <div className="flex items-center gap-2">
-              <input type="color" value={fg} onChange={e => setFg(e.target.value)} className="size-8 rounded-lg border border-border cursor-pointer" />
-              <span className="text-[12px] text-muted-foreground font-mono">{fg}</span>
+              <input type="color" value={fg} onChange={e => setFg(e.target.value)} className="size-8 rounded-lg border border-neutral-200 cursor-pointer" />
+              <span className="text-[12px] text-neutral-600 font-mono">{fg}</span>
             </div>
           </div>
           <div className="space-y-1">
             <label className={labelCls}>Background</label>
             <div className="flex items-center gap-2">
-              <input type="color" value={bg} onChange={e => setBg(e.target.value)} className="size-8 rounded-lg border border-border cursor-pointer" />
-              <span className="text-[12px] text-muted-foreground font-mono">{bg}</span>
+              <input type="color" value={bg} onChange={e => setBg(e.target.value)} className="size-8 rounded-lg border border-neutral-200 cursor-pointer" />
+              <span className="text-[12px] text-neutral-600 font-mono">{bg}</span>
             </div>
           </div>
         </div>
