@@ -47,7 +47,7 @@ function buildQrData(type: InputType, fields: Record<string, string>): string {
   }
 }
 
-const inputCls = "w-full rounded-xl border border-border bg-neutral-50 px-3 py-2 text-[13px] text-foreground outline-none focus:border-foreground/30 focus:bg-white transition-colors dark:bg-neutral-800 dark:focus:bg-neutral-700";
+const inputCls = "w-full rounded-xl border border-neutral-200 bg-white px-3 py-2 text-[13px] text-neutral-900 outline-none focus:border-neutral-400 transition-colors dark:border-neutral-600 dark:bg-white dark:text-neutral-900 dark:focus:border-neutral-400";
 const labelCls = "text-[11px] font-medium text-muted-foreground uppercase tracking-wide";
 
 export function QrCodeGeneratorClient() {
@@ -127,7 +127,7 @@ export function QrCodeGeneratorClient() {
         </div>
 
         {/* Fields */}
-        <div className="rounded-2xl bg-white ring-1 ring-black/6 shadow-[0_4px_24px_-6px_rgba(0,0,0,0.10),0_1px_3px_rgba(0,0,0,0.06)] p-5 space-y-3 dark:bg-neutral-900 dark:ring-white/8 dark:shadow-none">
+        <div className="rounded-2xl bg-white ring-1 ring-black/6 shadow-[0_4px_24px_-6px_rgba(0,0,0,0.10),0_1px_3px_rgba(0,0,0,0.06)] p-5 space-y-3 dark:bg-neutral-950 dark:ring-white/8 dark:shadow-none">
           {type === "url" && (
             <div className="space-y-1"><label className={labelCls}>URL</label>
               <input className={inputCls} placeholder="https://example.com" value={fields.url} onChange={set("url")} />
@@ -184,7 +184,7 @@ export function QrCodeGeneratorClient() {
         </div>
 
         {/* Settings */}
-        <div className="rounded-2xl bg-white ring-1 ring-black/6 shadow-[0_1px_3px_rgba(0,0,0,0.06)] p-5 space-y-4 dark:bg-neutral-900 dark:ring-white/8 dark:shadow-none">
+        <div className="rounded-2xl bg-white ring-1 ring-black/6 shadow-[0_1px_3px_rgba(0,0,0,0.06)] p-5 space-y-4 dark:bg-neutral-950 dark:ring-white/8 dark:shadow-none">
           <div className="space-y-1.5">
             <label className={labelCls}>Download size</label>
             <div className="flex gap-1.5">

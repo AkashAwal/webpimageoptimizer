@@ -85,7 +85,7 @@ export function BatchQrGeneratorClient() {
   return (
     <div className="space-y-5">
       {/* Input */}
-      <div className="rounded-2xl bg-white ring-1 ring-black/6 shadow-[0_4px_24px_-6px_rgba(0,0,0,0.10),0_1px_3px_rgba(0,0,0,0.06)] p-5 space-y-4 dark:bg-neutral-900 dark:ring-white/8 dark:shadow-none">
+      <div className="rounded-2xl bg-white ring-1 ring-black/6 shadow-[0_4px_24px_-6px_rgba(0,0,0,0.10),0_1px_3px_rgba(0,0,0,0.06)] p-5 space-y-4 dark:bg-neutral-950 dark:ring-white/8 dark:shadow-none">
         <div className="space-y-1.5">
           <div className="flex items-center justify-between">
             <label className={labelCls}>URLs / Text — one per line</label>
@@ -96,13 +96,13 @@ export function BatchQrGeneratorClient() {
             onChange={e => { setInput(e.target.value); setState("idle"); }}
             placeholder={"https://example.com\nhttps://shop.example.com/product-1\nhttps://shop.example.com/product-2\nPlain text also works"}
             rows={8}
-            className="w-full rounded-xl border border-border bg-neutral-50 px-3 py-2.5 text-[13px] text-foreground outline-none focus:border-foreground/30 focus:bg-white transition-colors resize-none font-mono dark:bg-neutral-800 dark:focus:bg-neutral-700"
+            className="w-full rounded-xl border border-neutral-200 bg-white px-3 py-2.5 text-[13px] text-neutral-900 outline-none focus:border-neutral-400 transition-colors resize-none font-mono dark:border-neutral-600 dark:bg-white dark:text-neutral-900"
           />
         </div>
       </div>
 
       {/* Settings */}
-      <div className="rounded-2xl bg-white ring-1 ring-black/6 shadow-[0_1px_3px_rgba(0,0,0,0.06)] p-5 space-y-4 dark:bg-neutral-900 dark:ring-white/8 dark:shadow-none">
+      <div className="rounded-2xl bg-white ring-1 ring-black/6 shadow-[0_1px_3px_rgba(0,0,0,0.06)] p-5 space-y-4 dark:bg-neutral-950 dark:ring-white/8 dark:shadow-none">
         <div className="grid grid-cols-2 gap-4">
           {/* Size */}
           <div className="space-y-1.5">
