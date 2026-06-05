@@ -8,110 +8,100 @@ import { DownloadSimple, UploadSimple, X } from "@phosphor-icons/react";
 
 const inputCls = "w-full rounded-xl border border-border bg-neutral-50 px-3 py-2 text-[13px] text-foreground outline-none focus:border-foreground/30 focus:bg-white transition-colors dark:bg-neutral-800 dark:focus:bg-neutral-700";
 const labelCls = "text-[11px] font-medium text-muted-foreground uppercase tracking-wide";
-
 const SIZES = [256, 512, 1024];
 
+async function renderWithLogo(
+  text: string, outputSize: number, fg: string, bg: string,
+  logoSrc: string | null, logoPercent: number, circle: boolean,
+): Promise<string> {
+  const canvas = document.createElement("canvas");
+  canvas.width = outputSize;
+  canvas.height = outputSize;
+  await QRCode.toCanvas(canvas, text || "https://pixgarage.com", {
+    width: outputSize, margin: 2, errorCorrectionLevel: "H",
+    color: { dark: fg, light: bg },
+  });
+  if (!logoSrc) return canvas.toDataURL("image/png");
+  return new Promise(resolve => {
+    const img = new window.Image();
+    img.onload = () => {
+      const ctx = canvas.getContext("2d")!;
+      const lw = (outputSize * logoPercent) / 100;
+      const x = (outputSize - lw) / 2;
+      const y = (outputSize - lw) / 2;
+      ctx.save();
+      if (circle) {
+        ctx.beginPath();
+        ctx.arc(x + lw / 2, y + lw / 2, lw / 2, 0, Math.PI * 2);
+        ctx.clip();
+      } else {
+        const r = lw * 0.12;
+        ctx.beginPath();
+        ctx.moveTo(x + r, y); ctx.lineTo(x + lw - r, y); ctx.quadraticCurveTo(x + lw, y, x + lw, y + r);
+        ctx.lineTo(x + lw, y + lw - r); ctx.quadraticCurveTo(x + lw, y + lw, x + lw - r, y + lw);
+        ctx.lineTo(x + r, y + lw); ctx.quadraticCurveTo(x, y + lw, x, y + lw - r);
+        ctx.lineTo(x, y + r); ctx.quadraticCurveTo(x, y, x + r, y);
+        ctx.clip();
+      }
+      ctx.fillStyle = bg;
+      ctx.fillRect(x - 4, y - 4, lw + 8, lw + 8);
+      ctx.drawImage(img, x, y, lw, lw);
+      ctx.restore();
+      resolve(canvas.toDataURL("image/png"));
+    };
+    img.onerror = () => resolve(canvas.toDataURL("image/png"));
+    img.src = logoSrc;
+  });
+}
+
 export function QrCodeWithLogoClient() {
-  const [url, setUrl] = useState("");
+  const [url, setUrl]         = useState("");
   const [logoFile, setLogoFile] = useState<File | null>(null);
   const [logoUrl, setLogoUrl] = useState<string | null>(null);
   const [logoSize, setLogoSize] = useState(22);
-  const [circle, setCircle] = useState(false);
-  const [size, setSize] = useState(512);
-  const [fg, setFg] = useState("#000000");
-  const [bg, setBg] = useState("#ffffff");
-  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const [circle, setCircle]   = useState(false);
+  const [size, setSize]       = useState(512);
+  const [fg, setFg]           = useState("#000000");
+  const [bg, setBg]           = useState("#ffffff");
+  const [preview, setPreview] = useState<string>("");
   const logoInputRef = useRef<HTMLInputElement>(null);
 
   const handleLogoFile = (file: File) => {
     if (!file.type.startsWith("image/")) return;
     if (logoUrl) URL.revokeObjectURL(logoUrl);
-    const url = URL.createObjectURL(file);
-    setLogoFile(file);
-    setLogoUrl(url);
+    const u = URL.createObjectURL(file);
+    setLogoFile(file); setLogoUrl(u);
   };
 
   const removeLogo = () => {
     if (logoUrl) URL.revokeObjectURL(logoUrl);
-    setLogoFile(null);
-    setLogoUrl(null);
+    setLogoFile(null); setLogoUrl(null);
   };
 
-  const generate = useCallback(async () => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-    const data = url || "https://pixgarage.com";
+  const regenerate = useCallback(async () => {
+    // Preview at 256px for performance
+    const dataUrl = await renderWithLogo(url, 256, fg, bg, logoUrl, logoSize, circle);
+    setPreview(dataUrl);
+  }, [url, logoUrl, logoSize, circle, fg, bg]);
 
-    try {
-      await QRCode.toCanvas(canvas, data, {
-        width: size,
-        margin: 2,
-        errorCorrectionLevel: "H",
-        color: { dark: fg, light: bg },
-      });
+  useEffect(() => { regenerate(); }, [regenerate]);
 
-      if (!logoUrl) return;
-
-      const ctx = canvas.getContext("2d");
-      if (!ctx) return;
-
-      const logoImg = new window.Image();
-      logoImg.onload = () => {
-        const logoW = (size * logoSize) / 100;
-        const logoH = logoW;
-        const x = (size - logoW) / 2;
-        const y = (size - logoH) / 2;
-
-        ctx.save();
-        if (circle) {
-          ctx.beginPath();
-          ctx.arc(x + logoW / 2, y + logoH / 2, logoW / 2, 0, Math.PI * 2);
-          ctx.clip();
-        } else {
-          const r = logoW * 0.12;
-          ctx.beginPath();
-          ctx.moveTo(x + r, y);
-          ctx.lineTo(x + logoW - r, y);
-          ctx.quadraticCurveTo(x + logoW, y, x + logoW, y + r);
-          ctx.lineTo(x + logoW, y + logoH - r);
-          ctx.quadraticCurveTo(x + logoW, y + logoH, x + logoW - r, y + logoH);
-          ctx.lineTo(x + r, y + logoH);
-          ctx.quadraticCurveTo(x, y + logoH, x, y + logoH - r);
-          ctx.lineTo(x, y + r);
-          ctx.quadraticCurveTo(x, y, x + r, y);
-          ctx.clip();
-        }
-        ctx.fillStyle = "#ffffff";
-        ctx.fillRect(x - 4, y - 4, logoW + 8, logoH + 8);
-        ctx.drawImage(logoImg, x, y, logoW, logoH);
-        ctx.restore();
-      };
-      logoImg.src = logoUrl;
-    } catch {}
-  }, [url, logoUrl, logoSize, circle, size, fg, bg]);
-
-  useEffect(() => { generate(); }, [generate]);
-
-  const download = () => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
+  const download = async () => {
+    const dataUrl = await renderWithLogo(url, size, fg, bg, logoUrl, logoSize, circle);
     const a = document.createElement("a");
-    a.href = canvas.toDataURL("image/png");
-    a.download = "qr-code-with-logo.png";
-    a.click();
+    a.href = dataUrl; a.download = "qr-code-with-logo.png"; a.click();
   };
 
   return (
-    <div className="grid grid-cols-1 gap-6 sm:grid-cols-[1fr_auto]">
+    <div className="flex flex-col gap-6 lg:flex-row lg:items-start">
       {/* Left */}
-      <div className="space-y-5">
+      <div className="flex-1 min-w-0 space-y-5">
         <div className="rounded-2xl bg-white ring-1 ring-black/6 shadow-[0_4px_24px_-6px_rgba(0,0,0,0.10),0_1px_3px_rgba(0,0,0,0.06)] p-5 space-y-4 dark:bg-neutral-900 dark:ring-white/8 dark:shadow-none">
           <div className="space-y-1">
             <label className={labelCls}>URL or text</label>
             <input className={inputCls} placeholder="https://example.com" value={url} onChange={e => setUrl(e.target.value)} />
           </div>
 
-          {/* Logo upload */}
           <div className="space-y-1.5">
             <label className={labelCls}>Logo image</label>
             {!logoFile ? (
@@ -138,7 +128,6 @@ export function QrCodeWithLogoClient() {
             )}
           </div>
 
-          {/* Logo size */}
           {logoFile && (
             <div className="space-y-1">
               <div className="flex items-center justify-between">
@@ -154,7 +143,6 @@ export function QrCodeWithLogoClient() {
             </div>
           )}
 
-          {/* Circle clip */}
           {logoFile && (
             <label className="flex items-center gap-2 cursor-pointer select-none">
               <input type="checkbox" checked={circle} onChange={e => setCircle(e.target.checked)} className="accent-foreground size-3.5" />
@@ -163,7 +151,6 @@ export function QrCodeWithLogoClient() {
           )}
         </div>
 
-        {/* Settings */}
         <div className="rounded-2xl bg-white ring-1 ring-black/6 shadow-[0_1px_3px_rgba(0,0,0,0.06)] p-5 space-y-4 dark:bg-neutral-900 dark:ring-white/8 dark:shadow-none">
           <div className="space-y-1.5">
             <label className={labelCls}>Output size</label>
@@ -172,40 +159,39 @@ export function QrCodeWithLogoClient() {
                 <button key={s} onClick={() => setSize(s)}
                   className={cn("flex-1 rounded-lg py-1.5 text-[11px] font-medium transition-colors",
                     size === s ? "bg-foreground text-white dark:bg-neutral-600" : "bg-neutral-100 text-neutral-600 hover:bg-neutral-200 dark:bg-neutral-800 dark:text-neutral-400 dark:hover:bg-neutral-700"
-                  )}>
-                  {s}px
-                </button>
+                  )}>{s}px</button>
               ))}
             </div>
           </div>
           <div className="flex gap-4">
-            <div className="space-y-1">
-              <label className={labelCls}>Foreground</label>
-              <div className="flex items-center gap-2">
-                <input type="color" value={fg} onChange={e => setFg(e.target.value)} className="size-8 rounded-lg border border-border cursor-pointer" />
-                <span className="text-[12px] text-muted-foreground font-mono">{fg}</span>
+            {[{ label: "Foreground", val: fg, set: setFg }, { label: "Background", val: bg, set: setBg }].map(c => (
+              <div key={c.label} className="space-y-1">
+                <label className={labelCls}>{c.label}</label>
+                <div className="flex items-center gap-2">
+                  <input type="color" value={c.val} onChange={e => c.set(e.target.value)} className="size-8 rounded-lg border border-border cursor-pointer" />
+                  <span className="text-[12px] text-muted-foreground font-mono">{c.val}</span>
+                </div>
               </div>
-            </div>
-            <div className="space-y-1">
-              <label className={labelCls}>Background</label>
-              <div className="flex items-center gap-2">
-                <input type="color" value={bg} onChange={e => setBg(e.target.value)} className="size-8 rounded-lg border border-border cursor-pointer" />
-                <span className="text-[12px] text-muted-foreground font-mono">{bg}</span>
-              </div>
-            </div>
+            ))}
           </div>
         </div>
       </div>
 
       {/* Right: preview */}
-      <div className="flex flex-col items-center gap-4 sm:w-[220px]">
-        <div className="rounded-2xl bg-white ring-1 ring-black/6 shadow-[0_4px_24px_-6px_rgba(0,0,0,0.10),0_1px_3px_rgba(0,0,0,0.06)] p-4 dark:bg-neutral-900 dark:ring-white/8 dark:shadow-none">
-          <canvas ref={canvasRef} className="rounded-xl" style={{ width: 188, height: 188 }} />
+      <div className="flex flex-col items-center gap-4 w-full lg:w-[200px] shrink-0">
+        <div className="w-full max-w-[200px] rounded-2xl bg-white ring-1 ring-black/6 shadow-[0_4px_24px_-6px_rgba(0,0,0,0.10),0_1px_3px_rgba(0,0,0,0.06)] p-3 dark:bg-neutral-900 dark:ring-white/8 dark:shadow-none">
+          {preview
+            // eslint-disable-next-line @next/next/no-img-element
+            ? <img src={preview} alt="QR code preview" className="w-full rounded-xl" />
+            : <div className="aspect-square w-full rounded-xl bg-neutral-100 dark:bg-neutral-800" />
+          }
         </div>
-        <SoftPillButton variant="primary" onClick={download} className="w-full h-9 text-[12px]">
-          <DownloadSimple size={13} /> Download PNG
-        </SoftPillButton>
-        <p className="text-[11px] text-muted-foreground text-center">Always uses H error correction for logo support</p>
+        <div className="w-full max-w-[200px] space-y-2">
+          <SoftPillButton variant="primary" onClick={download} className="w-full h-9 text-[12px]">
+            <DownloadSimple size={13} /> Download PNG
+          </SoftPillButton>
+          <p className="text-[11px] text-muted-foreground text-center">Always uses H error correction</p>
+        </div>
       </div>
     </div>
   );
