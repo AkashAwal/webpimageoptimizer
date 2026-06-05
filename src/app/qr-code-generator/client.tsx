@@ -1,7 +1,6 @@
 "use client";
 
 import { useState, useEffect, useCallback } from "react";
-import QRCode from "qrcode";
 import { cn } from "@/lib/utils";
 import SoftPillButton from "@/components/ui/soft-pill-button";
 import { DownloadSimple } from "@phosphor-icons/react";
@@ -69,6 +68,7 @@ export function QrCodeGeneratorClient() {
   const regenerate = useCallback(async () => {
     const data = buildQrData(type, fields);
     try {
+      const QRCode = (await import("qrcode")).default;
       const url = await QRCode.toDataURL(data, {
         width: 256,
         margin: 2,
@@ -85,6 +85,7 @@ export function QrCodeGeneratorClient() {
   const downloadPng = async () => {
     const data = buildQrData(type, fields);
     try {
+      const QRCode = (await import("qrcode")).default;
       const url = await QRCode.toDataURL(data, {
         width: size, margin: 2, errorCorrectionLevel: ecc,
         color: { dark: fg, light: bg }, type: "image/png",
@@ -97,6 +98,7 @@ export function QrCodeGeneratorClient() {
   const downloadSvg = async () => {
     const data = buildQrData(type, fields);
     try {
+      const QRCode = (await import("qrcode")).default;
       const svg = await QRCode.toString(data, {
         type: "svg", width: size, margin: 2,
         errorCorrectionLevel: ecc, color: { dark: fg, light: bg },

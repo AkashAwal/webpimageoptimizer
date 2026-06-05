@@ -1,7 +1,6 @@
 "use client";
 
 import { useState, useRef, useEffect, useCallback } from "react";
-import QRCode from "qrcode";
 import { cn } from "@/lib/utils";
 import SoftPillButton from "@/components/ui/soft-pill-button";
 import { DownloadSimple, UploadSimple, X } from "@phosphor-icons/react";
@@ -17,6 +16,7 @@ async function renderWithLogo(
   const canvas = document.createElement("canvas");
   canvas.width = outputSize;
   canvas.height = outputSize;
+  const QRCode = (await import("qrcode")).default;
   await QRCode.toCanvas(canvas, text || "https://pixgarage.com", {
     width: outputSize, margin: 2, errorCorrectionLevel: "H",
     color: { dark: fg, light: bg },

@@ -1,7 +1,6 @@
 "use client";
 
 import { useState, useRef, useCallback } from "react";
-import jsQR from "jsqr";
 import { cn } from "@/lib/utils";
 import SoftPillButton from "@/components/ui/soft-pill-button";
 import { UploadSimple, Check, X, ArrowSquareOut, Copy } from "@phosphor-icons/react";
@@ -30,6 +29,7 @@ export function QrCodeReaderClient() {
       if (!ctx) { setState("error"); return; }
       ctx.drawImage(img, 0, 0);
       const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+      const jsQR = (await import("jsqr")).default;
       const code = jsQR(imageData.data, imageData.width, imageData.height);
       if (code) {
         setResult(code.data);

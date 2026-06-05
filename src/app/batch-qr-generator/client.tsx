@@ -1,7 +1,6 @@
 "use client";
 
 import { useState, useRef } from "react";
-import QRCode from "qrcode";
 import JSZip from "jszip";
 import { cn } from "@/lib/utils";
 import SoftPillButton from "@/components/ui/soft-pill-button";
@@ -45,6 +44,7 @@ export function BatchQrGeneratorClient() {
 
     const zip = new JSZip();
     const seen = new Map<string, number>();
+    const QRCode = (await import("qrcode")).default;
 
     for (let i = 0; i < lines.length; i++) {
       if (abortRef.current) break;
