@@ -146,6 +146,25 @@
   animation-iteration-count: infinite;
 }
 
+.giti-shimmer-pill {
+  background-image: linear-gradient(
+    90deg,
+    #171717 0%,
+    #171717 35%,
+    #a855f7 44%,
+    #06b6d4 50%,
+    #f97316 56%,
+    #171717 65%,
+    #171717 100%
+  );
+  background-size: 300% 100%;
+  background-repeat: no-repeat;
+  animation-name: giti-shimmer;
+  animation-duration: 4.5s;
+  animation-timing-function: cubic-bezier(0.45, 0, 0.55, 1);
+  animation-iteration-count: infinite;
+}
+
 @keyframes flower-wobble {
   0%, 100% { transform: rotate(-6deg); }
   50% { transform: rotate(6deg); }

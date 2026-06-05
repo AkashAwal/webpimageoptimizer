@@ -215,9 +215,9 @@ function HomeContent() {
 
               <Link
                 href={tool.href}
-                className="inline-flex w-full h-9 items-center justify-center gap-2 rounded-full px-3 text-[13px] font-medium leading-none tracking-tight backdrop-blur transition-all active:scale-[0.99] bg-neutral-900/90 text-white ring-1 ring-white/10 hover:bg-neutral-900 shadow-[0_4px_12px_-4px_rgba(0,0,0,0.28),0_1px_2px_rgba(0,0,0,0.12)]"
+                className="giti-shimmer-pill inline-flex w-full h-9 items-center justify-center gap-2 rounded-full px-3 text-[13px] font-medium leading-none tracking-tight backdrop-blur transition-all active:scale-[0.99] text-white ring-1 ring-white/10 shadow-[0_4px_12px_-4px_rgba(0,0,0,0.28),0_1px_2px_rgba(0,0,0,0.12)]"
               >
-                <span className="giti-shimmer-text-inverted">Use tool</span>
+                Use tool
                 <ArrowRight size={12} />
               </Link>
             </div>
