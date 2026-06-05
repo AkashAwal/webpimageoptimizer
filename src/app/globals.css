@@ -160,11 +160,12 @@
     #171717 100%
   );
   background-size: 300% 100%;
+  background-position: 100% 50%;
   background-repeat: no-repeat;
-  animation-name: giti-shimmer;
-  animation-duration: 2s;
-  animation-timing-function: cubic-bezier(0.45, 0, 0.55, 1);
-  animation-iteration-count: infinite;
+}
+
+.giti-shimmer-pill:hover {
+  animation: giti-shimmer 2s cubic-bezier(0.45, 0, 0.55, 1) 1 forwards;
 }
 
 @keyframes flower-wobble {
