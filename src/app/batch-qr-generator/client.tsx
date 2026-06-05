@@ -1,7 +1,6 @@
 "use client";
 
 import { useState, useRef } from "react";
-import JSZip from "jszip";
 import { cn } from "@/lib/utils";
 import SoftPillButton from "@/components/ui/soft-pill-button";
 import { DownloadSimple, CircleNotch, Check } from "@phosphor-icons/react";
@@ -42,9 +41,12 @@ export function BatchQrGeneratorClient() {
     setTotal(lines.length);
     setProgress(0);
 
+    const [{ default: JSZip }, { default: QRCode }] = await Promise.all([
+      import("jszip"),
+      import("qrcode"),
+    ]);
     const zip = new JSZip();
     const seen = new Map<string, number>();
-    const QRCode = (await import("qrcode")).default;
 
     for (let i = 0; i < lines.length; i++) {
       if (abortRef.current) break;
