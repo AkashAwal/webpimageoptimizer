@@ -15,11 +15,12 @@ export function QrCodeReaderClient() {
   const [copied, setCopied] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
 
-  const decode = useCallback((file: File) => {
+  const decode = useCallback(async (file: File) => {
     setState("decoding");
     setResult(null);
     const url = URL.createObjectURL(file);
     setPreviewUrl(url);
+    const jsQR = (await import("jsqr")).default;
     const img = new window.Image();
     img.onload = () => {
       const canvas = document.createElement("canvas");
@@ -29,7 +30,6 @@ export function QrCodeReaderClient() {
       if (!ctx) { setState("error"); return; }
       ctx.drawImage(img, 0, 0);
       const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-      const jsQR = (await import("jsqr")).default;
       const code = jsQR(imageData.data, imageData.width, imageData.height);
       if (code) {
         setResult(code.data);
