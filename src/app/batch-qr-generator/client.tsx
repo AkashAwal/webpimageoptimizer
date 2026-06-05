@@ -111,7 +111,7 @@ export function BatchQrGeneratorClient() {
               {SIZES.map(s => (
                 <button key={s} onClick={() => setSize(s)}
                   className={cn("flex-1 rounded-lg py-1.5 text-[11px] font-medium transition-colors",
-                    size === s ? "bg-white text-neutral-900 ring-1 ring-black/10 shadow-sm" : "bg-neutral-900 text-white hover:bg-neutral-800"
+                    size === s ? "bg-neutral-900 text-white" : "bg-white text-neutral-700 ring-1 ring-black/10 hover:bg-neutral-50"
                   )}>
                   {s}px
                 </button>
@@ -126,7 +126,7 @@ export function BatchQrGeneratorClient() {
               {ECC_LEVELS.map(e => (
                 <button key={e.id} onClick={() => setEcc(e.id)}
                   className={cn("flex-1 rounded-lg py-1.5 text-[11px] font-semibold transition-colors",
-                    ecc === e.id ? "bg-white text-neutral-900 ring-1 ring-black/10 shadow-sm" : "bg-neutral-900 text-white hover:bg-neutral-800"
+                    ecc === e.id ? "bg-neutral-900 text-white" : "bg-white text-neutral-700 ring-1 ring-black/10 hover:bg-neutral-50"
                   )}>
                   {e.id}
                 </button>

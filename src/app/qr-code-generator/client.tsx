@@ -118,8 +118,8 @@ export function QrCodeGeneratorClient() {
             <button key={t.id} onClick={() => setType(t.id)}
               className={cn("rounded-full px-3 py-1 text-[12px] font-medium transition-colors",
                 type === t.id
-                  ? "bg-white text-neutral-900 ring-1 ring-black/10 shadow-sm"
-                  : "bg-neutral-900 text-white hover:bg-neutral-800"
+                  ? "bg-neutral-900 text-white"
+                  : "bg-white text-neutral-700 ring-1 ring-black/10 hover:bg-neutral-50"
               )}>
               {t.label}
             </button>
@@ -191,7 +191,7 @@ export function QrCodeGeneratorClient() {
               {SIZES.map(s => (
                 <button key={s} onClick={() => setSize(s)}
                   className={cn("flex-1 rounded-lg py-1.5 text-[11px] font-medium transition-colors",
-                    size === s ? "bg-white text-neutral-900 ring-1 ring-black/10 shadow-sm" : "bg-neutral-900 text-white hover:bg-neutral-800"
+                    size === s ? "bg-neutral-900 text-white" : "bg-white text-neutral-700 ring-1 ring-black/10 hover:bg-neutral-50"
                   )}>{s}px</button>
               ))}
             </div>
@@ -202,10 +202,10 @@ export function QrCodeGeneratorClient() {
               {ECC_LEVELS.map(e => (
                 <button key={e.id} onClick={() => setEcc(e.id)}
                   className={cn("flex-1 flex flex-col items-center rounded-lg py-1.5 transition-colors",
-                    ecc === e.id ? "bg-white text-neutral-900 ring-1 ring-black/10 shadow-sm" : "bg-neutral-900 text-white hover:bg-neutral-800"
+                    ecc === e.id ? "bg-neutral-900 text-white" : "bg-white text-neutral-700 ring-1 ring-black/10 hover:bg-neutral-50"
                   )}>
                   <span className="text-[11px] font-semibold">{e.id}</span>
-                  <span className={cn("text-[9px] mt-0.5", ecc === e.id ? "text-neutral-500" : "text-white/60")}>{e.desc}</span>
+                  <span className={cn("text-[9px] mt-0.5", ecc === e.id ? "text-white/70" : "text-neutral-400")}>{e.desc}</span>
                 </button>
               ))}
             </div>
