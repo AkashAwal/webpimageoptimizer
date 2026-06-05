@@ -81,7 +81,7 @@ export default function Page() {
                 ["You download the result", "The converted file is created as a local blob URL that you download directly. Nothing is stored anywhere."],
               ].map(([title, detail], i) => (
                 <li key={i} className="flex gap-3">
-                  <span className="mt-0.5 flex size-5 shrink-0 items-center justify-center rounded-full bg-neutral-100 text-[11px] font-semibold text-neutral-600 dark:bg-neutral-800 dark:text-neutral-400">{i + 1}</span>
+                  <span className="mt-0.5 flex size-5 shrink-0 items-center justify-center rounded-full bg-neutral-100 text-[11px] font-semibold text-neutral-600">{i + 1}</span>
                   <div>
                     <span className="font-medium text-foreground">{title} — </span>
                     <span>{detail}</span>
@@ -98,7 +98,7 @@ export default function Page() {
                 <Link
                   key={tool.href}
                   href={tool.href}
-                  className="group flex flex-col gap-1 rounded-xl bg-white p-4 ring-1 ring-black/6 shadow-[0_2px_12px_-4px_rgba(0,0,0,0.08)] transition-shadow hover:shadow-[0_4px_20px_-4px_rgba(0,0,0,0.14)] dark:bg-neutral-900 dark:ring-white/8 dark:shadow-none dark:hover:shadow-none"
+                  className="group flex flex-col gap-1 rounded-xl bg-white p-4 ring-1 ring-black/6 shadow-[0_2px_12px_-4px_rgba(0,0,0,0.08)] transition-shadow hover:shadow-[0_4px_20px_-4px_rgba(0,0,0,0.14)]"
                 >
                   <span className="text-[14px] font-semibold tracking-tight text-foreground group-hover:underline underline-offset-2">
                     {tool.name}

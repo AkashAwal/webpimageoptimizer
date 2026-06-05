@@ -4,7 +4,6 @@ import { Suspense, useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { usePathname, useSearchParams } from "next/navigation";
 import { GithubLogo, XLogo, List, X as XIcon } from "@phosphor-icons/react";
-import { Sun, Moon } from "@/components/ui/icons";
 import { cn } from "@/lib/utils";
 
 type SiteHeaderProps = {
@@ -65,7 +64,7 @@ function NavLinks({ menuOpen, onClose }: { menuOpen: boolean; onClose: () => voi
             {link.label}
           </Link>
         ))}
-        <span className="mx-1.5 select-none text-[13px] text-neutral-300 dark:text-neutral-600">|</span>
+        <span className="mx-1.5 select-none text-[13px] text-neutral-200">|</span>
         {STATIC_LINKS.map((link) =>
           link.external ? (
             <a
@@ -135,19 +134,7 @@ function NavLinks({ menuOpen, onClose }: { menuOpen: boolean; onClose: () => voi
 export function SiteHeader({ fixed = false }: SiteHeaderProps = {}) {
   const [hidden, setHidden] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
-  const [dark, setDark] = useState(false);
   const lastScrollY = useRef(0);
-
-  useEffect(() => {
-    setDark(document.documentElement.classList.contains("dark"));
-  }, []);
-
-  const toggleDark = () => {
-    const next = !dark;
-    setDark(next);
-    document.documentElement.classList.toggle("dark", next);
-    try { localStorage.setItem("theme", next ? "dark" : "light"); } catch {}
-  };
 
   useEffect(() => {
     if (!fixed) return;
@@ -233,18 +220,9 @@ export function SiteHeader({ fixed = false }: SiteHeaderProps = {}) {
           </div>
         </div>
 
-        {/* Dark mode toggle */}
-        <button
-          onClick={toggleDark}
-          aria-label="Toggle dark mode"
-          className="ml-auto sm:ml-3 text-muted-foreground hover:text-foreground transition-colors"
-        >
-          {dark ? <Sun size={17} /> : <Moon size={17} />}
-        </button>
-
         {/* Mobile hamburger */}
         <button
-          className="sm:hidden ml-3 text-muted-foreground hover:text-foreground transition-colors"
+          className="sm:hidden ml-auto text-muted-foreground hover:text-foreground transition-colors"
           onClick={() => setMenuOpen((o) => !o)}
           aria-label="Toggle menu"
         >

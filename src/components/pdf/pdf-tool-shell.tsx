@@ -145,7 +145,7 @@ export default function PdfToolShell({
               <div
                 className={cn(
                   "flex items-center justify-center gap-2 rounded-xl border-2 border-dashed border-border py-3 cursor-pointer transition-colors",
-                  dragOver ? "border-foreground/30 bg-neutral-50 dark:bg-neutral-800/40" : "hover:border-foreground/20 hover:bg-neutral-50/60 dark:hover:bg-neutral-800/30",
+                  dragOver ? "border-foreground/30 bg-neutral-50" : "hover:border-foreground/20 hover:bg-neutral-50/60",
                 )}
                 onClick={() => inputRef.current?.click()}
                 onDragOver={e => { e.preventDefault(); setDragOver(true); }}
@@ -162,7 +162,7 @@ export default function PdfToolShell({
             {/* File list */}
             <div className="space-y-1.5">
               {files.map(({ id, file }) => (
-                <div key={id} className="flex items-center gap-3 rounded-xl px-3 py-2 bg-white ring-1 ring-black/5 dark:bg-neutral-900 dark:ring-white/8">
+                <div key={id} className="flex items-center gap-3 rounded-xl px-3 py-2 bg-white ring-1 ring-black/5">
                   <FilePdf size={18} className="shrink-0 text-red-400" />
                   <div className="flex-1 min-w-0">
                     <p className="truncate text-[12px] font-medium text-foreground">{file.name}</p>
@@ -177,7 +177,7 @@ export default function PdfToolShell({
           </div>
 
           {/* Right: sticky full-height sidebar */}
-          <div className="w-80 shrink-0 border-l border-border bg-white sticky top-16 h-[calc(100vh-4rem)] flex flex-col p-6 gap-4 overflow-y-auto dark:bg-neutral-950">
+          <div className="w-80 shrink-0 border-l border-border bg-white sticky top-16 h-[calc(100vh-4rem)] flex flex-col p-6 gap-4 overflow-y-auto">
             {title && <h2 className="text-xl font-bold tracking-tight text-foreground">{title}</h2>}
 
             {/* Settings or instructions */}
@@ -188,7 +188,7 @@ export default function PdfToolShell({
                 <p className="text-[11px] font-semibold uppercase tracking-widest text-muted-foreground">How to use</p>
                 {instructions.map(({ n, text }) => (
                   <div key={n} className="flex gap-3">
-                    <span className="flex size-5 shrink-0 items-center justify-center rounded-full bg-neutral-100 text-[11px] font-bold text-neutral-500 dark:bg-neutral-800 dark:text-neutral-400">{n}</span>
+                    <span className="flex size-5 shrink-0 items-center justify-center rounded-full bg-neutral-100 text-[11px] font-bold text-neutral-500">{n}</span>
                     <p className="text-[12px] text-muted-foreground leading-relaxed">{text}</p>
                   </div>
                 ))}
@@ -197,12 +197,12 @@ export default function PdfToolShell({
 
             {/* Error */}
             {error && (
-              <p className="text-[12px] text-red-600 bg-red-50 rounded-xl px-3 py-2 ring-1 ring-red-100 dark:bg-red-950/40 dark:ring-red-900/50 dark:text-red-400">{error}</p>
+              <p className="text-[12px] text-red-600 bg-red-50 rounded-xl px-3 py-2 ring-1 ring-red-100">{error}</p>
             )}
 
             {/* Result */}
             {result && (
-              <div className="flex items-center gap-3 rounded-xl bg-emerald-50 px-3 py-2.5 ring-1 ring-emerald-100 dark:bg-emerald-950/40 dark:ring-emerald-900/50">
+              <div className="flex items-center gap-3 rounded-xl bg-emerald-50 px-3 py-2.5 ring-1 ring-emerald-100">
                 <div className="size-2 rounded-full bg-emerald-500 shrink-0" />
                 <p className="flex-1 text-[12px] text-emerald-700 font-medium">
                   {outputMimeLabel} ready · {formatBytes(result.blob.size)}

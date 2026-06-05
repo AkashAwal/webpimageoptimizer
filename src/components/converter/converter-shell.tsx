@@ -824,15 +824,15 @@ export default function ConverterShell({ type, title }: { type: ConvertType; tit
 
   return (
     <div className="w-screen relative left-1/2 -translate-x-1/2 px-4 sm:px-6 py-3 sm:py-4">
-      <div className="flex flex-col h-[calc(100dvh-92px)] sm:h-[calc(100dvh-98px)] min-h-[480px] overflow-hidden rounded-2xl ring-1 ring-black/6 shadow-[0_4px_24px_-6px_rgba(0,0,0,0.10),0_1px_3px_rgba(0,0,0,0.06)] bg-white dark:bg-neutral-950 dark:ring-white/8 dark:shadow-none">
+      <div className="flex flex-col h-[calc(100dvh-92px)] sm:h-[calc(100dvh-98px)] min-h-[480px] overflow-hidden rounded-2xl ring-1 ring-black/6 shadow-[0_4px_24px_-6px_rgba(0,0,0,0.10),0_1px_3px_rgba(0,0,0,0.06)] bg-white">
 
         {/* ── Optional title bar ───────────────────────────────────────────────── */}
         {title && (
-          <div className="flex items-center gap-2.5 px-4 py-2.5 border-b border-border shrink-0 bg-neutral-50/60 dark:bg-neutral-900/60">
+          <div className="flex items-center gap-2.5 px-4 py-2.5 border-b border-border shrink-0 bg-neutral-50/60">
             <Link href="/" className="flex items-center gap-1 text-[12px] text-muted-foreground hover:text-foreground transition-colors shrink-0">
               <CaretLeft size={11} weight="bold" />All tools
             </Link>
-            <span className="text-neutral-300 dark:text-neutral-600 text-[12px]">/</span>
+            <span className="text-neutral-300 text-[12px]">/</span>
             <h1 className="text-[13px] font-semibold text-foreground truncate">{title}</h1>
             <span className="ml-auto text-[11px] text-muted-foreground/50 hidden sm:block shrink-0">
               Batch · no upload · ZIP download
@@ -857,10 +857,10 @@ export default function ConverterShell({ type, title }: { type: ConvertType; tit
               )}
             </div>
             <div className="flex items-center gap-2">
-              <button onClick={() => inputRef.current?.click()} className="inline-flex items-center gap-1 rounded-full bg-neutral-100 px-2.5 py-1 text-[12px] font-medium text-neutral-600 hover:bg-neutral-200 transition-colors dark:bg-neutral-800 dark:text-neutral-400 dark:hover:bg-neutral-700">
+              <button onClick={() => inputRef.current?.click()} className="inline-flex items-center gap-1 rounded-full bg-neutral-100 px-2.5 py-1 text-[12px] font-medium text-neutral-600 hover:bg-neutral-200 transition-colors">
                 <UploadSimple size={12} />Add files
               </button>
-              <button onClick={() => folderInputRef.current?.click()} className="inline-flex items-center gap-1 rounded-full bg-neutral-100 px-2.5 py-1 text-[12px] font-medium text-neutral-600 hover:bg-neutral-200 transition-colors dark:bg-neutral-800 dark:text-neutral-400 dark:hover:bg-neutral-700">
+              <button onClick={() => folderInputRef.current?.click()} className="inline-flex items-center gap-1 rounded-full bg-neutral-100 px-2.5 py-1 text-[12px] font-medium text-neutral-600 hover:bg-neutral-200 transition-colors">
                 <FolderOpen size={12} />Folder
               </button>
               {files.length > 0 && (
@@ -870,7 +870,7 @@ export default function ConverterShell({ type, title }: { type: ConvertType; tit
           </div>
 
           {/* Live stats strip */}
-          <div className="grid grid-cols-4 divide-x divide-border border-b border-border shrink-0 bg-neutral-50/60 dark:bg-neutral-900/60">
+          <div className="grid grid-cols-4 divide-x divide-border border-b border-border shrink-0 bg-neutral-50/60">
             {[
               { label: "Queued", value: queuedCount.toString(), color: "" },
               { label: "Processed", value: doneCount.toString(), color: doneCount > 0 ? "text-emerald-600" : "" },
@@ -895,14 +895,14 @@ export default function ConverterShell({ type, title }: { type: ConvertType; tit
 
           {/* Sort / filter toolbar — only when files exist */}
           {files.length > 0 && (
-            <div className="flex items-center gap-2 px-3 py-1.5 border-b border-border shrink-0 bg-white dark:bg-neutral-950">
+            <div className="flex items-center gap-2 px-3 py-1.5 border-b border-border shrink-0 bg-white">
               {/* Filter */}
               <div className="flex gap-1">
                 {(["all", "queued", "done", "error"] as FilterMode[]).map(f => (
                   <button key={f} onClick={() => setFilterMode(f)}
                     className={cn(
                       "rounded-md px-2 py-0.5 text-[11px] font-medium capitalize transition-colors",
-                      filterMode === f ? "bg-neutral-900 text-white dark:bg-neutral-600 dark:text-white" : "text-muted-foreground hover:bg-neutral-100 dark:hover:bg-neutral-800",
+                      filterMode === f ? "bg-neutral-900 text-white" : "text-muted-foreground hover:bg-neutral-100",
                     )}>
                     {f === "all" ? `All (${files.length})` : f === "done" ? `Done (${doneCount})` : f === "error" ? `Failed (${errorCount})` : `Queued (${queuedCount})`}
                   </button>
@@ -930,7 +930,7 @@ export default function ConverterShell({ type, title }: { type: ConvertType; tit
 
           {/* File list / drop zone */}
           <div
-            className={cn("flex-1 flex flex-col overflow-hidden", dropDragging && "bg-neutral-50 dark:bg-neutral-800/40")}
+            className={cn("flex-1 flex flex-col overflow-hidden", dropDragging && "bg-neutral-50")}
             onDragOver={async e => { e.preventDefault(); setDropDragging(true); }}
             onDragLeave={e => { if (!e.currentTarget.contains(e.relatedTarget as Node)) setDropDragging(false); }}
             onDrop={async e => {
@@ -945,13 +945,13 @@ export default function ConverterShell({ type, title }: { type: ConvertType; tit
           >
             {files.length === 0 ? (
               <div
-                className="flex flex-1 cursor-pointer flex-col items-center justify-center gap-4 m-3 rounded-xl border-2 border-dashed border-border text-center transition-colors hover:border-foreground/20 hover:bg-neutral-50/60 dark:hover:bg-neutral-800/30"
+                className="flex flex-1 cursor-pointer flex-col items-center justify-center gap-4 m-3 rounded-xl border-2 border-dashed border-border text-center transition-colors hover:border-foreground/20 hover:bg-neutral-50/60"
                 onClick={() => inputRef.current?.click()}
               >
                 <div className="relative">
-                  <div className="absolute -top-1.5 -right-1.5 flex size-8 items-center justify-center rounded-lg bg-neutral-200 text-neutral-500 dark:bg-neutral-700"><UploadSimple size={14} /></div>
-                  <div className="absolute -top-0.5 -right-0.5 flex size-8 items-center justify-center rounded-lg bg-neutral-150 text-neutral-500 opacity-60 dark:bg-neutral-700"><UploadSimple size={14} /></div>
-                  <div className="flex size-11 items-center justify-center rounded-xl bg-neutral-100 text-neutral-500 relative z-10 dark:bg-neutral-800"><UploadSimple size={20} /></div>
+                  <div className="absolute -top-1.5 -right-1.5 flex size-8 items-center justify-center rounded-lg bg-neutral-200 text-neutral-500"><UploadSimple size={14} /></div>
+                  <div className="absolute -top-0.5 -right-0.5 flex size-8 items-center justify-center rounded-lg bg-neutral-150 text-neutral-500 opacity-60"><UploadSimple size={14} /></div>
+                  <div className="flex size-11 items-center justify-center rounded-xl bg-neutral-100 text-neutral-500 relative z-10"><UploadSimple size={20} /></div>
                 </div>
                 <div>
                   <p className="text-[15px] font-semibold text-foreground">Drop your files here</p>
@@ -959,8 +959,8 @@ export default function ConverterShell({ type, title }: { type: ConvertType; tit
                   <p className="mt-0.5 text-[11px] text-muted-foreground/60">{cfg.acceptLabel} · or drop a folder</p>
                 </div>
                 <div className="flex items-center gap-2">
-                  <span className="inline-flex items-center gap-1 rounded-full bg-neutral-100 px-2.5 py-1 text-[11px] font-medium text-neutral-500 dark:bg-neutral-800 dark:text-neutral-400"><UploadSimple size={11} />Bulk upload</span>
-                  <span className="inline-flex items-center gap-1 rounded-full bg-neutral-100 px-2.5 py-1 text-[11px] font-medium text-neutral-500 dark:bg-neutral-800 dark:text-neutral-400"><DownloadSimple size={11} />ZIP download</span>
+                  <span className="inline-flex items-center gap-1 rounded-full bg-neutral-100 px-2.5 py-1 text-[11px] font-medium text-neutral-500"><UploadSimple size={11} />Bulk upload</span>
+                  <span className="inline-flex items-center gap-1 rounded-full bg-neutral-100 px-2.5 py-1 text-[11px] font-medium text-neutral-500"><DownloadSimple size={11} />ZIP download</span>
                 </div>
               </div>
             ) : (
@@ -982,10 +982,10 @@ export default function ConverterShell({ type, title }: { type: ConvertType; tit
                         onDrop={() => onItemDrop(item.id)}
                         className={cn(
                           "flex items-center gap-2.5 rounded-xl px-2.5 py-2 transition-all",
-                          "bg-white ring-1 ring-black/5 dark:bg-neutral-900 dark:ring-white/6",
+                          "bg-white ring-1 ring-black/5",
                           item.id === dragOverId && "ring-2 ring-foreground/20 translate-y-px",
                           item.id === draggedId && "opacity-40",
-                          flagged && "ring-2 ring-red-400/50 bg-red-50/40 dark:bg-red-950/20",
+                          flagged && "ring-2 ring-red-400/50 bg-red-50/40",
                         )}
                       >
                         <DotsSixVertical size={14} className="shrink-0 text-neutral-300 cursor-grab active:cursor-grabbing" />
@@ -999,13 +999,13 @@ export default function ConverterShell({ type, title }: { type: ConvertType; tit
                             // eslint-disable-next-line @next/next/no-img-element
                             <img
                               src={item.previewUrl} alt=""
-                              className="size-9 rounded-md object-cover bg-neutral-100 hover:opacity-80 transition-opacity dark:bg-neutral-800"
+                              className="size-9 rounded-md object-cover bg-neutral-100 hover:opacity-80 transition-opacity"
                               onError={e => { (e.currentTarget as HTMLImageElement).style.display = "none"; }}
                             />
                           ) : (
-                            <div className="size-9 rounded-md bg-neutral-100 flex items-center justify-center dark:bg-neutral-800"><UploadSimple size={12} className="text-neutral-300 dark:text-neutral-600" /></div>
+                            <div className="size-9 rounded-md bg-neutral-100 flex items-center justify-center"><UploadSimple size={12} className="text-neutral-300" /></div>
                           )}
-                          <span className="absolute -bottom-1 -right-1 text-[8px] font-bold bg-neutral-800 text-white px-1 py-px rounded leading-tight dark:bg-neutral-600">
+                          <span className="absolute -bottom-1 -right-1 text-[8px] font-bold bg-neutral-800 text-white px-1 py-px rounded leading-tight">
                             {getFormat(item.file)}
                           </span>
                         </div>
@@ -1031,17 +1031,17 @@ export default function ConverterShell({ type, title }: { type: ConvertType; tit
                             <>
                               <Check size={15} className="text-emerald-500 mx-1" />
                               {item.previewUrl && cfg.outputType === "webp" && (
-                                <button onClick={() => setCompareItemId(item.id)} title="Compare before / after" className="rounded-lg p-1.5 text-neutral-400 hover:bg-neutral-100 hover:text-neutral-700 dark:hover:bg-neutral-800 dark:hover:text-neutral-300 transition-colors">
+                                <button onClick={() => setCompareItemId(item.id)} title="Compare before / after" className="rounded-lg p-1.5 text-neutral-400 hover:bg-neutral-100 hover:text-neutral-700 transition-colors">
                                   <FrameCorners size={16} />
                                 </button>
                               )}
                               {cfg.outputType === "webp" && (
-                                <button onClick={() => copyToClipboard(item)} title="Copy to clipboard" className="rounded-lg p-1.5 text-neutral-400 hover:bg-neutral-100 hover:text-neutral-700 dark:hover:bg-neutral-800 dark:hover:text-neutral-300 transition-colors">
+                                <button onClick={() => copyToClipboard(item)} title="Copy to clipboard" className="rounded-lg p-1.5 text-neutral-400 hover:bg-neutral-100 hover:text-neutral-700 transition-colors">
                                   {copiedId === item.id ? <Check size={15} className="text-emerald-500" /> : <ClipboardText size={15} />}
                                 </button>
                               )}
                               {item.result ? (
-                                <button onClick={() => downloadOne(item)} title="Download" className="rounded-lg p-1.5 text-neutral-400 hover:bg-neutral-100 hover:text-neutral-700 dark:hover:bg-neutral-800 dark:hover:text-neutral-300 transition-colors">
+                                <button onClick={() => downloadOne(item)} title="Download" className="rounded-lg p-1.5 text-neutral-400 hover:bg-neutral-100 hover:text-neutral-700 transition-colors">
                                   <DownloadSimple size={16} />
                                 </button>
                               ) : cfg.outputType === "pdf" && (
@@ -1050,7 +1050,7 @@ export default function ConverterShell({ type, title }: { type: ConvertType; tit
                             </>
                           )}
                           {item.status === "error" && (
-                            <button onClick={() => retryFile(item.id)} title="Retry" className="rounded-lg p-1.5 text-neutral-400 hover:bg-neutral-100 hover:text-amber-600 dark:hover:bg-neutral-800 transition-colors">
+                            <button onClick={() => retryFile(item.id)} title="Retry" className="rounded-lg p-1.5 text-neutral-400 hover:bg-neutral-100 hover:text-amber-600 transition-colors">
                               <ArrowCounterClockwise size={16} />
                             </button>
                           )}
@@ -1059,12 +1059,12 @@ export default function ConverterShell({ type, title }: { type: ConvertType; tit
                             <button
                               onClick={() => setExpandedId(isExpanded ? null : item.id)}
                               title="Override quality for this file"
-                              className={cn("rounded-lg p-1.5 transition-colors", isExpanded ? "bg-neutral-900 text-white dark:bg-neutral-600 dark:text-white" : "text-neutral-300 hover:bg-neutral-100 hover:text-neutral-600 dark:hover:bg-neutral-800")}
+                              className={cn("rounded-lg p-1.5 transition-colors", isExpanded ? "bg-neutral-900 text-white" : "text-neutral-300 hover:bg-neutral-100 hover:text-neutral-600")}
                             >
                               <SlidersHorizontal size={14} />
                             </button>
                           )}
-                          <button onClick={() => removeFile(item.id)} aria-label="Remove" className="rounded-lg p-1.5 text-neutral-300 hover:bg-red-50 hover:text-red-500 dark:hover:bg-red-950/40 transition-colors">
+                          <button onClick={() => removeFile(item.id)} aria-label="Remove" className="rounded-lg p-1.5 text-neutral-300 hover:bg-red-50 hover:text-red-500 transition-colors">
                             <Trash size={15} />
                           </button>
                         </div>
@@ -1072,7 +1072,7 @@ export default function ConverterShell({ type, title }: { type: ConvertType; tit
 
                       {/* Per-file quality expansion */}
                       {isExpanded && (
-                        <div className="mx-2 mb-1 px-3 py-2.5 rounded-b-xl bg-neutral-50 ring-1 ring-black/5 flex items-center gap-3 dark:bg-neutral-800/50 dark:ring-white/6">
+                        <div className="mx-2 mb-1 px-3 py-2.5 rounded-b-xl bg-neutral-50 ring-1 ring-black/5 flex items-center gap-3">
                           <span className="text-[11px] text-muted-foreground shrink-0">Quality override</span>
                           <input
                             type="range" min={50} max={100}
@@ -1092,7 +1092,7 @@ export default function ConverterShell({ type, title }: { type: ConvertType; tit
 
                 {/* Add more strip */}
                 <div
-                  className="flex cursor-pointer items-center justify-center gap-2 rounded-xl border border-dashed border-border py-2.5 text-[12px] text-muted-foreground hover:bg-neutral-50/60 hover:border-foreground/20 dark:hover:bg-neutral-800/30 transition-colors"
+                  className="flex cursor-pointer items-center justify-center gap-2 rounded-xl border border-dashed border-border py-2.5 text-[12px] text-muted-foreground hover:bg-neutral-50/60 hover:border-foreground/20 transition-colors"
                   onClick={() => inputRef.current?.click()}
                 >
                   <UploadSimple size={13} />Add more {cfg.acceptLabel}
@@ -1103,7 +1103,7 @@ export default function ConverterShell({ type, title }: { type: ConvertType; tit
 
           {/* Undo toast */}
           {undoItem && (
-            <div className="shrink-0 mx-3 mb-3 flex items-center justify-between gap-3 rounded-xl bg-neutral-900 px-3 py-2 text-[12px] text-white shadow-lg dark:bg-neutral-800 dark:ring-1 dark:ring-white/8">
+            <div className="shrink-0 mx-3 mb-3 flex items-center justify-between gap-3 rounded-xl bg-neutral-900 px-3 py-2 text-[12px] text-white shadow-lg">
               <span className="truncate opacity-80">Removed <strong className="opacity-100">{undoItem.file.name}</strong></span>
               <button onClick={undoRemove} className="shrink-0 font-medium text-white underline underline-offset-2 hover:no-underline transition-all">Undo</button>
             </div>
@@ -1127,7 +1127,7 @@ export default function ConverterShell({ type, title }: { type: ConvertType; tit
                     ] as const).map(opt => (
                       <button key={opt.id} onClick={() => setSettings(s => ({ ...s, pdfType: opt.id }))}
                         className={cn("flex-1 flex flex-col items-center rounded-lg px-1 py-1.5 transition-colors",
-                          settings.pdfType === opt.id ? "bg-neutral-900 text-white dark:bg-neutral-600 dark:text-white" : "bg-neutral-100 text-neutral-600 hover:bg-neutral-200 dark:bg-neutral-800 dark:text-neutral-400 dark:hover:bg-neutral-700")}>
+                          settings.pdfType === opt.id ? "bg-neutral-900 text-white" : "bg-neutral-100 text-neutral-600 hover:bg-neutral-200")}>
                         <span className="text-[11px] font-medium leading-tight">{opt.label}</span>
                         <span className={cn("text-[10px] mt-0.5", settings.pdfType === opt.id ? "text-white/60" : "text-neutral-400")}>{opt.sub}</span>
                       </button>
@@ -1140,7 +1140,7 @@ export default function ConverterShell({ type, title }: { type: ConvertType; tit
                   <p className="text-[10px] font-semibold uppercase tracking-widest text-muted-foreground mb-1.5">Page size</p>
                   <select value={settings.pdfPageSize}
                     onChange={e => setSettings(s => ({ ...s, pdfPageSize: e.target.value as Settings["pdfPageSize"] }))}
-                    className="w-full rounded-lg border border-border bg-neutral-50 px-2 py-1 text-[12px] text-foreground outline-none focus:border-foreground/30 focus:bg-white transition-colors cursor-pointer dark:bg-neutral-800 dark:focus:bg-neutral-700">
+                    className="w-full rounded-lg border border-border bg-neutral-50 px-2 py-1 text-[12px] text-foreground outline-none focus:border-foreground/30 focus:bg-white transition-colors cursor-pointer">
                     <option value="fit">Fit to image</option>
                     <option value="a4">A4 (210 × 297 mm)</option>
                     <option value="letter">Letter (216 × 279 mm)</option>
@@ -1161,8 +1161,8 @@ export default function ConverterShell({ type, title }: { type: ConvertType; tit
                         onClick={() => !opt.disabled && setSettings(s => ({ ...s, pdfFitMode: opt.id }))}
                         disabled={opt.disabled}
                         className={cn("flex-1 rounded-lg px-1 py-1.5 text-[11px] font-medium transition-colors",
-                          opt.disabled ? "bg-neutral-50 text-neutral-300 cursor-not-allowed dark:bg-neutral-900 dark:text-neutral-600" :
-                          settings.pdfFitMode === opt.id ? "bg-neutral-900 text-white dark:bg-neutral-600 dark:text-white" : "bg-neutral-100 text-neutral-600 hover:bg-neutral-200 dark:bg-neutral-800 dark:text-neutral-400 dark:hover:bg-neutral-700")}>
+                          opt.disabled ? "bg-neutral-50 text-neutral-300 cursor-not-allowed" :
+                          settings.pdfFitMode === opt.id ? "bg-neutral-900 text-white" : "bg-neutral-100 text-neutral-600 hover:bg-neutral-200")}>
                         {opt.label}
                       </button>
                     ))}
@@ -1182,8 +1182,8 @@ export default function ConverterShell({ type, title }: { type: ConvertType; tit
                         onClick={() => settings.pdfPageSize !== "fit" && setSettings(s => ({ ...s, pdfOrientation: opt.id }))}
                         disabled={settings.pdfPageSize === "fit"}
                         className={cn("flex-1 rounded-lg px-1 py-1.5 text-[11px] font-medium transition-colors",
-                          settings.pdfPageSize === "fit" ? "bg-neutral-50 text-neutral-300 cursor-not-allowed dark:bg-neutral-900 dark:text-neutral-600" :
-                          settings.pdfOrientation === opt.id ? "bg-neutral-900 text-white dark:bg-neutral-600 dark:text-white" : "bg-neutral-100 text-neutral-600 hover:bg-neutral-200 dark:bg-neutral-800 dark:text-neutral-400 dark:hover:bg-neutral-700")}>
+                          settings.pdfPageSize === "fit" ? "bg-neutral-50 text-neutral-300 cursor-not-allowed" :
+                          settings.pdfOrientation === opt.id ? "bg-neutral-900 text-white" : "bg-neutral-100 text-neutral-600 hover:bg-neutral-200")}>
                         {opt.label}
                       </button>
                     ))}
@@ -1214,8 +1214,8 @@ export default function ConverterShell({ type, title }: { type: ConvertType; tit
                       {(["top-left","top-center","top-right","middle-left","middle-center","middle-right","bottom-left","bottom-center","bottom-right"] as const).map(pos => (
                         <button key={pos} onClick={() => setSettings(s => ({ ...s, pdfImageAlign: pos }))}
                           className={cn("size-6 rounded flex items-center justify-center transition-colors",
-                            settings.pdfImageAlign === pos ? "bg-neutral-900 dark:bg-neutral-600" : "bg-neutral-100 hover:bg-neutral-200 dark:bg-neutral-800 dark:hover:bg-neutral-700")}>
-                          <div className={cn("size-1.5 rounded-full", settings.pdfImageAlign === pos ? "bg-white" : "bg-neutral-400 dark:bg-neutral-500")} />
+                            settings.pdfImageAlign === pos ? "bg-neutral-900" : "bg-neutral-100 hover:bg-neutral-200")}>
+                          <div className={cn("size-1.5 rounded-full", settings.pdfImageAlign === pos ? "bg-white" : "bg-neutral-400")} />
                         </button>
                       ))}
                     </div>
@@ -1223,7 +1223,7 @@ export default function ConverterShell({ type, title }: { type: ConvertType; tit
                 )}
 
                 {/* ── Row: Pages (full width) ── */}
-                <div className="col-span-2 flex items-center justify-between gap-4 rounded-lg bg-neutral-50 px-3 py-2 ring-1 ring-black/5 dark:bg-neutral-800/50 dark:ring-white/6">
+                <div className="col-span-2 flex items-center justify-between gap-4 rounded-lg bg-neutral-50 px-3 py-2 ring-1 ring-black/5">
                   <p className="text-[11px] text-muted-foreground/70 leading-relaxed">Drag files in the queue to set page order.</p>
                   <label className="flex items-center gap-1.5 cursor-pointer select-none shrink-0">
                     <input type="checkbox" checked={settings.pdfPageNumbers}
@@ -1263,7 +1263,7 @@ export default function ConverterShell({ type, title }: { type: ConvertType; tit
                   <input type="text" placeholder="e.g. CONFIDENTIAL"
                     value={settings.pdfWatermark}
                     onChange={e => setSettings(s => ({ ...s, pdfWatermark: e.target.value }))}
-                    className="w-full rounded-lg border border-border bg-neutral-50 px-2 py-1 text-[12px] text-foreground outline-none focus:border-foreground/30 focus:bg-white transition-colors mb-1.5 dark:bg-neutral-800 dark:focus:bg-neutral-700"
+                    className="w-full rounded-lg border border-border bg-neutral-50 px-2 py-1 text-[12px] text-foreground outline-none focus:border-foreground/30 focus:bg-white transition-colors mb-1.5"
                   />
                   {/* Position picker — 2×2 corners + center */}
                   {(() => {
@@ -1271,10 +1271,10 @@ export default function ConverterShell({ type, title }: { type: ConvertType; tit
                     const btnCls = (pos: string) => cn(
                       "rounded px-1.5 py-0.5 text-[10px] font-medium transition-colors",
                       empty
-                        ? "bg-neutral-50 text-neutral-300 cursor-not-allowed dark:bg-neutral-900 dark:text-neutral-600"
+                        ? "bg-neutral-50 text-neutral-300 cursor-not-allowed"
                         : settings.pdfWatermarkPos === pos
-                          ? "bg-neutral-900 text-white dark:bg-neutral-600 dark:text-white"
-                          : "bg-neutral-100 text-neutral-500 hover:bg-neutral-200 dark:bg-neutral-800 dark:text-neutral-400 dark:hover:bg-neutral-700",
+                          ? "bg-neutral-900 text-white"
+                          : "bg-neutral-100 text-neutral-500 hover:bg-neutral-200",
                     );
                     const set = (pos: Settings["pdfWatermarkPos"]) =>
                       !empty && setSettings(s => ({ ...s, pdfWatermarkPos: pos }));
@@ -1296,7 +1296,7 @@ export default function ConverterShell({ type, title }: { type: ConvertType; tit
                   <input type="password" placeholder="Leave blank for none"
                     value={settings.pdfPassword}
                     onChange={e => setSettings(s => ({ ...s, pdfPassword: e.target.value }))}
-                    className="w-full rounded-lg border border-border bg-neutral-50 px-2 py-1 text-[12px] text-foreground outline-none focus:border-foreground/30 focus:bg-white transition-colors dark:bg-neutral-800 dark:focus:bg-neutral-700"
+                    className="w-full rounded-lg border border-border bg-neutral-50 px-2 py-1 text-[12px] text-foreground outline-none focus:border-foreground/30 focus:bg-white transition-colors"
                   />
                 </div>
 
@@ -1306,12 +1306,12 @@ export default function ConverterShell({ type, title }: { type: ConvertType; tit
                     <input type="text" placeholder="Title"
                       value={settings.pdfMetaTitle}
                       onChange={e => setSettings(s => ({ ...s, pdfMetaTitle: e.target.value }))}
-                      className="w-full rounded-lg border border-border bg-neutral-50 px-2 py-1 text-[12px] text-foreground outline-none focus:border-foreground/30 focus:bg-white transition-colors dark:bg-neutral-800 dark:focus:bg-neutral-700"
+                      className="w-full rounded-lg border border-border bg-neutral-50 px-2 py-1 text-[12px] text-foreground outline-none focus:border-foreground/30 focus:bg-white transition-colors"
                     />
                     <input type="text" placeholder="Author"
                       value={settings.pdfMetaAuthor}
                       onChange={e => setSettings(s => ({ ...s, pdfMetaAuthor: e.target.value }))}
-                      className="w-full rounded-lg border border-border bg-neutral-50 px-2 py-1 text-[12px] text-foreground outline-none focus:border-foreground/30 focus:bg-white transition-colors dark:bg-neutral-800 dark:focus:bg-neutral-700"
+                      className="w-full rounded-lg border border-border bg-neutral-50 px-2 py-1 text-[12px] text-foreground outline-none focus:border-foreground/30 focus:bg-white transition-colors"
                     />
                   </div>
                 </div>
@@ -1324,14 +1324,14 @@ export default function ConverterShell({ type, title }: { type: ConvertType; tit
                       <p className="text-[10px] text-muted-foreground/70 mb-0.5">W</p>
                       <input type="number" min={1} placeholder="Auto" value={settings.width}
                         onChange={e => setSettings(s => ({ ...s, width: e.target.value }))}
-                        className="w-full rounded-lg border border-border bg-neutral-50 px-2 py-1 text-[12px] text-foreground outline-none focus:border-foreground/30 focus:bg-white transition-colors dark:bg-neutral-800 dark:focus:bg-neutral-700"
+                        className="w-full rounded-lg border border-border bg-neutral-50 px-2 py-1 text-[12px] text-foreground outline-none focus:border-foreground/30 focus:bg-white transition-colors"
                       />
                     </div>
                     <div className="flex-1">
                       <p className="text-[10px] text-muted-foreground/70 mb-0.5">H</p>
                       <input type="number" min={1} placeholder="Auto" value={settings.height}
                         onChange={e => setSettings(s => ({ ...s, height: e.target.value }))}
-                        className="w-full rounded-lg border border-border bg-neutral-50 px-2 py-1 text-[12px] text-foreground outline-none focus:border-foreground/30 focus:bg-white transition-colors dark:bg-neutral-800 dark:focus:bg-neutral-700"
+                        className="w-full rounded-lg border border-border bg-neutral-50 px-2 py-1 text-[12px] text-foreground outline-none focus:border-foreground/30 focus:bg-white transition-colors"
                       />
                     </div>
                   </div>
@@ -1342,7 +1342,7 @@ export default function ConverterShell({ type, title }: { type: ConvertType; tit
                   <p className="text-[10px] font-semibold uppercase tracking-widest text-muted-foreground mb-1.5">Output filename</p>
                   <input type="text" placeholder="converted" value={settings.pdfFilename}
                     onChange={e => setSettings(s => ({ ...s, pdfFilename: e.target.value }))}
-                    className="w-full rounded-lg border border-border bg-neutral-50 px-2 py-1 text-[12px] text-foreground outline-none focus:border-foreground/30 focus:bg-white transition-colors dark:bg-neutral-800 dark:focus:bg-neutral-700"
+                    className="w-full rounded-lg border border-border bg-neutral-50 px-2 py-1 text-[12px] text-foreground outline-none focus:border-foreground/30 focus:bg-white transition-colors"
                   />
                   <p className="text-[10px] text-muted-foreground/50 mt-0.5 leading-tight">Saved as {settings.pdfFilename || "converted"}.pdf</p>
                 </div>
@@ -1360,7 +1360,7 @@ export default function ConverterShell({ type, title }: { type: ConvertType; tit
                         onClick={() => setSettings(s => ({ ...s, quality: p.quality }))}
                         className={cn(
                           "flex-1 flex flex-col items-center rounded-lg px-1 py-1.5 transition-colors",
-                          settings.quality === p.quality ? "bg-neutral-900 text-white dark:bg-neutral-600 dark:text-white" : "bg-neutral-100 text-neutral-600 hover:bg-neutral-200 dark:bg-neutral-800 dark:text-neutral-400 dark:hover:bg-neutral-700",
+                          settings.quality === p.quality ? "bg-neutral-900 text-white" : "bg-neutral-100 text-neutral-600 hover:bg-neutral-200",
                         )}
                       >
                         <span className="text-[11px] font-medium leading-tight text-center">{p.label}</span>
@@ -1394,14 +1394,14 @@ export default function ConverterShell({ type, title }: { type: ConvertType; tit
                       <p className="text-[10px] text-muted-foreground/70 mb-0.5">W</p>
                       <input type="number" min={1} placeholder="Auto" value={settings.width}
                         onChange={e => setSettings(s => ({ ...s, width: e.target.value }))}
-                        className="w-full rounded-lg border border-border bg-neutral-50 px-2 py-1 text-[12px] text-foreground outline-none focus:border-foreground/30 focus:bg-white transition-colors dark:bg-neutral-800 dark:focus:bg-neutral-700"
+                        className="w-full rounded-lg border border-border bg-neutral-50 px-2 py-1 text-[12px] text-foreground outline-none focus:border-foreground/30 focus:bg-white transition-colors"
                       />
                     </div>
                     <div className="flex-1">
                       <p className="text-[10px] text-muted-foreground/70 mb-0.5">H</p>
                       <input type="number" min={1} placeholder="Auto" value={settings.height}
                         onChange={e => setSettings(s => ({ ...s, height: e.target.value }))}
-                        className="w-full rounded-lg border border-border bg-neutral-50 px-2 py-1 text-[12px] text-foreground outline-none focus:border-foreground/30 focus:bg-white transition-colors dark:bg-neutral-800 dark:focus:bg-neutral-700"
+                        className="w-full rounded-lg border border-border bg-neutral-50 px-2 py-1 text-[12px] text-foreground outline-none focus:border-foreground/30 focus:bg-white transition-colors"
                       />
                     </div>
                   </div>
@@ -1425,7 +1425,7 @@ export default function ConverterShell({ type, title }: { type: ConvertType; tit
                     {settings.namingMode === "prefix" && (
                       <input type="text" placeholder="image" value={settings.prefix}
                         onChange={e => setSettings(s => ({ ...s, prefix: e.target.value }))}
-                        className="w-full rounded-lg border border-border bg-neutral-50 px-2 py-1 text-[12px] text-foreground outline-none focus:border-foreground/30 focus:bg-white transition-colors dark:bg-neutral-800 dark:focus:bg-neutral-700"
+                        className="w-full rounded-lg border border-border bg-neutral-50 px-2 py-1 text-[12px] text-foreground outline-none focus:border-foreground/30 focus:bg-white transition-colors"
                       />
                     )}
                   </div>
@@ -1437,7 +1437,7 @@ export default function ConverterShell({ type, title }: { type: ConvertType; tit
                   <div className="flex items-center gap-1.5">
                     <input type="number" min={1} placeholder="e.g. 300" value={settings.sizeCapKB}
                       onChange={e => setSettings(s => ({ ...s, sizeCapKB: e.target.value }))}
-                      className="flex-1 min-w-0 rounded-lg border border-border bg-neutral-50 px-2 py-1 text-[12px] text-foreground outline-none focus:border-foreground/30 focus:bg-white transition-colors dark:bg-neutral-800 dark:focus:bg-neutral-700"
+                      className="flex-1 min-w-0 rounded-lg border border-border bg-neutral-50 px-2 py-1 text-[12px] text-foreground outline-none focus:border-foreground/30 focus:bg-white transition-colors"
                     />
                     <span className="text-[12px] text-muted-foreground shrink-0">KB</span>
                   </div>
@@ -1460,8 +1460,8 @@ export default function ConverterShell({ type, title }: { type: ConvertType; tit
           {/* Action buttons */}
           <div className="p-3 border-t border-border space-y-2 shrink-0">
             {converting && (
-              <div className="h-1.5 rounded-full bg-neutral-200 overflow-hidden dark:bg-neutral-700">
-                <div className="h-full bg-neutral-900 transition-all duration-300 rounded-full dark:bg-white" style={{ width: `${progress}%` }} />
+              <div className="h-1.5 rounded-full bg-neutral-200 overflow-hidden">
+                <div className="h-full bg-neutral-900 transition-all duration-300 rounded-full" style={{ width: `${progress}%` }} />
               </div>
             )}
             <SoftPillButton

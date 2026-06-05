@@ -141,12 +141,12 @@ export default function MergePdfClient() {
                     dragOverIdx === idx && dragIdx !== idx && "outline outline-2 outline-neutral-400",
                   )}
                 >
-                  <div className="relative group overflow-hidden ring-1 ring-black/10 bg-white shadow-sm dark:bg-neutral-900 dark:ring-white/10">
+                  <div className="relative group overflow-hidden ring-1 ring-black/10 bg-white shadow-sm">
                     {item.thumbnail ? (
                       // eslint-disable-next-line @next/next/no-img-element
                       <img src={item.thumbnail} alt={item.file.name} className="w-full block pointer-events-none" />
                     ) : (
-                      <div className="aspect-[3/4] flex items-center justify-center bg-neutral-100 dark:bg-neutral-800">
+                      <div className="aspect-[3/4] flex items-center justify-center bg-neutral-100">
                         <CircleNotch size={16} className="animate-spin text-neutral-400" />
                       </div>
                     )}
@@ -172,10 +172,10 @@ export default function MergePdfClient() {
           </div>
 
           {/* Right: sticky full-height action panel */}
-          <div className="w-80 shrink-0 border-l border-border bg-white sticky top-16 h-[calc(100vh-4rem)] flex flex-col p-6 gap-4 overflow-y-auto dark:bg-neutral-950">
+          <div className="w-80 shrink-0 border-l border-border bg-white sticky top-16 h-[calc(100vh-4rem)] flex flex-col p-6 gap-4 overflow-y-auto">
             <h2 className="text-xl font-bold tracking-tight text-foreground">Merge PDF</h2>
 
-            <div className="flex gap-2.5 rounded-xl bg-blue-50 border border-blue-100 px-3 py-3 dark:bg-blue-950/30 dark:border-blue-900/50">
+            <div className="flex gap-2.5 rounded-xl bg-blue-50 border border-blue-100 px-3 py-3">
               <Info size={14} className="text-blue-500 shrink-0 mt-0.5" />
               <p className="text-[12px] text-blue-700 leading-relaxed">
                 Add more PDFs by clicking the <strong>+</strong> button. Hold{" "}

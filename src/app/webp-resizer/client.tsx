@@ -148,10 +148,10 @@ export function WebpResizerTool() {
           onClick={() => inputRef.current?.click()}
           className={cn(
             "flex cursor-pointer flex-col items-center justify-center gap-3 rounded-2xl border-2 border-dashed px-8 py-16 text-center transition-colors select-none",
-            dragging ? "border-foreground/30 bg-neutral-50 dark:bg-neutral-800/40" : "border-border hover:border-foreground/20 hover:bg-neutral-50/60 dark:hover:bg-neutral-800/30",
+            dragging ? "border-foreground/30 bg-neutral-50" : "border-border hover:border-foreground/20 hover:bg-neutral-50/60",
           )}
         >
-          <div className="flex size-11 items-center justify-center rounded-xl bg-neutral-100 text-neutral-400 dark:bg-neutral-800 dark:text-neutral-500">
+          <div className="flex size-11 items-center justify-center rounded-xl bg-neutral-100 text-neutral-400">
             <UploadSimple size={20} />
           </div>
           <div>
@@ -165,9 +165,9 @@ export function WebpResizerTool() {
 
       {/* File info */}
       {file && (
-        <div className="overflow-hidden rounded-2xl bg-white ring-1 ring-black/6 shadow-[0_4px_24px_-6px_rgba(0,0,0,0.10),0_1px_3px_rgba(0,0,0,0.06)] dark:bg-neutral-900 dark:ring-white/8 dark:shadow-none">
+        <div className="overflow-hidden rounded-2xl bg-white ring-1 ring-black/6 shadow-[0_4px_24px_-6px_rgba(0,0,0,0.10),0_1px_3px_rgba(0,0,0,0.06)]">
           {previewUrl && (
-            <div className="relative h-44 w-full overflow-hidden bg-neutral-100 dark:bg-neutral-800">
+            <div className="relative h-44 w-full overflow-hidden bg-neutral-100">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img src={previewUrl} alt="" className="h-full w-full object-contain" />
             </div>
@@ -179,7 +179,7 @@ export function WebpResizerTool() {
                 {formatBytes(file.size)}{naturalW > 0 && ` · ${naturalW} × ${naturalH}px`}
               </p>
             </div>
-            <button onClick={reset} className="shrink-0 rounded-full p-1.5 text-neutral-400 hover:bg-neutral-100 hover:text-neutral-600 transition-colors dark:hover:bg-neutral-800" aria-label="Remove file">
+            <button onClick={reset} className="shrink-0 rounded-full p-1.5 text-neutral-400 hover:bg-neutral-100 hover:text-neutral-600 transition-colors" aria-label="Remove file">
               <X size={13} />
             </button>
           </div>
@@ -188,17 +188,17 @@ export function WebpResizerTool() {
 
       {/* Dimension inputs + quality */}
       {file && convertState !== "done" && (
-        <div className="rounded-2xl bg-white px-4 py-4 ring-1 ring-black/6 shadow-[0_1px_3px_rgba(0,0,0,0.06)] space-y-3 dark:bg-neutral-900 dark:ring-white/8 dark:shadow-none">
+        <div className="rounded-2xl bg-white px-4 py-4 ring-1 ring-black/6 shadow-[0_1px_3px_rgba(0,0,0,0.06)] space-y-3">
           <div className="flex items-center gap-2">
             <div className="flex flex-1 flex-col gap-1">
               <label className="text-[11px] font-medium text-muted-foreground uppercase tracking-wide">Width (px)</label>
               <input type="number" min={1} value={width} onChange={(e) => onWidthChange(e.target.value)}
-                className="rounded-xl border border-border bg-neutral-50 px-3 py-2 text-[13px] font-medium text-foreground outline-none focus:border-foreground/30 focus:bg-white transition-colors dark:bg-neutral-800 dark:focus:bg-neutral-700" />
+                className="rounded-xl border border-border bg-neutral-50 px-3 py-2 text-[13px] font-medium text-foreground outline-none focus:border-foreground/30 focus:bg-white transition-colors" />
             </div>
 
             <button
               onClick={() => setLockAspect((v) => !v)}
-              className={cn("mt-5 shrink-0 rounded-lg p-2 transition-colors", lockAspect ? "bg-foreground text-background" : "bg-neutral-100 text-neutral-500 hover:bg-neutral-200 dark:bg-neutral-800 dark:hover:bg-neutral-700")}
+              className={cn("mt-5 shrink-0 rounded-lg p-2 transition-colors", lockAspect ? "bg-foreground text-background" : "bg-neutral-100 text-neutral-500 hover:bg-neutral-200")}
               title={lockAspect ? "Unlock aspect ratio" : "Lock aspect ratio"}
             >
               {lockAspect ? <Lock size={14} /> : <LockOpen size={14} />}
@@ -235,7 +235,7 @@ export function WebpResizerTool() {
       )}
 
       {convertState === "error" && error && (
-        <p className="rounded-xl bg-red-50 px-4 py-3 text-[13px] text-red-600 ring-1 ring-red-100 dark:bg-red-950/40 dark:ring-red-900/50 dark:text-red-400">{error}</p>
+        <p className="rounded-xl bg-red-50 px-4 py-3 text-[13px] text-red-600 ring-1 ring-red-100">{error}</p>
       )}
 
       {/* Result */}
@@ -244,9 +244,9 @@ export function WebpResizerTool() {
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ type: "spring", stiffness: 320, damping: 28 }}
-          className="overflow-hidden rounded-2xl bg-white ring-1 ring-black/6 shadow-[0_4px_24px_-6px_rgba(0,0,0,0.10),0_1px_3px_rgba(0,0,0,0.06)] dark:bg-neutral-900 dark:ring-white/8 dark:shadow-none"
+          className="overflow-hidden rounded-2xl bg-white ring-1 ring-black/6 shadow-[0_4px_24px_-6px_rgba(0,0,0,0.10),0_1px_3px_rgba(0,0,0,0.06)]"
         >
-          <div className="relative h-44 w-full overflow-hidden bg-neutral-100 dark:bg-neutral-800">
+          <div className="relative h-44 w-full overflow-hidden bg-neutral-100">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img src={result.url} alt="" className="h-full w-full object-contain" />
           </div>
@@ -257,7 +257,7 @@ export function WebpResizerTool() {
               </div>
               <span className="text-[13px] font-medium text-foreground">Resized to {width} × {height}px</span>
             </div>
-            <div className="flex items-center justify-between rounded-xl bg-neutral-50 px-3 py-2.5 text-[12px] dark:bg-neutral-800">
+            <div className="flex items-center justify-between rounded-xl bg-neutral-50 px-3 py-2.5 text-[12px]">
               <span className="text-muted-foreground">{formatBytes(file.size)} → {formatBytes(result.blob.size)}</span>
               {savings > 0
                 ? <span className="font-medium text-emerald-600">{savings}% smaller</span>
