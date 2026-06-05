@@ -205,6 +205,18 @@
   animation: none;
 }
 
+.dark .giti-shimmer-pill::before {
+  content: '';
+  position: absolute;
+  inset-inline: 0;
+  top: 0;
+  height: 50%;
+  border-radius: inherit;
+  background: linear-gradient(to bottom, rgba(255,255,255,0.45), transparent);
+  pointer-events: none;
+  z-index: 1;
+}
+
 
 @keyframes flower-wobble {
   0%, 100% { transform: rotate(-6deg); }
