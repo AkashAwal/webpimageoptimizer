@@ -7,7 +7,7 @@ import SoftPillButton from "@/components/ui/soft-pill-button";
 import { DownloadSimple, UploadSimple, X } from "@phosphor-icons/react";
 
 const inputCls = "w-full rounded-xl border border-neutral-200 bg-white px-3 py-2 text-[13px] text-neutral-900 outline-none focus:border-neutral-400 transition-colors dark:border-neutral-600 dark:bg-white dark:text-neutral-900 dark:focus:border-neutral-400";
-const labelCls = "text-[11px] font-medium text-muted-foreground uppercase tracking-wide";
+const labelCls = "text-[11px] font-medium text-neutral-500 uppercase tracking-wide";
 const SIZES = [256, 512, 1024];
 
 async function renderWithLogo(
@@ -96,7 +96,7 @@ export function QrCodeWithLogoClient() {
     <div className="flex flex-col gap-6 lg:flex-row lg:items-start">
       {/* Left */}
       <div className="flex-1 min-w-0 space-y-5">
-        <div className="rounded-2xl bg-white ring-1 ring-black/6 shadow-[0_4px_24px_-6px_rgba(0,0,0,0.10),0_1px_3px_rgba(0,0,0,0.06)] p-5 space-y-4 dark:bg-neutral-950 dark:ring-white/8 dark:shadow-none">
+        <div className="rounded-2xl bg-white ring-1 ring-black/6 shadow-[0_4px_24px_-6px_rgba(0,0,0,0.10),0_1px_3px_rgba(0,0,0,0.06)] p-5 space-y-4 dark:bg-white dark:ring-black/8">
           <div className="space-y-1">
             <label className={labelCls}>URL or text</label>
             <input className={inputCls} placeholder="https://example.com" value={url} onChange={e => setUrl(e.target.value)} />
@@ -151,7 +151,7 @@ export function QrCodeWithLogoClient() {
           )}
         </div>
 
-        <div className="rounded-2xl bg-white ring-1 ring-black/6 shadow-[0_1px_3px_rgba(0,0,0,0.06)] p-5 space-y-4 dark:bg-neutral-950 dark:ring-white/8 dark:shadow-none">
+        <div className="rounded-2xl bg-white ring-1 ring-black/6 shadow-[0_1px_3px_rgba(0,0,0,0.06)] p-5 space-y-4 dark:bg-white dark:ring-black/8">
           <div className="space-y-1.5">
             <label className={labelCls}>Output size</label>
             <div className="flex gap-1.5">
@@ -179,7 +179,7 @@ export function QrCodeWithLogoClient() {
 
       {/* Right: preview */}
       <div className="flex flex-col items-center gap-4 w-full lg:w-[200px] shrink-0">
-        <div className="w-full max-w-[200px] rounded-2xl bg-white ring-1 ring-black/6 shadow-[0_4px_24px_-6px_rgba(0,0,0,0.10),0_1px_3px_rgba(0,0,0,0.06)] p-3 dark:bg-neutral-950 dark:ring-white/8 dark:shadow-none">
+        <div className="w-full max-w-[200px] rounded-2xl bg-white ring-1 ring-black/6 shadow-[0_4px_24px_-6px_rgba(0,0,0,0.10),0_1px_3px_rgba(0,0,0,0.06)] p-3 dark:bg-white dark:ring-black/8">
           {preview
             // eslint-disable-next-line @next/next/no-img-element
             ? <img src={preview} alt="QR code preview" className="w-full rounded-xl" />

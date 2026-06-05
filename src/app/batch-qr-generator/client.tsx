@@ -12,7 +12,7 @@ const SIZES = [256, 512, 1024];
 const ECC_LEVELS: { id: ECC; label: string }[] = [
   { id: "L", label: "L" }, { id: "M", label: "M" }, { id: "Q", label: "Q" }, { id: "H", label: "H" },
 ];
-const labelCls = "text-[11px] font-medium text-muted-foreground uppercase tracking-wide";
+const labelCls = "text-[11px] font-medium text-neutral-500 uppercase tracking-wide";
 
 function slugify(text: string): string {
   return text
@@ -85,7 +85,7 @@ export function BatchQrGeneratorClient() {
   return (
     <div className="space-y-5">
       {/* Input */}
-      <div className="rounded-2xl bg-white ring-1 ring-black/6 shadow-[0_4px_24px_-6px_rgba(0,0,0,0.10),0_1px_3px_rgba(0,0,0,0.06)] p-5 space-y-4 dark:bg-neutral-950 dark:ring-white/8 dark:shadow-none">
+      <div className="rounded-2xl bg-white ring-1 ring-black/6 shadow-[0_4px_24px_-6px_rgba(0,0,0,0.10),0_1px_3px_rgba(0,0,0,0.06)] p-5 space-y-4 dark:bg-white dark:ring-black/8">
         <div className="space-y-1.5">
           <div className="flex items-center justify-between">
             <label className={labelCls}>URLs / Text — one per line</label>
@@ -102,7 +102,7 @@ export function BatchQrGeneratorClient() {
       </div>
 
       {/* Settings */}
-      <div className="rounded-2xl bg-white ring-1 ring-black/6 shadow-[0_1px_3px_rgba(0,0,0,0.06)] p-5 space-y-4 dark:bg-neutral-950 dark:ring-white/8 dark:shadow-none">
+      <div className="rounded-2xl bg-white ring-1 ring-black/6 shadow-[0_1px_3px_rgba(0,0,0,0.06)] p-5 space-y-4 dark:bg-white dark:ring-black/8">
         <div className="grid grid-cols-2 gap-4">
           {/* Size */}
           <div className="space-y-1.5">
