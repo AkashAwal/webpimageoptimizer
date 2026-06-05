@@ -57,7 +57,7 @@ export default function Page() {
           <hr className="border-border" />
 
           <a href="mailto:hello@pixgarage.com?subject=Pix Garage Feedback">
-            <span className="inline-flex h-9 w-full items-center justify-center rounded-full bg-neutral-900/90 px-4 text-[13px] font-medium leading-none text-white ring-1 ring-white/10 shadow-[0_4px_12px_-4px_rgba(0,0,0,0.28)] hover:bg-neutral-900 transition-colors dark:bg-white/90 dark:text-neutral-900 dark:ring-black/10 dark:hover:bg-white">
+            <span className="inline-flex h-9 w-full items-center justify-center rounded-full bg-neutral-900/90 px-4 text-[13px] font-medium leading-none text-white ring-1 ring-white/10 shadow-[0_4px_12px_-4px_rgba(0,0,0,0.28)] hover:bg-neutral-900 transition-colors dark:bg-neutral-700 dark:ring-white/10 dark:hover:bg-neutral-600">
               Send us an email
             </span>
           </a>

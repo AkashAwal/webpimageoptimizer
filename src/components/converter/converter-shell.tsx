@@ -902,7 +902,7 @@ export default function ConverterShell({ type, title }: { type: ConvertType; tit
                   <button key={f} onClick={() => setFilterMode(f)}
                     className={cn(
                       "rounded-md px-2 py-0.5 text-[11px] font-medium capitalize transition-colors",
-                      filterMode === f ? "bg-neutral-900 text-white dark:bg-white dark:text-neutral-900" : "text-muted-foreground hover:bg-neutral-100 dark:hover:bg-neutral-800",
+                      filterMode === f ? "bg-neutral-900 text-white dark:bg-neutral-600 dark:text-white" : "text-muted-foreground hover:bg-neutral-100 dark:hover:bg-neutral-800",
                     )}>
                     {f === "all" ? `All (${files.length})` : f === "done" ? `Done (${doneCount})` : f === "error" ? `Failed (${errorCount})` : `Queued (${queuedCount})`}
                   </button>
@@ -1059,7 +1059,7 @@ export default function ConverterShell({ type, title }: { type: ConvertType; tit
                             <button
                               onClick={() => setExpandedId(isExpanded ? null : item.id)}
                               title="Override quality for this file"
-                              className={cn("rounded-lg p-1.5 transition-colors", isExpanded ? "bg-neutral-900 text-white dark:bg-white dark:text-neutral-900" : "text-neutral-300 hover:bg-neutral-100 hover:text-neutral-600 dark:hover:bg-neutral-800")}
+                              className={cn("rounded-lg p-1.5 transition-colors", isExpanded ? "bg-neutral-900 text-white dark:bg-neutral-600 dark:text-white" : "text-neutral-300 hover:bg-neutral-100 hover:text-neutral-600 dark:hover:bg-neutral-800")}
                             >
                               <SlidersHorizontal size={14} />
                             </button>
@@ -1127,7 +1127,7 @@ export default function ConverterShell({ type, title }: { type: ConvertType; tit
                     ] as const).map(opt => (
                       <button key={opt.id} onClick={() => setSettings(s => ({ ...s, pdfType: opt.id }))}
                         className={cn("flex-1 flex flex-col items-center rounded-lg px-1 py-1.5 transition-colors",
-                          settings.pdfType === opt.id ? "bg-neutral-900 text-white dark:bg-white dark:text-neutral-900" : "bg-neutral-100 text-neutral-600 hover:bg-neutral-200 dark:bg-neutral-800 dark:text-neutral-400 dark:hover:bg-neutral-700")}>
+                          settings.pdfType === opt.id ? "bg-neutral-900 text-white dark:bg-neutral-600 dark:text-white" : "bg-neutral-100 text-neutral-600 hover:bg-neutral-200 dark:bg-neutral-800 dark:text-neutral-400 dark:hover:bg-neutral-700")}>
                         <span className="text-[11px] font-medium leading-tight">{opt.label}</span>
                         <span className={cn("text-[10px] mt-0.5", settings.pdfType === opt.id ? "text-white/60" : "text-neutral-400")}>{opt.sub}</span>
                       </button>
@@ -1162,7 +1162,7 @@ export default function ConverterShell({ type, title }: { type: ConvertType; tit
                         disabled={opt.disabled}
                         className={cn("flex-1 rounded-lg px-1 py-1.5 text-[11px] font-medium transition-colors",
                           opt.disabled ? "bg-neutral-50 text-neutral-300 cursor-not-allowed dark:bg-neutral-900 dark:text-neutral-600" :
-                          settings.pdfFitMode === opt.id ? "bg-neutral-900 text-white dark:bg-white dark:text-neutral-900" : "bg-neutral-100 text-neutral-600 hover:bg-neutral-200 dark:bg-neutral-800 dark:text-neutral-400 dark:hover:bg-neutral-700")}>
+                          settings.pdfFitMode === opt.id ? "bg-neutral-900 text-white dark:bg-neutral-600 dark:text-white" : "bg-neutral-100 text-neutral-600 hover:bg-neutral-200 dark:bg-neutral-800 dark:text-neutral-400 dark:hover:bg-neutral-700")}>
                         {opt.label}
                       </button>
                     ))}
@@ -1183,7 +1183,7 @@ export default function ConverterShell({ type, title }: { type: ConvertType; tit
                         disabled={settings.pdfPageSize === "fit"}
                         className={cn("flex-1 rounded-lg px-1 py-1.5 text-[11px] font-medium transition-colors",
                           settings.pdfPageSize === "fit" ? "bg-neutral-50 text-neutral-300 cursor-not-allowed dark:bg-neutral-900 dark:text-neutral-600" :
-                          settings.pdfOrientation === opt.id ? "bg-neutral-900 text-white dark:bg-white dark:text-neutral-900" : "bg-neutral-100 text-neutral-600 hover:bg-neutral-200 dark:bg-neutral-800 dark:text-neutral-400 dark:hover:bg-neutral-700")}>
+                          settings.pdfOrientation === opt.id ? "bg-neutral-900 text-white dark:bg-neutral-600 dark:text-white" : "bg-neutral-100 text-neutral-600 hover:bg-neutral-200 dark:bg-neutral-800 dark:text-neutral-400 dark:hover:bg-neutral-700")}>
                         {opt.label}
                       </button>
                     ))}
@@ -1214,8 +1214,8 @@ export default function ConverterShell({ type, title }: { type: ConvertType; tit
                       {(["top-left","top-center","top-right","middle-left","middle-center","middle-right","bottom-left","bottom-center","bottom-right"] as const).map(pos => (
                         <button key={pos} onClick={() => setSettings(s => ({ ...s, pdfImageAlign: pos }))}
                           className={cn("size-6 rounded flex items-center justify-center transition-colors",
-                            settings.pdfImageAlign === pos ? "bg-neutral-900 dark:bg-white" : "bg-neutral-100 hover:bg-neutral-200 dark:bg-neutral-800 dark:hover:bg-neutral-700")}>
-                          <div className={cn("size-1.5 rounded-full", settings.pdfImageAlign === pos ? "bg-white dark:bg-neutral-900" : "bg-neutral-400 dark:bg-neutral-500")} />
+                            settings.pdfImageAlign === pos ? "bg-neutral-900 dark:bg-neutral-600" : "bg-neutral-100 hover:bg-neutral-200 dark:bg-neutral-800 dark:hover:bg-neutral-700")}>
+                          <div className={cn("size-1.5 rounded-full", settings.pdfImageAlign === pos ? "bg-white" : "bg-neutral-400 dark:bg-neutral-500")} />
                         </button>
                       ))}
                     </div>
@@ -1273,7 +1273,7 @@ export default function ConverterShell({ type, title }: { type: ConvertType; tit
                       empty
                         ? "bg-neutral-50 text-neutral-300 cursor-not-allowed dark:bg-neutral-900 dark:text-neutral-600"
                         : settings.pdfWatermarkPos === pos
-                          ? "bg-neutral-900 text-white dark:bg-white dark:text-neutral-900"
+                          ? "bg-neutral-900 text-white dark:bg-neutral-600 dark:text-white"
                           : "bg-neutral-100 text-neutral-500 hover:bg-neutral-200 dark:bg-neutral-800 dark:text-neutral-400 dark:hover:bg-neutral-700",
                     );
                     const set = (pos: Settings["pdfWatermarkPos"]) =>
@@ -1360,7 +1360,7 @@ export default function ConverterShell({ type, title }: { type: ConvertType; tit
                         onClick={() => setSettings(s => ({ ...s, quality: p.quality }))}
                         className={cn(
                           "flex-1 flex flex-col items-center rounded-lg px-1 py-1.5 transition-colors",
-                          settings.quality === p.quality ? "bg-neutral-900 text-white dark:bg-white dark:text-neutral-900" : "bg-neutral-100 text-neutral-600 hover:bg-neutral-200 dark:bg-neutral-800 dark:text-neutral-400 dark:hover:bg-neutral-700",
+                          settings.quality === p.quality ? "bg-neutral-900 text-white dark:bg-neutral-600 dark:text-white" : "bg-neutral-100 text-neutral-600 hover:bg-neutral-200 dark:bg-neutral-800 dark:text-neutral-400 dark:hover:bg-neutral-700",
                         )}
                       >
                         <span className="text-[11px] font-medium leading-tight text-center">{p.label}</span>
