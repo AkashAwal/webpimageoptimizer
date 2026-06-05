@@ -24,4 +24,6 @@ export {
   FilePdf,
   ArrowsClockwise,
   ShieldCheck,
+  Sun,
+  Moon,
 } from "@phosphor-icons/react";

@@ -37,7 +37,7 @@ export default function Page() {
 
           <section>
             <h2 className="text-lg font-bold tracking-tight text-foreground mb-2">Summary</h2>
-            <div className="rounded-xl bg-neutral-50 p-4 ring-1 ring-black/5 text-[13px] space-y-1.5">
+            <div className="rounded-xl bg-neutral-50 p-4 ring-1 ring-black/5 text-[13px] space-y-1.5 dark:bg-neutral-800/50 dark:ring-white/6">
               {[
                 "Your images are never uploaded to any server.",
                 "We do not collect, store, or process any personal data.",

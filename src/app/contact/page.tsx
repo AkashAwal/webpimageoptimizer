@@ -35,9 +35,9 @@ export default function Page() {
         </div>
 
         {/* Contact card */}
-        <div className="rounded-2xl bg-white p-6 ring-1 ring-black/6 shadow-[0_4px_24px_-6px_rgba(0,0,0,0.10),0_1px_3px_rgba(0,0,0,0.06)] space-y-5">
+        <div className="rounded-2xl bg-white p-6 ring-1 ring-black/6 shadow-[0_4px_24px_-6px_rgba(0,0,0,0.10),0_1px_3px_rgba(0,0,0,0.06)] space-y-5 dark:bg-neutral-900 dark:ring-white/8 dark:shadow-none">
           <div className="flex items-start gap-4">
-            <div className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-neutral-100 text-neutral-500">
+            <div className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-neutral-100 text-neutral-500 dark:bg-neutral-800 dark:text-neutral-400">
               <EnvelopeSimple size={18} />
             </div>
             <div>
@@ -57,7 +57,7 @@ export default function Page() {
           <hr className="border-border" />
 
           <a href="mailto:hello@pixgarage.com?subject=Pix Garage Feedback">
-            <span className="inline-flex h-9 w-full items-center justify-center rounded-full bg-neutral-900/90 px-4 text-[13px] font-medium leading-none text-white ring-1 ring-white/10 shadow-[0_4px_12px_-4px_rgba(0,0,0,0.28)] hover:bg-neutral-900 transition-colors">
+            <span className="inline-flex h-9 w-full items-center justify-center rounded-full bg-neutral-900/90 px-4 text-[13px] font-medium leading-none text-white ring-1 ring-white/10 shadow-[0_4px_12px_-4px_rgba(0,0,0,0.28)] hover:bg-neutral-900 transition-colors dark:bg-white/90 dark:text-neutral-900 dark:ring-black/10 dark:hover:bg-white">
               Send us an email
             </span>
           </a>
@@ -89,7 +89,7 @@ export default function Page() {
                 <Link
                   key={tool.href}
                   href={tool.href}
-                  className="group flex flex-col gap-1 rounded-xl bg-white p-4 ring-1 ring-black/6 shadow-[0_2px_12px_-4px_rgba(0,0,0,0.08)] transition-shadow hover:shadow-[0_4px_20px_-4px_rgba(0,0,0,0.14)]"
+                  className="group flex flex-col gap-1 rounded-xl bg-white p-4 ring-1 ring-black/6 shadow-[0_2px_12px_-4px_rgba(0,0,0,0.08)] transition-shadow hover:shadow-[0_4px_20px_-4px_rgba(0,0,0,0.14)] dark:bg-neutral-900 dark:ring-white/8 dark:shadow-none dark:hover:shadow-none"
                 >
                   <span className="text-[14px] font-semibold tracking-tight text-foreground group-hover:underline underline-offset-2">
                     {tool.name}

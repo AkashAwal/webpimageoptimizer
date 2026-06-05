@@ -180,7 +180,7 @@ function HomeContent() {
                 "h-8 rounded-full px-4 text-[13px] font-medium transition-colors",
                 activeCategory === cat.id
                   ? "bg-foreground text-white"
-                  : "bg-neutral-100 text-neutral-600 hover:bg-neutral-200",
+                  : "bg-neutral-100 text-neutral-600 hover:bg-neutral-200 dark:bg-neutral-800 dark:text-neutral-400 dark:hover:bg-neutral-700",
               )}
             >
               {cat.label}
@@ -197,13 +197,13 @@ function HomeContent() {
           {filteredTools.map((tool) => (
             <div
               key={tool.href}
-              className="flex flex-col gap-4 rounded-2xl bg-white p-6 ring-1 ring-black/6 shadow-[0_4px_24px_-6px_rgba(0,0,0,0.10),0_1px_3px_rgba(0,0,0,0.06)]"
+              className="flex flex-col gap-4 rounded-2xl bg-white p-6 ring-1 ring-black/6 shadow-[0_4px_24px_-6px_rgba(0,0,0,0.10),0_1px_3px_rgba(0,0,0,0.06)] dark:bg-neutral-900 dark:ring-white/8 dark:shadow-none"
             >
               <div className="flex items-start justify-between gap-3">
-                <div className="flex size-11 items-center justify-center rounded-xl bg-neutral-100 text-neutral-600">
+                <div className="flex size-11 items-center justify-center rounded-xl bg-neutral-100 text-neutral-600 dark:bg-neutral-800 dark:text-neutral-400">
                   {TOOL_ICONS[tool.href]}
                 </div>
-                <span className="inline-flex items-center rounded-full bg-neutral-100 px-2.5 py-0.5 text-[11px] font-medium text-neutral-600 ring-1 ring-black/5">
+                <span className="inline-flex items-center rounded-full bg-neutral-100 px-2.5 py-0.5 text-[11px] font-medium text-neutral-600 ring-1 ring-black/5 dark:bg-neutral-800 dark:text-neutral-400 dark:ring-white/6">
                   {tool.badge}
                 </span>
               </div>
