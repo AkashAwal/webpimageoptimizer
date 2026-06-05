@@ -3,6 +3,7 @@ export const CATEGORIES = [
   { id: "webp", label: "WebP Tools" },
   { id: "pdf", label: "Image to PDF" },
   { id: "pdf-tools", label: "PDF Tools" },
+  { id: "qr", label: "QR Codes" },
 ] as const;
 
 export type CategoryId = (typeof CATEGORIES)[number]["id"];
@@ -319,6 +320,38 @@ export const TOOLS = [
     description: "View two PDF files side by side, page by page. Spot differences between versions visually.",
     badge: "Side by side",
     category: "pdf-tools" as CategoryId,
+  },
+  {
+    href: "/qr-code-generator",
+    name: "QR Code Generator",
+    shortName: "QR Code Generator",
+    description: "Generate QR codes for URLs, text, WiFi, email, phone, and contacts. Download as PNG or SVG.",
+    badge: "Free",
+    category: "qr" as CategoryId,
+  },
+  {
+    href: "/qr-code-reader",
+    name: "QR Code Reader",
+    shortName: "QR Code Scanner & Decoder",
+    description: "Upload an image to decode any QR code instantly. No camera required — works with screenshots too.",
+    badge: "Instant decode",
+    category: "qr" as CategoryId,
+  },
+  {
+    href: "/qr-code-with-logo",
+    name: "QR Code with Logo",
+    shortName: "QR Code Generator with Logo",
+    description: "Generate a QR code with your logo or image embedded in the centre. Download as PNG.",
+    badge: "Custom logo",
+    category: "qr" as CategoryId,
+  },
+  {
+    href: "/batch-qr-generator",
+    name: "Batch QR Generator",
+    shortName: "Bulk QR Code Generator",
+    description: "Paste a list of URLs or text — generate hundreds of QR codes at once and download as a ZIP.",
+    badge: "Bulk export",
+    category: "qr" as CategoryId,
   },
 ] as const;
 

@@ -24,4 +24,6 @@ export {
   FilePdf,
   ArrowsClockwise,
   ShieldCheck,
+  QrCode,
+  Scan,
 } from "@phosphor-icons/react";

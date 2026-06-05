@@ -34,6 +34,8 @@ import {
   PencilSimple,
   MagnifyingGlass,
   Columns,
+  QrCode,
+  Scan,
 } from "@phosphor-icons/react";
 
 import { SiteHeader } from "@/components/layout/site-header";
@@ -100,6 +102,10 @@ const TOOL_ICONS: Record<string, React.ReactNode> = {
   "/ocr-pdf": <MagnifyingGlass size={22} />,
   "/edit-pdf": <PencilSimple size={22} />,
   "/compare-pdf": <Columns size={22} />,
+  "/qr-code-generator": <QrCode size={22} />,
+  "/qr-code-reader": <Scan size={22} />,
+  "/qr-code-with-logo": <QrCode size={22} />,
+  "/batch-qr-generator": <QrCode size={22} />,
 };
 
 function HomeContent() {
