@@ -200,9 +200,25 @@
 }
 
 .dark .giti-shimmer-pill {
-  background-image: none;
-  background-color: #ffffff;
+  background-image: linear-gradient(
+    90deg,
+    #ffffff 0%,
+    #ffffff 25%,
+    #ede9fe 38%,
+    #a78bfa 46%,
+    #67e8f9 50%,
+    #fed7aa 54%,
+    #ffffff 62%,
+    #ffffff 75%,
+    #ffffff 100%
+  );
+  background-size: 300% 100%;
+  background-position: 100% 50%;
   animation: none;
+}
+
+.dark .giti-shimmer-pill:hover {
+  animation: giti-shimmer 2s cubic-bezier(0.45, 0, 0.55, 1) 1 forwards;
 }
 
 .dark .giti-shimmer-pill::before {
