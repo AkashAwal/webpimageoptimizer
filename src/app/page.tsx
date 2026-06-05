@@ -179,8 +179,8 @@ function HomeContent() {
               className={cn(
                 "h-8 rounded-full px-4 text-[13px] font-medium transition-colors",
                 activeCategory === cat.id
-                  ? "bg-foreground text-white"
-                  : "bg-neutral-100 text-neutral-600 hover:bg-neutral-200 dark:bg-neutral-800 dark:text-neutral-400 dark:hover:bg-neutral-700",
+                  ? "bg-foreground text-white dark:bg-white dark:text-neutral-900"
+                  : "bg-neutral-100 text-neutral-600 hover:bg-neutral-200 dark:bg-white/80 dark:text-neutral-800 dark:hover:bg-white",
               )}
             >
               {cat.label}
