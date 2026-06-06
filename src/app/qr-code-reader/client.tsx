@@ -75,10 +75,10 @@ export function QrCodeReaderClient() {
           onClick={() => inputRef.current?.click()}
           className={cn(
             "flex cursor-pointer flex-col items-center justify-center gap-3 rounded-2xl border-2 border-dashed px-8 py-16 text-center transition-colors select-none",
-            dragging ? "border-foreground/30 bg-neutral-50 dark:bg-neutral-800/40" : "border-border hover:border-foreground/20 hover:bg-neutral-50/60 dark:hover:bg-neutral-800/30",
+            dragging ? "border-foreground/30 bg-neutral-50" : "border-border hover:border-foreground/20 hover:bg-neutral-50/60",
           )}
         >
-          <div className="flex size-11 items-center justify-center rounded-xl bg-neutral-100 text-neutral-400 dark:bg-neutral-800 dark:text-neutral-500">
+          <div className="flex size-11 items-center justify-center rounded-xl bg-neutral-100 text-neutral-400">
             <UploadSimple size={20} />
           </div>
           <div>
@@ -91,9 +91,9 @@ export function QrCodeReaderClient() {
       )}
 
       {(state === "decoding" || state === "done" || state === "error") && (
-        <div className="rounded-2xl bg-white ring-1 ring-black/6 shadow-[0_4px_24px_-6px_rgba(0,0,0,0.10),0_1px_3px_rgba(0,0,0,0.06)] overflow-hidden dark:bg-neutral-900 dark:ring-white/8 dark:shadow-none">
+        <div className="rounded-2xl bg-white ring-1 ring-black/6 shadow-[0_4px_24px_-6px_rgba(0,0,0,0.10),0_1px_3px_rgba(0,0,0,0.06)] overflow-hidden">
           {previewUrl && (
-            <div className="relative h-52 w-full overflow-hidden bg-neutral-100 dark:bg-neutral-800">
+            <div className="relative h-52 w-full overflow-hidden bg-neutral-100">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img src={previewUrl} alt="" className="h-full w-full object-contain" />
             </div>
@@ -112,7 +112,7 @@ export function QrCodeReaderClient() {
                   </div>
                   <span className="text-[13px] font-medium text-foreground">QR code decoded</span>
                 </div>
-                <div className="rounded-xl bg-neutral-50 px-4 py-3 ring-1 ring-black/5 dark:bg-neutral-800 dark:ring-white/6">
+                <div className="rounded-xl bg-neutral-50 px-4 py-3 ring-1 ring-black/5">
                   <p className="text-[13px] text-foreground break-all font-mono leading-relaxed">{result}</p>
                 </div>
                 <div className="flex gap-2">
