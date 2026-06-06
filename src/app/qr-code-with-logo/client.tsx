@@ -120,7 +120,7 @@ export function QrCodeWithLogoClient() {
                   // eslint-disable-next-line @next/next/no-img-element
                   <img src={logoUrl} alt="" className="size-8 rounded-md object-contain bg-white dark:bg-neutral-700" />
                 )}
-                <span className="flex-1 text-[12px] font-medium text-foreground truncate">{logoFile.name}</span>
+                <span className="flex-1 text-[12px] font-medium text-white truncate">{logoFile.name}</span>
                 <button onClick={removeLogo} className="shrink-0 text-neutral-400 hover:text-red-500 transition-colors">
                   <X size={14} />
                 </button>
