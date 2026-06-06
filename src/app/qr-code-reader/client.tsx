@@ -120,7 +120,7 @@ export function QrCodeReaderClient() {
                     {copied ? <><Check size={12} weight="bold" />Copied</> : <><Copy size={12} />Copy text</>}
                   </SoftPillButton>
                   {isUrl && (
-                    <SoftPillButton variant="secondary" onClick={() => window.open(result, "_blank", "noopener")} className="h-9 px-4 text-[12px]">
+                    <SoftPillButton variant="secondary" onClick={() => window.open(result, "_blank", "noopener")} className="flex-1 h-9 text-[12px]">
                       <ArrowSquareOut size={13} /> Open URL
                     </SoftPillButton>
                   )}
