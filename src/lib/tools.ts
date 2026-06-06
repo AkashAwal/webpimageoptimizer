@@ -4,6 +4,7 @@ export const CATEGORIES = [
   { id: "pdf", label: "Image to PDF" },
   { id: "pdf-tools", label: "PDF Tools" },
   { id: "qr", label: "QR Codes" },
+  { id: "image-tools", label: "Image Tools" },
 ] as const;
 
 export type CategoryId = (typeof CATEGORIES)[number]["id"];
@@ -352,6 +353,38 @@ export const TOOLS = [
     description: "Paste a list of URLs or text — generate hundreds of QR codes at once and download as a ZIP.",
     badge: "Bulk export",
     category: "qr" as CategoryId,
+  },
+  {
+    href: "/image-compressor",
+    name: "Image Compressor",
+    shortName: "Image Compressor",
+    description: "Compress JPEG, PNG, and WebP images with a quality slider. See size savings before downloading.",
+    badge: "Lossy & lossless",
+    category: "image-tools" as CategoryId,
+  },
+  {
+    href: "/image-cropper",
+    name: "Image Cropper",
+    shortName: "Free Image Cropper",
+    description: "Crop any image to a custom area or preset ratio — 1:1, 16:9, 4:3, and more. Export as PNG.",
+    badge: "Preset ratios",
+    category: "image-tools" as CategoryId,
+  },
+  {
+    href: "/background-remover",
+    name: "Background Remover",
+    shortName: "Remove Image Background",
+    description: "Remove the background from any photo using AI — runs entirely in your browser, no upload needed.",
+    badge: "AI-powered",
+    category: "image-tools" as CategoryId,
+  },
+  {
+    href: "/favicon-generator",
+    name: "Favicon Generator",
+    shortName: "Favicon Generator",
+    description: "Upload any image and download a complete favicon set: ICO, 16×16, 32×32, 48×48, 64×64, 128×128, 256×256 PNG.",
+    badge: "Multi-size ZIP",
+    category: "image-tools" as CategoryId,
   },
 ] as const;
 

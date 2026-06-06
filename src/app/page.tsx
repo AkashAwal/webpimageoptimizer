@@ -36,6 +36,9 @@ import {
   Columns,
   QrCode,
   Scan,
+  FileZip,
+  Eraser,
+  Gauge,
 } from "@phosphor-icons/react";
 
 import { SiteHeader } from "@/components/layout/site-header";
@@ -106,6 +109,10 @@ const TOOL_ICONS: Record<string, React.ReactNode> = {
   "/qr-code-reader": <Scan size={22} />,
   "/qr-code-with-logo": <QrCode size={22} />,
   "/batch-qr-generator": <QrCode size={22} />,
+  "/image-compressor": <Gauge size={22} />,
+  "/image-cropper": <Crop size={22} />,
+  "/background-remover": <Eraser size={22} />,
+  "/favicon-generator": <FileZip size={22} />,
 };
 
 function HomeContent() {
