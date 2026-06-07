@@ -12,7 +12,7 @@ export type CategoryId = (typeof CATEGORIES)[number]["id"];
 export const TOOLS = [
   {
     href: "/png-to-webp",
-    name: "PNG → WebP",
+    name: "PNG to WebP",
     shortName: "PNG to WebP Converter",
     description: "Convert PNG images to WebP format. Dramatically smaller files at the same visual quality.",
     badge: "Lossless source",
@@ -20,7 +20,7 @@ export const TOOLS = [
   },
   {
     href: "/jpg-to-webp",
-    name: "JPG → WebP",
+    name: "JPG to WebP",
     shortName: "JPG to WebP Converter",
     description: "Convert JPEG photos to WebP. Up to 34% smaller than JPEG at comparable quality.",
     badge: "Lossy optimized",
@@ -28,7 +28,7 @@ export const TOOLS = [
   },
   {
     href: "/gif-to-webp",
-    name: "GIF → WebP",
+    name: "GIF to WebP",
     shortName: "GIF to WebP Converter",
     description: "Convert GIF images to WebP for smaller static frames and more efficient compression.",
     badge: "Static frame",
@@ -36,7 +36,7 @@ export const TOOLS = [
   },
   {
     href: "/avif-to-webp",
-    name: "AVIF → WebP",
+    name: "AVIF to WebP",
     shortName: "AVIF to WebP Converter",
     description: "Convert AVIF images to WebP for broader browser compatibility. No upload required.",
     badge: "Modern format",
@@ -44,7 +44,7 @@ export const TOOLS = [
   },
   {
     href: "/bmp-to-webp",
-    name: "BMP → WebP",
+    name: "BMP to WebP",
     shortName: "BMP to WebP Converter",
     description: "Convert uncompressed BMP files to WebP. Achieve massive size reduction instantly.",
     badge: "Uncompressed in",
@@ -52,7 +52,7 @@ export const TOOLS = [
   },
   {
     href: "/tiff-to-webp",
-    name: "TIFF → WebP",
+    name: "TIFF to WebP",
     shortName: "TIFF to WebP Converter",
     description: "Convert high-resolution TIFF images to lightweight WebP for web use.",
     badge: "High-res source",
@@ -60,7 +60,7 @@ export const TOOLS = [
   },
   {
     href: "/svg-to-webp",
-    name: "SVG → WebP",
+    name: "SVG to WebP",
     shortName: "SVG to WebP Converter",
     description: "Rasterize SVG vector graphics to WebP. Crisp output at your chosen quality.",
     badge: "Vector to raster",
@@ -68,7 +68,7 @@ export const TOOLS = [
   },
   {
     href: "/ico-to-webp",
-    name: "ICO → WebP",
+    name: "ICO to WebP",
     shortName: "ICO to WebP Converter",
     description: "Extract and convert ICO icon files to WebP. Great for repurposing favicons.",
     badge: "Icon extract",
@@ -76,7 +76,7 @@ export const TOOLS = [
   },
   {
     href: "/jfif-to-webp",
-    name: "JFIF → WebP",
+    name: "JFIF to WebP",
     shortName: "JFIF to WebP Converter",
     description: "Convert JFIF photos to WebP. JFIF is a JPEG variant — get up to 34% smaller files.",
     badge: "JPEG variant",
@@ -84,7 +84,7 @@ export const TOOLS = [
   },
   {
     href: "/pdf-to-webp",
-    name: "PDF → WebP",
+    name: "PDF to WebP",
     shortName: "PDF to WebP Converter",
     description: "Convert the first page of a PDF document to a WebP image for thumbnails and previews.",
     badge: "First page",
@@ -108,7 +108,7 @@ export const TOOLS = [
   },
   {
     href: "/heic-to-webp",
-    name: "HEIC → WebP",
+    name: "HEIC to WebP",
     shortName: "HEIC to WebP Converter",
     description: "Convert iPhone HEIC photos to WebP. Works in Chrome and Firefox via WebAssembly.",
     badge: "Cross-browser",
@@ -116,7 +116,7 @@ export const TOOLS = [
   },
   {
     href: "/html-to-pdf",
-    name: "HTML → PDF",
+    name: "HTML to PDF",
     shortName: "HTML to PDF Converter",
     description: "Convert HTML files to PDF in your browser. Drop any .html file for a private, instant, no-upload conversion.",
     badge: "No upload",
@@ -124,7 +124,7 @@ export const TOOLS = [
   },
   {
     href: "/jpg-to-pdf",
-    name: "JPG → PDF",
+    name: "JPG to PDF",
     shortName: "JPG to PDF Converter",
     description: "Convert JPEG photos to PDF in your browser. Each image becomes a perfectly sized page.",
     badge: "Lossless pages",
@@ -132,7 +132,7 @@ export const TOOLS = [
   },
   {
     href: "/png-to-pdf",
-    name: "PNG → PDF",
+    name: "PNG to PDF",
     shortName: "PNG to PDF Converter",
     description: "Convert PNG images to PDF instantly. Preserves detail and supports transparent backgrounds.",
     badge: "Alpha safe",
@@ -140,7 +140,7 @@ export const TOOLS = [
   },
   {
     href: "/webp-to-pdf",
-    name: "WebP → PDF",
+    name: "WebP to PDF",
     shortName: "WebP to PDF Converter",
     description: "Convert WebP images to PDF format for sharing, printing, or archiving.",
     badge: "Modern format",
@@ -148,7 +148,7 @@ export const TOOLS = [
   },
   {
     href: "/heic-to-pdf",
-    name: "HEIC → PDF",
+    name: "HEIC to PDF",
     shortName: "HEIC to PDF Converter",
     description: "Convert iPhone HEIC photos directly to PDF. No cloud upload, works in Chrome and Firefox.",
     badge: "iPhone photos",
@@ -156,7 +156,7 @@ export const TOOLS = [
   },
   {
     href: "/bmp-to-pdf",
-    name: "BMP → PDF",
+    name: "BMP to PDF",
     shortName: "BMP to PDF Converter",
     description: "Convert uncompressed BMP files to PDF. Instantly shrink file size while preserving detail.",
     badge: "Uncompressed in",
@@ -164,7 +164,7 @@ export const TOOLS = [
   },
   {
     href: "/tiff-to-pdf",
-    name: "TIFF → PDF",
+    name: "TIFF to PDF",
     shortName: "TIFF to PDF Converter",
     description: "Convert high-resolution TIFF images to PDF for easy sharing and printing.",
     badge: "High-res source",
@@ -172,7 +172,7 @@ export const TOOLS = [
   },
   {
     href: "/gif-to-pdf",
-    name: "GIF → PDF",
+    name: "GIF to PDF",
     shortName: "GIF to PDF Converter",
     description: "Convert GIF images to PDF. Extracts the first frame for a clean static page.",
     badge: "Static frame",
@@ -180,7 +180,7 @@ export const TOOLS = [
   },
   {
     href: "/svg-to-pdf",
-    name: "SVG → PDF",
+    name: "SVG to PDF",
     shortName: "SVG to PDF Converter",
     description: "Rasterize SVG vector graphics to PDF. Choose your output dimensions for crisp results.",
     badge: "Vector to PDF",
@@ -188,7 +188,7 @@ export const TOOLS = [
   },
   {
     href: "/avif-to-pdf",
-    name: "AVIF → PDF",
+    name: "AVIF to PDF",
     shortName: "AVIF to PDF Converter",
     description: "Convert AVIF images to PDF for broader compatibility with document workflows.",
     badge: "Modern format",
@@ -196,7 +196,7 @@ export const TOOLS = [
   },
   {
     href: "/ico-to-pdf",
-    name: "ICO → PDF",
+    name: "ICO to PDF",
     shortName: "ICO to PDF Converter",
     description: "Extract and convert ICO icon files to PDF. Useful for documenting icon sets.",
     badge: "Icon extract",
@@ -204,7 +204,7 @@ export const TOOLS = [
   },
   {
     href: "/jfif-to-pdf",
-    name: "JFIF → PDF",
+    name: "JFIF to PDF",
     shortName: "JFIF to PDF Converter",
     description: "Convert JFIF photos to PDF. JFIF is a JPEG variant — full quality preserved in the output.",
     badge: "JPEG variant",

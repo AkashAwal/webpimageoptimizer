@@ -5,7 +5,7 @@ export function SiteFooter() {
   return (
     <footer className="mt-auto border-t border-border">
       <div className="mx-auto w-full max-w-7xl px-6 py-12 sm:px-10">
-        <div className="grid grid-cols-1 gap-10 sm:grid-cols-4">
+        <div className="grid grid-cols-1 gap-10 sm:grid-cols-3">
           {/* Brand */}
           <div className="sm:col-span-1">
             <Link href="/" className="flex items-center gap-2">
@@ -19,25 +19,6 @@ export function SiteFooter() {
             <p className="mt-3 text-[13px] leading-relaxed text-muted-foreground">
               Free image conversion tools that run entirely in your browser. Nothing uploaded, nothing stored.
             </p>
-          </div>
-
-          {/* Tools */}
-          <div>
-            <p className="text-[12px] font-semibold uppercase tracking-widest text-muted-foreground">
-              Tools
-            </p>
-            <ul className="mt-3 space-y-2">
-              {TOOLS.map((tool) => (
-                <li key={tool.href}>
-                  <Link
-                    href={tool.href}
-                    className="text-[13px] text-muted-foreground hover:text-foreground transition-colors"
-                  >
-                    {tool.name}
-                  </Link>
-                </li>
-              ))}
-            </ul>
           </div>
 
           {/* Sitemap */}
@@ -89,7 +70,23 @@ export function SiteFooter() {
           </div>
         </div>
 
-        <div className="mt-10 border-t border-border pt-6 flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+        {/* All tools — compact flex wrap */}
+        <div className="mt-10 border-t border-border pt-6">
+          <p className="text-[11px] font-semibold uppercase tracking-widest text-muted-foreground mb-3">All Tools</p>
+          <div className="flex flex-wrap gap-x-5 gap-y-2">
+            {TOOLS.map((tool) => (
+              <Link
+                key={tool.href}
+                href={tool.href}
+                className="text-[12px] text-muted-foreground hover:text-foreground transition-colors"
+              >
+                {tool.name}
+              </Link>
+            ))}
+          </div>
+        </div>
+
+        <div className="mt-8 border-t border-border pt-6 flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
           <p className="text-[12px] text-muted-foreground">
             © {new Date().getFullYear()} Pix Garage. All rights reserved.
           </p>
