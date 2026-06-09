@@ -10,37 +10,46 @@ const SIZES = [16, 32, 48, 64, 128, 256];
 
 type State = "idle" | "generating" | "done" | "error";
 
+function makeCtx(w: number, h: number) {
+  const c = document.createElement("canvas");
+  c.width = w;
+  c.height = h;
+  const ctx = c.getContext("2d")!;
+  ctx.imageSmoothingEnabled = true;
+  ctx.imageSmoothingQuality = "high";
+  return { c, ctx };
+}
+
 async function resizeToCanvas(img: HTMLImageElement, size: number): Promise<HTMLCanvasElement> {
   const natW = img.naturalWidth || img.width;
   const natH = img.naturalHeight || img.height;
 
-  // Step down in halves to avoid bilinear-blur artefacts on large→small resizes
+  // Step down by halves so each pass loses at most half the pixels —
+  // single large→tiny draws produce heavy blur/mixing artefacts.
   let w = natW;
   let h = natH;
   let src: CanvasImageSource = img;
 
   while (w > size * 2 || h > size * 2) {
-    w = Math.max(Math.ceil(w / 2), size);
-    h = Math.max(Math.ceil(h / 2), size);
-    const tmp = document.createElement("canvas");
-    tmp.width = w;
-    tmp.height = h;
-    tmp.getContext("2d")!.drawImage(src, 0, 0, w, h);
-    src = tmp;
+    const nextW = Math.max(Math.floor(w / 2), size);
+    const nextH = Math.max(Math.floor(h / 2), size);
+    const { c, ctx } = makeCtx(nextW, nextH);
+    ctx.drawImage(src, 0, 0, nextW, nextH);
+    src = c;
+    w = nextW;
+    h = nextH;
   }
 
-  // Preserve aspect ratio — center inside the square (contain, transparent fill)
+  // Contain-fit: preserve aspect ratio, center in square, transparent fill
   const scale = Math.min(size / w, size / h);
   const dw = Math.round(w * scale);
   const dh = Math.round(h * scale);
   const dx = Math.floor((size - dw) / 2);
   const dy = Math.floor((size - dh) / 2);
 
-  const canvas = document.createElement("canvas");
-  canvas.width = size;
-  canvas.height = size;
-  canvas.getContext("2d")!.drawImage(src, dx, dy, dw, dh);
-  return canvas;
+  const { c, ctx } = makeCtx(size, size);
+  ctx.drawImage(src, dx, dy, dw, dh);
+  return c;
 }
 
 async function canvasToBlob(canvas: HTMLCanvasElement, mime = "image/png"): Promise<Blob> {
