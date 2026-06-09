@@ -10,6 +10,9 @@ export const metadata: Metadata = {
   title: "AVIF to WebP Converter — Free, In-Browser, No Upload",
   description:
     "Convert AVIF images to WebP format instantly in your browser. No upload, no signup. Improve compatibility without sacrificing quality. Free AVIF to WebP converter.",
+  openGraph: {
+    images: [{ url: "/og/avif-to-webp.png", width: 1200, height: 630 }],
+  },
 };
 
 export default function Page() {

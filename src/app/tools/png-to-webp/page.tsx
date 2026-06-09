@@ -10,6 +10,9 @@ export const metadata: Metadata = {
   title: "PNG to WebP Converter — Free, In-Browser, No Upload",
   description:
     "Convert PNG images to WebP format instantly in your browser. No upload, no signup. Smaller file sizes, same visual quality. Free PNG to WebP converter.",
+  openGraph: {
+    images: [{ url: "/og/png-to-webp.png", width: 1200, height: 630 }],
+  },
 };
 
 export default function Page() {

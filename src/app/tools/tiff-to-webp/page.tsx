@@ -10,6 +10,9 @@ export const metadata: Metadata = {
   title: "TIFF to WebP Converter — Free, In-Browser, No Upload",
   description:
     "Convert TIFF images to WebP format in your browser. No upload, no signup. Reduce large TIFF files to lightweight WebP for web use. Free TIFF to WebP converter.",
+  openGraph: {
+    images: [{ url: "/og/tiff-to-webp.png", width: 1200, height: 630 }],
+  },
 };
 
 export default function Page() {

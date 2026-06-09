@@ -8,6 +8,9 @@ export const metadata: Metadata = {
   title: "HEIC to PDF Converter — Free, In-Browser, No Upload",
   description:
     "Convert iPhone HEIC photos to PDF directly in your browser. No upload, no signup. Works in Chrome and Firefox via WebAssembly. Free HEIC to PDF converter.",
+  openGraph: {
+    images: [{ url: "/og/heic-to-pdf.png", width: 1200, height: 630 }],
+  },
 };
 
 export default function Page() {

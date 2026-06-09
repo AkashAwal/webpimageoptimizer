@@ -7,6 +7,9 @@ import { OtherTools } from "@/components/converter/other-tools";
 export const metadata: Metadata = {
   title: "Crop PDF — Trim Page Margins Free, In-Browser, No Upload",
   description: "Remove unwanted margins from every page of a PDF by adjusting the CropBox. Free, in-browser, no upload. Enter trim amounts in points and download instantly.",
+  openGraph: {
+    images: [{ url: "/og/crop-pdf.png", width: 1200, height: 630 }],
+  },
 };
 
 export default function Page() {

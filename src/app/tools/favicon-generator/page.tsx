@@ -10,6 +10,9 @@ export const metadata: Metadata = {
   title: "Favicon Generator — Free, In-Browser, No Upload",
   description:
     "Upload any image and download a complete favicon set: ICO, 16×16, 32×32, 48×48, 64×64, 128×128, 256×256 PNG, and 180×180 Apple touch icon. Free, no upload.",
+  openGraph: {
+    images: [{ url: "/og/favicon-generator.png", width: 1200, height: 630 }],
+  },
 };
 
 export default function Page() {

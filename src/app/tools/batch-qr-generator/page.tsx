@@ -10,6 +10,9 @@ export const metadata: Metadata = {
   title: "Batch QR Code Generator — Generate Hundreds at Once, Free",
   description:
     "Paste a list of URLs or text — one per line — and generate a QR code for each instantly. Download all as a ZIP file. Free, private, and nothing is uploaded.",
+  openGraph: {
+    images: [{ url: "/og/batch-qr-generator.png", width: 1200, height: 630 }],
+  },
 };
 
 export default function Page() {

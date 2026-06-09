@@ -8,6 +8,9 @@ export const metadata: Metadata = {
   title: "ICO to PDF Converter — Free, In-Browser, No Upload",
   description:
     "Convert ICO icon files to PDF in your browser. Useful for documenting icon sets or repurposing favicons. No upload, no signup. Free ICO to PDF converter.",
+  openGraph: {
+    images: [{ url: "/og/ico-to-pdf.png", width: 1200, height: 630 }],
+  },
 };
 
 export default function Page() {

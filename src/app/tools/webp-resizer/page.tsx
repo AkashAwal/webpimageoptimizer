@@ -10,6 +10,9 @@ export const metadata: Metadata = {
   title: "WebP Resizer — Resize Images to Any Size, Free & In-Browser",
   description:
     "Resize PNG, JPG, WebP, or GIF images to custom dimensions and export as WebP. Aspect ratio lock, adjustable quality. Free, client-side, no upload.",
+  openGraph: {
+    images: [{ url: "/og/webp-resizer.png", width: 1200, height: 630 }],
+  },
 };
 
 export default function Page() {

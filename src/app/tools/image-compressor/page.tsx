@@ -10,6 +10,9 @@ export const metadata: Metadata = {
   title: "Image Compressor — Free, In-Browser, No Upload",
   description:
     "Compress JPEG, PNG, and WebP images online. Adjust quality with a slider and see exact file size savings before downloading. Free, private, no upload.",
+  openGraph: {
+    images: [{ url: "/og/image-compressor.png", width: 1200, height: 630 }],
+  },
 };
 
 export default function Page() {

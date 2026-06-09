@@ -8,6 +8,9 @@ export const metadata: Metadata = {
   title: "SVG to PDF Converter — Free, In-Browser, No Upload",
   description:
     "Convert SVG vector graphics to PDF in your browser. Rasterize at any dimensions for crisp print-ready output. No upload, no signup. Free SVG to PDF converter.",
+  openGraph: {
+    images: [{ url: "/og/svg-to-pdf.png", width: 1200, height: 630 }],
+  },
 };
 
 export default function Page() {

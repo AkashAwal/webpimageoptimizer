@@ -10,6 +10,9 @@ export const metadata: Metadata = {
   title: "QR Code with Logo — Embed Your Brand, Free, In-Browser",
   description:
     "Generate a QR code with your logo or image embedded in the centre. Adjust logo size and shape. Download as PNG. Free and private — nothing is uploaded.",
+  openGraph: {
+    images: [{ url: "/og/qr-code-with-logo.png", width: 1200, height: 630 }],
+  },
 };
 
 export default function Page() {

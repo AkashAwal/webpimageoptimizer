@@ -10,6 +10,9 @@ export const metadata: Metadata = {
   title: "HEIC to WebP Converter — Free, In-Browser, No Upload",
   description:
     "Convert iPhone HEIC and HEIF photos to WebP format free in your browser. No upload, cross-browser via WebAssembly. Convert Apple HEIC to WebP online.",
+  openGraph: {
+    images: [{ url: "/og/heic-to-webp.png", width: 1200, height: 630 }],
+  },
 };
 
 export default function Page() {

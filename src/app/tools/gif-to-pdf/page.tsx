@@ -8,6 +8,9 @@ export const metadata: Metadata = {
   title: "GIF to PDF Converter — Free, In-Browser, No Upload",
   description:
     "Convert GIF images to PDF in your browser. Extracts the first frame as a clean static PDF page. No upload, no signup. Free GIF to PDF converter.",
+  openGraph: {
+    images: [{ url: "/og/gif-to-pdf.png", width: 1200, height: 630 }],
+  },
 };
 
 export default function Page() {

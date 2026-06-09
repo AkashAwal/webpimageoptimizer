@@ -7,6 +7,9 @@ import { OtherTools } from "@/components/converter/other-tools";
 export const metadata: Metadata = {
   title: "Sign PDF — Add Signature Free, In-Browser, No Upload",
   description: "Sign a PDF by drawing or typing your signature directly in the browser. Place it anywhere on any page and download the signed file. Free, no upload.",
+  openGraph: {
+    images: [{ url: "/og/sign-pdf.png", width: 1200, height: 630 }],
+  },
 };
 
 export default function Page() {

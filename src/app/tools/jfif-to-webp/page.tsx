@@ -10,6 +10,9 @@ export const metadata: Metadata = {
   title: "JFIF to WebP Converter — Free, In-Browser, No Upload",
   description:
     "Convert JFIF photos to WebP format instantly in your browser. No upload, no signup. JFIF is a JPEG variant — get up to 34% smaller files with WebP. Free converter.",
+  openGraph: {
+    images: [{ url: "/og/jfif-to-webp.png", width: 1200, height: 630 }],
+  },
 };
 
 export default function Page() {

@@ -10,6 +10,9 @@ export const metadata: Metadata = {
   title: "Background Remover — Free AI, In-Browser, No Upload",
   description:
     "Remove the background from any photo using AI — runs entirely in your browser. No upload, no API key. Download a transparent PNG instantly.",
+  openGraph: {
+    images: [{ url: "/og/background-remover.png", width: 1200, height: 630 }],
+  },
 };
 
 export default function Page() {

@@ -10,6 +10,9 @@ export const metadata: Metadata = {
   title: "QR Code Generator — Free, In-Browser, No Upload",
   description:
     "Generate QR codes for URLs, plain text, WiFi networks, email addresses, phone numbers, and contacts. Download as PNG or SVG. Free and private — nothing is uploaded.",
+  openGraph: {
+    images: [{ url: "/og/qr-code-generator.png", width: 1200, height: 630 }],
+  },
 };
 
 export default function Page() {

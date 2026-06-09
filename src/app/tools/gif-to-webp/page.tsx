@@ -10,6 +10,9 @@ export const metadata: Metadata = {
   title: "GIF to WebP Converter — Free, In-Browser, No Upload",
   description:
     "Convert GIF images to WebP format instantly in your browser. No upload, no signup. Smaller file sizes, better compression than GIF. Free GIF to WebP converter.",
+  openGraph: {
+    images: [{ url: "/og/gif-to-webp.png", width: 1200, height: 630 }],
+  },
 };
 
 export default function Page() {

@@ -7,6 +7,9 @@ import { OtherTools } from "@/components/converter/other-tools";
 export const metadata: Metadata = {
   title: "Extract Text from PDF — OCR, Free, In-Browser, No Upload",
   description: "Extract text from scanned or image-based PDFs using OCR directly in your browser. Supports 6 languages. Copy or download the result as a text file. Free, no upload.",
+  openGraph: {
+    images: [{ url: "/og/ocr-pdf.png", width: 1200, height: 630 }],
+  },
 };
 
 export default function Page() {

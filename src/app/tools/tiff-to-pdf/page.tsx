@@ -8,6 +8,9 @@ export const metadata: Metadata = {
   title: "TIFF to PDF Converter — Free, In-Browser, No Upload",
   description:
     "Convert high-resolution TIFF images to PDF in your browser. Perfect for scanned documents and print-ready files. No upload, no signup. Free TIFF to PDF converter.",
+  openGraph: {
+    images: [{ url: "/og/tiff-to-pdf.png", width: 1200, height: 630 }],
+  },
 };
 
 export default function Page() {

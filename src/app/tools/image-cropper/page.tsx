@@ -10,6 +10,9 @@ export const metadata: Metadata = {
   title: "Image Cropper — Free, In-Browser, No Upload",
   description:
     "Crop images online to a custom area or preset ratio — 1:1, 16:9, 4:3, 3:2, and more. Drag crop handles directly on the image. Free, private, no upload.",
+  openGraph: {
+    images: [{ url: "/og/image-cropper.png", width: 1200, height: 630 }],
+  },
 };
 
 export default function Page() {

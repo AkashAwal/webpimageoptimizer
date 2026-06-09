@@ -8,6 +8,9 @@ export const metadata: Metadata = {
   title: "HTML to PDF Converter — Free, In-Browser, No Upload",
   description:
     "Convert HTML files to PDF instantly in your browser. Drop any .html file and download a pixel-perfect PDF. No upload, no signup, completely private.",
+  openGraph: {
+    images: [{ url: "/og/html-to-pdf.png", width: 1200, height: 630 }],
+  },
 };
 
 export default function Page() {

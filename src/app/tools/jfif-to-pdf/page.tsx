@@ -8,6 +8,9 @@ export const metadata: Metadata = {
   title: "JFIF to PDF Converter — Free, In-Browser, No Upload",
   description:
     "Convert JFIF photos to PDF in your browser. JFIF is a JPEG variant — full quality preserved in the PDF output. No upload, no signup. Free JFIF to PDF converter.",
+  openGraph: {
+    images: [{ url: "/og/jfif-to-pdf.png", width: 1200, height: 630 }],
+  },
 };
 
 export default function Page() {

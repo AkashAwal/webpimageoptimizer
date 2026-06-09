@@ -7,6 +7,9 @@ import { OtherTools } from "@/components/converter/other-tools";
 export const metadata: Metadata = {
   title: "Unlock PDF — Remove Password Free, In-Browser, No Upload",
   description: "Remove the password from a PDF file instantly in your browser. Enter the current password and download an unlocked copy. Free, no upload, completely private.",
+  openGraph: {
+    images: [{ url: "/og/unlock-pdf.png", width: 1200, height: 630 }],
+  },
 };
 
 export default function Page() {

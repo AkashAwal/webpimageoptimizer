@@ -7,6 +7,9 @@ import { OtherTools } from "@/components/converter/other-tools";
 export const metadata: Metadata = {
   title: "Rearrange PDF Pages — Reorder Pages Free, In-Browser, No Upload",
   description: "Drag and drop to reorder pages in a PDF. Change the order of every page visually and download the rearranged file. Free, no upload, completely private.",
+  openGraph: {
+    images: [{ url: "/og/rearrange-pdf.png", width: 1200, height: 630 }],
+  },
 };
 
 export default function Page() {

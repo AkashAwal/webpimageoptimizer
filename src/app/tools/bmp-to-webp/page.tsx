@@ -10,6 +10,9 @@ export const metadata: Metadata = {
   title: "BMP to WebP Converter — Free, In-Browser, No Upload",
   description:
     "Convert BMP images to WebP format instantly in your browser. No upload, no signup. Massive file size reduction from uncompressed BMP to efficient WebP. Free converter.",
+  openGraph: {
+    images: [{ url: "/og/bmp-to-webp.png", width: 1200, height: 630 }],
+  },
 };
 
 export default function Page() {

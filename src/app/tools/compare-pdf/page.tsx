@@ -7,6 +7,9 @@ import { OtherTools } from "@/components/converter/other-tools";
 export const metadata: Metadata = {
   title: "Compare PDF — View Two PDFs Side by Side Free, In-Browser",
   description: "Compare two PDF files side by side, page by page. Spot differences between document versions visually without uploading. Free, in-browser, no upload required.",
+  openGraph: {
+    images: [{ url: "/og/compare-pdf.png", width: 1200, height: 630 }],
+  },
 };
 
 export default function Page() {

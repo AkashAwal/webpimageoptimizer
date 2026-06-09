@@ -1,0 +1,2 @@
+bun run scripts/generate-og.tsx
+git add public/og/

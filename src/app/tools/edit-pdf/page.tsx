@@ -7,6 +7,9 @@ import { OtherTools } from "@/components/converter/other-tools";
 export const metadata: Metadata = {
   title: "Edit PDF — Annotate, Highlight, Draw Free, In-Browser, No Upload",
   description: "Add text, shapes, highlights, freehand drawings, and white-out boxes to any PDF page directly in your browser. Free, no upload, annotate and download instantly.",
+  openGraph: {
+    images: [{ url: "/og/edit-pdf.png", width: 1200, height: 630 }],
+  },
 };
 
 export default function Page() {

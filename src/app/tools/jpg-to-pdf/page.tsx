@@ -8,6 +8,9 @@ export const metadata: Metadata = {
   title: "JPG to PDF Converter — Free, In-Browser, No Upload",
   description:
     "Convert JPEG photos to PDF instantly in your browser. No upload, no signup. Each image becomes a perfectly sized PDF page. Free JPG to PDF converter.",
+  openGraph: {
+    images: [{ url: "/og/jpg-to-pdf.png", width: 1200, height: 630 }],
+  },
 };
 
 export default function Page() {

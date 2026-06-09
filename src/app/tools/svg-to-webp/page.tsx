@@ -10,6 +10,9 @@ export const metadata: Metadata = {
   title: "SVG to WebP Converter — Free, In-Browser, No Upload",
   description:
     "Convert SVG vector graphics to WebP raster images instantly in your browser. No upload, no signup. Rasterize at natural resolution. Free SVG to WebP converter.",
+  openGraph: {
+    images: [{ url: "/og/svg-to-webp.png", width: 1200, height: 630 }],
+  },
 };
 
 export default function Page() {

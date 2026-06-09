@@ -8,6 +8,9 @@ export const metadata: Metadata = {
   title: "PNG to PDF Converter — Free, In-Browser, No Upload",
   description:
     "Convert PNG images to PDF instantly in your browser. Preserves detail and transparency. No upload, no signup. Free PNG to PDF converter.",
+  openGraph: {
+    images: [{ url: "/og/png-to-pdf.png", width: 1200, height: 630 }],
+  },
 };
 
 export default function Page() {

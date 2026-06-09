@@ -10,6 +10,9 @@ export const metadata: Metadata = {
   title: "QR Code Reader — Decode QR Codes from Images, Free",
   description:
     "Upload any image containing a QR code to decode it instantly. Works with screenshots, photos, and saved images. No camera required — free and private.",
+  openGraph: {
+    images: [{ url: "/og/qr-code-reader.png", width: 1200, height: 630 }],
+  },
 };
 
 export default function Page() {

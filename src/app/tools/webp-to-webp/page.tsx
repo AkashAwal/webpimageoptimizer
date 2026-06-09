@@ -10,6 +10,9 @@ export const metadata: Metadata = {
   title: "WebP Re-optimizer — Free, In-Browser, No Upload",
   description:
     "Re-compress an existing WebP file at a different quality level. No upload, no signup. Fine-tune file size vs. quality for WebP images directly in your browser. Free tool.",
+  openGraph: {
+    images: [{ url: "/og/webp-to-webp.png", width: 1200, height: 630 }],
+  },
 };
 
 export default function Page() {

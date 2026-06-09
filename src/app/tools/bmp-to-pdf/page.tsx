@@ -8,6 +8,9 @@ export const metadata: Metadata = {
   title: "BMP to PDF Converter — Free, In-Browser, No Upload",
   description:
     "Convert BMP images to PDF instantly in your browser. Instantly shrink uncompressed BMP files into a portable document. No upload, no signup. Free BMP to PDF converter.",
+  openGraph: {
+    images: [{ url: "/og/bmp-to-pdf.png", width: 1200, height: 630 }],
+  },
 };
 
 export default function Page() {

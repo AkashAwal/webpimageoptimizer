@@ -10,6 +10,9 @@ export const metadata: Metadata = {
   title: "PDF to WebP Converter — Free, In-Browser, No Upload",
   description:
     "Convert the first page of a PDF to a WebP image in your browser. No upload, no signup. Generate PDF thumbnails and previews as WebP. Free PDF to WebP converter.",
+  openGraph: {
+    images: [{ url: "/og/pdf-to-webp.png", width: 1200, height: 630 }],
+  },
 };
 
 export default function Page() {
