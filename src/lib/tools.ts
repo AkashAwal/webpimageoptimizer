@@ -11,7 +11,7 @@ export type CategoryId = (typeof CATEGORIES)[number]["id"];
 
 export const TOOLS = [
   {
-    href: "/png-to-webp",
+    href: "/tools/png-to-webp",
     name: "PNG to WebP",
     shortName: "PNG to WebP Converter",
     description: "Convert PNG images to WebP format. Dramatically smaller files at the same visual quality.",
@@ -19,7 +19,7 @@ export const TOOLS = [
     category: "webp" as CategoryId,
   },
   {
-    href: "/jpg-to-webp",
+    href: "/tools/jpg-to-webp",
     name: "JPG to WebP",
     shortName: "JPG to WebP Converter",
     description: "Convert JPEG photos to WebP. Up to 34% smaller than JPEG at comparable quality.",
@@ -27,7 +27,7 @@ export const TOOLS = [
     category: "webp" as CategoryId,
   },
   {
-    href: "/gif-to-webp",
+    href: "/tools/gif-to-webp",
     name: "GIF to WebP",
     shortName: "GIF to WebP Converter",
     description: "Convert GIF images to WebP for smaller static frames and more efficient compression.",
@@ -35,7 +35,7 @@ export const TOOLS = [
     category: "webp" as CategoryId,
   },
   {
-    href: "/avif-to-webp",
+    href: "/tools/avif-to-webp",
     name: "AVIF to WebP",
     shortName: "AVIF to WebP Converter",
     description: "Convert AVIF images to WebP for broader browser compatibility. No upload required.",
@@ -43,7 +43,7 @@ export const TOOLS = [
     category: "webp" as CategoryId,
   },
   {
-    href: "/bmp-to-webp",
+    href: "/tools/bmp-to-webp",
     name: "BMP to WebP",
     shortName: "BMP to WebP Converter",
     description: "Convert uncompressed BMP files to WebP. Achieve massive size reduction instantly.",
@@ -51,7 +51,7 @@ export const TOOLS = [
     category: "webp" as CategoryId,
   },
   {
-    href: "/tiff-to-webp",
+    href: "/tools/tiff-to-webp",
     name: "TIFF to WebP",
     shortName: "TIFF to WebP Converter",
     description: "Convert high-resolution TIFF images to lightweight WebP for web use.",
@@ -59,7 +59,7 @@ export const TOOLS = [
     category: "webp" as CategoryId,
   },
   {
-    href: "/svg-to-webp",
+    href: "/tools/svg-to-webp",
     name: "SVG to WebP",
     shortName: "SVG to WebP Converter",
     description: "Rasterize SVG vector graphics to WebP. Crisp output at your chosen quality.",
@@ -67,7 +67,7 @@ export const TOOLS = [
     category: "webp" as CategoryId,
   },
   {
-    href: "/ico-to-webp",
+    href: "/tools/ico-to-webp",
     name: "ICO to WebP",
     shortName: "ICO to WebP Converter",
     description: "Extract and convert ICO icon files to WebP. Great for repurposing favicons.",
@@ -75,7 +75,7 @@ export const TOOLS = [
     category: "webp" as CategoryId,
   },
   {
-    href: "/jfif-to-webp",
+    href: "/tools/jfif-to-webp",
     name: "JFIF to WebP",
     shortName: "JFIF to WebP Converter",
     description: "Convert JFIF photos to WebP. JFIF is a JPEG variant — get up to 34% smaller files.",
@@ -83,7 +83,7 @@ export const TOOLS = [
     category: "webp" as CategoryId,
   },
   {
-    href: "/pdf-to-webp",
+    href: "/tools/pdf-to-webp",
     name: "PDF to WebP",
     shortName: "PDF to WebP Converter",
     description: "Convert the first page of a PDF document to a WebP image for thumbnails and previews.",
@@ -91,7 +91,7 @@ export const TOOLS = [
     category: "webp" as CategoryId,
   },
   {
-    href: "/webp-to-webp",
+    href: "/tools/webp-to-webp",
     name: "WebP Re-optimize",
     shortName: "WebP Re-optimizer",
     description: "Re-compress an existing WebP file at a different quality level to fine-tune file size.",
@@ -99,7 +99,7 @@ export const TOOLS = [
     category: "webp" as CategoryId,
   },
   {
-    href: "/webp-resizer",
+    href: "/tools/webp-resizer",
     name: "WebP Resizer",
     shortName: "Image to WebP Resizer",
     description: "Resize any image to custom dimensions and export as WebP. Aspect ratio lock included.",
@@ -107,7 +107,7 @@ export const TOOLS = [
     category: "webp" as CategoryId,
   },
   {
-    href: "/heic-to-webp",
+    href: "/tools/heic-to-webp",
     name: "HEIC to WebP",
     shortName: "HEIC to WebP Converter",
     description: "Convert iPhone HEIC photos to WebP. Works in Chrome and Firefox via WebAssembly.",
@@ -115,7 +115,7 @@ export const TOOLS = [
     category: "webp" as CategoryId,
   },
   {
-    href: "/html-to-pdf",
+    href: "/tools/html-to-pdf",
     name: "HTML to PDF",
     shortName: "HTML to PDF Converter",
     description: "Convert HTML files to PDF in your browser. Drop any .html file for a private, instant, no-upload conversion.",
@@ -123,7 +123,7 @@ export const TOOLS = [
     category: "pdf" as CategoryId,
   },
   {
-    href: "/jpg-to-pdf",
+    href: "/tools/jpg-to-pdf",
     name: "JPG to PDF",
     shortName: "JPG to PDF Converter",
     description: "Convert JPEG photos to PDF in your browser. Each image becomes a perfectly sized page.",
@@ -131,7 +131,7 @@ export const TOOLS = [
     category: "pdf" as CategoryId,
   },
   {
-    href: "/png-to-pdf",
+    href: "/tools/png-to-pdf",
     name: "PNG to PDF",
     shortName: "PNG to PDF Converter",
     description: "Convert PNG images to PDF instantly. Preserves detail and supports transparent backgrounds.",
@@ -139,7 +139,7 @@ export const TOOLS = [
     category: "pdf" as CategoryId,
   },
   {
-    href: "/webp-to-pdf",
+    href: "/tools/webp-to-pdf",
     name: "WebP to PDF",
     shortName: "WebP to PDF Converter",
     description: "Convert WebP images to PDF format for sharing, printing, or archiving.",
@@ -147,7 +147,7 @@ export const TOOLS = [
     category: "pdf" as CategoryId,
   },
   {
-    href: "/heic-to-pdf",
+    href: "/tools/heic-to-pdf",
     name: "HEIC to PDF",
     shortName: "HEIC to PDF Converter",
     description: "Convert iPhone HEIC photos directly to PDF. No cloud upload, works in Chrome and Firefox.",
@@ -155,7 +155,7 @@ export const TOOLS = [
     category: "pdf" as CategoryId,
   },
   {
-    href: "/bmp-to-pdf",
+    href: "/tools/bmp-to-pdf",
     name: "BMP to PDF",
     shortName: "BMP to PDF Converter",
     description: "Convert uncompressed BMP files to PDF. Instantly shrink file size while preserving detail.",
@@ -163,7 +163,7 @@ export const TOOLS = [
     category: "pdf" as CategoryId,
   },
   {
-    href: "/tiff-to-pdf",
+    href: "/tools/tiff-to-pdf",
     name: "TIFF to PDF",
     shortName: "TIFF to PDF Converter",
     description: "Convert high-resolution TIFF images to PDF for easy sharing and printing.",
@@ -171,7 +171,7 @@ export const TOOLS = [
     category: "pdf" as CategoryId,
   },
   {
-    href: "/gif-to-pdf",
+    href: "/tools/gif-to-pdf",
     name: "GIF to PDF",
     shortName: "GIF to PDF Converter",
     description: "Convert GIF images to PDF. Extracts the first frame for a clean static page.",
@@ -179,7 +179,7 @@ export const TOOLS = [
     category: "pdf" as CategoryId,
   },
   {
-    href: "/svg-to-pdf",
+    href: "/tools/svg-to-pdf",
     name: "SVG to PDF",
     shortName: "SVG to PDF Converter",
     description: "Rasterize SVG vector graphics to PDF. Choose your output dimensions for crisp results.",
@@ -187,7 +187,7 @@ export const TOOLS = [
     category: "pdf" as CategoryId,
   },
   {
-    href: "/avif-to-pdf",
+    href: "/tools/avif-to-pdf",
     name: "AVIF to PDF",
     shortName: "AVIF to PDF Converter",
     description: "Convert AVIF images to PDF for broader compatibility with document workflows.",
@@ -195,7 +195,7 @@ export const TOOLS = [
     category: "pdf" as CategoryId,
   },
   {
-    href: "/ico-to-pdf",
+    href: "/tools/ico-to-pdf",
     name: "ICO to PDF",
     shortName: "ICO to PDF Converter",
     description: "Extract and convert ICO icon files to PDF. Useful for documenting icon sets.",
@@ -203,7 +203,7 @@ export const TOOLS = [
     category: "pdf" as CategoryId,
   },
   {
-    href: "/jfif-to-pdf",
+    href: "/tools/jfif-to-pdf",
     name: "JFIF to PDF",
     shortName: "JFIF to PDF Converter",
     description: "Convert JFIF photos to PDF. JFIF is a JPEG variant — full quality preserved in the output.",
@@ -211,7 +211,7 @@ export const TOOLS = [
     category: "pdf" as CategoryId,
   },
   {
-    href: "/merge-pdf",
+    href: "/tools/merge-pdf",
     name: "Merge PDF",
     shortName: "PDF Merger",
     description: "Combine multiple PDF files into one document. Drag in any number of PDFs, set the order, and download.",
@@ -219,7 +219,7 @@ export const TOOLS = [
     category: "pdf-tools" as CategoryId,
   },
   {
-    href: "/split-pdf",
+    href: "/tools/split-pdf",
     name: "Split PDF",
     shortName: "PDF Splitter",
     description: "Split a PDF into individual pages or custom ranges. Download all parts as a ZIP file.",
@@ -227,7 +227,7 @@ export const TOOLS = [
     category: "pdf-tools" as CategoryId,
   },
   {
-    href: "/rotate-pdf",
+    href: "/tools/rotate-pdf",
     name: "Rotate PDF",
     shortName: "PDF Page Rotator",
     description: "Rotate all pages or specific pages in a PDF by 90°, 180°, or 270°. No upload needed.",
@@ -235,7 +235,7 @@ export const TOOLS = [
     category: "pdf-tools" as CategoryId,
   },
   {
-    href: "/protect-pdf",
+    href: "/tools/protect-pdf",
     name: "Protect PDF",
     shortName: "PDF Password Protector",
     description: "Add a password to a PDF to prevent unauthorised access. Encryption applied entirely in-browser.",
@@ -243,7 +243,7 @@ export const TOOLS = [
     category: "pdf-tools" as CategoryId,
   },
   {
-    href: "/unlock-pdf",
+    href: "/tools/unlock-pdf",
     name: "Unlock PDF",
     shortName: "PDF Password Remover",
     description: "Remove the password from a PDF file. Enter the current password and download an unlocked copy.",
@@ -251,7 +251,7 @@ export const TOOLS = [
     category: "pdf-tools" as CategoryId,
   },
   {
-    href: "/watermark-pdf",
+    href: "/tools/watermark-pdf",
     name: "Watermark PDF",
     shortName: "PDF Watermark Tool",
     description: "Stamp a custom text watermark on every page of a PDF. Choose position, opacity, and font size.",
@@ -259,7 +259,7 @@ export const TOOLS = [
     category: "pdf-tools" as CategoryId,
   },
   {
-    href: "/pdf-page-numbers",
+    href: "/tools/pdf-page-numbers",
     name: "PDF Page Numbers",
     shortName: "Add Page Numbers to PDF",
     description: "Add page numbers to every page of a PDF. Choose position, format, and starting number.",
@@ -267,7 +267,7 @@ export const TOOLS = [
     category: "pdf-tools" as CategoryId,
   },
   {
-    href: "/crop-pdf",
+    href: "/tools/crop-pdf",
     name: "Crop PDF",
     shortName: "PDF Margin Cropper",
     description: "Trim margins from every page of a PDF by adjusting the CropBox. Enter values in points.",
@@ -275,7 +275,7 @@ export const TOOLS = [
     category: "pdf-tools" as CategoryId,
   },
   {
-    href: "/rearrange-pdf",
+    href: "/tools/rearrange-pdf",
     name: "Manage PDF Pages",
     shortName: "Rearrange & Remove PDF Pages",
     description: "Drag to reorder pages and click to remove them. See all pages as thumbnails in one view.",
@@ -283,7 +283,7 @@ export const TOOLS = [
     category: "pdf-tools" as CategoryId,
   },
   {
-    href: "/pdf-to-images",
+    href: "/tools/pdf-to-images",
     name: "PDF to Images",
     shortName: "PDF to JPG / PNG / WebP",
     description: "Convert every page of a PDF to a JPG, PNG, or WebP image. Download as a ZIP file.",
@@ -291,7 +291,7 @@ export const TOOLS = [
     category: "pdf-tools" as CategoryId,
   },
   {
-    href: "/sign-pdf",
+    href: "/tools/sign-pdf",
     name: "Sign PDF",
     shortName: "PDF Signature Tool",
     description: "Draw or type your signature and embed it on any page of a PDF. Free, private, no upload.",
@@ -299,7 +299,7 @@ export const TOOLS = [
     category: "pdf-tools" as CategoryId,
   },
   {
-    href: "/ocr-pdf",
+    href: "/tools/ocr-pdf",
     name: "OCR PDF",
     shortName: "Extract Text from PDF",
     description: "Extract text from scanned or image-based PDFs using OCR. Supports 6 languages.",
@@ -307,7 +307,7 @@ export const TOOLS = [
     category: "pdf-tools" as CategoryId,
   },
   {
-    href: "/edit-pdf",
+    href: "/tools/edit-pdf",
     name: "Edit PDF",
     shortName: "PDF Annotation Editor",
     description: "Add text, shapes, highlights, and drawings to any PDF page. White-out to cover content.",
@@ -315,7 +315,7 @@ export const TOOLS = [
     category: "pdf-tools" as CategoryId,
   },
   {
-    href: "/compare-pdf",
+    href: "/tools/compare-pdf",
     name: "Compare PDF",
     shortName: "PDF Side-by-Side Viewer",
     description: "View two PDF files side by side, page by page. Spot differences between versions visually.",
@@ -323,7 +323,7 @@ export const TOOLS = [
     category: "pdf-tools" as CategoryId,
   },
   {
-    href: "/qr-code-generator",
+    href: "/tools/qr-code-generator",
     name: "QR Code Generator",
     shortName: "QR Code Generator",
     description: "Generate QR codes for URLs, text, WiFi, email, phone, and contacts. Download as PNG or SVG.",
@@ -331,7 +331,7 @@ export const TOOLS = [
     category: "qr" as CategoryId,
   },
   {
-    href: "/qr-code-reader",
+    href: "/tools/qr-code-reader",
     name: "QR Code Reader",
     shortName: "QR Code Scanner & Decoder",
     description: "Upload an image to decode any QR code instantly. No camera required — works with screenshots too.",
@@ -339,7 +339,7 @@ export const TOOLS = [
     category: "qr" as CategoryId,
   },
   {
-    href: "/qr-code-with-logo",
+    href: "/tools/qr-code-with-logo",
     name: "QR Code with Logo",
     shortName: "QR Code Generator with Logo",
     description: "Generate a QR code with your logo or image embedded in the centre. Download as PNG.",
@@ -347,7 +347,7 @@ export const TOOLS = [
     category: "qr" as CategoryId,
   },
   {
-    href: "/batch-qr-generator",
+    href: "/tools/batch-qr-generator",
     name: "Batch QR Generator",
     shortName: "Bulk QR Code Generator",
     description: "Paste a list of URLs or text — generate hundreds of QR codes at once and download as a ZIP.",
@@ -355,7 +355,7 @@ export const TOOLS = [
     category: "qr" as CategoryId,
   },
   {
-    href: "/image-compressor",
+    href: "/tools/image-compressor",
     name: "Image Compressor",
     shortName: "Image Compressor",
     description: "Compress JPEG, PNG, and WebP images with a quality slider. See size savings before downloading.",
@@ -363,7 +363,7 @@ export const TOOLS = [
     category: "image-tools" as CategoryId,
   },
   {
-    href: "/image-cropper",
+    href: "/tools/image-cropper",
     name: "Image Cropper",
     shortName: "Free Image Cropper",
     description: "Crop any image to a custom area or preset ratio — 1:1, 16:9, 4:3, and more. Export as PNG.",
@@ -371,7 +371,7 @@ export const TOOLS = [
     category: "image-tools" as CategoryId,
   },
   {
-    href: "/background-remover",
+    href: "/tools/background-remover",
     name: "Background Remover",
     shortName: "Remove Image Background",
     description: "Remove the background from any photo using AI — runs entirely in your browser, no upload needed.",
@@ -379,7 +379,7 @@ export const TOOLS = [
     category: "image-tools" as CategoryId,
   },
   {
-    href: "/favicon-generator",
+    href: "/tools/favicon-generator",
     name: "Favicon Generator",
     shortName: "Favicon Generator",
     description: "Upload any image and download a complete favicon set: ICO, 16×16, 32×32, 48×48, 64×64, 128×128, 256×256 PNG.",

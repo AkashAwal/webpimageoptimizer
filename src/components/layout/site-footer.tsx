@@ -29,10 +29,10 @@ export function SiteFooter() {
             <ul className="mt-3 space-y-2">
               {[
                 { href: "/", label: "Home" },
-                { href: "/png-to-webp", label: "PNG to WebP" },
-                { href: "/jpg-to-webp", label: "JPG to WebP" },
-                { href: "/webp-resizer", label: "WebP Resizer" },
-                { href: "/heic-to-webp", label: "HEIC to WebP" },
+                { href: "/tools/png-to-webp", label: "PNG to WebP" },
+                { href: "/tools/jpg-to-webp", label: "JPG to WebP" },
+                { href: "/tools/webp-resizer", label: "WebP Resizer" },
+                { href: "/tools/heic-to-webp", label: "HEIC to WebP" },
               ].map(({ href, label }) => (
                 <li key={href}>
                   <Link
