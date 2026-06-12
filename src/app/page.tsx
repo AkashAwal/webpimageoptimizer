@@ -49,7 +49,7 @@ import {
   PaintBucket,
   Browsers,
   BoundingBox,
-  Braces,
+  BracketsCurly,
   Waveform,
 } from "@phosphor-icons/react";
 
@@ -136,7 +136,7 @@ const TOOL_ICONS: Record<string, React.ReactNode> = {
   "/tools/grayscale-tint":         <PaintBucket size={22} />,
   "/tools/social-media-resizer":   <Browsers size={22} />,
   "/tools/image-padding":          <BoundingBox size={22} />,
-  "/tools/image-to-base64":        <Braces size={22} />,
+  "/tools/image-to-base64":        <BracketsCurly size={22} />,
   "/tools/noise-grain":            <Waveform size={22} />,
 };
 

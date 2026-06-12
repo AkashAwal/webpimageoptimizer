@@ -38,6 +38,6 @@ export {
   DownloadSimple,
   Browsers,
   BoundingBox,
-  Braces,
+  BracketsCurly,
   Waveform,
 } from "@phosphor-icons/react";
