@@ -180,7 +180,7 @@ export function PhotoAdjustmentsClient() {
   const activePreset = PRESETS.find(p => JSON.stringify(p.adj) === JSON.stringify(adj))?.label ?? null;
 
   return (
-    <div className="mx-auto w-full max-w-xl space-y-3">
+    <div className="mx-auto w-full max-w-3xl">
 
       {/* ── Drop zone ────────────────────────────────────────────────────────── */}
       {!file && (
@@ -208,8 +208,9 @@ export function PhotoAdjustmentsClient() {
 
       {/* ── Editor ───────────────────────────────────────────────────────────── */}
       {file && imgUrl && state !== "done" && (
-        <>
-          {/* Preview */}
+        <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 sm:items-start">
+
+          {/* Left — preview */}
           <div className="overflow-hidden rounded-2xl bg-neutral-900 ring-1 ring-black/10 shadow-[0_4px_24px_-6px_rgba(0,0,0,0.22),0_1px_3px_rgba(0,0,0,0.10)]">
             <div className="relative flex items-center justify-center" style={{ height: 280, overflow: "hidden" }}>
               <div className="absolute inset-0" style={{ backgroundImage: "linear-gradient(45deg,#333 25%,transparent 25%),linear-gradient(-45deg,#333 25%,transparent 25%),linear-gradient(45deg,transparent 75%,#333 75%),linear-gradient(-45deg,transparent 75%,#333 75%)", backgroundSize: "16px 16px", backgroundPosition: "0 0,0 8px,8px -8px,-8px 0px" }} />
@@ -226,7 +227,6 @@ export function PhotoAdjustmentsClient() {
                 }}
                 draggable={false}
               />
-              {/* Compare button */}
               <button
                 onMouseDown={() => setShowOriginal(true)}
                 onMouseUp={() => setShowOriginal(false)}
@@ -252,77 +252,80 @@ export function PhotoAdjustmentsClient() {
             </div>
           </div>
 
-          {/* Presets */}
-          <div className="rounded-2xl bg-white ring-1 ring-black/6 shadow-[0_1px_3px_rgba(0,0,0,0.06)] px-4 py-3.5 space-y-2">
-            <p className="text-[10px] font-semibold uppercase tracking-widest text-muted-foreground">Quick presets</p>
-            <div className="flex flex-wrap gap-1.5">
-              {PRESETS.map(p => (
-                <button key={p.label} onClick={() => setAdj({ ...p.adj })}
-                  className={cn(
-                    "h-7 rounded-full px-3 text-[12px] font-medium transition-colors",
-                    activePreset === p.label ? "bg-foreground text-white" : "bg-neutral-100 text-neutral-600 hover:bg-neutral-200",
-                  )}>
-                  {p.label}
-                </button>
-              ))}
-            </div>
-          </div>
-
-          {/* Sliders */}
-          <div className="rounded-2xl bg-white ring-1 ring-black/6 shadow-[0_1px_3px_rgba(0,0,0,0.06)] px-4 py-3.5 space-y-4">
-            <div className="flex items-center justify-between">
-              <p className="text-[10px] font-semibold uppercase tracking-widest text-muted-foreground">Adjustments</p>
-              {!unchanged && (
-                <button onClick={() => setAdj({ ...DEFAULT })}
-                  className="flex items-center gap-1 text-[11px] text-muted-foreground hover:text-foreground transition-colors">
-                  <ArrowCounterClockwise size={11} />Reset all
-                </button>
-              )}
+          {/* Right — controls */}
+          <div className="space-y-3">
+            {/* Presets */}
+            <div className="rounded-2xl bg-white ring-1 ring-black/6 shadow-[0_1px_3px_rgba(0,0,0,0.06)] px-4 py-3.5 space-y-2">
+              <p className="text-[10px] font-semibold uppercase tracking-widest text-muted-foreground">Quick presets</p>
+              <div className="flex flex-wrap gap-1.5">
+                {PRESETS.map(p => (
+                  <button key={p.label} onClick={() => setAdj({ ...p.adj })}
+                    className={cn(
+                      "h-7 rounded-full px-3 text-[12px] font-medium transition-colors",
+                      activePreset === p.label ? "bg-foreground text-white" : "bg-neutral-100 text-neutral-600 hover:bg-neutral-200",
+                    )}>
+                    {p.label}
+                  </button>
+                ))}
+              </div>
             </div>
 
-            {SLIDERS.map(s => {
-              const val = adj[s.key];
-              const atDefault = val === DEFAULT_VALUES[s.key];
-              return (
-                <div key={s.key} className="space-y-1">
-                  <div className="flex items-center justify-between">
-                    <span className="text-[12px] font-medium text-foreground">{s.label}</span>
-                    <div className="flex items-center gap-2">
-                      <span className={cn(
-                        "text-[12px] tabular-nums font-medium",
-                        atDefault ? "text-muted-foreground/40" : "text-foreground",
-                      )}>
-                        {s.format(val)}
-                      </span>
-                      {!atDefault && (
-                        <button
-                          onClick={() => setAdj(a => ({ ...a, [s.key]: DEFAULT_VALUES[s.key] }))}
-                          className="text-[11px] text-muted-foreground/50 hover:text-muted-foreground transition-colors leading-none"
-                        >↺</button>
-                      )}
+            {/* Sliders */}
+            <div className="rounded-2xl bg-white ring-1 ring-black/6 shadow-[0_1px_3px_rgba(0,0,0,0.06)] px-4 py-3.5 space-y-4">
+              <div className="flex items-center justify-between">
+                <p className="text-[10px] font-semibold uppercase tracking-widest text-muted-foreground">Adjustments</p>
+                {!unchanged && (
+                  <button onClick={() => setAdj({ ...DEFAULT })}
+                    className="flex items-center gap-1 text-[11px] text-muted-foreground hover:text-foreground transition-colors">
+                    <ArrowCounterClockwise size={11} />Reset all
+                  </button>
+                )}
+              </div>
+
+              {SLIDERS.map(s => {
+                const val = adj[s.key];
+                const atDefault = val === DEFAULT_VALUES[s.key];
+                return (
+                  <div key={s.key} className="space-y-1">
+                    <div className="flex items-center justify-between">
+                      <span className="text-[12px] font-medium text-foreground">{s.label}</span>
+                      <div className="flex items-center gap-2">
+                        <span className={cn(
+                          "text-[12px] tabular-nums font-medium",
+                          atDefault ? "text-muted-foreground/40" : "text-foreground",
+                        )}>
+                          {s.format(val)}
+                        </span>
+                        {!atDefault && (
+                          <button
+                            onClick={() => setAdj(a => ({ ...a, [s.key]: DEFAULT_VALUES[s.key] }))}
+                            className="text-[11px] text-muted-foreground/50 hover:text-muted-foreground transition-colors leading-none"
+                          >↺</button>
+                        )}
+                      </div>
                     </div>
+                    <input
+                      type="range" min={s.min} max={s.max} step={s.step} value={val}
+                      onChange={e => setAdj(a => ({ ...a, [s.key]: Number(e.target.value) }))}
+                      className="w-full h-1.5 cursor-pointer accent-foreground"
+                    />
                   </div>
-                  <input
-                    type="range" min={s.min} max={s.max} step={s.step} value={val}
-                    onChange={e => setAdj(a => ({ ...a, [s.key]: Number(e.target.value) }))}
-                    className="w-full h-1.5 cursor-pointer accent-foreground"
-                  />
-                </div>
-              );
-            })}
-          </div>
+                );
+              })}
+            </div>
 
-          <SoftPillButton
-            variant="primary" onClick={handleApply}
-            disabled={state === "processing" || unchanged}
-            className="w-full h-10 text-[13px]"
-          >
-            {state === "processing"
-              ? <><CircleNotch size={13} className="animate-spin" />Applying…</>
-              : "Apply Adjustments"
-            }
-          </SoftPillButton>
-        </>
+            <SoftPillButton
+              variant="primary" onClick={handleApply}
+              disabled={state === "processing" || unchanged}
+              className="w-full h-10 text-[13px]"
+            >
+              {state === "processing"
+                ? <><CircleNotch size={13} className="animate-spin" />Applying…</>
+                : "Apply Adjustments"
+              }
+            </SoftPillButton>
+          </div>
+        </div>
       )}
 
       {/* ── Result ───────────────────────────────────────────────────────────── */}
