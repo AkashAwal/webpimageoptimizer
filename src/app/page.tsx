@@ -33,6 +33,7 @@ import {
   Images,
   PencilSimple,
   MagnifyingGlass,
+  X,
   Columns,
   QrCode,
   Scan,
@@ -137,6 +138,7 @@ function HomeContent() {
   const router = useRouter();
   const [entered, setEntered] = useState(false);
   const [activeCategory, setActiveCategory] = useState<CategoryId>("all");
+  const [searchQuery, setSearchQuery] = useState("");
 
   useEffect(() => {
     const id = requestAnimationFrame(() => setEntered(true));
@@ -153,7 +155,16 @@ function HomeContent() {
     router.replace(cat === "all" ? "/" : `/?category=${cat}`, { scroll: false });
   };
 
-  const filteredTools = activeCategory === "all" ? TOOLS : TOOLS.filter((t) => t.category === activeCategory);
+  const filteredTools = (() => {
+    const tokens = searchQuery.trim().toLowerCase().split(/\s+/).filter(Boolean);
+    if (tokens.length > 0) {
+      return TOOLS.filter((t) => {
+        const haystack = `${t.name} ${t.shortName} ${t.description} ${t.badge}`.toLowerCase();
+        return tokens.every((token) => haystack.includes(token));
+      });
+    }
+    return activeCategory === "all" ? TOOLS : TOOLS.filter((t) => t.category === activeCategory);
+  })();
 
   return (
     <div className="relative flex flex-1 flex-col">
@@ -195,28 +206,61 @@ function HomeContent() {
 
       {/* Tool cards */}
       <section id="tools" className="mx-auto w-full max-w-7xl px-6 pb-24 sm:px-10">
-        {/* Category tabs */}
+        {/* Search + Category tabs */}
         <motion.div
           initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.38, type: "spring", stiffness: 300, damping: 28 }}
-          className="mb-6 flex flex-wrap gap-2"
+          className="mb-6 flex flex-col gap-3"
         >
-          {CATEGORIES.map((cat) => (
-            <button
-              key={cat.id}
-              onClick={() => handleCategoryChange(cat.id)}
-              className={cn(
-                "h-8 rounded-full px-4 text-[13px] font-medium transition-colors",
-                activeCategory === cat.id
-                  ? "bg-foreground text-white"
-                  : "bg-neutral-100 text-neutral-600 hover:bg-neutral-200",
-              )}
-            >
-              {cat.label}
-            </button>
-          ))}
+          {/* Search input */}
+          <div className="relative max-w-sm">
+            <MagnifyingGlass
+              size={15}
+              className="pointer-events-none absolute left-3.5 top-1/2 -translate-y-1/2 text-neutral-400"
+            />
+            <input
+              type="text"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              onKeyDown={(e) => e.key === "Escape" && setSearchQuery("")}
+              placeholder="Search tools…"
+              className="h-9 w-full rounded-full border-0 bg-neutral-100 pl-9 pr-9 text-[13px] text-foreground placeholder:text-neutral-400 focus:outline-none focus:ring-2 focus:ring-foreground/20"
+            />
+            {searchQuery && (
+              <button
+                onClick={() => setSearchQuery("")}
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-neutral-400 hover:text-neutral-600 transition-colors"
+              >
+                <X size={14} />
+              </button>
+            )}
+          </div>
+
+          {/* Category tabs */}
+          <div className={cn("flex flex-wrap gap-2 transition-opacity", searchQuery && "opacity-40 pointer-events-none")}>
+            {CATEGORIES.map((cat) => (
+              <button
+                key={cat.id}
+                onClick={() => handleCategoryChange(cat.id)}
+                className={cn(
+                  "h-8 rounded-full px-4 text-[13px] font-medium transition-colors",
+                  activeCategory === cat.id
+                    ? "bg-foreground text-white"
+                    : "bg-neutral-100 text-neutral-600 hover:bg-neutral-200",
+                )}
+              >
+                {cat.label}
+              </button>
+            ))}
+          </div>
         </motion.div>
+
+        {filteredTools.length === 0 && searchQuery && (
+          <div className="py-16 text-center text-[13px] text-muted-foreground">
+            No tools found for &ldquo;{searchQuery}&rdquo;
+          </div>
+        )}
 
         <motion.div
           initial={{ opacity: 0, y: 20 }}
