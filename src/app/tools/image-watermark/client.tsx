@@ -70,8 +70,12 @@ async function exportWatermark(
   ctx.fillStyle = color;
   ctx.font = canvasFont(fontSize, bold, italic, family);
 
+  ctx.save();
+  ctx.beginPath();
+  ctx.rect(0, 0, nW, nH);
+  ctx.clip();
+
   if (tiled) {
-    ctx.save();
     ctx.translate(nW / 2, nH / 2);
     ctx.rotate(-Math.PI / 6);
     ctx.textAlign = "center";
@@ -86,18 +90,18 @@ async function exportWatermark(
         ctx.fillText(text, col * stepX, row * stepY);
       }
     }
-    ctx.restore();
   } else {
     const { x, y, align, baseline } = getCanvasXY(position, nW, nH, padding);
     ctx.textAlign = align;
     ctx.textBaseline = baseline;
-    // Multi-line support
     const lines = text.split("\n");
     const lineH = fontSize * 1.25;
     const totalH = lines.length * lineH;
     const startY = baseline === "top" ? y : baseline === "bottom" ? y - totalH + lineH : y - totalH / 2 + lineH / 2;
     lines.forEach((line, i) => ctx.fillText(line, x, startY + i * lineH));
   }
+
+  ctx.restore();
 
   ctx.globalAlpha = 1;
   return new Promise<Blob>((res, rej) =>
