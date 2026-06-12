@@ -32,4 +32,7 @@ export {
   CornersOut,
   FrameCorners,
   Palette,
+  Square,
+  GridFour,
+  PaintBucket,
 } from "@phosphor-icons/react";

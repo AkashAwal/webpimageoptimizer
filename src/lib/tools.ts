@@ -434,6 +434,30 @@ export const TOOLS = [
     badge: "8 colors",
     category: "image-tools" as CategoryId,
   },
+  {
+    href: "/tools/image-border",
+    name: "Add Border",
+    shortName: "Image Border Tool",
+    description: "Add a solid, gradient, or blurred photo-style border to any image. Adjustable width and colors.",
+    badge: "3 styles",
+    category: "image-tools" as CategoryId,
+  },
+  {
+    href: "/tools/image-collage",
+    name: "Image Collage",
+    shortName: "Image Collage Maker",
+    description: "Combine 2 to 6 photos into a grid collage. Six layout options, custom gap, and background color.",
+    badge: "Grid layouts",
+    category: "image-tools" as CategoryId,
+  },
+  {
+    href: "/tools/grayscale-tint",
+    name: "Grayscale & Tint",
+    shortName: "Grayscale, Sepia & Duotone",
+    description: "Apply B&W, sepia, warm, cool, faded, or duotone effects with adjustable intensity and live preview.",
+    badge: "6 effects",
+    category: "image-tools" as CategoryId,
+  },
 ] as const;
 
 export type Tool = (typeof TOOLS)[number];

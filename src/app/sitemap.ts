@@ -58,6 +58,9 @@ const TOOL_PATHS = [
   "/tools/image-resizer",
   "/tools/rounded-corners",
   "/tools/color-palette",
+  "/tools/image-border",
+  "/tools/image-collage",
+  "/tools/grayscale-tint",
 ];
 
 const STATIC_PAGES = [

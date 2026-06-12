@@ -44,6 +44,9 @@ import {
   CornersOut,
   FrameCorners,
   Palette,
+  Square,
+  GridFour,
+  PaintBucket,
 } from "@phosphor-icons/react";
 
 import { SiteHeader } from "@/components/layout/site-header";
@@ -124,6 +127,9 @@ const TOOL_ICONS: Record<string, React.ReactNode> = {
   "/tools/image-resizer":     <CornersOut size={22} />,
   "/tools/rounded-corners":   <FrameCorners size={22} />,
   "/tools/color-palette":     <Palette size={22} />,
+  "/tools/image-border":      <Square size={22} />,
+  "/tools/image-collage":     <GridFour size={22} />,
+  "/tools/grayscale-tint":    <PaintBucket size={22} />,
 };
 
 function HomeContent() {
