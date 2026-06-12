@@ -386,6 +386,30 @@ export const TOOLS = [
     badge: "Multi-size ZIP",
     category: "image-tools" as CategoryId,
   },
+  {
+    href: "/tools/image-flip-rotate",
+    name: "Flip & Rotate",
+    shortName: "Image Flip & Rotate",
+    description: "Flip images horizontally or vertically and rotate by 90°, 180°, or 270°. Live preview, one-click download.",
+    badge: "Non-destructive",
+    category: "image-tools" as CategoryId,
+  },
+  {
+    href: "/tools/photo-adjustments",
+    name: "Photo Adjustments",
+    shortName: "Photo Adjustments",
+    description: "Adjust brightness, contrast, saturation, hue, blur, and sharpness with live preview. Includes one-click presets.",
+    badge: "Live preview",
+    category: "image-tools" as CategoryId,
+  },
+  {
+    href: "/tools/image-watermark",
+    name: "Image Watermark",
+    shortName: "Image Watermark Tool",
+    description: "Add a custom text watermark to any image. Control position, size, opacity, color, and font. Tiled mode included.",
+    badge: "Text overlay",
+    category: "image-tools" as CategoryId,
+  },
 ] as const;
 
 export type Tool = (typeof TOOLS)[number];

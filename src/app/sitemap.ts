@@ -52,6 +52,9 @@ const TOOL_PATHS = [
   "/tools/image-cropper",
   "/tools/background-remover",
   "/tools/favicon-generator",
+  "/tools/image-flip-rotate",
+  "/tools/photo-adjustments",
+  "/tools/image-watermark",
 ];
 
 const STATIC_PAGES = [

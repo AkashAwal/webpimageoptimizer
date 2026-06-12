@@ -39,6 +39,8 @@ import {
   FileZip,
   Eraser,
   Gauge,
+  FlipHorizontal,
+  Sliders,
 } from "@phosphor-icons/react";
 
 import { SiteHeader } from "@/components/layout/site-header";
@@ -113,6 +115,9 @@ const TOOL_ICONS: Record<string, React.ReactNode> = {
   "/tools/image-cropper": <Crop size={22} />,
   "/tools/background-remover": <Eraser size={22} />,
   "/tools/favicon-generator": <FileZip size={22} />,
+  "/tools/image-flip-rotate": <FlipHorizontal size={22} />,
+  "/tools/photo-adjustments": <Sliders size={22} />,
+  "/tools/image-watermark":   <Stamp size={22} />,
 };
 
 function HomeContent() {

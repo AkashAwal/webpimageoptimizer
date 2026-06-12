@@ -26,4 +26,7 @@ export {
   ShieldCheck,
   QrCode,
   Scan,
+  FlipHorizontal,
+  Sliders,
+  Stamp,
 } from "@phosphor-icons/react";
