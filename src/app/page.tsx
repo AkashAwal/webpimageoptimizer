@@ -255,29 +255,36 @@ function HomeContent() {
                     No tools found for &ldquo;{searchQuery}&rdquo;
                   </p>
                 ) : (
-                  <ul>
-                    {searchResults.map((tool, i) => (
-                      <li key={tool.href}>
-                        <Link
-                          href={tool.href}
-                          onClick={() => setSearchQuery("")}
-                          className={cn(
-                            "flex items-center gap-3 px-4 py-3 transition-colors hover:bg-neutral-50",
-                            i !== 0 && "border-t border-black/5",
-                          )}
-                        >
-                          <div className="flex size-8 shrink-0 items-center justify-center rounded-lg bg-neutral-100 text-neutral-600">
-                            {TOOL_ICONS[tool.href]}
-                          </div>
-                          <div className="min-w-0 flex-1">
-                            <p className="truncate text-[13px] font-medium text-foreground">{tool.name}</p>
-                            <p className="truncate text-[12px] text-muted-foreground">{tool.description}</p>
-                          </div>
-                          <ArrowRight size={13} className="shrink-0 text-neutral-400" />
-                        </Link>
-                      </li>
-                    ))}
-                  </ul>
+                  <>
+                    <ul>
+                      {searchResults.slice(0, 8).map((tool, i) => (
+                        <li key={tool.href}>
+                          <Link
+                            href={tool.href}
+                            onClick={() => setSearchQuery("")}
+                            className={cn(
+                              "flex items-center gap-3 px-4 py-3 transition-colors hover:bg-neutral-50",
+                              i !== 0 && "border-t border-black/5",
+                            )}
+                          >
+                            <div className="flex size-8 shrink-0 items-center justify-center rounded-lg bg-neutral-100 text-neutral-600">
+                              {TOOL_ICONS[tool.href]}
+                            </div>
+                            <div className="min-w-0 flex-1">
+                              <p className="truncate text-[13px] font-medium text-foreground">{tool.name}</p>
+                              <p className="truncate text-[12px] text-muted-foreground">{tool.description}</p>
+                            </div>
+                            <ArrowRight size={13} className="shrink-0 text-neutral-400" />
+                          </Link>
+                        </li>
+                      ))}
+                    </ul>
+                    {searchResults.length > 8 && (
+                      <p className="border-t border-black/5 px-4 py-2.5 text-[12px] text-muted-foreground">
+                        +{searchResults.length - 8} more — try a more specific search
+                      </p>
+                    )}
+                  </>
                 )}
               </div>
             )}
