@@ -1,6 +1,6 @@
 "use client";
 
-import { Suspense, useEffect, useState } from "react";
+import { Suspense, useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { useSearchParams, useRouter } from "next/navigation";
 import { motion, type Variants } from "motion/react";
@@ -139,6 +139,7 @@ function HomeContent() {
   const [entered, setEntered] = useState(false);
   const [activeCategory, setActiveCategory] = useState<CategoryId>("all");
   const [searchQuery, setSearchQuery] = useState("");
+  const searchRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const id = requestAnimationFrame(() => setEntered(true));
@@ -150,20 +151,30 @@ function HomeContent() {
     setActiveCategory(cat && CATEGORIES.some((c) => c.id === cat) ? cat : "all");
   }, [searchParams]);
 
+  useEffect(() => {
+    const handler = (e: MouseEvent) => {
+      if (searchRef.current && !searchRef.current.contains(e.target as Node)) {
+        setSearchQuery("");
+      }
+    };
+    document.addEventListener("mousedown", handler);
+    return () => document.removeEventListener("mousedown", handler);
+  }, []);
+
   const handleCategoryChange = (cat: CategoryId) => {
     setActiveCategory(cat);
     router.replace(cat === "all" ? "/" : `/?category=${cat}`, { scroll: false });
   };
 
-  const filteredTools = (() => {
+  const gridTools = activeCategory === "all" ? TOOLS : TOOLS.filter((t) => t.category === activeCategory);
+
+  const searchResults = (() => {
     const tokens = searchQuery.trim().toLowerCase().split(/\s+/).filter(Boolean);
-    if (tokens.length > 0) {
-      return TOOLS.filter((t) => {
-        const haystack = `${t.name} ${t.shortName} ${t.description} ${t.badge}`.toLowerCase();
-        return tokens.every((token) => haystack.includes(token));
-      });
-    }
-    return activeCategory === "all" ? TOOLS : TOOLS.filter((t) => t.category === activeCategory);
+    if (tokens.length === 0) return [];
+    return TOOLS.filter((t) => {
+      const haystack = `${t.name} ${t.shortName} ${t.description} ${t.badge}`.toLowerCase();
+      return tokens.every((token) => haystack.includes(token));
+    });
   })();
 
   return (
@@ -213,8 +224,8 @@ function HomeContent() {
           transition={{ delay: 0.38, type: "spring", stiffness: 300, damping: 28 }}
           className="mb-6 flex flex-col gap-3"
         >
-          {/* Search input */}
-          <div className="relative max-w-sm">
+          {/* Search input + dropdown */}
+          <div ref={searchRef} className="relative max-w-sm">
             <MagnifyingGlass
               size={15}
               className="pointer-events-none absolute left-3.5 top-1/2 -translate-y-1/2 text-neutral-400"
@@ -235,10 +246,45 @@ function HomeContent() {
                 <X size={14} />
               </button>
             )}
+
+            {/* Results dropdown */}
+            {searchQuery && (
+              <div className="absolute left-0 right-0 top-[calc(100%+6px)] z-50 overflow-hidden rounded-2xl bg-white ring-1 ring-black/6 shadow-[0_8px_32px_-8px_rgba(0,0,0,0.18),0_2px_8px_rgba(0,0,0,0.06)]">
+                {searchResults.length === 0 ? (
+                  <p className="px-4 py-3.5 text-[13px] text-muted-foreground">
+                    No tools found for &ldquo;{searchQuery}&rdquo;
+                  </p>
+                ) : (
+                  <ul>
+                    {searchResults.map((tool, i) => (
+                      <li key={tool.href}>
+                        <Link
+                          href={tool.href}
+                          onClick={() => setSearchQuery("")}
+                          className={cn(
+                            "flex items-center gap-3 px-4 py-3 transition-colors hover:bg-neutral-50",
+                            i !== 0 && "border-t border-black/5",
+                          )}
+                        >
+                          <div className="flex size-8 shrink-0 items-center justify-center rounded-lg bg-neutral-100 text-neutral-600">
+                            {TOOL_ICONS[tool.href]}
+                          </div>
+                          <div className="min-w-0 flex-1">
+                            <p className="truncate text-[13px] font-medium text-foreground">{tool.name}</p>
+                            <p className="truncate text-[12px] text-muted-foreground">{tool.description}</p>
+                          </div>
+                          <ArrowRight size={13} className="shrink-0 text-neutral-400" />
+                        </Link>
+                      </li>
+                    ))}
+                  </ul>
+                )}
+              </div>
+            )}
           </div>
 
           {/* Category tabs */}
-          <div className={cn("flex flex-wrap gap-2 transition-opacity", searchQuery && "opacity-40 pointer-events-none")}>
+          <div className="flex flex-wrap gap-2">
             {CATEGORIES.map((cat) => (
               <button
                 key={cat.id}
@@ -256,19 +302,13 @@ function HomeContent() {
           </div>
         </motion.div>
 
-        {filteredTools.length === 0 && searchQuery && (
-          <div className="py-16 text-center text-[13px] text-muted-foreground">
-            No tools found for &ldquo;{searchQuery}&rdquo;
-          </div>
-        )}
-
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.45, type: "spring", stiffness: 280, damping: 26 }}
           className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3"
         >
-          {filteredTools.map((tool) => (
+          {gridTools.map((tool) => (
             <div
               key={tool.href}
               className="flex flex-col gap-4 rounded-2xl bg-white p-6 ring-1 ring-black/6 shadow-[0_4px_24px_-6px_rgba(0,0,0,0.10),0_1px_3px_rgba(0,0,0,0.06)]"
