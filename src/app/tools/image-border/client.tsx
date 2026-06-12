@@ -6,7 +6,7 @@ import { UploadSimple, X, Check, CircleNotch } from "@phosphor-icons/react";
 import { cn } from "@/lib/utils";
 import SoftPillButton from "@/components/ui/soft-pill-button";
 
-type BorderStyle = "solid" | "gradient" | "blur";
+type BorderStyle = "solid" | "gradient" | "blur" | "checkerboard" | "dots" | "stripes";
 type GradientDir = "to bottom" | "to right" | "to bottom right" | "to bottom left";
 type State = "idle" | "processing" | "done";
 
@@ -25,32 +25,58 @@ function gradientCoords(dir: GradientDir, w: number, h: number): [number, number
   }
 }
 
+function buildPatternCanvas(style: BorderStyle, color1: string, color2: string): HTMLCanvasElement {
+  const pc = document.createElement("canvas");
+  const ctx = pc.getContext("2d")!;
+  if (style === "checkerboard") {
+    pc.width = 24; pc.height = 24;
+    ctx.fillStyle = color1; ctx.fillRect(0, 0, 24, 24);
+    ctx.fillStyle = color2; ctx.fillRect(0, 0, 12, 12); ctx.fillRect(12, 12, 12, 12);
+  } else if (style === "dots") {
+    pc.width = 14; pc.height = 14;
+    ctx.fillStyle = color1; ctx.fillRect(0, 0, 14, 14);
+    ctx.fillStyle = color2;
+    ctx.beginPath(); ctx.arc(7, 7, 3.5, 0, Math.PI * 2); ctx.fill();
+  } else {
+    // stripes
+    pc.width = 14; pc.height = 14;
+    ctx.fillStyle = color1; ctx.fillRect(0, 0, 14, 14);
+    ctx.strokeStyle = color2; ctx.lineWidth = 3;
+    ctx.beginPath(); ctx.moveTo(-7, 7); ctx.lineTo(7, -7);
+    ctx.moveTo(0, 14); ctx.lineTo(14, 0);
+    ctx.moveTo(7, 21); ctx.lineTo(21, 7);
+    ctx.stroke();
+  }
+  return pc;
+}
+
 async function exportBordered(
   url: string, nW: number, nH: number,
   borderWidth: number, style: BorderStyle,
   color1: string, color2: string, gradDir: GradientDir,
+  doubleBorder: boolean, innerWidth: number, innerColor: string,
 ): Promise<Blob> {
   const img = new Image();
   img.src = url;
   await new Promise<void>(res => { img.onload = () => res(); if (img.complete) res(); });
-  const outW = nW + borderWidth * 2;
-  const outH = nH + borderWidth * 2;
+
+  const totalBorder = doubleBorder ? borderWidth + innerWidth : borderWidth;
+  const outW = nW + totalBorder * 2;
+  const outH = nH + totalBorder * 2;
   const canvas = document.createElement("canvas");
   canvas.width = outW; canvas.height = outH;
   const ctx = canvas.getContext("2d")!;
 
+  // Draw outer border area
   if (style === "solid") {
     ctx.fillStyle = color1;
     ctx.fillRect(0, 0, outW, outH);
   } else if (style === "gradient") {
     const [x0, y0, x1, y1] = gradientCoords(gradDir, outW, outH);
     const grad = ctx.createLinearGradient(x0, y0, x1, y1);
-    grad.addColorStop(0, color1);
-    grad.addColorStop(1, color2);
-    ctx.fillStyle = grad;
-    ctx.fillRect(0, 0, outW, outH);
-  } else {
-    // Blur border: draw the same image stretched + blurred as background
+    grad.addColorStop(0, color1); grad.addColorStop(1, color2);
+    ctx.fillStyle = grad; ctx.fillRect(0, 0, outW, outH);
+  } else if (style === "blur") {
     const blurPx = Math.max(8, Math.round(borderWidth * 0.55));
     ctx.save();
     ctx.filter = `blur(${blurPx}px) saturate(1.4) brightness(0.78)`;
@@ -58,9 +84,21 @@ async function exportBordered(
     ctx.drawImage(img, -overshoot, -overshoot, outW + overshoot * 2, outH + overshoot * 2);
     ctx.restore();
     ctx.filter = "none";
+  } else {
+    // Pattern borders
+    const patCanvas = buildPatternCanvas(style, color1, color2);
+    const pattern = ctx.createPattern(patCanvas, "repeat")!;
+    ctx.fillStyle = pattern;
+    ctx.fillRect(0, 0, outW, outH);
   }
 
-  ctx.drawImage(img, borderWidth, borderWidth, nW, nH);
+  // Double border inner fill
+  if (doubleBorder && innerWidth > 0) {
+    ctx.fillStyle = innerColor;
+    ctx.fillRect(borderWidth, borderWidth, outW - borderWidth * 2, outH - borderWidth * 2);
+  }
+
+  ctx.drawImage(img, totalBorder, totalBorder, nW, nH);
   return new Promise<Blob>((res, rej) =>
     canvas.toBlob(b => b ? res(b) : rej(new Error("Export failed")), "image/png"),
   );
@@ -73,6 +111,15 @@ const GRAD_DIRS: { value: GradientDir; label: string }[] = [
   { value: "to bottom left",  label: "↙" },
 ];
 
+const BORDER_STYLES: { value: BorderStyle; label: string }[] = [
+  { value: "solid",        label: "Solid"         },
+  { value: "gradient",     label: "Gradient"      },
+  { value: "blur",         label: "Blur"          },
+  { value: "checkerboard", label: "Checker"       },
+  { value: "dots",         label: "Dots"          },
+  { value: "stripes",      label: "Stripes"       },
+];
+
 export function ImageBorderClient() {
   const [file, setFile] = useState<File | null>(null);
   const [imgUrl, setImgUrl] = useState<string | null>(null);
@@ -83,6 +130,9 @@ export function ImageBorderClient() {
   const [color1, setColor1] = useState("#ffffff");
   const [color2, setColor2] = useState("#e5e7eb");
   const [gradDir, setGradDir] = useState<GradientDir>("to bottom right");
+  const [doubleBorder, setDoubleBorder] = useState(false);
+  const [innerWidth, setInnerWidth] = useState(8);
+  const [innerColor, setInnerColor] = useState("#d4d4d4");
   const [dragging, setDragging] = useState(false);
   const [state, setState] = useState<State>("idle");
   const [result, setResult] = useState<{ blob: Blob; url: string } | null>(null);
@@ -115,22 +165,28 @@ export function ImageBorderClient() {
     setState("idle"); setResult(null);
   }, []);
 
-  // Preview border width scaled to preview size (max 320px)
+  // Preview helpers
   const previewMax = 320;
   const previewScale = naturalW > 0 ? Math.min(previewMax / naturalW, previewMax / naturalH, 1) : 1;
-  const previewBorder = Math.max(2, Math.round(borderWidth * previewScale));
+  const totalBorder = doubleBorder ? borderWidth + innerWidth : borderWidth;
+  const previewBorder = Math.max(2, Math.round(totalBorder * previewScale));
+  const previewOuterBorder = Math.max(1, Math.round(borderWidth * previewScale));
+  const previewInnerBorder = Math.max(1, Math.round(innerWidth * previewScale));
 
-  const previewBg = borderStyle === "solid"
-    ? color1
-    : borderStyle === "gradient"
-    ? `linear-gradient(${gradDir}, ${color1}, ${color2})`
-    : undefined;
+  const getPreviewBg = () => {
+    if (borderStyle === "solid") return color1;
+    if (borderStyle === "gradient") return `linear-gradient(${gradDir}, ${color1}, ${color2})`;
+    if (borderStyle === "checkerboard") return `repeating-conic-gradient(${color1} 0% 25%, ${color2} 0% 50%) 0 0 / 24px 24px`;
+    if (borderStyle === "dots") return `radial-gradient(circle, ${color2} 35%, ${color1} 35%) 0 0 / 14px 14px`;
+    if (borderStyle === "stripes") return `repeating-linear-gradient(45deg, ${color1}, ${color1} 4px, ${color2} 4px, ${color2} 9px)`;
+    return undefined;
+  };
 
   const handleExport = async () => {
     if (!imgUrl || !file) return;
     setState("processing");
     try {
-      const blob = await exportBordered(imgUrl, naturalW, naturalH, borderWidth, borderStyle, color1, color2, gradDir);
+      const blob = await exportBordered(imgUrl, naturalW, naturalH, borderWidth, borderStyle, color1, color2, gradDir, doubleBorder, innerWidth, innerColor);
       const url = URL.createObjectURL(blob);
       if (resultUrlRef.current) URL.revokeObjectURL(resultUrlRef.current);
       resultUrlRef.current = url;
@@ -149,7 +205,6 @@ export function ImageBorderClient() {
 
   return (
     <div className="mx-auto w-full max-w-xl space-y-3">
-      {/* Drop zone */}
       {!file && (
         <div
           onDrop={e => { e.preventDefault(); setDragging(false); const f = e.dataTransfer.files[0]; if (f) loadFile(f); }}
@@ -173,32 +228,36 @@ export function ImageBorderClient() {
         </div>
       )}
 
-      {/* Editor */}
       {file && imgUrl && state !== "done" && (
         <>
           {/* Live preview */}
           <div className="overflow-hidden rounded-2xl ring-1 ring-black/10 shadow-[0_4px_24px_-6px_rgba(0,0,0,0.22),0_1px_3px_rgba(0,0,0,0.10)]">
             <div className="flex items-center justify-center bg-neutral-800 py-8" style={{ minHeight: 260 }}>
-              {/* Blur border preview */}
               {borderStyle === "blur" ? (
                 <div className="relative overflow-hidden" style={{ padding: previewBorder }}>
                   {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img
-                    src={imgUrl} alt=""
-                    className="absolute inset-0 h-full w-full object-cover scale-110"
-                    style={{ filter: `blur(${Math.max(4, previewBorder)}px) saturate(1.4) brightness(0.78)` }}
-                    aria-hidden
-                  />
+                  <img src={imgUrl} alt="" className="absolute inset-0 h-full w-full scale-110 object-cover"
+                    style={{ filter: `blur(${Math.max(4, previewBorder)}px) saturate(1.4) brightness(0.78)` }} aria-hidden />
                   {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src={imgUrl} alt="" className="relative block max-w-full max-h-48 object-contain" draggable={false} />
+                  <img src={imgUrl} alt="" className="relative block max-h-48 max-w-full object-contain" draggable={false} />
                 </div>
               ) : (
                 <div
                   className="overflow-hidden"
-                  style={{ padding: previewBorder, background: previewBg }}
+                  style={{
+                    padding: doubleBorder ? previewOuterBorder : previewBorder,
+                    background: getPreviewBg(),
+                  }}
                 >
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src={imgUrl} alt="" className="block max-w-full max-h-48 object-contain" draggable={false} />
+                  {doubleBorder ? (
+                    <div style={{ padding: previewInnerBorder, background: innerColor }}>
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img src={imgUrl} alt="" className="block max-h-40 max-w-full object-contain" draggable={false} />
+                    </div>
+                  ) : (
+                    // eslint-disable-next-line @next/next/no-img-element
+                    <img src={imgUrl} alt="" className="block max-h-48 max-w-full object-contain" draggable={false} />
+                  )}
                 </div>
               )}
             </div>
@@ -227,22 +286,19 @@ export function ImageBorderClient() {
                 onChange={e => setBorderWidth(Number(e.target.value))}
                 className="h-1.5 w-full cursor-pointer accent-foreground"
               />
-              <div className="flex justify-between text-[10px] text-muted-foreground/50">
-                <span>2px</span><span>40px</span><span>80px</span><span>120px</span>
-              </div>
             </div>
 
             {/* Style */}
             <div className="space-y-3 px-4 py-3.5">
               <p className="text-[10px] font-semibold uppercase tracking-widest text-muted-foreground">Style</p>
-              <div className="flex gap-1.5">
-                {(["solid", "gradient", "blur"] as BorderStyle[]).map(s => (
-                  <button key={s} onClick={() => setBorderStyle(s)}
+              <div className="grid grid-cols-3 gap-1.5">
+                {BORDER_STYLES.map(s => (
+                  <button key={s.value} onClick={() => setBorderStyle(s.value)}
                     className={cn(
-                      "flex-1 rounded-xl py-2 text-[12px] font-medium capitalize transition-colors",
-                      borderStyle === s ? "bg-foreground text-white" : "bg-neutral-100 text-neutral-600 hover:bg-neutral-200",
+                      "rounded-xl py-2 text-[12px] font-medium transition-colors",
+                      borderStyle === s.value ? "bg-foreground text-white" : "bg-neutral-100 text-neutral-600 hover:bg-neutral-200",
                     )}>
-                    {s}
+                    {s.label}
                   </button>
                 ))}
               </div>
@@ -250,18 +306,18 @@ export function ImageBorderClient() {
               {/* Solid color */}
               {borderStyle === "solid" && (
                 <div className="flex items-center gap-2">
-                  <p className="text-[12px] text-muted-foreground flex-1">Color</p>
+                  <p className="flex-1 text-[12px] text-muted-foreground">Color</p>
                   <label className="relative flex size-8 cursor-pointer items-center justify-center overflow-hidden rounded-lg ring-1 ring-black/10">
                     <div className="size-full" style={{ backgroundColor: color1 }} />
                     <input type="color" value={color1} onChange={e => setColor1(e.target.value)}
                       className="absolute inset-0 h-full w-full cursor-pointer opacity-0" />
                   </label>
-                  <span className="text-[11px] font-mono text-muted-foreground">{color1}</span>
+                  <span className="font-mono text-[11px] text-muted-foreground">{color1}</span>
                 </div>
               )}
 
-              {/* Gradient colors + direction */}
-              {borderStyle === "gradient" && (
+              {/* Two-color styles */}
+              {(borderStyle === "gradient" || borderStyle === "checkerboard" || borderStyle === "dots" || borderStyle === "stripes") && (
                 <div className="space-y-2.5">
                   <div className="flex items-center gap-3">
                     <label className="relative flex size-8 cursor-pointer items-center justify-center overflow-hidden rounded-lg ring-1 ring-black/10">
@@ -269,37 +325,74 @@ export function ImageBorderClient() {
                       <input type="color" value={color1} onChange={e => setColor1(e.target.value)}
                         className="absolute inset-0 h-full w-full cursor-pointer opacity-0" />
                     </label>
-                    <div
-                      className="h-5 flex-1 rounded-full"
-                      style={{ background: `linear-gradient(to right, ${color1}, ${color2})` }}
-                    />
+                    <div className="h-5 flex-1 rounded-full" style={{ background: `linear-gradient(to right, ${color1}, ${color2})` }} />
                     <label className="relative flex size-8 cursor-pointer items-center justify-center overflow-hidden rounded-lg ring-1 ring-black/10">
                       <div className="size-full" style={{ backgroundColor: color2 }} />
                       <input type="color" value={color2} onChange={e => setColor2(e.target.value)}
                         className="absolute inset-0 h-full w-full cursor-pointer opacity-0" />
                     </label>
                   </div>
-                  <div className="flex gap-1.5">
-                    {GRAD_DIRS.map(d => (
-                      <button key={d.value} onClick={() => setGradDir(d.value)}
-                        className={cn(
-                          "flex-1 rounded-lg py-1.5 text-[14px] transition-colors",
-                          gradDir === d.value ? "bg-foreground text-white" : "bg-neutral-100 text-neutral-600 hover:bg-neutral-200",
-                        )}>
-                        {d.label}
-                      </button>
-                    ))}
-                  </div>
+                  {borderStyle === "gradient" && (
+                    <div className="flex gap-1.5">
+                      {GRAD_DIRS.map(d => (
+                        <button key={d.value} onClick={() => setGradDir(d.value)}
+                          className={cn(
+                            "flex-1 rounded-lg py-1.5 text-[14px] transition-colors",
+                            gradDir === d.value ? "bg-foreground text-white" : "bg-neutral-100 text-neutral-600 hover:bg-neutral-200",
+                          )}>
+                          {d.label}
+                        </button>
+                      ))}
+                    </div>
+                  )}
                 </div>
               )}
 
-              {/* Blur info */}
               {borderStyle === "blur" && (
                 <p className="text-[12px] text-muted-foreground">
                   The image is stretched and blurred to create the border — great for photos with vibrant colours.
                 </p>
               )}
             </div>
+
+            {/* Double border */}
+            {borderStyle !== "blur" && (
+              <div className="space-y-3 px-4 py-3.5">
+                <div className="flex items-center justify-between">
+                  <p className="text-[10px] font-semibold uppercase tracking-widest text-muted-foreground">Double border</p>
+                  <label className="flex cursor-pointer select-none items-center gap-1.5">
+                    <input type="checkbox" checked={doubleBorder}
+                      onChange={e => setDoubleBorder(e.target.checked)}
+                      className="size-3.5 accent-foreground"
+                    />
+                    <span className="text-[12px] text-foreground">Enable</span>
+                  </label>
+                </div>
+                {doubleBorder && (
+                  <div className="space-y-2.5">
+                    <div className="space-y-1.5">
+                      <div className="flex items-center justify-between">
+                        <span className="text-[12px] text-muted-foreground">Inner width</span>
+                        <span className="text-[12px] tabular-nums text-muted-foreground">{innerWidth}px</span>
+                      </div>
+                      <input type="range" min={2} max={40} step={2} value={innerWidth}
+                        onChange={e => setInnerWidth(Number(e.target.value))}
+                        className="h-1.5 w-full cursor-pointer accent-foreground"
+                      />
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <p className="flex-1 text-[12px] text-muted-foreground">Inner color</p>
+                      <label className="relative flex size-8 cursor-pointer items-center justify-center overflow-hidden rounded-lg ring-1 ring-black/10">
+                        <div className="size-full" style={{ backgroundColor: innerColor }} />
+                        <input type="color" value={innerColor} onChange={e => setInnerColor(e.target.value)}
+                          className="absolute inset-0 h-full w-full cursor-pointer opacity-0" />
+                      </label>
+                      <span className="font-mono text-[11px] text-muted-foreground">{innerColor}</span>
+                    </div>
+                  </div>
+                )}
+              </div>
+            )}
           </div>
 
           <SoftPillButton
@@ -314,7 +407,6 @@ export function ImageBorderClient() {
         </>
       )}
 
-      {/* Result */}
       {state === "done" && result && file && (
         <motion.div
           initial={{ opacity: 0, y: 10 }}

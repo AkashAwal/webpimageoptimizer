@@ -7,42 +7,62 @@ import { cn } from "@/lib/utils";
 import SoftPillButton from "@/components/ui/soft-pill-button";
 
 type State = "idle" | "processing" | "done";
+type Preset = "normal" | "grayscale" | "sepia" | "warm" | "cool" | "faded" | "duotone" | "custom-tint";
 
-type Preset = "normal" | "grayscale" | "sepia" | "warm" | "cool" | "faded" | "duotone";
-
-interface PresetDef {
-  id: Preset;
-  label: string;
-  swatch: string; // gradient or color for the preset thumbnail
-}
+interface PresetDef { id: Preset; label: string; swatch: string; }
 
 const PRESETS: PresetDef[] = [
-  { id: "normal",    label: "Normal",    swatch: "linear-gradient(135deg,#f97316,#8b5cf6)" },
-  { id: "grayscale", label: "Grayscale", swatch: "linear-gradient(135deg,#9ca3af,#374151)" },
-  { id: "sepia",     label: "Sepia",     swatch: "linear-gradient(135deg,#d4a464,#7c5c3b)" },
-  { id: "warm",      label: "Warm",      swatch: "linear-gradient(135deg,#fcd34d,#f97316)" },
-  { id: "cool",      label: "Cool",      swatch: "linear-gradient(135deg,#93c5fd,#7c3aed)" },
-  { id: "faded",     label: "Faded",     swatch: "linear-gradient(135deg,#d1d5db,#9ca3af)" },
-  { id: "duotone",   label: "Duotone",   swatch: "linear-gradient(135deg,#1e3a5f,#f472b6)" },
+  { id: "normal",      label: "Normal",      swatch: "linear-gradient(135deg,#f97316,#8b5cf6)" },
+  { id: "grayscale",   label: "Grayscale",   swatch: "linear-gradient(135deg,#9ca3af,#374151)" },
+  { id: "sepia",       label: "Sepia",       swatch: "linear-gradient(135deg,#d4a464,#7c5c3b)" },
+  { id: "warm",        label: "Warm",        swatch: "linear-gradient(135deg,#fcd34d,#f97316)" },
+  { id: "cool",        label: "Cool",        swatch: "linear-gradient(135deg,#93c5fd,#7c3aed)" },
+  { id: "faded",       label: "Faded",       swatch: "linear-gradient(135deg,#d1d5db,#9ca3af)" },
+  { id: "duotone",     label: "Duotone",     swatch: "linear-gradient(135deg,#1e3a5f,#f472b6)" },
+  { id: "custom-tint", label: "Custom tint", swatch: "" },
 ];
 
 function buildCssFilter(preset: Preset, intensity: number): string {
   const t = intensity / 100;
   switch (preset) {
-    case "grayscale": return `grayscale(${t})`;
-    case "sepia":     return `sepia(${t}) brightness(${1 + t * 0.06})`;
-    case "warm":      return `sepia(${t * 0.38}) saturate(${1 + t * 0.28}) brightness(${1 + t * 0.05}) hue-rotate(${-t * 12}deg)`;
-    case "cool":      return `brightness(${1 + t * 0.04}) saturate(${1 + t * 0.12}) hue-rotate(${t * 200}deg)`;
-    case "faded":     return `brightness(${1 + t * 0.14}) contrast(${1 - t * 0.19}) saturate(${1 - t * 0.38})`;
-    default:          return "";
+    case "grayscale":   return `grayscale(${t})`;
+    case "sepia":       return `sepia(${t}) brightness(${1 + t * 0.06})`;
+    case "warm":        return `sepia(${t * 0.38}) saturate(${1 + t * 0.28}) brightness(${1 + t * 0.05}) hue-rotate(${-t * 12}deg)`;
+    case "cool":        return `brightness(${1 + t * 0.04}) saturate(${1 + t * 0.12}) hue-rotate(${t * 200}deg)`;
+    case "faded":       return `brightness(${1 + t * 0.14}) contrast(${1 - t * 0.19}) saturate(${1 - t * 0.38})`;
+    default:            return "";
   }
 }
 
 function hexToRgb(hex: string): [number, number, number] {
-  const r = parseInt(hex.slice(1, 3), 16);
-  const g = parseInt(hex.slice(3, 5), 16);
-  const b = parseInt(hex.slice(5, 7), 16);
-  return [r, g, b];
+  return [parseInt(hex.slice(1, 3), 16), parseInt(hex.slice(3, 5), 16), parseInt(hex.slice(5, 7), 16)];
+}
+
+function rgbToHsl(r: number, g: number, b: number): [number, number, number] {
+  r /= 255; g /= 255; b /= 255;
+  const max = Math.max(r, g, b), min = Math.min(r, g, b);
+  let h = 0; const l = (max + min) / 2;
+  let s = 0;
+  if (max !== min) {
+    const d = max - min;
+    s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
+    switch (max) {
+      case r: h = ((g - b) / d + (g < b ? 6 : 0)) / 6; break;
+      case g: h = ((b - r) / d + 2) / 6; break;
+      case b: h = ((r - g) / d + 4) / 6; break;
+    }
+  }
+  return [Math.round(h * 360), Math.round(s * 100), Math.round(l * 100)];
+}
+
+function buildTintCssFilter(tintHex: string, intensity: number): string {
+  const [r, g, b] = hexToRgb(tintHex);
+  const [h, s, l] = rgbToHsl(r, g, b);
+  const t = intensity / 100;
+  const hRot = (h - 30 + 360) % 360;
+  const sat = Math.max(1, s / 20);
+  const bri = 0.7 + (l / 100) * 0.6;
+  return `grayscale(1) sepia(1) hue-rotate(${hRot}deg) saturate(${sat * t + (1 - t)}) brightness(${bri * t + (1 - t)})`;
 }
 
 function applyDuotone(imageData: ImageData, shadowHex: string, highlightHex: string, intensity: number) {
@@ -54,7 +74,20 @@ function applyDuotone(imageData: ImageData, shadowHex: string, highlightHex: str
     const dr = Math.round(sr + (hr - sr) * lum);
     const dg = Math.round(sg + (hg - sg) * lum);
     const db = Math.round(sb + (hb - sb) * lum);
-    // Blend with original based on intensity
+    imageData.data[i]     = Math.round(imageData.data[i]     * (1 - t) + dr * t);
+    imageData.data[i + 1] = Math.round(imageData.data[i + 1] * (1 - t) + dg * t);
+    imageData.data[i + 2] = Math.round(imageData.data[i + 2] * (1 - t) + db * t);
+  }
+}
+
+function applyCustomTint(imageData: ImageData, tintHex: string, intensity: number) {
+  const [tr, tg, tb] = hexToRgb(tintHex);
+  const t = intensity / 100;
+  for (let i = 0; i < imageData.data.length; i += 4) {
+    const lum = (0.299 * imageData.data[i] + 0.587 * imageData.data[i + 1] + 0.114 * imageData.data[i + 2]) / 255;
+    const dr = Math.round(tr * lum);
+    const dg = Math.round(tg * lum);
+    const db = Math.round(tb * lum);
     imageData.data[i]     = Math.round(imageData.data[i]     * (1 - t) + dr * t);
     imageData.data[i + 1] = Math.round(imageData.data[i + 1] * (1 - t) + dg * t);
     imageData.data[i + 2] = Math.round(imageData.data[i + 2] * (1 - t) + db * t);
@@ -76,7 +109,7 @@ function formatBytes(b: number) {
 
 async function exportEffect(
   url: string, nW: number, nH: number, mime: string,
-  preset: Preset, intensity: number, shadowHex: string, highlightHex: string,
+  preset: Preset, intensity: number, shadowHex: string, highlightHex: string, tintHex: string,
 ): Promise<Blob> {
   const img = new Image();
   img.src = url;
@@ -90,6 +123,11 @@ async function exportEffect(
     const imageData = ctx.getImageData(0, 0, nW, nH);
     applyDuotone(imageData, shadowHex, highlightHex, intensity);
     ctx.putImageData(imageData, 0, 0);
+  } else if (preset === "custom-tint") {
+    ctx.drawImage(img, 0, 0, nW, nH);
+    const imageData = ctx.getImageData(0, 0, nW, nH);
+    applyCustomTint(imageData, tintHex, intensity);
+    ctx.putImageData(imageData, 0, 0);
   } else {
     const filterStr = buildCssFilter(preset, intensity);
     ctx.filter = filterStr || "none";
@@ -102,6 +140,79 @@ async function exportEffect(
   );
 }
 
+// ─── Split-view compare ───────────────────────────────────────────────────────
+
+interface SplitViewProps {
+  imgUrl: string;
+  filter: string | undefined;
+  showDuotoneNotice?: boolean;
+}
+
+function SplitView({ imgUrl, filter, showDuotoneNotice }: SplitViewProps) {
+  const [splitX, setSplitX] = useState(50);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const isDragging = useRef(false);
+
+  const updateSplit = useCallback((clientX: number) => {
+    if (!containerRef.current) return;
+    const rect = containerRef.current.getBoundingClientRect();
+    setSplitX(Math.max(2, Math.min(98, ((clientX - rect.left) / rect.width) * 100)));
+  }, []);
+
+  return (
+    <div
+      ref={containerRef}
+      className="relative select-none overflow-hidden"
+      style={{ height: 250, cursor: "ew-resize" }}
+      onPointerDown={e => {
+        isDragging.current = true;
+        e.currentTarget.setPointerCapture(e.pointerId);
+        updateSplit(e.clientX);
+      }}
+      onPointerMove={e => { if (isDragging.current) updateSplit(e.clientX); }}
+      onPointerUp={() => { isDragging.current = false; }}
+    >
+      {/* Original (full) */}
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img src={imgUrl} alt="" className="absolute inset-0 h-full w-full object-contain" draggable={false} style={{ filter: "none" }} />
+
+      {/* Filtered — clipped to left portion */}
+      <div
+        className="absolute inset-0 overflow-hidden"
+        style={{ clipPath: `inset(0 ${100 - splitX}% 0 0)` }}
+      >
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img src={imgUrl} alt="" className="absolute inset-0 h-full w-full object-contain" draggable={false}
+          style={{ filter: filter || "none" }} />
+      </div>
+
+      {/* Divider */}
+      <div
+        className="pointer-events-none absolute top-0 bottom-0 w-0.5 bg-white"
+        style={{ left: `${splitX}%`, transform: "translateX(-50%)", boxShadow: "0 0 0 1px rgba(0,0,0,0.3)" }}
+      >
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex size-7 items-center justify-center rounded-full bg-white shadow-md ring-1 ring-black/10">
+          <span className="text-[11px] font-bold text-neutral-400">⇔</span>
+        </div>
+      </div>
+
+      {/* Labels */}
+      <span className="absolute bottom-2 left-3 rounded-full bg-black/45 px-2 py-0.5 text-[10px] text-white/80 backdrop-blur-sm">Filtered</span>
+      <span className="absolute bottom-2 right-3 rounded-full bg-black/45 px-2 py-0.5 text-[10px] text-white/80 backdrop-blur-sm">Original</span>
+
+      {showDuotoneNotice && (
+        <div className="pointer-events-none absolute top-3 left-0 right-0 flex justify-center">
+          <span className="rounded-full bg-black/50 px-2.5 py-1 text-[11px] text-white/80 backdrop-blur-sm">
+            Duotone only appears on export
+          </span>
+        </div>
+      )}
+    </div>
+  );
+}
+
+// ─── Main component ───────────────────────────────────────────────────────────
+
 export function GrayscaleTintClient() {
   const [file, setFile] = useState<File | null>(null);
   const [imgUrl, setImgUrl] = useState<string | null>(null);
@@ -111,7 +222,7 @@ export function GrayscaleTintClient() {
   const [intensity, setIntensity] = useState(100);
   const [shadowHex, setShadowHex] = useState("#1e3a5f");
   const [highlightHex, setHighlightHex] = useState("#f472b6");
-  const [showOriginal, setShowOriginal] = useState(false);
+  const [tintHex, setTintHex] = useState("#e63946");
   const [dragging, setDragging] = useState(false);
   const [state, setState] = useState<State>("idle");
   const [result, setResult] = useState<{ blob: Blob; url: string } | null>(null);
@@ -149,7 +260,7 @@ export function GrayscaleTintClient() {
     setState("processing");
     try {
       const mime = mimeFromFile(file);
-      const blob = await exportEffect(imgUrl, naturalW, naturalH, mime, preset, intensity, shadowHex, highlightHex);
+      const blob = await exportEffect(imgUrl, naturalW, naturalH, mime, preset, intensity, shadowHex, highlightHex, tintHex);
       const url = URL.createObjectURL(blob);
       if (resultUrlRef.current) URL.revokeObjectURL(resultUrlRef.current);
       resultUrlRef.current = url;
@@ -167,16 +278,19 @@ export function GrayscaleTintClient() {
     a.click();
   };
 
-  // Live preview filter for CSS-based presets
-  const previewFilter = preset === "duotone" || preset === "normal"
+  const previewFilter = (preset === "duotone" || preset === "normal" || preset === "custom-tint")
     ? undefined
     : buildCssFilter(preset, intensity) || undefined;
 
+  const customTintPreviewFilter = preset === "custom-tint"
+    ? buildTintCssFilter(tintHex, intensity)
+    : undefined;
+
+  const effectiveFilter = previewFilter ?? customTintPreviewFilter;
   const isIdentity = preset === "normal";
 
   return (
     <div className="mx-auto w-full max-w-xl space-y-3">
-      {/* Drop zone */}
       {!file && (
         <div
           onDrop={e => { e.preventDefault(); setDragging(false); const f = e.dataTransfer.files[0]; if (f) loadFile(f); }}
@@ -200,28 +314,16 @@ export function GrayscaleTintClient() {
         </div>
       )}
 
-      {/* Editor */}
       {file && imgUrl && state !== "done" && (
         <>
-          {/* Preview */}
+          {/* Split-view preview card */}
           <div className="overflow-hidden rounded-2xl ring-1 ring-black/10 shadow-[0_4px_24px_-6px_rgba(0,0,0,0.22),0_1px_3px_rgba(0,0,0,0.10)]">
-            <div className="relative flex items-center justify-center bg-neutral-900" style={{ height: 250 }}>
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                src={imgUrl} alt=""
-                className="max-h-full max-w-full object-contain transition-all"
-                style={{
-                  filter: showOriginal ? "none" : previewFilter,
-                  transition: "filter 0.15s ease",
-                }}
-                draggable={false}
+            <div className="bg-neutral-900">
+              <SplitView
+                imgUrl={imgUrl}
+                filter={effectiveFilter}
+                showDuotoneNotice={preset === "duotone"}
               />
-              {/* Duotone notice */}
-              {preset === "duotone" && !showOriginal && (
-                <div className="absolute bottom-3 left-3 rounded-full bg-black/50 px-2.5 py-1 text-[11px] text-white/80 backdrop-blur-sm">
-                  Duotone preview on export
-                </div>
-              )}
             </div>
             <div className="flex items-center justify-between gap-3 border-t border-border bg-white px-4 py-3">
               <div className="min-w-0">
@@ -231,16 +333,7 @@ export function GrayscaleTintClient() {
                 </p>
               </div>
               <div className="flex shrink-0 items-center gap-1.5">
-                <button
-                  onMouseDown={() => setShowOriginal(true)}
-                  onMouseUp={() => setShowOriginal(false)}
-                  onMouseLeave={() => setShowOriginal(false)}
-                  onTouchStart={() => setShowOriginal(true)}
-                  onTouchEnd={() => setShowOriginal(false)}
-                  className="rounded-full px-2.5 py-1 text-[11px] font-medium text-muted-foreground ring-1 ring-black/10 transition-colors hover:bg-neutral-100 select-none"
-                >
-                  Hold to compare
-                </button>
+                <span className="text-[11px] text-muted-foreground/60">Drag divider to compare</span>
                 <button onClick={reset} className="rounded-full p-1.5 text-neutral-400 transition-colors hover:bg-neutral-100 hover:text-neutral-600">
                   <X size={13} />
                 </button>
@@ -251,27 +344,28 @@ export function GrayscaleTintClient() {
           {/* Preset grid */}
           <div className="rounded-2xl bg-white px-4 py-3.5 ring-1 ring-black/6 shadow-[0_1px_3px_rgba(0,0,0,0.06)] space-y-2">
             <p className="text-[10px] font-semibold uppercase tracking-widest text-muted-foreground">Effect</p>
-            <div className="grid grid-cols-4 gap-1.5 sm:grid-cols-7">
+            <div className="grid grid-cols-4 gap-1.5 sm:grid-cols-8">
               {PRESETS.map(p => (
-                <button
-                  key={p.id}
-                  onClick={() => setPreset(p.id)}
+                <button key={p.id} onClick={() => setPreset(p.id)}
                   className={cn(
-                    "flex flex-col items-center gap-1.5 rounded-xl p-1.5 text-[11px] font-medium transition-colors",
+                    "flex flex-col items-center gap-1.5 rounded-xl p-1.5 text-[10px] font-medium transition-colors",
                     preset === p.id ? "bg-neutral-900 text-white" : "hover:bg-neutral-50 text-neutral-600",
-                  )}
-                >
+                  )}>
                   <div
                     className="size-9 rounded-lg ring-1 ring-black/8"
-                    style={{ background: p.swatch }}
+                    style={{
+                      background: p.id === "custom-tint"
+                        ? `linear-gradient(135deg, ${tintHex}, #ffffff44), ${tintHex}`
+                        : p.swatch,
+                    }}
                   />
-                  {p.label}
+                  <span className="leading-tight text-center">{p.label}</span>
                 </button>
               ))}
             </div>
           </div>
 
-          {/* Intensity + duotone colors */}
+          {/* Intensity + effect-specific controls */}
           <div className="divide-y divide-border rounded-2xl bg-white ring-1 ring-black/6 shadow-[0_1px_3px_rgba(0,0,0,0.06)]">
             {preset !== "normal" && (
               <div className="space-y-2 px-4 py-3.5">
@@ -301,11 +395,7 @@ export function GrayscaleTintClient() {
                     </label>
                     <span className="text-[10px] text-muted-foreground">Shadows</span>
                   </div>
-                  {/* Gradient preview */}
-                  <div
-                    className="h-8 flex-1 rounded-full"
-                    style={{ background: `linear-gradient(to right, ${shadowHex}, ${highlightHex})` }}
-                  />
+                  <div className="h-8 flex-1 rounded-full" style={{ background: `linear-gradient(to right, ${shadowHex}, ${highlightHex})` }} />
                   <div className="flex flex-1 flex-col items-center gap-1.5">
                     <label className="relative flex size-10 cursor-pointer overflow-hidden rounded-xl ring-1 ring-black/10">
                       <div className="size-full" style={{ backgroundColor: highlightHex }} />
@@ -315,6 +405,24 @@ export function GrayscaleTintClient() {
                     <span className="text-[10px] text-muted-foreground">Highlights</span>
                   </div>
                 </div>
+              </div>
+            )}
+
+            {preset === "custom-tint" && (
+              <div className="space-y-2.5 px-4 py-3.5">
+                <p className="text-[10px] font-semibold uppercase tracking-widest text-muted-foreground">Tint color</p>
+                <div className="flex items-center gap-3">
+                  <label className="relative flex size-10 cursor-pointer overflow-hidden rounded-xl ring-1 ring-black/10">
+                    <div className="size-full" style={{ backgroundColor: tintHex }} />
+                    <input type="color" value={tintHex} onChange={e => setTintHex(e.target.value)}
+                      className="absolute inset-0 h-full w-full cursor-pointer opacity-0" />
+                  </label>
+                  <div className="h-8 flex-1 rounded-full" style={{ background: `linear-gradient(to right, #111, ${tintHex})` }} />
+                  <span className="font-mono text-[12px] text-muted-foreground">{tintHex}</span>
+                </div>
+                <p className="text-[11px] text-muted-foreground/70">
+                  Converts the image to grayscale and applies a colour tint. Export is exact; preview is approximate.
+                </p>
               </div>
             )}
           </div>
@@ -331,7 +439,6 @@ export function GrayscaleTintClient() {
         </>
       )}
 
-      {/* Result */}
       {state === "done" && result && file && (
         <motion.div
           initial={{ opacity: 0, y: 10 }}

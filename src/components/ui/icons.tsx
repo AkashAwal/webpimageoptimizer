@@ -35,4 +35,5 @@ export {
   Square,
   GridFour,
   PaintBucket,
+  DownloadSimple,
 } from "@phosphor-icons/react";

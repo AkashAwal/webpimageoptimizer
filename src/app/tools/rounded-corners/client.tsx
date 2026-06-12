@@ -7,6 +7,7 @@ import { cn } from "@/lib/utils";
 import SoftPillButton from "@/components/ui/soft-pill-button";
 
 type State = "idle" | "processing" | "done";
+type ShadowPreset = "none" | "soft" | "hard" | "glow";
 
 function formatBytes(b: number) {
   if (b < 1024) return `${b} B`;
@@ -14,21 +15,69 @@ function formatBytes(b: number) {
   return `${(b / 1048576).toFixed(1)} MB`;
 }
 
+interface ShadowDef { blur: number; offsetX: number; offsetY: number; opacity: number; }
+
+const SHADOW_DEFS: Record<ShadowPreset, ShadowDef> = {
+  none: { blur: 0,  offsetX: 0,  offsetY: 0,  opacity: 0 },
+  soft: { blur: 32, offsetX: 0,  offsetY: 12, opacity: 0.22 },
+  hard: { blur: 0,  offsetX: 6,  offsetY: 6,  opacity: 0.40 },
+  glow: { blur: 30, offsetX: 0,  offsetY: 0,  opacity: 0.55 },
+};
+
+const SHADOW_PAD = 60; // canvas padding added when shadow is active
+
 async function exportRounded(
   url: string, nW: number, nH: number,
   tl: number, tr: number, br: number, bl: number,
+  bgColor: string | null,
+  shadowPreset: ShadowPreset, shadowColor: string,
 ): Promise<Blob> {
   const img = new Image();
   img.src = url;
   await new Promise<void>(res => { img.onload = () => res(); if (img.complete) res(); });
+  const hasShadow = shadowPreset !== "none";
+  const pad = hasShadow ? SHADOW_PAD : 0;
   const canvas = document.createElement("canvas");
-  canvas.width = nW; canvas.height = nH;
+  canvas.width  = nW + pad * 2;
+  canvas.height = nH + pad * 2;
   const ctx = canvas.getContext("2d")!;
+
+  // Background fill (transparent by default)
+  if (bgColor) {
+    ctx.fillStyle = bgColor;
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+  }
+
+  const def = SHADOW_DEFS[shadowPreset];
+  if (hasShadow) {
+    // Parse shadow color + alpha
+    const hex = shadowColor.replace("#", "");
+    const r = parseInt(hex.slice(0, 2), 16);
+    const g = parseInt(hex.slice(2, 4), 16);
+    const b = parseInt(hex.slice(4, 6), 16);
+    ctx.shadowColor = `rgba(${r},${g},${b},${def.opacity})`;
+    ctx.shadowBlur = def.blur;
+    ctx.shadowOffsetX = def.offsetX;
+    ctx.shadowOffsetY = def.offsetY;
+  }
+
+  // Clip to rounded rect
   ctx.beginPath();
-  // roundRect order: [top-left, top-right, bottom-right, bottom-left]
-  ctx.roundRect(0, 0, nW, nH, [tl, tr, br, bl]);
+  ctx.roundRect(pad, pad, nW, nH, [tl, tr, br, bl]);
   ctx.clip();
-  ctx.drawImage(img, 0, 0, nW, nH);
+
+  // Draw image (shadow is drawn through the clip before fill)
+  if (hasShadow) {
+    // Draw a solid rect first to emit the shadow, then draw image over it
+    ctx.save();
+    ctx.fillStyle = "#000"; ctx.fillRect(pad, pad, nW, nH); ctx.restore();
+    ctx.shadowColor = "transparent";
+    ctx.beginPath();
+    ctx.roundRect(pad, pad, nW, nH, [tl, tr, br, bl]);
+    ctx.clip();
+  }
+  ctx.drawImage(img, pad, pad, nW, nH);
+
   return new Promise<Blob>((res, rej) =>
     canvas.toBlob(b => b ? res(b) : rej(new Error("Export failed")), "image/png"),
   );
@@ -41,6 +90,13 @@ const CORNER_LABELS = [
   { key: "br" as const, label: "↘ Bottom-right" },
 ];
 
+const SHADOW_OPTIONS: { value: ShadowPreset; label: string }[] = [
+  { value: "none", label: "None"      },
+  { value: "soft", label: "Soft drop" },
+  { value: "hard", label: "Hard"      },
+  { value: "glow", label: "Glow"      },
+];
+
 export function RoundedCornersClient() {
   const [file, setFile] = useState<File | null>(null);
   const [imgUrl, setImgUrl] = useState<string | null>(null);
@@ -49,6 +105,10 @@ export function RoundedCornersClient() {
   const [radius, setRadius] = useState(12);
   const [linkedCorners, setLinkedCorners] = useState(true);
   const [corners, setCorners] = useState({ tl: 12, tr: 12, br: 12, bl: 12 });
+  const [bgMode, setBgMode] = useState<"transparent" | "color">("transparent");
+  const [bgColor, setBgColor] = useState("#ffffff");
+  const [shadowPreset, setShadowPreset] = useState<ShadowPreset>("none");
+  const [shadowColor, setShadowColor] = useState("#000000");
   const [dragging, setDragging] = useState(false);
   const [state, setState] = useState<State>("idle");
   const [result, setResult] = useState<{ blob: Blob; url: string } | null>(null);
@@ -92,10 +152,14 @@ export function RoundedCornersClient() {
   const handleCornerChange = (corner: keyof typeof corners, v: number) =>
     setCorners(c => ({ ...c, [corner]: v }));
 
-  // CSS preview border-radius (% of each dimension, so use shorter-side %)
   const cssBorderRadius = linkedCorners
     ? `${radius}%`
     : `${corners.tl}% ${corners.tr}% ${corners.br}% ${corners.bl}%`;
+
+  const def = SHADOW_DEFS[shadowPreset];
+  const cssShadow = shadowPreset === "none"
+    ? undefined
+    : `${def.offsetX}px ${def.offsetY}px ${def.blur}px rgba(0,0,0,${def.opacity})`;
 
   const handleExport = async () => {
     if (!imgUrl || !file) return;
@@ -105,7 +169,8 @@ export function RoundedCornersClient() {
       const tr = pctToPx(linkedCorners ? radius : corners.tr);
       const br = pctToPx(linkedCorners ? radius : corners.br);
       const bl = pctToPx(linkedCorners ? radius : corners.bl);
-      const blob = await exportRounded(imgUrl, naturalW, naturalH, tl, tr, br, bl);
+      const bg = bgMode === "color" ? bgColor : null;
+      const blob = await exportRounded(imgUrl, naturalW, naturalH, tl, tr, br, bl, bg, shadowPreset, shadowColor);
       const url = URL.createObjectURL(blob);
       if (resultUrlRef.current) URL.revokeObjectURL(resultUrlRef.current);
       resultUrlRef.current = url;
@@ -124,7 +189,6 @@ export function RoundedCornersClient() {
 
   return (
     <div className="mx-auto w-full max-w-xl space-y-3">
-      {/* Drop zone */}
       {!file && (
         <div
           onDrop={e => { e.preventDefault(); setDragging(false); const f = e.dataTransfer.files[0]; if (f) loadFile(f); }}
@@ -148,7 +212,6 @@ export function RoundedCornersClient() {
         </div>
       )}
 
-      {/* Editor */}
       {file && imgUrl && state !== "done" && (
         <>
           {/* Preview */}
@@ -157,25 +220,31 @@ export function RoundedCornersClient() {
               className="relative flex items-center justify-center bg-neutral-800"
               style={{ height: 270 }}
             >
-              {/* Checkerboard — shows transparent areas from rounded clip */}
-              <div
-                className="absolute inset-0"
-                style={{
-                  backgroundImage: "linear-gradient(45deg,#555 25%,transparent 25%),linear-gradient(-45deg,#555 25%,transparent 25%),linear-gradient(45deg,transparent 75%,#555 75%),linear-gradient(-45deg,transparent 75%,#555 75%)",
-                  backgroundSize: "16px 16px",
-                  backgroundPosition: "0 0,0 8px,8px -8px,-8px 0px",
-                }}
-              />
+              {/* Checkerboard (shown unless solid bg) */}
+              {bgMode === "transparent" && (
+                <div
+                  className="absolute inset-0"
+                  style={{
+                    backgroundImage: "linear-gradient(45deg,#555 25%,transparent 25%),linear-gradient(-45deg,#555 25%,transparent 25%),linear-gradient(45deg,transparent 75%,#555 75%),linear-gradient(-45deg,transparent 75%,#555 75%)",
+                    backgroundSize: "16px 16px",
+                    backgroundPosition: "0 0,0 8px,8px -8px,-8px 0px",
+                  }}
+                />
+              )}
+              {bgMode === "color" && (
+                <div className="absolute inset-0" style={{ backgroundColor: bgColor }} />
+              )}
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 src={imgUrl} alt=""
                 style={{
                   position: "relative",
-                  maxWidth: "75%",
-                  maxHeight: "75%",
+                  maxWidth: "70%",
+                  maxHeight: "70%",
                   objectFit: "contain",
                   borderRadius: cssBorderRadius,
-                  transition: "border-radius 0.12s ease",
+                  boxShadow: cssShadow,
+                  transition: "border-radius 0.12s ease, box-shadow 0.12s ease",
                 }}
                 draggable={false}
               />
@@ -195,7 +264,7 @@ export function RoundedCornersClient() {
 
           {/* Controls */}
           <div className="divide-y divide-border rounded-2xl bg-white ring-1 ring-black/6 shadow-[0_1px_3px_rgba(0,0,0,0.06)]">
-            {/* Master radius */}
+            {/* Corner radius */}
             <div className="space-y-2 px-4 py-3.5">
               <div className="flex items-center justify-between">
                 <p className="text-[10px] font-semibold uppercase tracking-widest text-muted-foreground">Corner radius</p>
@@ -214,13 +283,12 @@ export function RoundedCornersClient() {
               </div>
             </div>
 
-            {/* Per-corner toggle */}
+            {/* Per-corner */}
             <div className="space-y-2.5 px-4 py-3.5">
               <div className="flex items-center justify-between">
                 <p className="text-[10px] font-semibold uppercase tracking-widest text-muted-foreground">Individual corners</p>
                 <label className="flex cursor-pointer select-none items-center gap-1.5">
-                  <input
-                    type="checkbox" checked={!linkedCorners}
+                  <input type="checkbox" checked={!linkedCorners}
                     onChange={e => setLinkedCorners(!e.target.checked)}
                     className="size-3.5 accent-foreground"
                   />
@@ -244,13 +312,79 @@ export function RoundedCornersClient() {
                 </div>
               )}
             </div>
+
+            {/* Background fill */}
+            <div className="space-y-2.5 px-4 py-3.5">
+              <p className="text-[10px] font-semibold uppercase tracking-widest text-muted-foreground">Background</p>
+              <div className="flex gap-1.5">
+                <button
+                  onClick={() => setBgMode("transparent")}
+                  className={cn(
+                    "flex-1 rounded-xl py-2 text-[12px] font-medium transition-colors",
+                    bgMode === "transparent" ? "bg-foreground text-white" : "bg-neutral-100 text-neutral-600 hover:bg-neutral-200",
+                  )}
+                >
+                  Transparent
+                </button>
+                <button
+                  onClick={() => setBgMode("color")}
+                  className={cn(
+                    "flex-1 rounded-xl py-2 text-[12px] font-medium transition-colors",
+                    bgMode === "color" ? "bg-foreground text-white" : "bg-neutral-100 text-neutral-600 hover:bg-neutral-200",
+                  )}
+                >
+                  Solid fill
+                </button>
+              </div>
+              {bgMode === "color" && (
+                <div className="flex items-center gap-2">
+                  <p className="flex-1 text-[12px] text-muted-foreground">Fill color</p>
+                  <label className="relative flex size-8 cursor-pointer items-center justify-center overflow-hidden rounded-lg ring-1 ring-black/10">
+                    <div className="size-full" style={{ backgroundColor: bgColor }} />
+                    <input type="color" value={bgColor} onChange={e => setBgColor(e.target.value)}
+                      className="absolute inset-0 h-full w-full cursor-pointer opacity-0" />
+                  </label>
+                  <span className="font-mono text-[11px] text-muted-foreground">{bgColor}</span>
+                </div>
+              )}
+            </div>
+
+            {/* Shadow */}
+            <div className="space-y-2.5 px-4 py-3.5">
+              <p className="text-[10px] font-semibold uppercase tracking-widest text-muted-foreground">Shadow</p>
+              <div className="flex gap-1.5">
+                {SHADOW_OPTIONS.map(opt => (
+                  <button key={opt.value}
+                    onClick={() => setShadowPreset(opt.value)}
+                    className={cn(
+                      "flex-1 rounded-xl py-1.5 text-[11px] font-medium transition-colors",
+                      shadowPreset === opt.value ? "bg-foreground text-white" : "bg-neutral-100 text-neutral-600 hover:bg-neutral-200",
+                    )}>
+                    {opt.label}
+                  </button>
+                ))}
+              </div>
+              {shadowPreset !== "none" && (
+                <div className="flex items-center gap-2">
+                  <p className="flex-1 text-[12px] text-muted-foreground">Shadow color</p>
+                  <label className="relative flex size-8 cursor-pointer items-center justify-center overflow-hidden rounded-lg ring-1 ring-black/10">
+                    <div className="size-full" style={{ backgroundColor: shadowColor }} />
+                    <input type="color" value={shadowColor} onChange={e => setShadowColor(e.target.value)}
+                      className="absolute inset-0 h-full w-full cursor-pointer opacity-0" />
+                  </label>
+                  <span className="font-mono text-[11px] text-muted-foreground">{shadowColor}</span>
+                </div>
+              )}
+            </div>
           </div>
 
-          <div className="rounded-xl bg-neutral-50 px-4 py-2.5 ring-1 ring-black/5">
-            <p className="text-[12px] text-muted-foreground">
-              Output is always <span className="font-medium text-foreground">PNG</span> to preserve the transparent rounded corners.
-            </p>
-          </div>
+          {bgMode === "transparent" && shadowPreset === "none" && (
+            <div className="rounded-xl bg-neutral-50 px-4 py-2.5 ring-1 ring-black/5">
+              <p className="text-[12px] text-muted-foreground">
+                Output is always <span className="font-medium text-foreground">PNG</span> to preserve transparency.
+              </p>
+            </div>
+          )}
 
           <SoftPillButton
             variant="primary" onClick={handleExport}
@@ -264,7 +398,6 @@ export function RoundedCornersClient() {
         </>
       )}
 
-      {/* Result */}
       {state === "done" && result && file && (
         <motion.div
           initial={{ opacity: 0, y: 10 }}
