@@ -41,6 +41,9 @@ import {
   Gauge,
   FlipHorizontal,
   Sliders,
+  CornersOut,
+  FrameCorners,
+  Palette,
 } from "@phosphor-icons/react";
 
 import { SiteHeader } from "@/components/layout/site-header";
@@ -118,6 +121,9 @@ const TOOL_ICONS: Record<string, React.ReactNode> = {
   "/tools/image-flip-rotate": <FlipHorizontal size={22} />,
   "/tools/photo-adjustments": <Sliders size={22} />,
   "/tools/image-watermark":   <Stamp size={22} />,
+  "/tools/image-resizer":     <CornersOut size={22} />,
+  "/tools/rounded-corners":   <FrameCorners size={22} />,
+  "/tools/color-palette":     <Palette size={22} />,
 };
 
 function HomeContent() {

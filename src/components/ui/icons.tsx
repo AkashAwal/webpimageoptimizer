@@ -29,4 +29,7 @@ export {
   FlipHorizontal,
   Sliders,
   Stamp,
+  CornersOut,
+  FrameCorners,
+  Palette,
 } from "@phosphor-icons/react";

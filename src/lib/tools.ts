@@ -410,6 +410,30 @@ export const TOOLS = [
     badge: "Text overlay",
     category: "image-tools" as CategoryId,
   },
+  {
+    href: "/tools/image-resizer",
+    name: "Image Resizer",
+    shortName: "Free Image Resizer",
+    description: "Resize any image to exact pixel dimensions or a percentage scale. Aspect ratio lock and quick presets included.",
+    badge: "Any format",
+    category: "image-tools" as CategoryId,
+  },
+  {
+    href: "/tools/rounded-corners",
+    name: "Rounded Corners",
+    shortName: "Rounded Corners Tool",
+    description: "Add rounded corners to any image with a radius slider. Per-corner control available. Exports as PNG with transparency.",
+    badge: "Transparent PNG",
+    category: "image-tools" as CategoryId,
+  },
+  {
+    href: "/tools/color-palette",
+    name: "Color Palette",
+    shortName: "Color Palette Extractor",
+    description: "Extract 8 dominant colors from any image. Copy as HEX, RGB, or HSL. Export a palette PNG swatch sheet.",
+    badge: "8 colors",
+    category: "image-tools" as CategoryId,
+  },
 ] as const;
 
 export type Tool = (typeof TOOLS)[number];

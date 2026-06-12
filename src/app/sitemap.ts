@@ -55,6 +55,9 @@ const TOOL_PATHS = [
   "/tools/image-flip-rotate",
   "/tools/photo-adjustments",
   "/tools/image-watermark",
+  "/tools/image-resizer",
+  "/tools/rounded-corners",
+  "/tools/color-palette",
 ];
 
 const STATIC_PAGES = [
