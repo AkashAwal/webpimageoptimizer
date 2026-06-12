@@ -43,6 +43,8 @@ interface Settings {
   namingMode: "original" | "prefix";
   prefix: string;
   sizeCapKB: string;
+  targetSizeKB: string;
+  targetSizeUnit: "KB" | "MB";
   stripMeta: boolean;
   // PDF-specific
   pdfType: "standard" | "print";
@@ -378,6 +380,23 @@ async function heicToPdf(file: File, quality: number, targetW?: number, targetH?
   return buildPdf([page], opts ?? DEFAULT_PDF_OPTS);
 }
 
+async function convertToTargetSize(
+  convertFn: ConvertFn,
+  file: File,
+  targetBytes: number,
+  targetW?: number,
+  targetH?: number,
+): Promise<Blob> {
+  let lo = 1, hi = 95, bestBlob: Blob | null = null;
+  while (lo <= hi) {
+    const mid = Math.round((lo + hi) / 2);
+    const blob = await convertFn(file, mid, targetW, targetH);
+    if (blob.size <= targetBytes) { bestBlob = blob; lo = mid + 1; }
+    else hi = mid - 1;
+  }
+  return bestBlob ?? await convertFn(file, 1, targetW, targetH);
+}
+
 // ─── Config ───────────────────────────────────────────────────────────────────
 
 type ConvertFn = (f: File, q: number, w?: number, h?: number, opts?: PdfOptions) => Promise<Blob>;
@@ -535,7 +554,7 @@ export default function ConverterShell({ type, title }: { type: ConvertType; tit
   const [copiedId, setCopiedId] = useState<string | null>(null);
 
   const [settings, setSettings] = useState<Settings>({
-    quality: 85, width: "", height: "", namingMode: "original", prefix: "image", sizeCapKB: "", stripMeta: true,
+    quality: 85, width: "", height: "", namingMode: "original", prefix: "image", sizeCapKB: "", targetSizeKB: "", targetSizeUnit: "KB", stripMeta: true,
     pdfType: "standard", pdfPageSize: "fit", pdfOrientation: "auto", pdfMarginMm: 10,
     pdfFitMode: "contain", pdfCompress: true, pdfFlatten: false, pdfPageNumbers: false,
     pdfImageAlign: "middle-center", pdfWatermark: "", pdfWatermarkPos: "center", pdfPassword: "", pdfMetaTitle: "", pdfMetaAuthor: "", pdfFilename: "converted",
@@ -689,12 +708,18 @@ export default function ConverterShell({ type, title }: { type: ConvertType; tit
     }
 
     // ── WebP: per-file conversion ─────────────────────────────────────────────
+    const targetBytes = settings.targetSizeKB
+      ? parseFloat(settings.targetSizeKB) * (settings.targetSizeUnit === "MB" ? 1024 * 1024 : 1024)
+      : null;
+
     for (const item of queued) {
       if (abortRef.current) break;
       setFiles(prev => prev.map(f => f.id === item.id ? { ...f, status: "converting" } : f));
       const quality = fileQuality[item.id] ?? settings.quality;
       try {
-        const blob = await cfg.convert(item.file, quality, targetW, targetH);
+        const blob = targetBytes
+          ? await convertToTargetSize(cfg.convert, item.file, targetBytes, targetW, targetH)
+          : await cfg.convert(item.file, quality, targetW, targetH);
         const url = URL.createObjectURL(blob);
         setFiles(prev => prev.map(f => f.id === item.id ? { ...f, status: "done", result: { blob, url } } : f));
       } catch (e) {
@@ -1429,6 +1454,29 @@ export default function ConverterShell({ type, title }: { type: ConvertType; tit
                       />
                     )}
                   </div>
+                </div>
+
+                {/* Target size */}
+                <div>
+                  <p className="text-[10px] font-semibold uppercase tracking-widest text-muted-foreground mb-1.5">Target size</p>
+                  <div className="flex items-center gap-1.5">
+                    <input type="number" min={1} placeholder="e.g. 300" value={settings.targetSizeKB}
+                      onChange={e => setSettings(s => ({ ...s, targetSizeKB: e.target.value }))}
+                      className="flex-1 min-w-0 rounded-lg border border-border bg-neutral-50 px-2 py-1 text-[12px] text-foreground outline-none focus:border-foreground/30 focus:bg-white transition-colors"
+                    />
+                    <div className="flex gap-1">
+                      {(["KB", "MB"] as const).map(u => (
+                        <button key={u} onClick={() => setSettings(s => ({ ...s, targetSizeUnit: u }))}
+                          className={cn(
+                            "rounded-md px-2 py-1 text-[11px] font-medium transition-colors",
+                            settings.targetSizeUnit === u ? "bg-neutral-900 text-white" : "bg-neutral-100 text-neutral-500 hover:bg-neutral-200",
+                          )}>
+                          {u}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                  <p className="text-[10px] text-muted-foreground/50 mt-0.5 leading-tight">Auto-adjusts quality to fit. Overrides quality setting.</p>
                 </div>
 
                 {/* Size cap */}

@@ -7,6 +7,8 @@ import { cn } from "@/lib/utils";
 import SoftPillButton from "@/components/ui/soft-pill-button";
 
 type State = "idle" | "compressing" | "done" | "error";
+type Mode = "quality" | "target";
+type SizeUnit = "KB" | "MB";
 
 function formatBytes(bytes: number) {
   if (bytes < 1024) return `${bytes} B`;
@@ -38,12 +40,26 @@ async function compressImage(file: File, quality: number): Promise<Blob> {
   );
 }
 
+async function compressToTarget(file: File, targetBytes: number): Promise<Blob> {
+  let lo = 1, hi = 95, bestBlob: Blob | null = null;
+  while (lo <= hi) {
+    const mid = Math.round((lo + hi) / 2);
+    const blob = await compressImage(file, mid);
+    if (blob.size <= targetBytes) { bestBlob = blob; lo = mid + 1; }
+    else hi = mid - 1;
+  }
+  return bestBlob ?? await compressImage(file, 1);
+}
+
 export function ImageCompressorClient() {
   const [file, setFile] = useState<File | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const [naturalW, setNaturalW] = useState(0);
   const [naturalH, setNaturalH] = useState(0);
   const [quality, setQuality] = useState(80);
+  const [mode, setMode] = useState<Mode>("quality");
+  const [targetValue, setTargetValue] = useState("500");
+  const [targetUnit, setTargetUnit] = useState<SizeUnit>("KB");
   const [state, setState] = useState<State>("idle");
   const [result, setResult] = useState<{ blob: Blob; url: string } | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -86,7 +102,13 @@ export function ImageCompressorClient() {
     setState("compressing");
     setError(null);
     try {
-      const blob = await compressImage(file, quality);
+      let blob: Blob;
+      if (mode === "target" && targetValue) {
+        const multiplier = targetUnit === "MB" ? 1024 * 1024 : 1024;
+        blob = await compressToTarget(file, parseFloat(targetValue) * multiplier);
+      } else {
+        blob = await compressImage(file, quality);
+      }
       const url = URL.createObjectURL(blob);
       resultUrlRef.current = url;
       setResult({ blob, url });
@@ -156,24 +178,72 @@ export function ImageCompressorClient() {
       )}
 
       {file && state !== "done" && (
-        <div className="rounded-2xl bg-white px-4 py-4 ring-1 ring-black/6 shadow-[0_1px_3px_rgba(0,0,0,0.06)] space-y-1">
-          <div className="flex items-center justify-between">
-            <span className="text-[12px] font-medium text-foreground">Quality</span>
-            <span className="text-[12px] tabular-nums text-muted-foreground">{quality}%</span>
+        <div className="rounded-2xl bg-white px-4 py-4 ring-1 ring-black/6 shadow-[0_1px_3px_rgba(0,0,0,0.06)] space-y-3">
+          {/* Mode toggle */}
+          <div className="flex gap-1.5">
+            {(["quality", "target"] as const).map(m => (
+              <button key={m} onClick={() => setMode(m)}
+                className={cn(
+                  "flex-1 rounded-lg px-2 py-1.5 text-[11px] font-medium transition-colors",
+                  mode === m ? "bg-neutral-900 text-white" : "bg-neutral-100 text-neutral-600 hover:bg-neutral-200",
+                )}>
+                {m === "quality" ? "Quality" : "Target size"}
+              </button>
+            ))}
           </div>
-          <input type="range" min={10} max={100} value={quality} onChange={(e) => setQuality(Number(e.target.value))}
-            className="w-full h-1.5 cursor-pointer accent-foreground" />
-          <div className="flex justify-between">
-            <span className="text-[10px] text-muted-foreground/60">Smaller file</span>
-            <span className="text-[10px] text-muted-foreground/60">Best quality</span>
-          </div>
+
+          {mode === "quality" ? (
+            <div className="space-y-1">
+              <div className="flex items-center justify-between">
+                <span className="text-[12px] font-medium text-foreground">Quality</span>
+                <span className="text-[12px] tabular-nums text-muted-foreground">{quality}%</span>
+              </div>
+              <input type="range" min={10} max={100} value={quality} onChange={(e) => setQuality(Number(e.target.value))}
+                className="w-full h-1.5 cursor-pointer accent-foreground" />
+              <div className="flex justify-between">
+                <span className="text-[10px] text-muted-foreground/60">Smaller file</span>
+                <span className="text-[10px] text-muted-foreground/60">Best quality</span>
+              </div>
+            </div>
+          ) : (
+            <div className="space-y-2">
+              <div>
+                <span className="text-[12px] font-medium text-foreground">Target file size</span>
+                <p className="text-[11px] text-muted-foreground/70 mt-0.5 leading-snug">Automatically finds the highest quality that fits within this size.</p>
+              </div>
+              <div className="flex items-center gap-2">
+                <input
+                  type="number" min={1} placeholder="e.g. 500"
+                  value={targetValue}
+                  onChange={e => setTargetValue(e.target.value)}
+                  className="flex-1 min-w-0 rounded-lg border border-border bg-neutral-50 px-3 py-1.5 text-[13px] text-foreground outline-none focus:border-foreground/30 focus:bg-white transition-colors"
+                />
+                <div className="flex gap-1">
+                  {(["KB", "MB"] as const).map(u => (
+                    <button key={u} onClick={() => setTargetUnit(u)}
+                      className={cn(
+                        "rounded-lg px-3 py-1.5 text-[12px] font-medium transition-colors",
+                        targetUnit === u ? "bg-neutral-900 text-white" : "bg-neutral-100 text-neutral-600 hover:bg-neutral-200",
+                      )}>
+                      {u}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            </div>
+          )}
         </div>
       )}
 
       {file && state !== "done" && (
-        <SoftPillButton variant="primary" onClick={handleCompress} disabled={state === "compressing"} className="w-full h-10 text-[13px]">
+        <SoftPillButton
+          variant="primary"
+          onClick={handleCompress}
+          disabled={state === "compressing" || (mode === "target" && !targetValue)}
+          className="w-full h-10 text-[13px]"
+        >
           {state === "compressing" ? (
-            <><CircleNotch size={13} className="animate-spin" /> Compressing…</>
+            <><CircleNotch size={13} className="animate-spin" />{mode === "target" ? "Finding best quality…" : "Compressing…"}</>
           ) : "Compress Image"}
         </SoftPillButton>
       )}
