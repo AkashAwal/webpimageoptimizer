@@ -523,6 +523,38 @@ export const TOOLS = [
     badge: "4 schemes",
     category: "color-tools" as CategoryId,
   },
+  {
+    href: "/tools/tint-shade-generator",
+    name: "Tint & Shade Generator",
+    shortName: "Tint & Shade Scale Generator",
+    description: "Generate a full scale of tints and shades from any base color — like Tailwind's 50–950 palette. Copy any swatch instantly.",
+    badge: "10-step scale",
+    category: "color-tools" as CategoryId,
+  },
+  {
+    href: "/tools/color-blindness-simulator",
+    name: "Color Blindness Simulator",
+    shortName: "Color Blindness Simulator",
+    description: "Preview how any color looks to people with deuteranopia, protanopia, tritanopia, and achromatopsia.",
+    badge: "4 types",
+    category: "color-tools" as CategoryId,
+  },
+  {
+    href: "/tools/shadow-generator",
+    name: "CSS Shadow Generator",
+    shortName: "CSS Box & Text Shadow Generator",
+    description: "Build box-shadow and text-shadow CSS rules visually with live preview. Copy the ready-to-use CSS instantly.",
+    badge: "Copy CSS",
+    category: "color-tools" as CategoryId,
+  },
+  {
+    href: "/tools/random-color-generator",
+    name: "Random Color Generator",
+    shortName: "Random Color Generator",
+    description: "Generate random colors and lock the ones you like to build a palette. Copy HEX, RGB, or HSL values instantly.",
+    badge: "Lock & build",
+    category: "color-tools" as CategoryId,
+  },
 ] as const;
 
 export type Tool = (typeof TOOLS)[number];

@@ -44,4 +44,8 @@ export {
   Gradient,
   CircleHalf,
   Swatches,
+  PaintRoller,
+  Eye,
+  SelectionBackground,
+  Shuffle,
 } from "@phosphor-icons/react";

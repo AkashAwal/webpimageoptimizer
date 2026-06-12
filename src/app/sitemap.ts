@@ -69,6 +69,10 @@ const TOOL_PATHS = [
   "/tools/gradient-generator",
   "/tools/contrast-checker",
   "/tools/color-palette-generator",
+  "/tools/tint-shade-generator",
+  "/tools/color-blindness-simulator",
+  "/tools/shadow-generator",
+  "/tools/random-color-generator",
 ];
 
 const STATIC_PAGES = [

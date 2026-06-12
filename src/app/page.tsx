@@ -55,6 +55,10 @@ import {
   Gradient,
   CircleHalf,
   Swatches,
+  PaintRoller,
+  Eye,
+  SelectionBackground,
+  Shuffle,
 } from "@phosphor-icons/react";
 
 import { SiteHeader } from "@/components/layout/site-header";
@@ -145,7 +149,11 @@ const TOOL_ICONS: Record<string, React.ReactNode> = {
   "/tools/color-picker":           <Eyedropper size={22} />,
   "/tools/gradient-generator":     <Gradient size={22} />,
   "/tools/contrast-checker":       <CircleHalf size={22} />,
-  "/tools/color-palette-generator":<Swatches size={22} />,
+  "/tools/color-palette-generator":  <Swatches size={22} />,
+  "/tools/tint-shade-generator":     <PaintRoller size={22} />,
+  "/tools/color-blindness-simulator":<Eye size={22} />,
+  "/tools/shadow-generator":         <SelectionBackground size={22} />,
+  "/tools/random-color-generator":   <Shuffle size={22} />,
 };
 
 function HomeContent() {
