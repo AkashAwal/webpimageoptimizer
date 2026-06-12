@@ -40,4 +40,8 @@ export {
   BoundingBox,
   BracketsCurly,
   Waveform,
+  Eyedropper,
+  Gradient,
+  CircleHalf,
+  Swatches,
 } from "@phosphor-icons/react";

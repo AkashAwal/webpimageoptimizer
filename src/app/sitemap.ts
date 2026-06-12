@@ -65,6 +65,10 @@ const TOOL_PATHS = [
   "/tools/image-padding",
   "/tools/image-to-base64",
   "/tools/noise-grain",
+  "/tools/color-picker",
+  "/tools/gradient-generator",
+  "/tools/contrast-checker",
+  "/tools/color-palette-generator",
 ];
 
 const STATIC_PAGES = [

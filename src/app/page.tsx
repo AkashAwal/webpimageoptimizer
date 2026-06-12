@@ -51,6 +51,10 @@ import {
   BoundingBox,
   BracketsCurly,
   Waveform,
+  Eyedropper,
+  Gradient,
+  CircleHalf,
+  Swatches,
 } from "@phosphor-icons/react";
 
 import { SiteHeader } from "@/components/layout/site-header";
@@ -138,6 +142,10 @@ const TOOL_ICONS: Record<string, React.ReactNode> = {
   "/tools/image-padding":          <BoundingBox size={22} />,
   "/tools/image-to-base64":        <BracketsCurly size={22} />,
   "/tools/noise-grain":            <Waveform size={22} />,
+  "/tools/color-picker":           <Eyedropper size={22} />,
+  "/tools/gradient-generator":     <Gradient size={22} />,
+  "/tools/contrast-checker":       <CircleHalf size={22} />,
+  "/tools/color-palette-generator":<Swatches size={22} />,
 };
 
 function HomeContent() {

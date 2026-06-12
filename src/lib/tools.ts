@@ -5,6 +5,7 @@ export const CATEGORIES = [
   { id: "pdf-tools", label: "PDF Tools" },
   { id: "qr", label: "QR Codes" },
   { id: "image-tools", label: "Image Tools" },
+  { id: "color-tools", label: "Color Tools" },
 ] as const;
 
 export type CategoryId = (typeof CATEGORIES)[number]["id"];
@@ -489,6 +490,38 @@ export const TOOLS = [
     description: "Add film grain, luminance noise, or color noise to any image with adjustable intensity and live preview.",
     badge: "3 grain types",
     category: "image-tools" as CategoryId,
+  },
+  {
+    href: "/tools/color-picker",
+    name: "Color Picker",
+    shortName: "Color Picker Tool",
+    description: "Pick any color and instantly get its HEX, RGB, HSL, and CMYK values. Copy with one click.",
+    badge: "4 formats",
+    category: "color-tools" as CategoryId,
+  },
+  {
+    href: "/tools/gradient-generator",
+    name: "Gradient Generator",
+    shortName: "CSS Gradient Generator",
+    description: "Build beautiful linear and radial CSS gradients visually. Add stops, adjust angles, and copy the CSS code.",
+    badge: "Copy CSS",
+    category: "color-tools" as CategoryId,
+  },
+  {
+    href: "/tools/contrast-checker",
+    name: "Contrast Checker",
+    shortName: "WCAG Contrast Checker",
+    description: "Check the contrast ratio between two colors. Get instant WCAG AA and AAA pass/fail results for accessibility.",
+    badge: "WCAG 2.1",
+    category: "color-tools" as CategoryId,
+  },
+  {
+    href: "/tools/color-palette-generator",
+    name: "Color Palette Generator",
+    shortName: "Color Palette Generator",
+    description: "Generate complementary, analogous, triadic, and tetradic color schemes from any base color.",
+    badge: "4 schemes",
+    category: "color-tools" as CategoryId,
   },
 ] as const;
 
