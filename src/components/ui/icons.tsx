@@ -36,4 +36,8 @@ export {
   GridFour,
   PaintBucket,
   DownloadSimple,
+  Browsers,
+  BoundingBox,
+  Braces,
+  Waveform,
 } from "@phosphor-icons/react";

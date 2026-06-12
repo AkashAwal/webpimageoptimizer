@@ -458,6 +458,38 @@ export const TOOLS = [
     badge: "6 effects",
     category: "image-tools" as CategoryId,
   },
+  {
+    href: "/tools/social-media-resizer",
+    name: "Social Media Resizer",
+    shortName: "Social Media Image Resizer",
+    description: "Resize any image to exact social media dimensions — Instagram, Twitter, Facebook, LinkedIn, YouTube, and more.",
+    badge: "10+ presets",
+    category: "image-tools" as CategoryId,
+  },
+  {
+    href: "/tools/image-padding",
+    name: "Add Image Padding",
+    shortName: "Image Canvas Padding Tool",
+    description: "Expand the canvas of any image by adding padding on each side. Choose a solid color or transparent background.",
+    badge: "Expand canvas",
+    category: "image-tools" as CategoryId,
+  },
+  {
+    href: "/tools/image-to-base64",
+    name: "Image to Base64",
+    shortName: "Image to Base64 Encoder",
+    description: "Encode any image to a Base64 string or data URI — and decode Base64 back to an image. Instant, no upload.",
+    badge: "Encode & decode",
+    category: "image-tools" as CategoryId,
+  },
+  {
+    href: "/tools/noise-grain",
+    name: "Noise & Grain",
+    shortName: "Add Noise & Film Grain to Image",
+    description: "Add film grain, luminance noise, or color noise to any image with adjustable intensity and live preview.",
+    badge: "3 grain types",
+    category: "image-tools" as CategoryId,
+  },
 ] as const;
 
 export type Tool = (typeof TOOLS)[number];

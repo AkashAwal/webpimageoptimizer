@@ -47,6 +47,10 @@ import {
   Square,
   GridFour,
   PaintBucket,
+  Browsers,
+  BoundingBox,
+  Braces,
+  Waveform,
 } from "@phosphor-icons/react";
 
 import { SiteHeader } from "@/components/layout/site-header";
@@ -129,7 +133,11 @@ const TOOL_ICONS: Record<string, React.ReactNode> = {
   "/tools/color-palette":     <Palette size={22} />,
   "/tools/image-border":      <Square size={22} />,
   "/tools/image-collage":     <GridFour size={22} />,
-  "/tools/grayscale-tint":    <PaintBucket size={22} />,
+  "/tools/grayscale-tint":         <PaintBucket size={22} />,
+  "/tools/social-media-resizer":   <Browsers size={22} />,
+  "/tools/image-padding":          <BoundingBox size={22} />,
+  "/tools/image-to-base64":        <Braces size={22} />,
+  "/tools/noise-grain":            <Waveform size={22} />,
 };
 
 function HomeContent() {

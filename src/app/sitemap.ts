@@ -61,6 +61,10 @@ const TOOL_PATHS = [
   "/tools/image-border",
   "/tools/image-collage",
   "/tools/grayscale-tint",
+  "/tools/social-media-resizer",
+  "/tools/image-padding",
+  "/tools/image-to-base64",
+  "/tools/noise-grain",
 ];
 
 const STATIC_PAGES = [
