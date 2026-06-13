@@ -1,11 +1,12 @@
 import Link from "next/link";
+import { GithubLogo, XLogo } from "@/components/ui/icons";
 import { TOOLS } from "@/lib/tools";
 
 export function SiteFooter() {
   return (
     <footer className="mt-auto border-t border-border">
       <div className="mx-auto w-full max-w-7xl px-6 py-12 sm:px-10">
-        <div className="grid grid-cols-1 gap-10 sm:grid-cols-3">
+        <div className="grid grid-cols-1 gap-10 sm:grid-cols-2 lg:grid-cols-4">
           {/* Brand */}
           <div className="sm:col-span-1">
             <Link href="/" className="flex items-center gap-2">
@@ -54,18 +55,102 @@ export function SiteFooter() {
             <ul className="mt-3 space-y-2">
               {[
                 { href: "/about", label: "About" },
+                { href: "/security", label: "Security" },
                 { href: "/contact", label: "Contact" },
                 { href: "/privacy", label: "Privacy Policy" },
-              ].map(({ href, label }) => (
+                { href: "https://graycup.com", label: "Gray Cup", external: true },
+              ].map(({ href, label, external }) => (
                 <li key={href}>
-                  <Link
-                    href={href}
-                    className="text-[13px] text-muted-foreground hover:text-foreground transition-colors"
-                  >
-                    {label}
-                  </Link>
+                  {external ? (
+                    <a
+                      href={href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-[13px] text-muted-foreground hover:text-foreground transition-colors"
+                    >
+                      {label}
+                    </a>
+                  ) : (
+                    <Link
+                      href={href}
+                      className="text-[13px] text-muted-foreground hover:text-foreground transition-colors"
+                    >
+                      {label}
+                    </Link>
+                  )}
                 </li>
               ))}
+            </ul>
+          </div>
+
+          {/* Built by */}
+          <div>
+            <p className="text-[12px] font-semibold uppercase tracking-widest text-muted-foreground">
+              Built by
+            </p>
+            <ul className="mt-3 space-y-3">
+              {/* Akash Awal */}
+              <li>
+                <a
+                  href="https://akashawal.com"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-[13px] text-muted-foreground hover:text-foreground transition-colors font-medium"
+                >
+                  Akash Awal
+                </a>
+                <div className="flex items-center gap-2 mt-1">
+                  <a
+                    href="https://github.com/akashawal"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-muted-foreground hover:text-foreground transition-colors"
+                    aria-label="Akash Awal on GitHub"
+                  >
+                    <GithubLogo size={13} />
+                  </a>
+                  <a
+                    href="https://x.com/akashawal17"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-muted-foreground hover:text-foreground transition-colors"
+                    aria-label="Akash Awal on X"
+                  >
+                    <XLogo size={13} />
+                  </a>
+                </div>
+              </li>
+              {/* Gray Cup */}
+              <li>
+                <a
+                  href="https://graycup.com"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-[13px] text-muted-foreground hover:text-foreground transition-colors font-medium"
+                >
+                  Gray Cup
+                </a>
+                <div className="flex items-center gap-2 mt-1">
+                  <a
+                    href="https://github.com/nermalcat69"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-muted-foreground hover:text-foreground transition-colors"
+                    aria-label="Gray Cup on GitHub"
+                  >
+                    <GithubLogo size={13} />
+                  </a>
+                  <a
+                    href="https://x.com/arjunaditya_"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-muted-foreground hover:text-foreground transition-colors"
+                    aria-label="Gray Cup on X"
+                  >
+                    <XLogo size={13} />
+                  </a>
+                </div>
+              </li>
             </ul>
           </div>
         </div>

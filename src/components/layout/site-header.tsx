@@ -3,7 +3,7 @@
 import { Suspense, useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { usePathname, useSearchParams } from "next/navigation";
-import { GithubLogo, XLogo, List, X as XIcon } from "@phosphor-icons/react";
+import { List, X as XIcon } from "@phosphor-icons/react";
 import { cn } from "@/lib/utils";
 
 type SiteHeaderProps = {
@@ -18,8 +18,6 @@ const CATEGORY_LINKS = [
 
 const STATIC_LINKS = [
   { label: "About", href: "/about", external: false },
-  { label: "Security", href: "/security", external: false },
-  { label: "Gray Cup", href: "https://graycup.com", external: true },
   { label: "Contact", href: "/contact", external: false },
 ] as const;
 
@@ -183,42 +181,6 @@ export function SiteHeader({ fixed = false }: SiteHeaderProps = {}) {
         <Suspense>
           <NavLinks menuOpen={menuOpen} onClose={() => setMenuOpen(false)} />
         </Suspense>
-
-        {/* Right side: built-by + social icons */}
-        <div className="hidden sm:flex items-center gap-4 ml-auto">
-          <span className="text-[11px] font-semibold tracking-tight text-foreground">Built by</span>
-          <div className="flex items-center gap-3">
-            {/* Akash Awal */}
-            <div className="flex flex-col items-center gap-1">
-              <a href="https://akashawal.com" target="_blank" rel="noopener noreferrer" className="text-[11px] font-semibold tracking-tight text-foreground hover:text-foreground/70 transition-colors">
-                Akash Awal
-              </a>
-              <div className="flex items-center gap-1.5 text-foreground">
-                <a href="https://github.com/akashawal" target="_blank" rel="noopener noreferrer" className="hover:opacity-70 transition-opacity" aria-label="Akash Awal on GitHub">
-                  <GithubLogo size={13} />
-                </a>
-                <a href="https://x.com/akashawal17" target="_blank" rel="noopener noreferrer" className="hover:opacity-70 transition-opacity" aria-label="Akash Awal on X">
-                  <XLogo size={13} />
-                </a>
-              </div>
-            </div>
-            <span className="text-border text-[11px]">|</span>
-            {/* Gray Cup */}
-            <div className="flex flex-col items-center gap-1">
-              <a href="https://graycup.com" target="_blank" rel="noopener noreferrer" className="text-[11px] font-semibold tracking-tight text-foreground hover:text-foreground/70 transition-colors">
-                Gray Cup
-              </a>
-              <div className="flex items-center gap-1.5 text-foreground">
-                <a href="https://github.com/nermalcat69" target="_blank" rel="noopener noreferrer" className="hover:opacity-70 transition-opacity" aria-label="Gray Cup on GitHub">
-                  <GithubLogo size={13} />
-                </a>
-                <a href="https://x.com/arjunaditya_" target="_blank" rel="noopener noreferrer" className="hover:opacity-70 transition-opacity" aria-label="Gray Cup on X">
-                  <XLogo size={13} />
-                </a>
-              </div>
-            </div>
-          </div>
-        </div>
 
         {/* Mobile hamburger */}
         <button

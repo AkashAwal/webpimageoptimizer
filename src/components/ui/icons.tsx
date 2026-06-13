@@ -48,4 +48,6 @@ export {
   Eye,
   SelectionBackground,
   Shuffle,
+  GithubLogo,
+  XLogo,
 } from "@phosphor-icons/react";
