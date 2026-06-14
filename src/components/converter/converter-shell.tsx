@@ -892,7 +892,7 @@ export default function ConverterShell({ type, title }: { type: ConvertType; tit
 
   return (
     <div className="w-screen relative left-1/2 -translate-x-1/2 px-4 sm:px-6 py-3 sm:py-4">
-      <div className="flex flex-col h-[calc(100dvh-92px)] sm:h-[calc(100dvh-98px)] min-h-[480px] overflow-hidden rounded-2xl ring-1 ring-black/6 shadow-[0_4px_24px_-6px_rgba(0,0,0,0.10),0_1px_3px_rgba(0,0,0,0.06)] bg-white">
+      <div className="flex flex-col sm:h-[calc(100dvh-98px)] sm:min-h-[480px] sm:overflow-hidden overflow-hidden rounded-2xl ring-1 ring-black/6 shadow-[0_4px_24px_-6px_rgba(0,0,0,0.10),0_1px_3px_rgba(0,0,0,0.06)] bg-white">
 
         {/* ── Optional title bar ───────────────────────────────────────────────── */}
         {title && (
@@ -909,10 +909,10 @@ export default function ConverterShell({ type, title }: { type: ConvertType; tit
         )}
 
         {/* ── Two-panel area ───────────────────────────────────────────────────── */}
-        <div className="flex flex-1 overflow-hidden">
+        <div className="flex flex-col sm:flex-row flex-1 sm:overflow-hidden">
 
         {/* ── Queue panel ─────────────────────────────────────────────────────── */}
-        <div className="flex-1 flex flex-col overflow-hidden">
+        <div className="flex-1 flex flex-col overflow-hidden min-h-[300px] sm:min-h-0">
 
           {/* Header */}
           <div className="flex items-center justify-between px-4 py-2.5 border-b border-border shrink-0">
@@ -998,7 +998,7 @@ export default function ConverterShell({ type, title }: { type: ConvertType; tit
 
           {/* File list / drop zone */}
           <div
-            className={cn("flex-1 flex flex-col overflow-hidden", dropDragging && "bg-neutral-50")}
+            className={cn("flex-1 flex flex-col sm:overflow-hidden", dropDragging && "bg-neutral-50")}
             onDragOver={async e => { e.preventDefault(); setDropDragging(true); }}
             onDragLeave={e => { if (!e.currentTarget.contains(e.relatedTarget as Node)) setDropDragging(false); }}
             onDrop={async e => {
@@ -1013,7 +1013,7 @@ export default function ConverterShell({ type, title }: { type: ConvertType; tit
           >
             {files.length === 0 ? (
               <div
-                className="flex flex-1 cursor-pointer flex-col items-center justify-center gap-4 m-3 rounded-xl border-2 border-dashed border-border text-center transition-colors hover:border-foreground/20 hover:bg-neutral-50/60"
+                className="flex cursor-pointer flex-col items-center justify-center gap-4 m-3 rounded-xl border-2 border-dashed border-border text-center transition-colors hover:border-foreground/20 hover:bg-neutral-50/60 min-h-[220px] sm:flex-1"
                 onClick={() => inputRef.current?.click()}
               >
                 <div className="relative">
@@ -1032,7 +1032,7 @@ export default function ConverterShell({ type, title }: { type: ConvertType; tit
                 </div>
               </div>
             ) : (
-              <div className="flex-1 overflow-y-auto p-3 space-y-1">
+              <div className="overflow-y-auto p-3 space-y-1 max-h-[45vh] sm:max-h-none sm:flex-1">
                 {displayFiles.map(item => {
                   const flagged = exceedsCap(item);
                   const savings = item.result ? Math.round((1 - item.result.blob.size / item.file.size) * 100) : null;
@@ -1179,7 +1179,7 @@ export default function ConverterShell({ type, title }: { type: ConvertType; tit
         </div>
 
         {/* ── Settings panel ──────────────────────────────────────────────────── */}
-        <div className={cn("shrink-0 flex flex-col border-l border-border", cfg.outputType === "pdf" ? "w-[560px]" : "w-[320px]")}>
+        <div className={cn("shrink-0 flex flex-col border-t sm:border-t-0 sm:border-l border-border w-full", cfg.outputType === "pdf" ? "sm:w-[560px]" : "sm:w-[320px]")}>
           <div className="flex-1 overflow-y-auto p-3 space-y-3.5">
 
             {cfg.outputType === "pdf" ? (

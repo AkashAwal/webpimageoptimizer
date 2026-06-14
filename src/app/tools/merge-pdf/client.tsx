@@ -114,7 +114,7 @@ export default function MergePdfClient() {
 
       {/* Active: full-viewport, no card */}
       {items.length > 0 && (
-        <div className="flex min-h-[calc(100vh-4rem)]">
+        <div className="flex flex-col sm:flex-row min-h-[calc(100vh-4rem)]">
 
           {/* Left: thumbnail area, sits on page background */}
           <div className="flex-1 px-6 sm:px-10 pt-6 pb-10 relative">
@@ -172,7 +172,7 @@ export default function MergePdfClient() {
           </div>
 
           {/* Right: sticky full-height action panel */}
-          <div className="w-80 shrink-0 border-l border-border bg-white sticky top-16 h-[calc(100vh-4rem)] flex flex-col p-6 gap-4 overflow-y-auto">
+          <div className="w-full sm:w-80 shrink-0 border-t sm:border-t-0 sm:border-l border-border bg-white sm:sticky sm:top-16 sm:h-[calc(100vh-4rem)] flex flex-col p-6 gap-4 overflow-y-auto">
             <h2 className="text-xl font-bold tracking-tight text-foreground">Merge PDF</h2>
 
             <div className="flex gap-2.5 rounded-xl bg-blue-50 border border-blue-100 px-3 py-3">

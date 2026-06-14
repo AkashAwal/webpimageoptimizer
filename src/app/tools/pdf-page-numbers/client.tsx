@@ -127,7 +127,7 @@ export default function PdfPageNumbersClient() {
 
       {/* Active: two-column layout */}
       {file && (
-        <div className="flex min-h-[calc(100vh-4rem)]">
+        <div className="flex flex-col sm:flex-row min-h-[calc(100vh-4rem)]">
           {/* Left: page thumbnails */}
           <div className="flex-1 px-6 sm:px-10 pt-6 pb-10 min-w-0">
             {/* Nav */}
@@ -178,7 +178,7 @@ export default function PdfPageNumbersClient() {
           </div>
 
           {/* Right: sticky sidebar */}
-          <div className="w-80 shrink-0 border-l border-border bg-white sticky top-16 h-[calc(100vh-4rem)] flex flex-col p-6 gap-4 overflow-y-auto">
+          <div className="w-full sm:w-80 shrink-0 border-t sm:border-t-0 sm:border-l border-border bg-white sm:sticky sm:top-16 sm:h-[calc(100vh-4rem)] flex flex-col p-6 gap-4 overflow-y-auto">
             <div className="flex items-center justify-between">
               <h2 className="text-xl font-bold tracking-tight text-foreground">Page Numbers</h2>
               <button onClick={() => { setFile(null); setThumbnails([]); setResult(null); }}
