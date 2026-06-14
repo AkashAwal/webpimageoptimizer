@@ -4,68 +4,13 @@ import { Suspense, useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { useSearchParams, useRouter } from "next/navigation";
 import { motion, type Variants } from "motion/react";
-import {
-  Image,
-  Aperture,
-  ArrowsOut,
-  DeviceMobile,
-  ArrowRight,
-  FilmStrip,
-  Stack,
-  SquaresFour,
-  Rows,
-  PenNib,
-  Cursor,
-  Camera,
-  FilePdf,
-  ArrowsClockwise,
-  FileCode,
-  Plus,
-  Scissors,
-  ArrowClockwise,
-  Lock,
-  LockOpen,
-  Stamp,
-  Hash,
-  Crop,
-  MinusCircle,
-  ArrowsDownUp,
-  Images,
-  PencilSimple,
-  MagnifyingGlass,
-  Columns,
-  QrCode,
-  Scan,
-  FileZip,
-  Eraser,
-  Gauge,
-  FlipHorizontal,
-  Sliders,
-  CornersOut,
-  FrameCorners,
-  Palette,
-  Square,
-  GridFour,
-  PaintBucket,
-  Browsers,
-  BoundingBox,
-  BracketsCurly,
-  Waveform,
-  Eyedropper,
-  Gradient,
-  CircleHalf,
-  Swatches,
-  PaintRoller,
-  Eye,
-  SelectionBackground,
-  Shuffle,
-} from "@phosphor-icons/react";
+import { ArrowRight, X, MagnifyingGlass } from "@phosphor-icons/react";
 
 import { SiteHeader } from "@/components/layout/site-header";
 import { SiteFooter } from "@/components/layout/site-footer";
-import SoftPillButton from "@/components/ui/soft-pill-button";
 import { cn } from "@/lib/utils";
 import { TOOLS, CATEGORIES, type CategoryId } from "@/lib/tools";
+import { TOOL_ICONS } from "@/lib/tool-icons";
 
 const containerVariants: Variants = {
   hidden: { opacity: 0 },
@@ -84,78 +29,6 @@ const itemVariants: Variants = {
   },
 };
 
-const TOOL_ICONS: Record<string, React.ReactNode> = {
-  "/tools/png-to-webp": <Image size={22} />,
-  "/tools/jpg-to-webp": <Aperture size={22} />,
-  "/tools/gif-to-webp": <FilmStrip size={22} />,
-  "/tools/avif-to-webp": <Stack size={22} />,
-  "/tools/bmp-to-webp": <SquaresFour size={22} />,
-  "/tools/tiff-to-webp": <Rows size={22} />,
-  "/tools/svg-to-webp": <PenNib size={22} />,
-  "/tools/ico-to-webp": <Cursor size={22} />,
-  "/tools/jfif-to-webp": <Camera size={22} />,
-  "/tools/pdf-to-webp": <FilePdf size={22} />,
-  "/tools/webp-to-webp": <ArrowsClockwise size={22} />,
-  "/tools/webp-resizer": <ArrowsOut size={22} />,
-  "/tools/heic-to-webp": <DeviceMobile size={22} />,
-  "/tools/html-to-pdf": <FileCode size={22} />,
-  "/tools/jpg-to-pdf": <Aperture size={22} />,
-  "/tools/png-to-pdf": <Image size={22} />,
-  "/tools/webp-to-pdf": <ArrowsClockwise size={22} />,
-  "/tools/heic-to-pdf": <DeviceMobile size={22} />,
-  "/tools/bmp-to-pdf": <SquaresFour size={22} />,
-  "/tools/tiff-to-pdf": <Rows size={22} />,
-  "/tools/gif-to-pdf": <FilmStrip size={22} />,
-  "/tools/svg-to-pdf": <PenNib size={22} />,
-  "/tools/avif-to-pdf": <Stack size={22} />,
-  "/tools/ico-to-pdf": <Cursor size={22} />,
-  "/tools/jfif-to-pdf": <Camera size={22} />,
-  "/tools/merge-pdf": <Plus size={22} />,
-  "/tools/split-pdf": <Scissors size={22} />,
-  "/tools/rotate-pdf": <ArrowClockwise size={22} />,
-  "/tools/protect-pdf": <Lock size={22} />,
-  "/tools/unlock-pdf": <LockOpen size={22} />,
-  "/tools/watermark-pdf": <Stamp size={22} />,
-  "/tools/pdf-page-numbers": <Hash size={22} />,
-  "/tools/crop-pdf": <Crop size={22} />,
-  "/remove-pdf-pages": <MinusCircle size={22} />,
-  "/tools/rearrange-pdf": <ArrowsDownUp size={22} />,
-  "/tools/pdf-to-images": <Images size={22} />,
-  "/tools/sign-pdf": <PencilSimple size={22} />,
-  "/tools/ocr-pdf": <MagnifyingGlass size={22} />,
-  "/tools/edit-pdf": <PencilSimple size={22} />,
-  "/tools/compare-pdf": <Columns size={22} />,
-  "/tools/qr-code-generator": <QrCode size={22} />,
-  "/tools/qr-code-reader": <Scan size={22} />,
-  "/tools/qr-code-with-logo": <QrCode size={22} />,
-  "/tools/batch-qr-generator": <QrCode size={22} />,
-  "/tools/image-compressor": <Gauge size={22} />,
-  "/tools/image-cropper": <Crop size={22} />,
-  "/tools/background-remover": <Eraser size={22} />,
-  "/tools/favicon-generator": <FileZip size={22} />,
-  "/tools/image-flip-rotate": <FlipHorizontal size={22} />,
-  "/tools/photo-adjustments": <Sliders size={22} />,
-  "/tools/image-watermark":   <Stamp size={22} />,
-  "/tools/image-resizer":     <CornersOut size={22} />,
-  "/tools/rounded-corners":   <FrameCorners size={22} />,
-  "/tools/color-palette":     <Palette size={22} />,
-  "/tools/image-border":      <Square size={22} />,
-  "/tools/image-collage":     <GridFour size={22} />,
-  "/tools/grayscale-tint":         <PaintBucket size={22} />,
-  "/tools/social-media-resizer":   <Browsers size={22} />,
-  "/tools/image-padding":          <BoundingBox size={22} />,
-  "/tools/image-to-base64":        <BracketsCurly size={22} />,
-  "/tools/noise-grain":            <Waveform size={22} />,
-  "/tools/color-picker":           <Eyedropper size={22} />,
-  "/tools/gradient-generator":     <Gradient size={22} />,
-  "/tools/contrast-checker":       <CircleHalf size={22} />,
-  "/tools/color-palette-generator":  <Swatches size={22} />,
-  "/tools/tint-shade-generator":     <PaintRoller size={22} />,
-  "/tools/color-blindness-simulator":<Eye size={22} />,
-  "/tools/shadow-generator":         <SelectionBackground size={22} />,
-  "/tools/random-color-generator":   <Shuffle size={22} />,
-};
-
 const INITIAL_VISIBLE = 18;
 const BATCH_SIZE = 12;
 
@@ -165,6 +38,8 @@ function HomeContent() {
   const [entered, setEntered] = useState(false);
   const [activeCategory, setActiveCategory] = useState<CategoryId>("all");
   const [visibleCount, setVisibleCount] = useState(INITIAL_VISIBLE);
+  const [searchQuery, setSearchQuery] = useState("");
+  const searchRef = useRef<HTMLInputElement>(null);
   const sentinelRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -187,9 +62,17 @@ function HomeContent() {
     router.replace(cat === "all" ? "/" : `/?category=${cat}`, { scroll: false });
   };
 
-  const gridTools = activeCategory === "all" ? TOOLS : TOOLS.filter((t) => t.category === activeCategory);
-  const visibleTools = gridTools.slice(0, visibleCount);
-  const hasMore = visibleCount < gridTools.length;
+  const q = searchQuery.trim().toLowerCase();
+  const categoryFiltered = activeCategory === "all" ? TOOLS : TOOLS.filter((t) => t.category === activeCategory);
+  const gridTools = q
+    ? categoryFiltered.filter((t) =>
+        t.name.toLowerCase().includes(q) ||
+        t.description.toLowerCase().includes(q) ||
+        t.badge.toLowerCase().includes(q)
+      )
+    : categoryFiltered;
+  const visibleTools = q ? gridTools : gridTools.slice(0, visibleCount);
+  const hasMore = !q && visibleCount < gridTools.length;
 
   // Load more cards as the sentinel comes into view
   useEffect(() => {
@@ -234,12 +117,33 @@ function HomeContent() {
             Free, fast, and completely private. Convert and resize images client-side | nothing is ever uploaded to a server.
           </motion.p>
 
-          <motion.div variants={itemVariants} className="mt-8">
-            <Link href="#tools">
-              <SoftPillButton variant="secondary" className="h-9 px-4 text-[13px]">
-                Browse tools
-              </SoftPillButton>
-            </Link>
+          <motion.div variants={itemVariants} className="mt-8 w-full max-w-sm">
+            <div className="relative flex items-center">
+              <MagnifyingGlass
+                size={15}
+                className="pointer-events-none absolute left-3.5 text-neutral-400"
+              />
+              <input
+                ref={searchRef}
+                type="search"
+                placeholder="Search tools…"
+                value={searchQuery}
+                onChange={(e) => {
+                  setSearchQuery(e.target.value);
+                  setVisibleCount(INITIAL_VISIBLE);
+                }}
+                className="h-10 w-full rounded-full bg-white pl-9 pr-9 text-[13px] text-foreground placeholder:text-neutral-400 ring-1 ring-black/10 shadow-[0_1px_4px_rgba(0,0,0,0.06)] outline-none focus:ring-2 focus:ring-foreground/20 transition-shadow"
+              />
+              {searchQuery && (
+                <button
+                  onClick={() => { setSearchQuery(""); searchRef.current?.focus(); }}
+                  className="absolute right-3 text-neutral-400 hover:text-neutral-600 transition-colors"
+                  aria-label="Clear search"
+                >
+                  <X size={13} />
+                </button>
+              )}
+            </div>
           </motion.div>
         </motion.div>
       </section>
@@ -268,6 +172,12 @@ function HomeContent() {
             </button>
           ))}
         </motion.div>
+
+        {visibleTools.length === 0 && q && (
+          <p className="py-16 text-center text-[13px] text-neutral-400">
+            No tools found for &ldquo;{searchQuery}&rdquo;
+          </p>
+        )}
 
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {visibleTools.map((tool) => (

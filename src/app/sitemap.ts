@@ -82,6 +82,13 @@ const TOOL_PATHS = [
 
 const STATIC_PAGES = [
   { path: "", priority: 1 },
+  { path: "/tools", priority: 0.95 },
+  { path: "/image-tools", priority: 0.9 },
+  { path: "/pdf-tools", priority: 0.9 },
+  { path: "/image-to-pdf", priority: 0.9 },
+  { path: "/webp-tools", priority: 0.9 },
+  { path: "/qr-tools", priority: 0.9 },
+  { path: "/color-tools", priority: 0.9 },
   { path: "/about", priority: 0.5 },
   { path: "/security", priority: 0.4 },
   { path: "/contact", priority: 0.4 },

@@ -2,7 +2,7 @@
 
 import { Suspense, useEffect, useRef, useState } from "react";
 import Link from "next/link";
-import { usePathname, useSearchParams } from "next/navigation";
+import { usePathname } from "next/navigation";
 import { List, X as XIcon } from "@phosphor-icons/react";
 import { cn } from "@/lib/utils";
 
@@ -10,15 +10,10 @@ type SiteHeaderProps = {
   fixed?: boolean;
 };
 
-const CATEGORY_LINKS = [
-  { label: "WebP Tools", href: "/?category=webp", category: "webp" },
-  { label: "Image to PDF", href: "/?category=pdf", category: "pdf" },
-  { label: "PDF Tools", href: "/?category=pdf-tools", category: "pdf-tools" },
-] as const;
-
-const STATIC_LINKS = [
-  { label: "About", href: "/about", external: false },
-  { label: "Contact", href: "/contact", external: false },
+const NAV_LINKS = [
+  { label: "Tools", href: "/tools" },
+  { label: "About", href: "/about" },
+  { label: "Contact", href: "/contact" },
 ] as const;
 
 const baseUnderline =
@@ -46,83 +41,35 @@ function mobileLinkClass(active: boolean) {
 
 function NavLinks({ menuOpen, onClose }: { menuOpen: boolean; onClose: () => void }) {
   const pathname = usePathname();
-  const searchParams = useSearchParams();
-  const activeCategory = searchParams.get("category");
 
   return (
     <>
       {/* Desktop nav | centered */}
       <nav className="hidden sm:flex absolute left-1/2 -translate-x-1/2 items-center gap-4">
-        {CATEGORY_LINKS.map((link) => (
+        {NAV_LINKS.map((link) => (
           <Link
             key={link.href}
             href={link.href}
-            className={navLinkClass(pathname === "/" && activeCategory === link.category)}
+            className={navLinkClass(pathname === link.href || (link.href === "/tools" && pathname.startsWith("/tools")))}
           >
             {link.label}
           </Link>
         ))}
-        <span className="mx-1.5 select-none text-[13px] text-neutral-200">|</span>
-        {STATIC_LINKS.map((link) =>
-          link.external ? (
-            <a
-              key={link.href}
-              href={link.href}
-              target="_blank"
-              rel="noopener noreferrer"
-              className={navLinkClass(false)}
-            >
-              {link.label}
-            </a>
-          ) : (
-            <Link
-              key={link.href}
-              href={link.href}
-              className={navLinkClass(pathname === link.href)}
-            >
-              {link.label}
-            </Link>
-          )
-        )}
       </nav>
 
       {/* Mobile menu */}
       {menuOpen && (
         <div className="sm:hidden border-b border-border bg-background px-6 py-4 flex flex-col gap-2.5 w-full">
-          {CATEGORY_LINKS.map((link) => (
+          {NAV_LINKS.map((link) => (
             <Link
               key={link.href}
               href={link.href}
-              className={mobileLinkClass(pathname === "/" && activeCategory === link.category)}
+              className={mobileLinkClass(pathname === link.href || (link.href === "/tools" && pathname.startsWith("/tools")))}
               onClick={onClose}
             >
               {link.label}
             </Link>
           ))}
-          <div className="my-1 border-t border-border/60" />
-          {STATIC_LINKS.map((link) =>
-            link.external ? (
-              <a
-                key={link.href}
-                href={link.href}
-                target="_blank"
-                rel="noopener noreferrer"
-                className={mobileLinkClass(false)}
-                onClick={onClose}
-              >
-                {link.label}
-              </a>
-            ) : (
-              <Link
-                key={link.href}
-                href={link.href}
-                className={mobileLinkClass(pathname === link.href)}
-                onClick={onClose}
-              >
-                {link.label}
-              </Link>
-            )
-          )}
         </div>
       )}
     </>

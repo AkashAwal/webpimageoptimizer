@@ -50,4 +50,6 @@ export {
   Shuffle,
   GithubLogo,
   XLogo,
+  Images,
+  GridNine,
 } from "@phosphor-icons/react";

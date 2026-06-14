@@ -598,3 +598,56 @@ export const TOOLS = [
 ] as const;
 
 export type Tool = (typeof TOOLS)[number];
+
+export const CATEGORY_METADATA = [
+  {
+    id: "image-tools" as CategoryId,
+    label: "Image Tools",
+    href: "/image-tools",
+    description: "Crop, resize, compress, watermark, flip, and transform images entirely in your browser. No upload, no account.",
+    seoTitle: "Free Online Image Tools — Crop, Resize, Compress & More | Pix Garage",
+    seoDescription: "Free in-browser image tools: crop, resize, compress, watermark, flip, rotate, add borders, remove backgrounds, and more. No upload required.",
+  },
+  {
+    id: "pdf-tools" as CategoryId,
+    label: "PDF Tools",
+    href: "/pdf-tools",
+    description: "Merge, split, rotate, protect, sign, annotate, and edit PDF files — all processed locally in your browser.",
+    seoTitle: "Free Online PDF Tools — Merge, Split, Sign, Edit & More | Pix Garage",
+    seoDescription: "Free in-browser PDF tools: merge, split, rotate, protect, unlock, sign, watermark, add page numbers, edit, and compare PDFs. No upload needed.",
+  },
+  {
+    id: "pdf" as CategoryId,
+    label: "Image to PDF",
+    href: "/image-to-pdf",
+    description: "Convert JPG, PNG, WebP, HEIC, BMP, TIFF, SVG, GIF, and more to PDF instantly. One click, no upload.",
+    seoTitle: "Convert Images to PDF Free — JPG, PNG, WebP, HEIC & More | Pix Garage",
+    seoDescription: "Convert any image format to PDF in your browser. Supports JPG, PNG, WebP, HEIC, BMP, TIFF, SVG, GIF, AVIF, and ICO. No upload, instant results.",
+  },
+  {
+    id: "webp" as CategoryId,
+    label: "WebP Tools",
+    href: "/webp-tools",
+    description: "Convert PNG, JPG, HEIC, GIF, BMP, TIFF, SVG, and more to WebP for dramatically smaller file sizes.",
+    seoTitle: "Free WebP Converter Tools — PNG, JPG, HEIC to WebP | Pix Garage",
+    seoDescription: "Convert any image format to WebP for smaller file sizes and faster web performance. Supports PNG, JPG, GIF, HEIC, BMP, TIFF, SVG, AVIF, and more.",
+  },
+  {
+    id: "qr" as CategoryId,
+    label: "QR Code Tools",
+    href: "/qr-tools",
+    description: "Generate, decode, and customise QR codes for URLs, WiFi, contacts, email, and phone numbers.",
+    seoTitle: "Free QR Code Generator & Reader Tools | Pix Garage",
+    seoDescription: "Generate QR codes for URLs, WiFi, email, phone, and contacts. Decode any QR code from an image. Add your logo to QR codes. All free, no account needed.",
+  },
+  {
+    id: "color-tools" as CategoryId,
+    label: "Color Tools",
+    href: "/color-tools",
+    description: "Pick colors, build palettes, check WCAG contrast, generate gradients, shadows, and tint/shade scales.",
+    seoTitle: "Free Online Color Tools — Picker, Palettes, Contrast Checker | Pix Garage",
+    seoDescription: "Free color tools: color picker, palette generator, WCAG contrast checker, gradient builder, shadow generator, tint/shade scales, and color blindness simulator.",
+  },
+] as const;
+
+export type CategoryMetadata = (typeof CATEGORY_METADATA)[number];

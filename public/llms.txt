@@ -1,0 +1,102 @@
+# Pix Garage
+
+> Free, private, in-browser image and PDF tools. No uploads. No accounts. Everything runs on your device using the HTML5 Canvas API and WebAssembly.
+
+Pix Garage (https://pixgarage.com) is a collection of client-side image and document tools. All processing happens locally in the user's browser — files are never sent to a server.
+
+## WebP Conversion Tools
+
+- [PNG to WebP](https://pixgarage.com/tools/png-to-webp): Convert PNG images to WebP. Dramatically smaller files at the same visual quality.
+- [JPG to WebP](https://pixgarage.com/tools/jpg-to-webp): Convert JPEG photos to WebP. Up to 34% smaller than JPEG at comparable quality.
+- [GIF to WebP](https://pixgarage.com/tools/gif-to-webp): Convert GIF images to WebP for smaller static frames and more efficient compression.
+- [AVIF to WebP](https://pixgarage.com/tools/avif-to-webp): Convert AVIF images to WebP for broader browser compatibility.
+- [BMP to WebP](https://pixgarage.com/tools/bmp-to-webp): Convert uncompressed BMP files to WebP. Achieve massive size reduction instantly.
+- [TIFF to WebP](https://pixgarage.com/tools/tiff-to-webp): Convert high-resolution TIFF images to lightweight WebP for web use.
+- [SVG to WebP](https://pixgarage.com/tools/svg-to-webp): Rasterize SVG vector graphics to WebP.
+- [ICO to WebP](https://pixgarage.com/tools/ico-to-webp): Extract and convert ICO icon files to WebP.
+- [JFIF to WebP](https://pixgarage.com/tools/jfif-to-webp): Convert JFIF photos to WebP.
+- [PDF to WebP](https://pixgarage.com/tools/pdf-to-webp): Convert the first page of a PDF to a WebP image.
+- [WebP Re-optimize](https://pixgarage.com/tools/webp-to-webp): Re-compress an existing WebP file at a different quality level.
+- [WebP Resizer](https://pixgarage.com/tools/webp-resizer): Resize any image to custom dimensions and export as WebP.
+- [HEIC to WebP](https://pixgarage.com/tools/heic-to-webp): Convert iPhone HEIC photos to WebP via WebAssembly.
+- [HEIC to PNG](https://pixgarage.com/tools/heic-to-png): Convert iPhone HEIC photos to PNG for lossless output.
+- [HEIC to JPG](https://pixgarage.com/tools/heic-to-jpg): Convert iPhone HEIC photos to JPG with adjustable quality.
+- [HEIC Resizer](https://pixgarage.com/tools/heic-resizer): Resize iPhone HEIC and HEIF photos and export as JPG.
+
+## Image to PDF Tools
+
+- [JPG to PDF](https://pixgarage.com/tools/jpg-to-pdf): Convert JPEG photos to PDF. Each image becomes a perfectly sized page.
+- [PNG to PDF](https://pixgarage.com/tools/png-to-pdf): Convert PNG images to PDF. Preserves detail and supports transparent backgrounds.
+- [WebP to PDF](https://pixgarage.com/tools/webp-to-pdf): Convert WebP images to PDF for sharing, printing, or archiving.
+- [HEIC to PDF](https://pixgarage.com/tools/heic-to-pdf): Convert iPhone HEIC photos directly to PDF.
+- [BMP to PDF](https://pixgarage.com/tools/bmp-to-pdf): Convert uncompressed BMP files to PDF.
+- [TIFF to PDF](https://pixgarage.com/tools/tiff-to-pdf): Convert high-resolution TIFF images to PDF.
+- [GIF to PDF](https://pixgarage.com/tools/gif-to-pdf): Convert GIF images to PDF (first frame).
+- [SVG to PDF](https://pixgarage.com/tools/svg-to-pdf): Rasterize SVG vector graphics to PDF.
+- [AVIF to PDF](https://pixgarage.com/tools/avif-to-pdf): Convert AVIF images to PDF.
+- [ICO to PDF](https://pixgarage.com/tools/ico-to-pdf): Extract and convert ICO icon files to PDF.
+- [JFIF to PDF](https://pixgarage.com/tools/jfif-to-pdf): Convert JFIF photos to PDF.
+- [HTML to PDF](https://pixgarage.com/tools/html-to-pdf): Convert HTML files to PDF entirely in the browser.
+
+## PDF Tools
+
+- [Merge PDF](https://pixgarage.com/tools/merge-pdf): Combine multiple PDF files into one document.
+- [Split PDF](https://pixgarage.com/tools/split-pdf): Split a PDF into individual pages or custom ranges.
+- [Rotate PDF](https://pixgarage.com/tools/rotate-pdf): Rotate pages in a PDF by 90°, 180°, or 270°.
+- [Protect PDF](https://pixgarage.com/tools/protect-pdf): Add a password to a PDF. Encryption applied entirely in-browser.
+- [Unlock PDF](https://pixgarage.com/tools/unlock-pdf): Remove the password from a PDF file.
+- [Watermark PDF](https://pixgarage.com/tools/watermark-pdf): Stamp a custom text watermark on every page of a PDF.
+- [PDF Page Numbers](https://pixgarage.com/tools/pdf-page-numbers): Add page numbers to every page of a PDF.
+- [Crop PDF](https://pixgarage.com/tools/crop-pdf): Trim margins from every page of a PDF.
+- [Manage PDF Pages](https://pixgarage.com/tools/rearrange-pdf): Drag to reorder pages and remove them.
+- [PDF to Images](https://pixgarage.com/tools/pdf-to-images): Convert every page of a PDF to JPG, PNG, or WebP.
+- [Sign PDF](https://pixgarage.com/tools/sign-pdf): Draw or type a signature and embed it on any PDF page.
+- [OCR PDF](https://pixgarage.com/tools/ocr-pdf): Extract text from scanned or image-based PDFs using OCR.
+- [Edit PDF](https://pixgarage.com/tools/edit-pdf): Add text, shapes, highlights, and drawings to any PDF page.
+- [Compare PDF](https://pixgarage.com/tools/compare-pdf): View two PDF files side by side to spot differences.
+
+## Image Tools
+
+- [Image Compressor](https://pixgarage.com/tools/image-compressor): Compress JPEG, PNG, and WebP images with a quality slider.
+- [Image Cropper](https://pixgarage.com/tools/image-cropper): Crop any image to a custom area or preset ratio.
+- [Background Remover](https://pixgarage.com/tools/background-remover): Remove the background from any photo using AI — runs in the browser.
+- [Favicon Generator](https://pixgarage.com/tools/favicon-generator): Generate a complete favicon set (ICO, PNG at multiple sizes) from any image.
+- [Flip & Rotate](https://pixgarage.com/tools/image-flip-rotate): Flip images horizontally or vertically and rotate by 90°/180°/270°.
+- [Photo Adjustments](https://pixgarage.com/tools/photo-adjustments): Adjust brightness, contrast, saturation, hue, blur, and sharpness with live preview.
+- [Image Watermark](https://pixgarage.com/tools/image-watermark): Add a custom text watermark to any image.
+- [Image Resizer](https://pixgarage.com/tools/image-resizer): Resize any image to exact pixel dimensions or a percentage scale.
+- [PNG Resizer](https://pixgarage.com/tools/png-resizer): Resize any image and export as lossless PNG.
+- [JPG Resizer](https://pixgarage.com/tools/jpg-resizer): Resize any image and export as JPG with adjustable quality.
+- [Rounded Corners](https://pixgarage.com/tools/rounded-corners): Add rounded corners to any image. Exports as PNG with transparency.
+- [Color Palette Extractor](https://pixgarage.com/tools/color-palette): Extract 8 dominant colors from any image.
+- [Add Border](https://pixgarage.com/tools/image-border): Add a solid, gradient, or blurred border to any image.
+- [Image Collage](https://pixgarage.com/tools/image-collage): Combine 2–6 photos into a grid collage.
+- [Grayscale & Tint](https://pixgarage.com/tools/grayscale-tint): Apply B&W, sepia, warm, cool, faded, or duotone effects.
+- [Social Media Resizer](https://pixgarage.com/tools/social-media-resizer): Resize images to exact social media dimensions.
+- [Add Image Padding](https://pixgarage.com/tools/image-padding): Expand the canvas of any image by adding padding.
+- [Image to Base64](https://pixgarage.com/tools/image-to-base64): Encode any image to a Base64 string or data URI, and decode Base64 back.
+- [Noise & Grain](https://pixgarage.com/tools/noise-grain): Add film grain or noise to any image with adjustable intensity.
+
+## QR Code Tools
+
+- [QR Code Generator](https://pixgarage.com/tools/qr-code-generator): Generate QR codes for URLs, text, WiFi, email, phone, and contacts.
+- [QR Code Reader](https://pixgarage.com/tools/qr-code-reader): Upload an image to decode any QR code instantly.
+- [QR Code with Logo](https://pixgarage.com/tools/qr-code-with-logo): Generate a QR code with your logo embedded in the centre.
+- [Batch QR Generator](https://pixgarage.com/tools/batch-qr-generator): Generate hundreds of QR codes at once from a list of URLs.
+
+## Color Tools
+
+- [Color Picker](https://pixgarage.com/tools/color-picker): Pick any color and get its HEX, RGB, HSL, and CMYK values.
+- [Gradient Generator](https://pixgarage.com/tools/gradient-generator): Build linear and radial CSS gradients visually and copy the CSS.
+- [Contrast Checker](https://pixgarage.com/tools/contrast-checker): Check WCAG AA and AAA contrast ratios between two colors.
+- [Color Palette Generator](https://pixgarage.com/tools/color-palette-generator): Generate complementary, analogous, triadic, and tetradic color schemes.
+- [Tint & Shade Generator](https://pixgarage.com/tools/tint-shade-generator): Generate a full tint/shade scale from any base color.
+- [Color Blindness Simulator](https://pixgarage.com/tools/color-blindness-simulator): Preview how colors appear with deuteranopia, protanopia, tritanopia, and achromatopsia.
+- [CSS Shadow Generator](https://pixgarage.com/tools/shadow-generator): Build box-shadow and text-shadow CSS rules visually.
+- [Random Color Generator](https://pixgarage.com/tools/random-color-generator): Generate random colors and build a palette by locking favorites.
+
+## About
+
+- [About](https://pixgarage.com/about): About Pix Garage.
+- [Privacy Policy](https://pixgarage.com/privacy): Privacy policy — no data is ever uploaded or stored.
+- [Contact](https://pixgarage.com/contact): Contact the Pix Garage team.
