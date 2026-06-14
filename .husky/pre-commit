@@ -1,2 +1,5 @@
 bun run scripts/generate-og.tsx
 git add public/og/
+
+bun run scripts/generate-llms.ts
+git add public/llms.txt

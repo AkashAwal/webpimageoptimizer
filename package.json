@@ -12,6 +12,7 @@
     "preview": "opennextjs-cloudflare build && opennextjs-cloudflare preview",
     "cf-typegen": "wrangler types --env-interface CloudflareEnv ./cloudflare-env.d.ts",
     "generate-og": "bun run scripts/generate-og.tsx",
+    "generate-llms": "bun run scripts/generate-llms.ts",
     "prepare": "husky"
   },
   "dependencies": {
