@@ -37,9 +37,6 @@ export function OtherTools({ currentHref }: OtherToolsProps) {
     <section ref={ref} className="mt-16">
       {ogVisible && (
         <div className="mb-16">
-          <h2 className="text-xl font-bold tracking-tight text-foreground mb-4">
-            Share preview
-          </h2>
           <img
             src={`/og/${slug}.png`}
             alt="Page share preview"
