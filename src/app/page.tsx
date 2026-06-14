@@ -209,6 +209,7 @@ function HomeContent() {
     <div className="relative flex flex-1 flex-col">
       <SiteHeader />
 
+      <main>
       {/* Hero */}
       <section className="relative flex items-center justify-center px-6 pb-12 pt-10 sm:pt-16">
         <motion.div
@@ -293,6 +294,7 @@ function HomeContent() {
 
               <Link
                 href={tool.href}
+                aria-label={`Use ${tool.name}`}
                 className="giti-shimmer-pill inline-flex w-full h-9 items-center justify-center gap-2 rounded-full px-3 text-[13px] font-medium leading-none tracking-tight backdrop-blur transition-all active:scale-[0.99] text-white ring-1 ring-white/10 shadow-[0_4px_12px_-4px_rgba(0,0,0,0.28),0_1px_2px_rgba(0,0,0,0.12)]"
               >
                 Use tool
@@ -305,6 +307,7 @@ function HomeContent() {
         {/* Sentinel — triggers loading the next batch when scrolled into view */}
         <div ref={sentinelRef} className="h-px" />
       </section>
+      </main>
 
       <SiteFooter />
     </div>

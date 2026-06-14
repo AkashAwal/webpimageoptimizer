@@ -127,36 +127,36 @@ export default function Page() {
             <h2 className="text-xl font-bold tracking-tight text-foreground mb-3">Built by</h2>
             <div className="space-y-6">
               {/* Akash Awal */}
-              <div className="flex flex-col gap-2">
-                <a href="https://akashawal.com" target="_blank" rel="noopener noreferrer" className="text-[14px] font-semibold text-foreground hover:text-foreground/70 transition-colors">
+              <div className="flex flex-col gap-1">
+                <a href="https://akashawal.com" target="_blank" rel="noopener noreferrer" className="inline-flex min-h-[44px] items-center text-[14px] font-semibold text-foreground hover:text-foreground/70 transition-colors">
                   Akash Awal
                 </a>
-                <div className="flex items-center gap-2 text-muted-foreground">
-                  <a href="https://github.com/akashawal" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 text-[13px] hover:text-foreground transition-colors">
-                    <GithubLogo size={13} />
+                <div className="flex items-center gap-1 text-muted-foreground">
+                  <a href="https://github.com/akashawal" target="_blank" rel="noopener noreferrer" className="inline-flex h-8 min-w-[44px] items-center gap-1.5 text-[13px] hover:text-foreground transition-colors" aria-label="Akash Awal on GitHub">
+                    <GithubLogo size={14} />
                     GitHub
                   </a>
-                  <span className="text-border">•</span>
-                  <a href="https://x.com/akashawal17" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 text-[13px] hover:text-foreground transition-colors">
-                    <XLogo size={13} />
-                    Twitter
+                  <span className="text-border" aria-hidden="true">•</span>
+                  <a href="https://x.com/akashawal17" target="_blank" rel="noopener noreferrer" className="inline-flex h-8 min-w-[44px] items-center gap-1.5 text-[13px] hover:text-foreground transition-colors" aria-label="Akash Awal on X">
+                    <XLogo size={14} />
+                    X / Twitter
                   </a>
                 </div>
               </div>
               {/* Gray Cup */}
-              <div className="flex flex-col gap-2">
-                <a href="https://graycup.com" target="_blank" rel="noopener noreferrer" className="text-[14px] font-semibold text-foreground hover:text-foreground/70 transition-colors">
+              <div className="flex flex-col gap-1">
+                <a href="https://graycup.com" target="_blank" rel="noopener noreferrer" className="inline-flex min-h-[44px] items-center text-[14px] font-semibold text-foreground hover:text-foreground/70 transition-colors">
                   Gray Cup
                 </a>
-                <div className="flex items-center gap-2 text-muted-foreground">
-                  <a href="https://github.com/nermalcat69" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 text-[13px] hover:text-foreground transition-colors">
-                    <GithubLogo size={13} />
+                <div className="flex items-center gap-1 text-muted-foreground">
+                  <a href="https://github.com/nermalcat69" target="_blank" rel="noopener noreferrer" className="inline-flex h-8 min-w-[44px] items-center gap-1.5 text-[13px] hover:text-foreground transition-colors" aria-label="Gray Cup on GitHub">
+                    <GithubLogo size={14} />
                     GitHub
                   </a>
-                  <span className="text-border">•</span>
-                  <a href="https://x.com/arjunaditya_" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 text-[13px] hover:text-foreground transition-colors">
-                    <XLogo size={13} />
-                    Twitter
+                  <span className="text-border" aria-hidden="true">•</span>
+                  <a href="https://x.com/arjunaditya_" target="_blank" rel="noopener noreferrer" className="inline-flex h-8 min-w-[44px] items-center gap-1.5 text-[13px] hover:text-foreground transition-colors" aria-label="Gray Cup on X">
+                    <XLogo size={14} />
+                    X / Twitter
                   </a>
                 </div>
               </div>

@@ -95,28 +95,28 @@ export function SiteFooter() {
                   href="https://akashawal.com"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-[13px] text-muted-foreground hover:text-foreground transition-colors font-medium"
+                  className="inline-flex min-h-[44px] items-center text-[13px] text-muted-foreground hover:text-foreground transition-colors font-medium"
                 >
                   Akash Awal
                 </a>
-                <div className="flex items-center gap-2 mt-1">
+                <div className="flex items-center gap-1 mt-1">
                   <a
                     href="https://github.com/akashawal"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-muted-foreground hover:text-foreground transition-colors"
+                    className="inline-flex h-8 w-8 items-center justify-center text-muted-foreground hover:text-foreground transition-colors"
                     aria-label="Akash Awal on GitHub"
                   >
-                    <GithubLogo size={13} />
+                    <GithubLogo size={15} />
                   </a>
                   <a
                     href="https://x.com/akashawal17"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-muted-foreground hover:text-foreground transition-colors"
+                    className="inline-flex h-8 w-8 items-center justify-center text-muted-foreground hover:text-foreground transition-colors"
                     aria-label="Akash Awal on X"
                   >
-                    <XLogo size={13} />
+                    <XLogo size={15} />
                   </a>
                 </div>
               </li>
@@ -126,28 +126,28 @@ export function SiteFooter() {
                   href="https://graycup.com"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-[13px] text-muted-foreground hover:text-foreground transition-colors font-medium"
+                  className="inline-flex min-h-[44px] items-center text-[13px] text-muted-foreground hover:text-foreground transition-colors font-medium"
                 >
                   Gray Cup
                 </a>
-                <div className="flex items-center gap-2 mt-1">
+                <div className="flex items-center gap-1 mt-1">
                   <a
                     href="https://github.com/nermalcat69"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-muted-foreground hover:text-foreground transition-colors"
+                    className="inline-flex h-8 w-8 items-center justify-center text-muted-foreground hover:text-foreground transition-colors"
                     aria-label="Gray Cup on GitHub"
                   >
-                    <GithubLogo size={13} />
+                    <GithubLogo size={15} />
                   </a>
                   <a
                     href="https://x.com/arjunaditya_"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-muted-foreground hover:text-foreground transition-colors"
+                    className="inline-flex h-8 w-8 items-center justify-center text-muted-foreground hover:text-foreground transition-colors"
                     aria-label="Gray Cup on X"
                   >
-                    <XLogo size={13} />
+                    <XLogo size={15} />
                   </a>
                 </div>
               </li>
