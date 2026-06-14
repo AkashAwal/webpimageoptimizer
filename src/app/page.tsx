@@ -1,6 +1,6 @@
 "use client";
 
-import { Suspense, useEffect, useState } from "react";
+import { Suspense, useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { useSearchParams, useRouter } from "next/navigation";
 import { motion, type Variants } from "motion/react";
@@ -156,11 +156,16 @@ const TOOL_ICONS: Record<string, React.ReactNode> = {
   "/tools/random-color-generator":   <Shuffle size={22} />,
 };
 
+const INITIAL_VISIBLE = 18;
+const BATCH_SIZE = 12;
+
 function HomeContent() {
   const searchParams = useSearchParams();
   const router = useRouter();
   const [entered, setEntered] = useState(false);
   const [activeCategory, setActiveCategory] = useState<CategoryId>("all");
+  const [visibleCount, setVisibleCount] = useState(INITIAL_VISIBLE);
+  const sentinelRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const id = requestAnimationFrame(() => setEntered(true));
@@ -172,12 +177,33 @@ function HomeContent() {
     setActiveCategory(cat && CATEGORIES.some((c) => c.id === cat) ? cat : "all");
   }, [searchParams]);
 
+  // Reset visible count when category changes
+  useEffect(() => {
+    setVisibleCount(INITIAL_VISIBLE);
+  }, [activeCategory]);
+
   const handleCategoryChange = (cat: CategoryId) => {
     setActiveCategory(cat);
     router.replace(cat === "all" ? "/" : `/?category=${cat}`, { scroll: false });
   };
 
   const gridTools = activeCategory === "all" ? TOOLS : TOOLS.filter((t) => t.category === activeCategory);
+  const visibleTools = gridTools.slice(0, visibleCount);
+  const hasMore = visibleCount < gridTools.length;
+
+  // Load more cards as the sentinel comes into view
+  useEffect(() => {
+    const el = sentinelRef.current;
+    if (!el || !hasMore) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) setVisibleCount(prev => prev + BATCH_SIZE);
+      },
+      { rootMargin: "300px" },
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, [hasMore, visibleCount]);
 
   return (
     <div className="relative flex flex-1 flex-col">
@@ -242,15 +268,13 @@ function HomeContent() {
           ))}
         </motion.div>
 
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.45, type: "spring", stiffness: 280, damping: 26 }}
-          className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3"
-        >
-          {gridTools.map((tool) => (
-            <div
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          {visibleTools.map((tool) => (
+            <motion.div
               key={tool.href}
+              initial={{ opacity: 0, y: 14 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ type: "spring", stiffness: 340, damping: 28, mass: 0.8 }}
               className="flex flex-col gap-4 rounded-2xl bg-white p-6 ring-1 ring-black/6 shadow-[0_4px_24px_-6px_rgba(0,0,0,0.10),0_1px_3px_rgba(0,0,0,0.06)]"
             >
               <div className="flex items-start justify-between gap-3">
@@ -274,9 +298,12 @@ function HomeContent() {
                 Use tool
                 <ArrowRight size={12} />
               </Link>
-            </div>
+            </motion.div>
           ))}
-        </motion.div>
+        </div>
+
+        {/* Sentinel — triggers loading the next batch when scrolled into view */}
+        <div ref={sentinelRef} className="h-px" />
       </section>
 
       <SiteFooter />
