@@ -279,7 +279,7 @@ export function RoundedCornersClient() {
                 className="h-1.5 w-full cursor-pointer accent-foreground"
               />
               <div className="flex justify-between text-[10px] text-muted-foreground/50">
-                <span>0 — sharp</span><span>50% — pill / circle</span>
+                <span>0 | sharp</span><span>50% | pill / circle</span>
               </div>
             </div>
 

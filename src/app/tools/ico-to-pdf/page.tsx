@@ -5,7 +5,7 @@ import ConverterShell from "@/components/converter/converter-shell";
 import { OtherTools } from "@/components/converter/other-tools";
 
 export const metadata: Metadata = {
-  title: "ICO to PDF Converter — Free, In-Browser, No Upload",
+  title: "ICO to PDF Converter | Free, In-Browser, No Upload",
   description:
     "Convert ICO icon files to PDF in your browser. Useful for documenting icon sets or repurposing favicons. No upload, no signup. Free ICO to PDF converter.",
   openGraph: {
@@ -31,7 +31,7 @@ export default function Page() {
             <h2 className="text-xl font-bold tracking-tight text-foreground mb-4">How to convert ICO to PDF</h2>
             <ol className="space-y-3 list-none">
               {[
-                ["Drop or select your ICO files", "Click the upload area or drag your .ico files in. ICO files may contain multiple sizes — the browser extracts the largest available frame."],
+                ["Drop or select your ICO files", "Click the upload area or drag your .ico files in. ICO files may contain multiple sizes | the browser extracts the largest available frame."],
                 ["Set output dimensions (optional)", "Use the dimension fields to scale the icon up for a larger PDF. Icons are small by nature, so increasing the output size helps readability in documents."],
                 ["Download your PDF", "Click Convert to PDF and download. The extracted icon frame is embedded as a PDF page."],
               ].map(([step, detail], i) => (
@@ -59,7 +59,7 @@ export default function Page() {
                 { q: "Is this ICO to PDF converter free?", a: "Yes, completely free with no limits or account required." },
                 { q: "Are my ICO files uploaded to a server?", a: "No. Everything runs locally in your browser using the Canvas API." },
                 { q: "Which size is used from a multi-size ICO?", a: "The browser selects the largest available frame within the ICO container when decoding." },
-                { q: "The output is too small — how do I make it larger?", a: "Set a custom width or height in the Dimensions fields in the settings panel before converting. The icon will be scaled to your specified size." },
+                { q: "The output is too small | how do I make it larger?", a: "Set a custom width or height in the Dimensions fields in the settings panel before converting. The icon will be scaled to your specified size." },
                 { q: "Can I convert multiple ICO files at once?", a: "Yes. Drag in multiple files and they will be processed as a batch, each producing a separate PDF." },
               ].map(({ q, a }) => (
                 <div key={q}>

@@ -7,7 +7,7 @@ import { ContrastCheckerClient } from "./client";
 import { OtherTools } from "@/components/converter/other-tools";
 
 export const metadata: Metadata = {
-  title: "WCAG Contrast Checker — Free Accessibility Color Tool",
+  title: "WCAG Contrast Checker | Free Accessibility Color Tool",
   description:
     "Check the contrast ratio between two colors and get instant WCAG 2.1 AA and AAA pass/fail results for normal text, large text, and UI components. Free, no upload.",
 };
@@ -44,11 +44,11 @@ export default function ContrastCheckerPage() {
           <section>
             <h2 className="text-[17px] font-semibold tracking-tight text-foreground">WCAG levels explained</h2>
             <ul className="mt-3 space-y-2 text-[13px] leading-relaxed text-muted-foreground list-disc list-inside">
-              <li><strong className="text-foreground">AA Normal text</strong> — minimum ratio of 4.5:1. Required for body text under 18pt (or 14pt bold).</li>
-              <li><strong className="text-foreground">AA Large text</strong> — minimum ratio of 3:1. For text 18pt and above, or 14pt bold and above.</li>
-              <li><strong className="text-foreground">AA UI components</strong> — minimum ratio of 3:1. For icons, input borders, and other non-text elements.</li>
-              <li><strong className="text-foreground">AAA Normal text</strong> — enhanced ratio of 7:1. Highest standard for critical interfaces.</li>
-              <li><strong className="text-foreground">AAA Large text</strong> — enhanced ratio of 4.5:1.</li>
+              <li><strong className="text-foreground">AA Normal text</strong> | minimum ratio of 4.5:1. Required for body text under 18pt (or 14pt bold).</li>
+              <li><strong className="text-foreground">AA Large text</strong> | minimum ratio of 3:1. For text 18pt and above, or 14pt bold and above.</li>
+              <li><strong className="text-foreground">AA UI components</strong> | minimum ratio of 3:1. For icons, input borders, and other non-text elements.</li>
+              <li><strong className="text-foreground">AAA Normal text</strong> | enhanced ratio of 7:1. Highest standard for critical interfaces.</li>
+              <li><strong className="text-foreground">AAA Large text</strong> | enhanced ratio of 4.5:1.</li>
             </ul>
           </section>
 

@@ -5,7 +5,7 @@ import ConverterShell from "@/components/converter/converter-shell";
 import { OtherTools } from "@/components/converter/other-tools";
 
 export const metadata: Metadata = {
-  title: "HEIC to PDF Converter — Free, In-Browser, No Upload",
+  title: "HEIC to PDF Converter | Free, In-Browser, No Upload",
   description:
     "Convert iPhone HEIC photos to PDF directly in your browser. No upload, no signup. Works in Chrome and Firefox via WebAssembly. Free HEIC to PDF converter.",
   openGraph: {
@@ -33,7 +33,7 @@ export default function Page() {
               {[
                 ["Drop or select your HEIC files", "Click the upload area or drag your .heic or .heif files onto it. These are the default photo format from iPhones running iOS 11 and later."],
                 ["Set your quality", "The quality slider controls the output image quality within the PDF. 85–90% gives excellent results for iPhone photos."],
-                ["Download your PDF", "Click Convert to PDF. The HEIC is decoded via WebAssembly, rendered on a canvas, and packaged as a PDF — all in your browser."],
+                ["Download your PDF", "Click Convert to PDF. The HEIC is decoded via WebAssembly, rendered on a canvas, and packaged as a PDF | all in your browser."],
               ].map(([step, detail], i) => (
                 <li key={i} className="flex gap-4">
                   <span className="mt-0.5 flex size-6 shrink-0 items-center justify-center rounded-full bg-neutral-100 text-[12px] font-semibold text-neutral-600">{i + 1}</span>
@@ -49,7 +49,7 @@ export default function Page() {
           <section>
             <h2 className="text-xl font-bold tracking-tight text-foreground mb-3">What is HEIC and why convert it to PDF?</h2>
             <p>HEIC (High Efficiency Image Container) is Apple&apos;s default photo format on iPhones since iOS 11. It produces smaller files than JPEG at comparable quality, which is why Apple uses it by default. However, HEIC is not natively supported on Windows or many web platforms, and it is not accepted by most document submission systems.</p>
-            <p className="mt-3">Converting HEIC to PDF solves the compatibility problem entirely. PDF is universally supported — on Windows, Android, Linux, web browsers, and every document management system. If you need to send iPhone photos to a doctor, lawyer, government portal, or any official system, PDF is the safest choice.</p>
+            <p className="mt-3">Converting HEIC to PDF solves the compatibility problem entirely. PDF is universally supported | on Windows, Android, Linux, web browsers, and every document management system. If you need to send iPhone photos to a doctor, lawyer, government portal, or any official system, PDF is the safest choice.</p>
             <p className="mt-3">This converter uses WebAssembly (via the heic2any library) to decode HEIC files directly in your browser. No server upload is needed, keeping your photos completely private.</p>
           </section>
 

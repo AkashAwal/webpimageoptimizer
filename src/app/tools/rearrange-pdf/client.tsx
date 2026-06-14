@@ -107,7 +107,7 @@ export default function RearrangePdfClient() {
         >
           <div className="text-center space-y-3 max-w-lg">
             <h2 className="text-5xl font-bold tracking-tight text-foreground">Remove or Rearrange Pages</h2>
-            <p className="text-[18px] text-muted-foreground">Drag to reorder and click × to remove pages — all in one view.</p>
+            <p className="text-[18px] text-muted-foreground">Drag to reorder and click × to remove pages | all in one view.</p>
           </div>
           <button
             onClick={() => inputRef.current?.click()}
@@ -133,7 +133,7 @@ export default function RearrangePdfClient() {
               <span className="text-foreground font-medium">Remove or Rearrange Pages</span>
               {pages.length > 0 && (
                 <span className="text-muted-foreground">
-                  — {activeCount} page{activeCount !== 1 ? "s" : ""}
+                  | {activeCount} page{activeCount !== 1 ? "s" : ""}
                   {deletedCount > 0 && <span className="text-red-500"> · {deletedCount} to remove</span>}
                 </span>
               )}
@@ -194,7 +194,7 @@ export default function RearrangePdfClient() {
             )}
           </div>
 
-          {/* Right: sticky sidebar — instructions */}
+          {/* Right: sticky sidebar | instructions */}
           <div className="w-full sm:w-80 shrink-0 border-t sm:border-t-0 sm:border-l border-border bg-white sm:sticky sm:top-16 sm:h-[calc(100vh-4rem)] flex flex-col p-6 gap-4 overflow-y-auto">
             <div className="flex items-center justify-between">
               <h2 className="text-xl font-bold tracking-tight text-foreground">Remove or Rearrange Pages</h2>
@@ -214,7 +214,7 @@ export default function RearrangePdfClient() {
             <div className="space-y-3">
               <p className="text-[11px] font-semibold uppercase tracking-widest text-muted-foreground">How to use</p>
               {[
-                { n: "1", text: "Drop your PDF — every page is rendered as a thumbnail." },
+                { n: "1", text: "Drop your PDF | every page is rendered as a thumbnail." },
                 { n: "2", text: "Drag cards to reorder pages into your preferred sequence." },
                 { n: "3", text: "Hover a card and click × to mark a page for removal." },
                 { n: "4", text: "Click Save Changes to download the updated PDF." },

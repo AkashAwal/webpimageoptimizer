@@ -7,7 +7,7 @@ import { ColorPaletteGeneratorClient } from "./client";
 import { OtherTools } from "@/components/converter/other-tools";
 
 export const metadata: Metadata = {
-  title: "Color Palette Generator — Complementary, Analogous & More",
+  title: "Color Palette Generator | Complementary, Analogous & More",
   description:
     "Generate complementary, analogous, triadic, and tetradic color schemes from any base color. Copy HEX values instantly. Free, runs in your browser.",
 };
@@ -37,10 +37,10 @@ export default function ColorPaletteGeneratorPage() {
           <section>
             <h2 className="text-[17px] font-semibold tracking-tight text-foreground">Color harmony explained</h2>
             <ul className="mt-3 space-y-2 text-[13px] leading-relaxed text-muted-foreground list-disc list-inside">
-              <li><strong className="text-foreground">Complementary</strong> — two colors opposite each other on the color wheel. High contrast, bold pairings.</li>
-              <li><strong className="text-foreground">Analogous</strong> — three colors adjacent on the wheel. Cohesive and natural-looking.</li>
-              <li><strong className="text-foreground">Triadic</strong> — three colors evenly spaced (120° apart). Vibrant and balanced.</li>
-              <li><strong className="text-foreground">Tetradic</strong> — four colors forming a rectangle on the wheel. Rich and complex.</li>
+              <li><strong className="text-foreground">Complementary</strong> | two colors opposite each other on the color wheel. High contrast, bold pairings.</li>
+              <li><strong className="text-foreground">Analogous</strong> | three colors adjacent on the wheel. Cohesive and natural-looking.</li>
+              <li><strong className="text-foreground">Triadic</strong> | three colors evenly spaced (120° apart). Vibrant and balanced.</li>
+              <li><strong className="text-foreground">Tetradic</strong> | four colors forming a rectangle on the wheel. Rich and complex.</li>
             </ul>
           </section>
 
@@ -53,7 +53,7 @@ export default function ColorPaletteGeneratorPage() {
               </div>
               <div>
                 <h3 className="text-[14px] font-semibold text-foreground">Can I copy individual colors?</h3>
-                <p className="mt-1 text-[13px] leading-relaxed text-muted-foreground">Yes — click any color swatch to copy its HEX value to your clipboard.</p>
+                <p className="mt-1 text-[13px] leading-relaxed text-muted-foreground">Yes | click any color swatch to copy its HEX value to your clipboard.</p>
               </div>
             </div>
           </section>

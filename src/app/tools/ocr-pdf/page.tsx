@@ -5,7 +5,7 @@ import OcrPdfClient from "./client";
 import { OtherTools } from "@/components/converter/other-tools";
 
 export const metadata: Metadata = {
-  title: "Extract Text from PDF — OCR, Free, In-Browser, No Upload",
+  title: "Extract Text from PDF | OCR, Free, In-Browser, No Upload",
   description: "Extract text from scanned or image-based PDFs using OCR directly in your browser. Supports 6 languages. Copy or download the result as a text file. Free, no upload.",
   openGraph: {
     images: [{ url: "/og/ocr-pdf.png", width: 1200, height: 630 }],
@@ -23,11 +23,11 @@ export default function Page() {
         <div className="mt-16 space-y-10 text-[14px] leading-relaxed text-muted-foreground">
           <section>
             <h2 className="text-xl font-bold tracking-tight text-foreground mb-3">How to extract text from a scanned PDF</h2>
-            <p>Drop your PDF into the tool and select the document's primary language. Click <strong className="text-foreground font-semibold">Extract Text (OCR)</strong>. The tool renders each page as an image, then runs Tesseract.js — an open-source OCR engine — on each one. The extracted text appears in the output panel, separated by page, and can be copied to the clipboard or downloaded as a <code className="bg-neutral-100 px-1 rounded text-foreground text-[13px]">.txt</code> file.</p>
+            <p>Drop your PDF into the tool and select the document's primary language. Click <strong className="text-foreground font-semibold">Extract Text (OCR)</strong>. The tool renders each page as an image, then runs Tesseract.js | an open-source OCR engine | on each one. The extracted text appears in the output panel, separated by page, and can be copied to the clipboard or downloaded as a <code className="bg-neutral-100 px-1 rounded text-foreground text-[13px]">.txt</code> file.</p>
           </section>
           <section>
             <h2 className="text-xl font-bold tracking-tight text-foreground mb-3">What is OCR and when do you need it?</h2>
-            <p>OCR (Optical Character Recognition) converts images of text into machine-readable characters. Scanned documents, photos of printed text, and PDFs exported from image-only sources contain text as pixels — not as selectable, searchable characters. OCR makes that text usable: you can copy it, search it, paste it into other documents, or feed it into analysis tools. The language model download (~10 MB on first use) enables accurate recognition for the selected language.</p>
+            <p>OCR (Optical Character Recognition) converts images of text into machine-readable characters. Scanned documents, photos of printed text, and PDFs exported from image-only sources contain text as pixels | not as selectable, searchable characters. OCR makes that text usable: you can copy it, search it, paste it into other documents, or feed it into analysis tools. The language model download (~10 MB on first use) enables accurate recognition for the selected language.</p>
           </section>
           <section>
             <h2 className="text-xl font-bold tracking-tight text-foreground mb-4">Frequently asked questions</h2>

@@ -7,7 +7,7 @@ import ConverterShell from "@/components/converter/converter-shell";
 import { OtherTools } from "@/components/converter/other-tools";
 
 export const metadata: Metadata = {
-  title: "PDF to WebP Converter — Free, In-Browser, No Upload",
+  title: "PDF to WebP Converter | Free, In-Browser, No Upload",
   description:
     "Convert the first page of a PDF to a WebP image in your browser. No upload, no signup. Generate PDF thumbnails and previews as WebP. Free PDF to WebP converter.",
   openGraph: {
@@ -49,15 +49,15 @@ export default function Page() {
           </section>
 
           <section>
-            <h2 className="text-xl font-bold tracking-tight text-foreground mb-3">PDF to WebP — browser limitations</h2>
-            <p>PDF is a complex document format that browsers do not expose for direct Canvas rendering through the standard image loading pipeline. This means PDF conversion through a browser-only tool like this one is limited — it works for simple, image-heavy PDFs on some browsers, but complex PDFs with vector text and embedded fonts often fail.</p>
+            <h2 className="text-xl font-bold tracking-tight text-foreground mb-3">PDF to WebP | browser limitations</h2>
+            <p>PDF is a complex document format that browsers do not expose for direct Canvas rendering through the standard image loading pipeline. This means PDF conversion through a browser-only tool like this one is limited | it works for simple, image-heavy PDFs on some browsers, but complex PDFs with vector text and embedded fonts often fail.</p>
             <p className="mt-3">For reliable PDF to image conversion, a dedicated tool like Adobe Acrobat, pdf2pic, or a server-side PDF renderer (using PDF.js or Ghostscript) will handle all PDF types correctly. This tool is best suited for simple PDFs on Chrome.</p>
-            <p className="mt-3">If your PDF fails to convert, the error message will indicate the problem. Try the file in Chrome first — it has the most capable built-in PDF support.</p>
+            <p className="mt-3">If your PDF fails to convert, the error message will indicate the problem. Try the file in Chrome first | it has the most capable built-in PDF support.</p>
           </section>
 
           <section>
             <h2 className="text-xl font-bold tracking-tight text-foreground mb-3">When to use PDF to WebP</h2>
-            <p>The most common use case is generating a thumbnail or preview image of a PDF document — for example, showing the cover page of a report, presentation, or eBook on a website. Converting the first page to WebP gives you a compact, web-ready preview image without requiring visitors to open the full PDF.</p>
+            <p>The most common use case is generating a thumbnail or preview image of a PDF document | for example, showing the cover page of a report, presentation, or eBook on a website. Converting the first page to WebP gives you a compact, web-ready preview image without requiring visitors to open the full PDF.</p>
             <p className="mt-3">Other uses include extracting cover art from PDF-format ebooks, generating social media preview images for PDF downloads, and creating quick visual references of document pages.</p>
           </section>
 

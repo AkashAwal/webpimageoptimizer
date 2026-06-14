@@ -5,7 +5,7 @@ import { SiteHeader } from "@/components/layout/site-header";
 import { SiteFooter } from "@/components/layout/site-footer";
 
 export const metadata: Metadata = {
-  title: "Privacy Policy — Pix Garage",
+  title: "Privacy Policy | Pix Garage",
   description:
     "Pix Garage privacy policy. All image processing is client-side. No files are uploaded. Learn exactly what data is and isn't collected.",
 };
@@ -108,7 +108,7 @@ export default function Page() {
               ].map(({ name, desc, href }) => (
                 <div key={name}>
                   <p>
-                    <strong className="text-foreground font-semibold">{name}</strong> —{" "}
+                    <strong className="text-foreground font-semibold">{name}</strong> |{" "}
                     {desc}{" "}
                     <a
                       href={href}

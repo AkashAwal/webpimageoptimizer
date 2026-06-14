@@ -5,7 +5,7 @@ import ConverterShell from "@/components/converter/converter-shell";
 import { OtherTools } from "@/components/converter/other-tools";
 
 export const metadata: Metadata = {
-  title: "GIF to PDF Converter — Free, In-Browser, No Upload",
+  title: "GIF to PDF Converter | Free, In-Browser, No Upload",
   description:
     "Convert GIF images to PDF in your browser. Extracts the first frame as a clean static PDF page. No upload, no signup. Free GIF to PDF converter.",
   openGraph: {
@@ -49,7 +49,7 @@ export default function Page() {
           <section>
             <h2 className="text-xl font-bold tracking-tight text-foreground mb-3">What is GIF and why convert it to PDF?</h2>
             <p>GIF (Graphics Interchange Format) is a decades-old image format best known for short animations. It supports transparency and is limited to 256 colours per frame, making it common for simple web graphics, diagrams, and memes. Static GIFs are sometimes used for diagrams, logos, and technical illustrations.</p>
-            <p className="mt-3">Converting a GIF to PDF is useful when you need to include a GIF-based graphic in a document, report, or presentation export. Since PDF is static, the converter captures the first frame — giving you a clean, printable version of the graphic.</p>
+            <p className="mt-3">Converting a GIF to PDF is useful when you need to include a GIF-based graphic in a document, report, or presentation export. Since PDF is static, the converter captures the first frame | giving you a clean, printable version of the graphic.</p>
             <p className="mt-3">All conversion happens in your browser, so no files are ever uploaded.</p>
           </section>
 

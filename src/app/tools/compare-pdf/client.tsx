@@ -88,7 +88,7 @@ export default function ComparePdfClient() {
 
   return (
     <div className="pt-4">
-      {/* Landing heading — no card, shown before any file is loaded */}
+      {/* Landing heading | no card, shown before any file is loaded */}
       {!pdfA && !pdfB && (
         <div className="flex flex-col items-center justify-center gap-8 min-h-[calc(100vh-8rem)] transition-colors">
           <div className="text-center space-y-3 max-w-lg">

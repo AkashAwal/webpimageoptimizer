@@ -7,7 +7,7 @@ import ConverterShell from "@/components/converter/converter-shell";
 import { OtherTools } from "@/components/converter/other-tools";
 
 export const metadata: Metadata = {
-  title: "PNG to WebP Converter — Free, In-Browser, No Upload",
+  title: "PNG to WebP Converter | Free, In-Browser, No Upload",
   description:
     "Convert PNG images to WebP format instantly in your browser. No upload, no signup. Smaller file sizes, same visual quality. Free PNG to WebP converter.",
   openGraph: {
@@ -34,8 +34,8 @@ export default function Page() {
             <ol className="space-y-3 list-none">
               {[
                 ["Drop or select your PNG file", "Click the upload area or drag your .png file onto it. The converter accepts standard PNG files of any size."],
-                ["Adjust quality", "Use the quality slider to control the WebP output. 92% is the default — a good balance between file size reduction and visual quality for PNG sources."],
-                ["Download your WebP", "Click Convert, then download the resulting .webp file. Check the size savings shown — WebP files are typically 25–50% smaller than PNG."],
+                ["Adjust quality", "Use the quality slider to control the WebP output. 92% is the default | a good balance between file size reduction and visual quality for PNG sources."],
+                ["Download your WebP", "Click Convert, then download the resulting .webp file. Check the size savings shown | WebP files are typically 25–50% smaller than PNG."],
               ].map(([step, detail], i) => (
                 <li key={i} className="flex gap-4">
                   <span className="mt-0.5 flex size-6 shrink-0 items-center justify-center rounded-full bg-neutral-100 text-[12px] font-semibold text-neutral-600">{i + 1}</span>
@@ -51,13 +51,13 @@ export default function Page() {
           <section>
             <h2 className="text-xl font-bold tracking-tight text-foreground mb-3">What is WebP and why convert PNG to WebP?</h2>
             <p>WebP is a modern image format developed by Google. It uses advanced compression algorithms to deliver smaller file sizes than PNG while maintaining comparable visual quality. For web developers and designers, switching from PNG to WebP is one of the easiest ways to speed up page load times and improve Core Web Vitals scores.</p>
-            <p className="mt-3">PNG uses lossless compression, which preserves every pixel exactly — great for precision, but results in larger files. WebP can achieve similar visual results at a fraction of the file size, especially for images with large areas of solid colour, gradients, or transparency.</p>
+            <p className="mt-3">PNG uses lossless compression, which preserves every pixel exactly | great for precision, but results in larger files. WebP can achieve similar visual results at a fraction of the file size, especially for images with large areas of solid colour, gradients, or transparency.</p>
             <p className="mt-3">WebP is supported in all modern browsers: Chrome, Firefox, Safari (since version 14), Edge, and Opera. If you're still serving PNG on your website, converting to WebP is a quick win for performance.</p>
           </section>
 
           <section>
-            <h2 className="text-xl font-bold tracking-tight text-foreground mb-3">PNG vs WebP — file size comparison</h2>
-            <p>On average, WebP files are <strong className="text-foreground font-semibold">26% smaller than PNG</strong> for the same image. For images with transparency (alpha channel), WebP handles transparency natively — just like PNG — while still compressing better.</p>
+            <h2 className="text-xl font-bold tracking-tight text-foreground mb-3">PNG vs WebP | file size comparison</h2>
+            <p>On average, WebP files are <strong className="text-foreground font-semibold">26% smaller than PNG</strong> for the same image. For images with transparency (alpha channel), WebP handles transparency natively | just like PNG | while still compressing better.</p>
             <p className="mt-3">The quality slider controls lossy WebP compression. At 92% quality, most images are visually indistinguishable from the original PNG. Dropping to 80% gives even smaller files with minimal perceptible quality loss for thumbnails, hero images, and UI graphics.</p>
           </section>
 

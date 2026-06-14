@@ -236,7 +236,7 @@ export function PhotoSketchClient() {
               />
             </div>
           </div>
-          <p className="text-center text-[11px] text-muted-foreground/60">Export renders the full effect — preview is approximate.</p>
+          <p className="text-center text-[11px] text-muted-foreground/60">Export renders the full effect | preview is approximate.</p>
 
           <SoftPillButton variant="primary" onClick={handleExport} disabled={state === "processing"} className="h-10 w-full text-[13px]">
             {state === "processing" ? <><CircleNotch size={13} className="animate-spin" />Converting to sketch…</> : `Convert to ${mode === "pencil" ? "Pencil Sketch" : "Outline"}`}

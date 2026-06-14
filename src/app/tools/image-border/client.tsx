@@ -350,7 +350,7 @@ export function ImageBorderClient() {
 
               {borderStyle === "blur" && (
                 <p className="text-[12px] text-muted-foreground">
-                  The image is stretched and blurred to create the border — great for photos with vibrant colours.
+                  The image is stretched and blurred to create the border | great for photos with vibrant colours.
                 </p>
               )}
             </div>

@@ -5,7 +5,7 @@ import SplitPdfClient from "./client";
 import { OtherTools } from "@/components/converter/other-tools";
 
 export const metadata: Metadata = {
-  title: "Split PDF — Extract Pages Free, In-Browser, No Upload",
+  title: "Split PDF | Extract Pages Free, In-Browser, No Upload",
   description: "Split a PDF into individual pages or custom page ranges. Free, in-browser, no upload required. Download as a ZIP of separate PDF files.",
   openGraph: {
     images: [{ url: "/og/split-pdf.png", width: 1200, height: 630 }],
@@ -23,7 +23,7 @@ export default function Page() {
         <div className="mt-16 space-y-10 text-[14px] leading-relaxed text-muted-foreground">
           <section>
             <h2 className="text-xl font-bold tracking-tight text-foreground mb-3">How to split a PDF</h2>
-            <p>Drop your PDF and choose a split mode. <strong className="text-foreground font-semibold">Every page</strong> creates one PDF file per page. <strong className="text-foreground font-semibold">By ranges</strong> lets you specify custom groups — for example <code className="bg-neutral-100 px-1 rounded text-foreground text-[13px]">1-3, 4-6, 7</code> produces three separate PDFs. All outputs are bundled into a single ZIP download.</p>
+            <p>Drop your PDF and choose a split mode. <strong className="text-foreground font-semibold">Every page</strong> creates one PDF file per page. <strong className="text-foreground font-semibold">By ranges</strong> lets you specify custom groups | for example <code className="bg-neutral-100 px-1 rounded text-foreground text-[13px]">1-3, 4-6, 7</code> produces three separate PDFs. All outputs are bundled into a single ZIP download.</p>
           </section>
           <section>
             <h2 className="text-xl font-bold tracking-tight text-foreground mb-4">Frequently asked questions</h2>

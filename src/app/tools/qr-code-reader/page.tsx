@@ -7,9 +7,9 @@ import { OtherTools } from "@/components/converter/other-tools";
 import { QrCodeReaderClient } from "./client";
 
 export const metadata: Metadata = {
-  title: "QR Code Reader — Decode QR Codes from Images, Free",
+  title: "QR Code Reader | Decode QR Codes from Images, Free",
   description:
-    "Upload any image containing a QR code to decode it instantly. Works with screenshots, photos, and saved images. No camera required — free and private.",
+    "Upload any image containing a QR code to decode it instantly. Works with screenshots, photos, and saved images. No camera required | free and private.",
   openGraph: {
     images: [{ url: "/og/qr-code-reader.png", width: 1200, height: 630 }],
   },
@@ -34,7 +34,7 @@ export default function Page() {
             QR Code Reader
           </h1>
           <p className="mt-3 text-[15px] leading-relaxed text-muted-foreground">
-            Upload a screenshot or photo containing a QR code to decode it instantly. No camera needed — works with any image file.
+            Upload a screenshot or photo containing a QR code to decode it instantly. No camera needed | works with any image file.
           </p>
         </div>
 
@@ -44,7 +44,7 @@ export default function Page() {
           <section>
             <h2 className="text-xl font-bold tracking-tight text-foreground mb-3">How QR code reading works</h2>
             <p>
-              This tool uses the open-source jsQR library to decode QR codes entirely in your browser. When you upload an image, it is drawn to an invisible HTML5 Canvas element, the pixel data is extracted, and the QR decoding algorithm scans it for finder patterns and data modules. The entire process happens locally — your image is never sent to a server.
+              This tool uses the open-source jsQR library to decode QR codes entirely in your browser. When you upload an image, it is drawn to an invisible HTML5 Canvas element, the pixel data is extracted, and the QR decoding algorithm scans it for finder patterns and data modules. The entire process happens locally | your image is never sent to a server.
             </p>
           </section>
 
@@ -52,10 +52,10 @@ export default function Page() {
             <h2 className="text-xl font-bold tracking-tight text-foreground mb-3">Frequently asked questions</h2>
             <div className="space-y-5">
               {[
-                ["What image formats are supported?", "JPEG, PNG, WebP, GIF, and most other common image formats. The image must contain a clearly visible QR code — blurry or heavily distorted codes may not decode."],
+                ["What image formats are supported?", "JPEG, PNG, WebP, GIF, and most other common image formats. The image must contain a clearly visible QR code | blurry or heavily distorted codes may not decode."],
                 ["Why did my QR code fail to decode?", "Common reasons include: the image is too blurry or low resolution, the QR code is partially obscured, or the image contains multiple competing patterns. Try cropping the image to just the QR code and re-uploading."],
                 ["Can it read QR codes in PDFs?", "Not directly. Take a screenshot of the PDF page first, then upload the screenshot."],
-                ["Is my image private?", "Yes — everything runs in your browser. The image never leaves your device."],
+                ["Is my image private?", "Yes | everything runs in your browser. The image never leaves your device."],
               ].map(([q, a]) => (
                 <div key={q as string}>
                   <h3 className="font-semibold text-foreground">{q}</h3>

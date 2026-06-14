@@ -7,7 +7,7 @@ import { OtherTools } from "@/components/converter/other-tools";
 import { ImageCollageClient } from "./client";
 
 export const metadata: Metadata = {
-  title: "Image Collage Maker — Combine Photos in a Grid, Free Online",
+  title: "Image Collage Maker | Combine Photos in a Grid, Free Online",
   description:
     "Combine 2 to 6 images into a grid collage. Choose from six layouts, set the gap width, pick a background color, and download as JPEG. Free, in-browser, no upload.",
 };
@@ -27,7 +27,7 @@ export default function Page() {
             Image Collage Maker
           </h1>
           <p className="mt-3 text-[15px] leading-relaxed text-muted-foreground">
-            Combine two to six photos into a grid collage in seconds. Pick a layout, set the gap between images, choose a background colour, and download a high-quality JPEG. Everything runs in your browser — no upload, no account.
+            Combine two to six photos into a grid collage in seconds. Pick a layout, set the gap between images, choose a background colour, and download a high-quality JPEG. Everything runs in your browser | no upload, no account.
           </p>
         </div>
 
@@ -61,7 +61,7 @@ export default function Page() {
 
           <section>
             <h2 className="text-xl font-bold tracking-tight text-foreground mb-3">How images are fitted to cells</h2>
-            <p>Every cell is a square (480×480px on the export canvas). Images of any aspect ratio are fitted using object-fit cover: the image is scaled up until it fills the square, then any overflow is clipped from the centre. This means no black bars or distortion — the most centred part of each image fills the cell. Portraits, landscapes, and square images all fit without manual cropping.</p>
+            <p>Every cell is a square (480×480px on the export canvas). Images of any aspect ratio are fitted using object-fit cover: the image is scaled up until it fills the square, then any overflow is clipped from the centre. This means no black bars or distortion | the most centred part of each image fills the cell. Portraits, landscapes, and square images all fit without manual cropping.</p>
           </section>
 
           <section>
@@ -70,7 +70,7 @@ export default function Page() {
               {[
                 { q: "What is the output resolution?", a: "Each cell is 480×480px. A 2×2 collage with an 8px gap is 976×976px; a 1×3 (three across) is 1456×480px. All cells are the same size regardless of the original image dimensions." },
                 { q: "Can I control which part of the image fills the cell?", a: "Currently, the centre of the image is always used. If the key subject is off-centre (e.g., a person near the edge), crop the image to the right area before uploading using the Image Cropper tool." },
-                { q: "Why is the output JPEG and not PNG?", a: "Collages are photographic — JPEG produces significantly smaller files at 95% quality with no perceptible difference. PNG output at this resolution would be much larger without a visual benefit." },
+                { q: "Why is the output JPEG and not PNG?", a: "Collages are photographic | JPEG produces significantly smaller files at 95% quality with no perceptible difference. PNG output at this resolution would be much larger without a visual benefit." },
                 { q: "Can I reorder the images?", a: "The images appear in the order they were added. Remove and re-add images to change the order. The first image goes to the top-left cell, and the rest fill left-to-right, top-to-bottom." },
                 { q: "Is there a limit on how many images I can add?", a: "Up to 6 images. The largest layout (2×3) uses all six. If you need more images, create multiple collages and combine them using the collage tool again." },
               ].map(({ q, a }) => (

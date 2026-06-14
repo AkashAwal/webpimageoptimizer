@@ -7,7 +7,7 @@ import ConverterShell from "@/components/converter/converter-shell";
 import { OtherTools } from "@/components/converter/other-tools";
 
 export const metadata: Metadata = {
-  title: "ICO to WebP Converter — Free, In-Browser, No Upload",
+  title: "ICO to WebP Converter | Free, In-Browser, No Upload",
   description:
     "Convert ICO icon files to WebP images instantly in your browser. No upload, no signup. Extract and repurpose favicons and icon files as web-ready WebP. Free converter.",
   openGraph: {
@@ -34,7 +34,7 @@ export default function Page() {
             <ol className="space-y-3 list-none">
               {[
                 ["Drop or select your ICO file", "Click the upload area or drag your .ico file onto it. The browser will decode the ICO and extract the image data for conversion."],
-                ["Adjust quality", "Use the quality slider to set WebP output quality. 92% is a good default for icon sources — icons often have sharp edges and detail that benefit from higher quality settings."],
+                ["Adjust quality", "Use the quality slider to set WebP output quality. 92% is a good default for icon sources | icons often have sharp edges and detail that benefit from higher quality settings."],
                 ["Download your WebP", "Click Convert and download the .webp file. The output will match the dimensions of the ICO frame decoded by the browser."],
               ].map(([step, detail], i) => (
                 <li key={i} className="flex gap-4">
@@ -50,8 +50,8 @@ export default function Page() {
 
           <section>
             <h2 className="text-xl font-bold tracking-tight text-foreground mb-3">What is ICO and why convert to WebP?</h2>
-            <p>ICO (Icon) is a file format used for Windows application icons and website favicons. An ICO file is a container that can store multiple images at different sizes and colour depths — for example, a single favicon.ico might contain 16×16, 32×32, 48×48, and 256×256 variants for use in different contexts.</p>
-            <p className="mt-3">ICO files are primarily designed for system UI use: taskbar icons, browser tabs, and desktop shortcuts. They are not a web image format in the traditional sense. If you want to repurpose an icon — for use in a web page, social media profile, document, or design file — WebP is a much better choice. WebP is compact, well-supported, and renders cleanly at any use.</p>
+            <p>ICO (Icon) is a file format used for Windows application icons and website favicons. An ICO file is a container that can store multiple images at different sizes and colour depths | for example, a single favicon.ico might contain 16×16, 32×32, 48×48, and 256×256 variants for use in different contexts.</p>
+            <p className="mt-3">ICO files are primarily designed for system UI use: taskbar icons, browser tabs, and desktop shortcuts. They are not a web image format in the traditional sense. If you want to repurpose an icon | for use in a web page, social media profile, document, or design file | WebP is a much better choice. WebP is compact, well-supported, and renders cleanly at any use.</p>
             <p className="mt-3">Converting ICO to WebP is useful when you need a standalone image from a favicon or when you're adapting Windows application icons for web contexts.</p>
           </section>
 

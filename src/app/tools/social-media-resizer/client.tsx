@@ -80,7 +80,7 @@ async function exportResized(
     const dy = (targetH - dh) / 2;
     ctx.drawImage(img, dx, dy, dw, dh);
   } else {
-    // cover — crop to fill
+    // cover | crop to fill
     const scale = Math.max(targetW / srcW, targetH / srcH);
     const dw = srcW * scale;
     const dh = srcH * scale;
@@ -324,7 +324,7 @@ export function SocialMediaResizerClient() {
               <div className="flex size-6 items-center justify-center rounded-full bg-emerald-100 text-emerald-600">
                 <Check size={11} weight="bold" />
               </div>
-              <span className="text-[13px] font-medium text-foreground">{result.w} × {result.h}px — ready to download</span>
+              <span className="text-[13px] font-medium text-foreground">{result.w} × {result.h}px | ready to download</span>
             </div>
             <div className="flex gap-2">
               <SoftPillButton variant="primary" onClick={handleDownload} className="flex-1 h-9 text-[13px]">Download</SoftPillButton>

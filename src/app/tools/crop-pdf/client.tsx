@@ -175,7 +175,7 @@ export default function CropPdfClient() {
               <span>/</span>
               <span className="text-foreground font-medium">Crop PDF</span>
               {thumbnails.length > 0 && (
-                <span className="text-muted-foreground">— {thumbnails.length} page{thumbnails.length !== 1 ? "s" : ""}</span>
+                <span className="text-muted-foreground">| {thumbnails.length} page{thumbnails.length !== 1 ? "s" : ""}</span>
               )}
             </div>
 
@@ -219,7 +219,7 @@ export default function CropPdfClient() {
                         {/* eslint-disable-next-line @next/next/no-img-element */}
                         <img src={thumb} alt={`Page ${idx + 1}`} className="w-full block pointer-events-none" />
 
-                        {/* Dark overlay — 4 strips */}
+                        {/* Dark overlay | 4 strips */}
                         <div className="absolute inset-x-0 top-0 bg-black/50 pointer-events-none" style={{ height: `${y1 * 100}%` }} />
                         <div className="absolute inset-x-0 bottom-0 bg-black/50 pointer-events-none" style={{ height: `${(1 - y2) * 100}%` }} />
                         <div className="absolute left-0 bg-black/50 pointer-events-none" style={{ top: `${y1 * 100}%`, bottom: `${(1 - y2) * 100}%`, width: `${x1 * 100}%` }} />

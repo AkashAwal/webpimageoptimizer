@@ -261,7 +261,7 @@ function PalettePanel({
                   <div className="h-1 flex-1 overflow-hidden rounded-full bg-neutral-100">
                     <div className="h-full rounded-full" style={{ width: `${Math.max(pct, 2)}%`, backgroundColor: c.hex }} />
                   </div>
-                  <span className="w-7 shrink-0 text-right text-[10px] text-muted-foreground/60">{pct > 0 ? `${pct}%` : "—"}</span>
+                  <span className="w-7 shrink-0 text-right text-[10px] text-muted-foreground/60">{pct > 0 ? `${pct}%` : "|"}</span>
                 </div>
                 <p className="mt-0.5 text-[10px] text-muted-foreground/50">{h}° · {s}% sat · {l}% light</p>
               </button>
@@ -301,7 +301,7 @@ function HarmonyPanel({ baseColor }: { baseColor: ColorEntry }) {
     <div className="overflow-hidden rounded-2xl bg-white ring-1 ring-black/6 shadow-[0_1px_3px_rgba(0,0,0,0.06)]">
       <div className="border-b border-border px-4 py-2.5">
         <p className="text-[10px] font-semibold uppercase tracking-widest text-muted-foreground">
-          Colour harmonies — based on <span className="font-mono text-foreground">{baseColor.hex.toUpperCase()}</span>
+          Colour harmonies | based on <span className="font-mono text-foreground">{baseColor.hex.toUpperCase()}</span>
         </p>
       </div>
       <div className="divide-y divide-border">
@@ -514,7 +514,7 @@ export function ColorPaletteClient() {
               {mode === "pick" && picked.length >= 12 && (
                 <div className="pointer-events-none absolute bottom-3 left-0 right-0 flex justify-center">
                   <span className="rounded-full bg-black/60 px-3 py-1 text-[11px] text-white/90 backdrop-blur-sm">
-                    12 colours max — remove one to pick more
+                    12 colours max | remove one to pick more
                   </span>
                 </div>
               )}

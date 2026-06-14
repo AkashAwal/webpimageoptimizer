@@ -382,7 +382,7 @@ export function ImageCollageClient() {
                     onChange={e => setCellRadius(Number(e.target.value))}
                     className="h-1.5 w-full cursor-pointer accent-foreground" />
                   <div className="flex justify-between text-[10px] text-muted-foreground/50">
-                    <span>0 — sharp</span><span>40px — rounded</span>
+                    <span>0 | sharp</span><span>40px | rounded</span>
                   </div>
                 </div>
                 <div className="flex items-center gap-3 px-4 py-3.5">

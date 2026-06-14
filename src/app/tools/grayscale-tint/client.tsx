@@ -176,7 +176,7 @@ function SplitView({ imgUrl, filter, showDuotoneNotice }: SplitViewProps) {
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img src={imgUrl} alt="" className="absolute inset-0 h-full w-full object-contain" draggable={false} style={{ filter: "none" }} />
 
-      {/* Filtered — clipped to left portion */}
+      {/* Filtered | clipped to left portion */}
       <div
         className="absolute inset-0 overflow-hidden"
         style={{ clipPath: `inset(0 ${100 - splitX}% 0 0)` }}
@@ -378,7 +378,7 @@ export function GrayscaleTintClient() {
                   className="h-1.5 w-full cursor-pointer accent-foreground"
                 />
                 <div className="flex justify-between text-[10px] text-muted-foreground/50">
-                  <span>0% — original</span><span>100% — full effect</span>
+                  <span>0% | original</span><span>100% | full effect</span>
                 </div>
               </div>
             )}

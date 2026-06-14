@@ -5,7 +5,7 @@ import CropPdfClient from "./client";
 import { OtherTools } from "@/components/converter/other-tools";
 
 export const metadata: Metadata = {
-  title: "Crop PDF — Trim Page Margins Free, In-Browser, No Upload",
+  title: "Crop PDF | Trim Page Margins Free, In-Browser, No Upload",
   description: "Remove unwanted margins from every page of a PDF by adjusting the CropBox. Free, in-browser, no upload. Enter trim amounts in points and download instantly.",
   openGraph: {
     images: [{ url: "/og/crop-pdf.png", width: 1200, height: 630 }],
@@ -23,11 +23,11 @@ export default function Page() {
         <div className="mt-16 space-y-10 text-[14px] leading-relaxed text-muted-foreground">
           <section>
             <h2 className="text-xl font-bold tracking-tight text-foreground mb-3">How to crop a PDF</h2>
-            <p>Drop your PDF into the tool and enter the amount to trim from each side — top, right, bottom, and left — in points (1 pt ≈ 0.35 mm). You can leave any value at 0 to leave that edge unchanged. Click <strong className="text-foreground font-semibold">Crop PDF</strong> to apply the crop to every page and download.</p>
+            <p>Drop your PDF into the tool and enter the amount to trim from each side | top, right, bottom, and left | in points (1 pt ≈ 0.35 mm). You can leave any value at 0 to leave that edge unchanged. Click <strong className="text-foreground font-semibold">Crop PDF</strong> to apply the crop to every page and download.</p>
           </section>
           <section>
             <h2 className="text-xl font-bold tracking-tight text-foreground mb-3">What does cropping a PDF do?</h2>
-            <p>PDF cropping adjusts the <em>CropBox</em> — a rectangle that defines the visible area of each page. Content outside the CropBox is hidden but not permanently deleted; it can be restored by expanding the CropBox again. Cropping is ideal for removing scanner borders, shrinking oversized margins before printing, or cleaning up PDFs exported from slide decks with excessive whitespace.</p>
+            <p>PDF cropping adjusts the <em>CropBox</em> | a rectangle that defines the visible area of each page. Content outside the CropBox is hidden but not permanently deleted; it can be restored by expanding the CropBox again. Cropping is ideal for removing scanner borders, shrinking oversized margins before printing, or cleaning up PDFs exported from slide decks with excessive whitespace.</p>
           </section>
           <section>
             <h2 className="text-xl font-bold tracking-tight text-foreground mb-4">Frequently asked questions</h2>

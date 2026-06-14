@@ -8,10 +8,10 @@ const geistMono = Geist_Mono({ variable: "--font-geist-mono", subsets: ["latin"]
 export const metadata: Metadata = {
   title: {
     template: "%s | Pix Garage",
-    default: "Pix Garage — Free Image Conversion Tools",
+    default: "Pix Garage | Free Image Conversion Tools",
   },
   description:
-    "Free client-side image tools. Convert PNG, JPG, HEIC to WebP, resize images — all in your browser. Nothing uploaded.",
+    "Free client-side image tools. Convert PNG, JPG, HEIC to WebP, resize images | all in your browser. Nothing uploaded.",
   metadataBase: new URL("https://pixgarage.com"),
 };
 

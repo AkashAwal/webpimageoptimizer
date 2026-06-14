@@ -85,7 +85,7 @@ function SwatchCard({ swatch, format, onToggleLock, onCopy, copied }: {
         {swatch.locked ? <Lock size={14} weight="bold" /> : <LockOpen size={14} />}
       </button>
 
-      {/* Color value — click to copy */}
+      {/* Color value | click to copy */}
       <button
         onClick={() => onCopy(swatch.color)}
         className="flex flex-col items-center gap-1 px-4 py-2"

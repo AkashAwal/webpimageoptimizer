@@ -17,7 +17,7 @@ for (const slug of tools) {
   try {
     content = readFileSync(pagePath, "utf8");
   } catch {
-    console.warn(`Skipping ${slug} — page.tsx not found`);
+    console.warn(`Skipping ${slug} | page.tsx not found`);
     skipped++;
     continue;
   }
@@ -29,21 +29,21 @@ for (const slug of tools) {
 
   const metaStart = content.indexOf("export const metadata");
   if (metaStart === -1) {
-    console.warn(`Skipping ${slug} — no metadata export`);
+    console.warn(`Skipping ${slug} | no metadata export`);
     skipped++;
     continue;
   }
 
   const descPos = content.indexOf("  description:", metaStart);
   if (descPos === -1) {
-    console.warn(`Skipping ${slug} — no description field`);
+    console.warn(`Skipping ${slug} | no description field`);
     skipped++;
     continue;
   }
 
   const closingPos = content.indexOf("\n};", descPos);
   if (closingPos === -1) {
-    console.warn(`Skipping ${slug} — no closing };`);
+    console.warn(`Skipping ${slug} | no closing };`);
     skipped++;
     continue;
   }

@@ -231,7 +231,7 @@ function HomeContent() {
           </motion.h1>
 
           <motion.p variants={itemVariants} className="mt-5 max-w-md text-sm text-muted-foreground">
-            Free, fast, and completely private. Convert and resize images client-side — nothing is ever uploaded to a server.
+            Free, fast, and completely private. Convert and resize images client-side | nothing is ever uploaded to a server.
           </motion.p>
 
           <motion.div variants={itemVariants} className="mt-8">
@@ -288,7 +288,11 @@ function HomeContent() {
               </div>
 
               <div className="flex-1">
-                <h2 className="text-[15px] font-semibold tracking-tight text-foreground">{tool.name}</h2>
+                <h2 className="text-[15px] font-semibold tracking-tight text-foreground">
+                  <Link href={tool.href} className="underline underline-offset-2 decoration-neutral-300 hover:decoration-foreground transition-colors">
+                    {tool.name}
+                  </Link>
+                </h2>
                 <p className="mt-1 text-[13px] leading-relaxed text-muted-foreground">{tool.description}</p>
               </div>
 
@@ -304,7 +308,7 @@ function HomeContent() {
           ))}
         </div>
 
-        {/* Sentinel — triggers loading the next batch when scrolled into view */}
+        {/* Sentinel | triggers loading the next batch when scrolled into view */}
         <div ref={sentinelRef} className="h-px" />
       </section>
       </main>

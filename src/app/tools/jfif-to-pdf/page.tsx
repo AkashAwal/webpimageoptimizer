@@ -5,9 +5,9 @@ import ConverterShell from "@/components/converter/converter-shell";
 import { OtherTools } from "@/components/converter/other-tools";
 
 export const metadata: Metadata = {
-  title: "JFIF to PDF Converter — Free, In-Browser, No Upload",
+  title: "JFIF to PDF Converter | Free, In-Browser, No Upload",
   description:
-    "Convert JFIF photos to PDF in your browser. JFIF is a JPEG variant — full quality preserved in the PDF output. No upload, no signup. Free JFIF to PDF converter.",
+    "Convert JFIF photos to PDF in your browser. JFIF is a JPEG variant | full quality preserved in the PDF output. No upload, no signup. Free JFIF to PDF converter.",
   openGraph: {
     images: [{ url: "/og/jfif-to-pdf.png", width: 1200, height: 630 }],
   },
@@ -31,7 +31,7 @@ export default function Page() {
             <h2 className="text-xl font-bold tracking-tight text-foreground mb-4">How to convert JFIF to PDF</h2>
             <ol className="space-y-3 list-none">
               {[
-                ["Drop or select your JFIF files", "Click the upload area or drag your .jfif files in. JFIF files are treated the same as JPEG — the browser decodes them natively."],
+                ["Drop or select your JFIF files", "Click the upload area or drag your .jfif files in. JFIF files are treated the same as JPEG | the browser decodes them natively."],
                 ["Adjust quality", "Use the quality slider to control the image quality in the PDF output. 85–90% is excellent for most JFIF photos."],
                 ["Download your PDF", "Click Convert to PDF. The photo is embedded in a PDF page sized to match the original image dimensions."],
               ].map(([step, detail], i) => (
@@ -48,8 +48,8 @@ export default function Page() {
 
           <section>
             <h2 className="text-xl font-bold tracking-tight text-foreground mb-3">What is JFIF and why convert it to PDF?</h2>
-            <p>JFIF (JPEG File Interchange Format) is a standardised variant of the JPEG format. While JPEG defines the compression algorithm, JFIF defines exactly how the compressed data is stored in a file — including headers for resolution and colour space. In practice, JFIF and JPEG files are interchangeable; most software that opens JPEG will open JFIF.</p>
-            <p className="mt-3">The .jfif extension sometimes causes confusion — some systems do not recognise it and refuse to open the file. Converting JFIF to PDF eliminates this compatibility issue entirely, since PDF is universally recognised. It is also the right format for official submissions, email attachments, and document archives.</p>
+            <p>JFIF (JPEG File Interchange Format) is a standardised variant of the JPEG format. While JPEG defines the compression algorithm, JFIF defines exactly how the compressed data is stored in a file | including headers for resolution and colour space. In practice, JFIF and JPEG files are interchangeable; most software that opens JPEG will open JFIF.</p>
+            <p className="mt-3">The .jfif extension sometimes causes confusion | some systems do not recognise it and refuse to open the file. Converting JFIF to PDF eliminates this compatibility issue entirely, since PDF is universally recognised. It is also the right format for official submissions, email attachments, and document archives.</p>
           </section>
 
           <section>

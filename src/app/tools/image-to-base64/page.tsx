@@ -7,9 +7,9 @@ import { ImageToBase64Client } from "./client";
 import { OtherTools } from "@/components/converter/other-tools";
 
 export const metadata: Metadata = {
-  title: "Image to Base64 Encoder & Decoder — Free, In-Browser, No Upload",
+  title: "Image to Base64 Encoder & Decoder | Free, In-Browser, No Upload",
   description:
-    "Encode any image to a Base64 string or data URI instantly. Also decode a Base64 string back to a downloadable image. Runs entirely in your browser — nothing is uploaded.",
+    "Encode any image to a Base64 string or data URI instantly. Also decode a Base64 string back to a downloadable image. Runs entirely in your browser | nothing is uploaded.",
 };
 
 export default function ImageToBase64Page() {
@@ -28,7 +28,7 @@ export default function ImageToBase64Page() {
           </div>
           <div>
             <h1 className="text-[22px] font-semibold tracking-tight text-foreground">Image to Base64</h1>
-            <p className="text-[13px] text-muted-foreground">Encode images to Base64 strings — and decode them back. No upload.</p>
+            <p className="text-[13px] text-muted-foreground">Encode images to Base64 strings | and decode them back. No upload.</p>
           </div>
         </div>
 
@@ -47,7 +47,7 @@ export default function ImageToBase64Page() {
           <section>
             <h2 className="text-[17px] font-semibold tracking-tight text-foreground">How to use it</h2>
             <ol className="mt-3 space-y-2 text-[13px] leading-relaxed text-muted-foreground list-decimal list-inside">
-              <li><strong className="text-foreground">Encode:</strong> drop or select an image — the Base64 string and data URI appear instantly.</li>
+              <li><strong className="text-foreground">Encode:</strong> drop or select an image | the Base64 string and data URI appear instantly.</li>
               <li>Choose to copy the raw Base64 or the full data URI.</li>
               <li><strong className="text-foreground">Decode:</strong> paste a Base64 string or data URI into the decode tab to preview and download the image.</li>
             </ol>

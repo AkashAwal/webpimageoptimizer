@@ -181,7 +181,7 @@ export function PixelateClient() {
               className="h-1.5 w-full cursor-pointer accent-foreground"
             />
             <div className="flex justify-between text-[10px] text-muted-foreground/50">
-              <span>2px — fine</span><span>64px — coarse</span>
+              <span>2px | fine</span><span>64px | coarse</span>
             </div>
           </div>
 

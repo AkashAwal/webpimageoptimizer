@@ -138,7 +138,7 @@ export default function RotatePdfClient() {
               <span>/</span>
               <span className="text-foreground font-medium">Rotate PDF</span>
               {thumbnails.length > 0 && (
-                <span className="text-muted-foreground">— {thumbnails.length} page{thumbnails.length !== 1 ? "s" : ""}</span>
+                <span className="text-muted-foreground">| {thumbnails.length} page{thumbnails.length !== 1 ? "s" : ""}</span>
               )}
             </div>
 

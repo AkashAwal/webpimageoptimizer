@@ -100,7 +100,7 @@ export default function PdfToolShell({
 
   return (
     <div>
-      {/* Landing — no card */}
+      {/* Landing | no card */}
       {files.length === 0 && (
         <div
           className={cn(
@@ -125,7 +125,7 @@ export default function PdfToolShell({
         </div>
       )}
 
-      {/* Active — full-viewport, no card */}
+      {/* Active | full-viewport, no card */}
       {files.length > 0 && (
         <div className="flex flex-col sm:flex-row min-h-[calc(100vh-4rem)]">
 

@@ -7,7 +7,7 @@ import { ColorBlindnessClient } from "./client";
 import { OtherTools } from "@/components/converter/other-tools";
 
 export const metadata: Metadata = {
-  title: "Color Blindness Simulator — Preview Colors for Accessibility",
+  title: "Color Blindness Simulator | Preview Colors for Accessibility",
   description:
     "Preview how any color looks to people with deuteranopia, protanopia, tritanopia, and achromatopsia. Free accessibility tool, runs entirely in your browser.",
 };
@@ -34,10 +34,10 @@ export default function ColorBlindnessPage() {
           <section>
             <h2 className="text-[17px] font-semibold tracking-tight text-foreground">Types of color blindness</h2>
             <ul className="mt-3 space-y-2 text-[13px] leading-relaxed text-muted-foreground list-disc list-inside">
-              <li><strong className="text-foreground">Deuteranopia</strong> — red-green color blindness (green deficiency). The most common type, affecting ~6% of males.</li>
-              <li><strong className="text-foreground">Protanopia</strong> — red-green color blindness (red deficiency). Affects ~2% of males.</li>
-              <li><strong className="text-foreground">Tritanopia</strong> — blue-yellow color blindness. Rare, affects less than 0.01% of people.</li>
-              <li><strong className="text-foreground">Achromatopsia</strong> — complete color blindness, sees only in shades of grey. Very rare.</li>
+              <li><strong className="text-foreground">Deuteranopia</strong> | red-green color blindness (green deficiency). The most common type, affecting ~6% of males.</li>
+              <li><strong className="text-foreground">Protanopia</strong> | red-green color blindness (red deficiency). Affects ~2% of males.</li>
+              <li><strong className="text-foreground">Tritanopia</strong> | blue-yellow color blindness. Rare, affects less than 0.01% of people.</li>
+              <li><strong className="text-foreground">Achromatopsia</strong> | complete color blindness, sees only in shades of grey. Very rare.</li>
             </ul>
           </section>
           <section>

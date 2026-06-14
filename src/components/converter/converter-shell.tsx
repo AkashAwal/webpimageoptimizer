@@ -367,7 +367,7 @@ async function buildPdf(pages: PdfPage[], opts: PdfOptions): Promise<Blob> {
 
 async function htmlToPage(file: File, quality: number, targetW?: number): Promise<PdfPage> {
   const html = await file.text();
-  // Strip script tags — user content rendered in DOM should not execute JS
+  // Strip script tags | user content rendered in DOM should not execute JS
   const safe = html.replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, "");
   const renderW = targetW || 800;
   const el = document.createElement("div");
@@ -833,7 +833,7 @@ export default function ConverterShell({ type, title }: { type: ConvertType; tit
       setCopiedId(item.id);
       setTimeout(() => setCopiedId(null), 2000);
     } catch {
-      // Clipboard API not supported or permission denied — silent fail
+      // Clipboard API not supported or permission denied | silent fail
     }
   }, []);
 
@@ -942,8 +942,8 @@ export default function ConverterShell({ type, title }: { type: ConvertType; tit
             {[
               { label: "Queued", value: queuedCount.toString(), color: "" },
               { label: "Processed", value: doneCount.toString(), color: doneCount > 0 ? "text-emerald-600" : "" },
-              { label: elapsed > 0 ? formatTime(elapsed) : "—", value: speedKBps ? `${speedKBps} KB/s` : "Time taken", isTime: true, color: "" },
-              { label: "Saved", value: totalSaved > 0 ? formatBytes(totalSaved) : "—", color: totalSaved > 0 ? "text-emerald-600" : "" },
+              { label: elapsed > 0 ? formatTime(elapsed) : "|", value: speedKBps ? `${speedKBps} KB/s` : "Time taken", isTime: true, color: "" },
+              { label: "Saved", value: totalSaved > 0 ? formatBytes(totalSaved) : "|", color: totalSaved > 0 ? "text-emerald-600" : "" },
             ].map((stat, i) => (
               <div key={i} className="flex flex-col items-center justify-center py-2 px-3">
                 {stat.isTime ? (
@@ -961,7 +961,7 @@ export default function ConverterShell({ type, title }: { type: ConvertType; tit
             ))}
           </div>
 
-          {/* Sort / filter toolbar — only when files exist */}
+          {/* Sort / filter toolbar | only when files exist */}
           {files.length > 0 && (
             <div className="flex items-center gap-2 px-3 py-1.5 border-b border-border shrink-0 bg-white">
               {/* Filter */}
@@ -1007,7 +1007,7 @@ export default function ConverterShell({ type, title }: { type: ConvertType; tit
               try {
                 const collected = await collectFilesFromDataTransfer(e.dataTransfer.items);
                 if (collected.length) { addFiles(collected); return; }
-              } catch { /* folder traversal failed — fall back to flat file list */ }
+              } catch { /* folder traversal failed | fall back to flat file list */ }
               if (e.dataTransfer.files.length) addFiles(e.dataTransfer.files);
             }}
           >
@@ -1122,7 +1122,7 @@ export default function ConverterShell({ type, title }: { type: ConvertType; tit
                               <ArrowCounterClockwise size={16} />
                             </button>
                           )}
-                          {/* Per-file quality override — WebP only */}
+                          {/* Per-file quality override | WebP only */}
                           {cfg.outputType === "webp" && (
                             <button
                               onClick={() => setExpandedId(isExpanded ? null : item.id)}
@@ -1320,7 +1320,7 @@ export default function ConverterShell({ type, title }: { type: ConvertType; tit
                       />
                       <div>
                         <span className="text-[12px] text-foreground">Flatten</span>
-                        <p className="text-[10px] text-muted-foreground/60 mt-0.5 leading-tight">White background — required for printing.</p>
+                        <p className="text-[10px] text-muted-foreground/60 mt-0.5 leading-tight">White background | required for printing.</p>
                       </div>
                     </label>
                   </div>
@@ -1333,7 +1333,7 @@ export default function ConverterShell({ type, title }: { type: ConvertType; tit
                     onChange={e => setSettings(s => ({ ...s, pdfWatermark: e.target.value }))}
                     className="w-full rounded-lg border border-border bg-neutral-50 px-2 py-1 text-[12px] text-foreground outline-none focus:border-foreground/30 focus:bg-white transition-colors mb-1.5"
                   />
-                  {/* Position picker — 2×2 corners + center */}
+                  {/* Position picker | 2×2 corners + center */}
                   {(() => {
                     const empty = !settings.pdfWatermark;
                     const btnCls = (pos: string) => cn(
@@ -1562,7 +1562,7 @@ export default function ConverterShell({ type, title }: { type: ConvertType; tit
               className="w-full h-9 text-[12px]"
             >
               {converting ? (
-                <><CircleNotch size={12} className="animate-spin" />{batchDone} / {batchTotal} — Stop (Esc)</>
+                <><CircleNotch size={12} className="animate-spin" />{batchDone} / {batchTotal} | Stop (Esc)</>
               ) : (
                 <>
                   {cfg.outputType === "pdf" ? "Convert to PDF" : "Optimize Now"}

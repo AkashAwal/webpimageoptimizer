@@ -315,7 +315,7 @@ export function ImageCropperClient() {
           </div>
 
           <p className="text-center text-[11px] text-muted-foreground">
-            {crop.w} × {crop.h}px — drag edges or corners to adjust
+            {crop.w} × {crop.h}px | drag edges or corners to adjust
           </p>
 
           <div className="flex gap-2">

@@ -155,7 +155,7 @@ export function SiteFooter() {
           </div>
         </div>
 
-        {/* All tools — compact flex wrap */}
+        {/* All tools | compact flex wrap */}
         <div className="mt-10 border-t border-border pt-6">
           <p className="text-[11px] font-semibold uppercase tracking-widest text-muted-foreground mb-3">All Tools</p>
           <div className="flex flex-wrap gap-x-5 gap-y-2">

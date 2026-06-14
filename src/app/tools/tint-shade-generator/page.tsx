@@ -7,9 +7,9 @@ import { TintShadeClient } from "./client";
 import { OtherTools } from "@/components/converter/other-tools";
 
 export const metadata: Metadata = {
-  title: "Tint & Shade Generator — Color Scale Tool, Free Online",
+  title: "Tint & Shade Generator | Color Scale Tool, Free Online",
   description:
-    "Generate a full 10-step tint and shade scale from any base color — similar to Tailwind's color palette. Click any swatch to copy its HEX value instantly.",
+    "Generate a full 10-step tint and shade scale from any base color | similar to Tailwind's color palette. Click any swatch to copy its HEX value instantly.",
 };
 
 export default function TintShadeGeneratorPage() {
@@ -34,7 +34,7 @@ export default function TintShadeGeneratorPage() {
           <section>
             <h2 className="text-[17px] font-semibold tracking-tight text-foreground">What are tints and shades?</h2>
             <p className="mt-2 text-[13px] leading-relaxed text-muted-foreground">
-              A <strong className="text-foreground">tint</strong> is a color mixed with white — it increases lightness. A <strong className="text-foreground">shade</strong> is a color mixed with black — it decreases lightness. Together they form a scale useful for backgrounds, hover states, borders, and text across a design system.
+              A <strong className="text-foreground">tint</strong> is a color mixed with white | it increases lightness. A <strong className="text-foreground">shade</strong> is a color mixed with black | it decreases lightness. Together they form a scale useful for backgrounds, hover states, borders, and text across a design system.
             </p>
           </section>
           <section>
@@ -46,7 +46,7 @@ export default function TintShadeGeneratorPage() {
               </div>
               <div>
                 <h3 className="text-[14px] font-semibold text-foreground">Can I use this with Tailwind CSS?</h3>
-                <p className="mt-1 text-[13px] leading-relaxed text-muted-foreground">Yes — the 50–950 naming matches Tailwind's convention. Copy the HEX values and paste them into your <code className="rounded bg-neutral-100 px-1 font-mono text-[12px]">tailwind.config</code> under <code className="rounded bg-neutral-100 px-1 font-mono text-[12px]">colors</code>.</p>
+                <p className="mt-1 text-[13px] leading-relaxed text-muted-foreground">Yes | the 50–950 naming matches Tailwind's convention. Copy the HEX values and paste them into your <code className="rounded bg-neutral-100 px-1 font-mono text-[12px]">tailwind.config</code> under <code className="rounded bg-neutral-100 px-1 font-mono text-[12px]">colors</code>.</p>
               </div>
             </div>
           </section>

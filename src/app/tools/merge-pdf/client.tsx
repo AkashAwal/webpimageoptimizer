@@ -189,7 +189,7 @@ export default function MergePdfClient() {
               <p className="text-[11px] font-semibold uppercase tracking-widest text-muted-foreground">How to use</p>
               {[
                 { n: "1", text: "Click the button below or drag PDFs onto this page to add your files." },
-                { n: "2", text: "Drag the cards to set the order — pages will appear in that order in the final PDF." },
+                { n: "2", text: "Drag the cards to set the order | pages will appear in that order in the final PDF." },
                 { n: "3", text: "Hover a card and click × to remove a file you don't need." },
                 { n: "4", text: "Hit Merge PDFs when you're ready and download the combined file." },
               ].map(({ n, text }) => (

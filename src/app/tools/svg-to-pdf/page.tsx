@@ -5,7 +5,7 @@ import ConverterShell from "@/components/converter/converter-shell";
 import { OtherTools } from "@/components/converter/other-tools";
 
 export const metadata: Metadata = {
-  title: "SVG to PDF Converter — Free, In-Browser, No Upload",
+  title: "SVG to PDF Converter | Free, In-Browser, No Upload",
   description:
     "Convert SVG vector graphics to PDF in your browser. Rasterize at any dimensions for crisp print-ready output. No upload, no signup. Free SVG to PDF converter.",
   openGraph: {
@@ -31,7 +31,7 @@ export default function Page() {
             <h2 className="text-xl font-bold tracking-tight text-foreground mb-4">How to convert SVG to PDF</h2>
             <ol className="space-y-3 list-none">
               {[
-                ["Drop or select your SVG files", "Click the upload area or drag your .svg files in. SVGs with external resources may not render fully — self-contained SVGs work best."],
+                ["Drop or select your SVG files", "Click the upload area or drag your .svg files in. SVGs with external resources may not render fully | self-contained SVGs work best."],
                 ["Set output dimensions (optional)", "Use the dimension fields in the settings panel to control the rasterization resolution. Larger dimensions mean a sharper embedded image."],
                 ["Download your PDF", "Click Convert to PDF. The SVG is rendered at the specified dimensions and embedded into a PDF page."],
               ].map(([step, detail], i) => (
@@ -48,14 +48,14 @@ export default function Page() {
 
           <section>
             <h2 className="text-xl font-bold tracking-tight text-foreground mb-3">What is SVG and why convert it to PDF?</h2>
-            <p>SVG (Scalable Vector Graphics) is an XML-based vector format used for logos, icons, illustrations, charts, and UI graphics. Because SVG is resolution-independent, it looks perfectly crisp at any size. However, SVG is a web format — it is not supported by most print workflows, document management systems, or email clients.</p>
+            <p>SVG (Scalable Vector Graphics) is an XML-based vector format used for logos, icons, illustrations, charts, and UI graphics. Because SVG is resolution-independent, it looks perfectly crisp at any size. However, SVG is a web format | it is not supported by most print workflows, document management systems, or email clients.</p>
             <p className="mt-3">Converting SVG to PDF gives you a document-ready version of your vector graphic. Since the conversion rasterizes the SVG at your chosen dimensions, you can set a high resolution (e.g. 2400 × 2400 pixels) to ensure the PDF output is sharp enough for print.</p>
             <p className="mt-3">This is a common workflow for designers who need to deliver print-ready PDFs from SVG source files created in Figma, Illustrator, or Inkscape exports.</p>
           </section>
 
           <section>
-            <h2 className="text-xl font-bold tracking-tight text-foreground mb-3">SVG vs PDF — key differences</h2>
-            <p>SVG is infinitely scalable because it stores drawing instructions rather than pixels. PDF is a fixed-layout document format that can embed both vector and raster content. This converter rasterizes the SVG before embedding — for truly vector PDF output, use a dedicated tool like Inkscape or Adobe Illustrator.</p>
+            <h2 className="text-xl font-bold tracking-tight text-foreground mb-3">SVG vs PDF | key differences</h2>
+            <p>SVG is infinitely scalable because it stores drawing instructions rather than pixels. PDF is a fixed-layout document format that can embed both vector and raster content. This converter rasterizes the SVG before embedding | for truly vector PDF output, use a dedicated tool like Inkscape or Adobe Illustrator.</p>
           </section>
 
           <section>
@@ -66,7 +66,7 @@ export default function Page() {
                 { q: "Are my SVG files uploaded to a server?", a: "No. All rendering and conversion happens locally in your browser." },
                 { q: "Will the PDF be vector or raster?", a: "Raster. The SVG is drawn onto a canvas at your chosen dimensions and the resulting bitmap is embedded in the PDF. For fully vector PDF, use Inkscape or Illustrator." },
                 { q: "What dimensions should I use for print?", a: "For A4 at 300 DPI, use approximately 2480 × 3508 pixels. For letter size at 300 DPI, use 2550 × 3300 pixels." },
-                { q: "My SVG looks wrong in the output — what happened?", a: "SVGs that reference external fonts, images, or stylesheets may not render correctly since the browser sandbox restricts external resource loading. Try inlining all resources in the SVG first." },
+                { q: "My SVG looks wrong in the output | what happened?", a: "SVGs that reference external fonts, images, or stylesheets may not render correctly since the browser sandbox restricts external resource loading. Try inlining all resources in the SVG first." },
               ].map(({ q, a }) => (
                 <div key={q}>
                   <h3 className="font-semibold text-foreground">{q}</h3>

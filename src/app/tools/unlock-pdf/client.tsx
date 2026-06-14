@@ -21,7 +21,7 @@ export default function UnlockPdfClient() {
             onChange={e => setPassword(e.target.value)}
             className="w-full rounded-lg border border-border bg-white px-2 py-1.5 text-[12px] text-foreground outline-none focus:border-foreground/30 transition-colors"
           />
-          <p className="text-[10px] text-muted-foreground/60 mt-1 leading-tight">Pages are re-rendered as images — the output PDF has no selectable text.</p>
+          <p className="text-[10px] text-muted-foreground/60 mt-1 leading-tight">Pages are re-rendered as images | the output PDF has no selectable text.</p>
         </div>
       }
       onProcess={async (files) => {

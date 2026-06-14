@@ -7,9 +7,9 @@ import { ImagePaddingClient } from "./client";
 import { OtherTools } from "@/components/converter/other-tools";
 
 export const metadata: Metadata = {
-  title: "Add Image Padding — Free Canvas Expand Tool, No Upload",
+  title: "Add Image Padding | Free Canvas Expand Tool, No Upload",
   description:
-    "Expand the canvas of any image by adding padding on each side. Choose a solid color or transparent background. Works entirely in your browser — nothing uploaded.",
+    "Expand the canvas of any image by adding padding on each side. Choose a solid color or transparent background. Works entirely in your browser | nothing uploaded.",
 };
 
 export default function ImagePaddingPage() {
@@ -28,7 +28,7 @@ export default function ImagePaddingPage() {
           </div>
           <div>
             <h1 className="text-[22px] font-semibold tracking-tight text-foreground">Add Image Padding</h1>
-            <p className="text-[13px] text-muted-foreground">Expand the canvas with custom padding — solid color or transparent.</p>
+            <p className="text-[13px] text-muted-foreground">Expand the canvas with custom padding | solid color or transparent.</p>
           </div>
         </div>
 

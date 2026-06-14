@@ -7,9 +7,9 @@ import { OtherTools } from "@/components/converter/other-tools";
 import { QrCodeWithLogoClient } from "./client";
 
 export const metadata: Metadata = {
-  title: "QR Code with Logo — Embed Your Brand, Free, In-Browser",
+  title: "QR Code with Logo | Embed Your Brand, Free, In-Browser",
   description:
-    "Generate a QR code with your logo or image embedded in the centre. Adjust logo size and shape. Download as PNG. Free and private — nothing is uploaded.",
+    "Generate a QR code with your logo or image embedded in the centre. Adjust logo size and shape. Download as PNG. Free and private | nothing is uploaded.",
   openGraph: {
     images: [{ url: "/og/qr-code-with-logo.png", width: 1200, height: 630 }],
   },
@@ -44,7 +44,7 @@ export default function Page() {
           <section>
             <h2 className="text-xl font-bold tracking-tight text-foreground mb-3">Why does this still scan?</h2>
             <p>
-              QR codes use error correction — redundant data built into the pattern so the code can be reconstructed even if part of it is damaged or covered. This tool always uses level H (30% recovery), which means a logo covering up to 30% of the QR code area will not prevent it from scanning. Keep your logo within the 20–25% size range to stay safely below that threshold.
+              QR codes use error correction | redundant data built into the pattern so the code can be reconstructed even if part of it is damaged or covered. This tool always uses level H (30% recovery), which means a logo covering up to 30% of the QR code area will not prevent it from scanning. Keep your logo within the 20–25% size range to stay safely below that threshold.
             </p>
           </section>
 
@@ -54,9 +54,9 @@ export default function Page() {
               {[
                 ["How large can my logo be?", "Keep the logo at 20–25% of the QR code size for reliable scanning. The tool enforces a maximum of 30% to protect scannability."],
                 ["What logo formats are supported?", "PNG, JPG, WebP, SVG, and any other image format your browser supports. PNG with a transparent background looks best."],
-                ["Will all scanners read it?", "Most modern smartphone cameras and QR apps will scan it reliably. Older or lower-quality scanners may struggle — always test before printing."],
-                ["Can I use a circular logo?", "Yes — enable the 'Circle clip' option to mask the logo to a circle shape, which looks clean on most brand marks."],
-                ["Is my logo private?", "Yes — everything runs in your browser using the Canvas API. Your logo and QR data never leave your device."],
+                ["Will all scanners read it?", "Most modern smartphone cameras and QR apps will scan it reliably. Older or lower-quality scanners may struggle | always test before printing."],
+                ["Can I use a circular logo?", "Yes | enable the 'Circle clip' option to mask the logo to a circle shape, which looks clean on most brand marks."],
+                ["Is my logo private?", "Yes | everything runs in your browser using the Canvas API. Your logo and QR data never leave your device."],
               ].map(([q, a]) => (
                 <div key={q as string}>
                   <h3 className="font-semibold text-foreground">{q}</h3>

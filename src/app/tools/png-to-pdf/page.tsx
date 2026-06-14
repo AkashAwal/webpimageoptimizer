@@ -5,7 +5,7 @@ import ConverterShell from "@/components/converter/converter-shell";
 import { OtherTools } from "@/components/converter/other-tools";
 
 export const metadata: Metadata = {
-  title: "PNG to PDF Converter — Free, In-Browser, No Upload",
+  title: "PNG to PDF Converter | Free, In-Browser, No Upload",
   description:
     "Convert PNG images to PDF instantly in your browser. Preserves detail and transparency. No upload, no signup. Free PNG to PDF converter.",
   openGraph: {
@@ -31,7 +31,7 @@ export default function Page() {
             <h2 className="text-xl font-bold tracking-tight text-foreground mb-4">How to convert PNG to PDF</h2>
             <ol className="space-y-3 list-none">
               {[
-                ["Drop or select your PNG files", "Click the upload area or drag your .png files onto it. The converter accepts any PNG — screenshots, graphics, photos, or illustrations."],
+                ["Drop or select your PNG files", "Click the upload area or drag your .png files onto it. The converter accepts any PNG | screenshots, graphics, photos, or illustrations."],
                 ["Set your quality level", "The quality slider controls the compression of the embedded image. For screenshots and UI graphics, 90–93% retains sharp edges. For photos, 80–85% is fine."],
                 ["Download your PDF", "Click Convert to PDF and download the output. Each PNG becomes its own PDF page sized to match the image dimensions."],
               ].map(([step, detail], i) => (
@@ -49,13 +49,13 @@ export default function Page() {
           <section>
             <h2 className="text-xl font-bold tracking-tight text-foreground mb-3">Why convert PNG to PDF?</h2>
             <p>PNG is the go-to format for screenshots, UI designs, illustrations, and any image that needs a transparent background. But when it comes to sharing, printing, or submitting documents, PDF is the expected format. Converting PNG to PDF gives you a document that opens consistently on every device, prints at the right size, and can be annotated or signed electronically.</p>
-            <p className="mt-3">PNG files with transparency are handled gracefully — the transparent areas are rendered against a white background in the PDF, which is the standard expectation for print-ready documents.</p>
+            <p className="mt-3">PNG files with transparency are handled gracefully | the transparent areas are rendered against a white background in the PDF, which is the standard expectation for print-ready documents.</p>
             <p className="mt-3">Because this converter runs in your browser, your design files, screenshots, and sensitive images never touch a server. It is genuinely private.</p>
           </section>
 
           <section>
-            <h2 className="text-xl font-bold tracking-tight text-foreground mb-3">PNG vs PDF — key differences</h2>
-            <p>PNG is a raster image format. It stores pixels and is great for display and editing. PDF is a document container format — it can embed images, text, vector elements, and metadata, and it defines exact page dimensions for print.</p>
+            <h2 className="text-xl font-bold tracking-tight text-foreground mb-3">PNG vs PDF | key differences</h2>
+            <p>PNG is a raster image format. It stores pixels and is great for display and editing. PDF is a document container format | it can embed images, text, vector elements, and metadata, and it defines exact page dimensions for print.</p>
             <p className="mt-3">Converting PNG to PDF wraps your image in a document structure, making it suitable for workflows that require a page-based format: e-signing platforms, legal submission portals, print shops, and email attachments.</p>
           </section>
 
@@ -65,7 +65,7 @@ export default function Page() {
               {[
                 { q: "Is this PNG to PDF converter free?", a: "Yes, completely free with no file size limits or account requirements. Conversion runs entirely in your browser." },
                 { q: "Does PNG transparency carry over to the PDF?", a: "Transparent areas in the PNG are rendered on a white background in the PDF output, which is standard for print-ready documents." },
-                { q: "Can I convert multiple PNGs at once?", a: "Yes — drag in as many files as you like. Each PNG produces its own PDF. To merge into one document, use a PDF merge tool afterward." },
+                { q: "Can I convert multiple PNGs at once?", a: "Yes | drag in as many files as you like. Each PNG produces its own PDF. To merge into one document, use a PDF merge tool afterward." },
                 { q: "Are my PNG files uploaded to a server?", a: "No. All conversion happens locally in your browser using the HTML5 Canvas API. Your files never leave your device." },
                 { q: "What quality setting should I use for screenshots?", a: "For screenshots and UI graphics, 90–93% preserves sharp text and edges. Lower settings (80–85%) work well for photos where exact sharpness is less critical." },
               ].map(({ q, a }) => (

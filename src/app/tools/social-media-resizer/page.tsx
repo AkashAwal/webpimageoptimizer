@@ -7,9 +7,9 @@ import { SocialMediaResizerClient } from "./client";
 import { OtherTools } from "@/components/converter/other-tools";
 
 export const metadata: Metadata = {
-  title: "Social Media Image Resizer — Free, In-Browser, No Upload",
+  title: "Social Media Image Resizer | Free, In-Browser, No Upload",
   description:
-    "Resize any image to the exact dimensions for Instagram, Twitter/X, Facebook, LinkedIn, YouTube, and more. 10+ presets, custom sizes, three fit modes — all in your browser.",
+    "Resize any image to the exact dimensions for Instagram, Twitter/X, Facebook, LinkedIn, YouTube, and more. 10+ presets, custom sizes, three fit modes | all in your browser.",
 };
 
 export default function SocialMediaResizerPage() {
@@ -28,7 +28,7 @@ export default function SocialMediaResizerPage() {
           </div>
           <div>
             <h1 className="text-[22px] font-semibold tracking-tight text-foreground">Social Media Image Resizer</h1>
-            <p className="text-[13px] text-muted-foreground">Resize to any platform's exact dimensions — nothing uploaded.</p>
+            <p className="text-[13px] text-muted-foreground">Resize to any platform's exact dimensions | nothing uploaded.</p>
           </div>
         </div>
 
@@ -38,7 +38,7 @@ export default function SocialMediaResizerPage() {
           <section>
             <h2 className="text-[17px] font-semibold tracking-tight text-foreground">What this tool does</h2>
             <p className="mt-2 text-[13px] leading-relaxed text-muted-foreground">
-              Every social platform enforces specific image dimensions. Upload an image once and resize it to any preset — Instagram post,
+              Every social platform enforces specific image dimensions. Upload an image once and resize it to any preset | Instagram post,
               Twitter header, Facebook cover, LinkedIn banner, YouTube thumbnail, and more. You can also enter custom pixel dimensions.
               Three fit modes let you control whether the image is letterboxed, cropped to fill, or stretched.
             </p>
@@ -49,7 +49,7 @@ export default function SocialMediaResizerPage() {
             <ol className="mt-3 space-y-2 text-[13px] leading-relaxed text-muted-foreground list-decimal list-inside">
               <li>Drop or select your image.</li>
               <li>Pick a preset from the platform grid, or enter a custom width and height.</li>
-              <li>Choose a fit mode — Contain, Cover, or Stretch.</li>
+              <li>Choose a fit mode | Contain, Cover, or Stretch.</li>
               <li>Click <strong className="text-foreground">Export</strong> and download the resized image.</li>
             </ol>
           </section>
@@ -57,9 +57,9 @@ export default function SocialMediaResizerPage() {
           <section>
             <h2 className="text-[17px] font-semibold tracking-tight text-foreground">Fit modes explained</h2>
             <ul className="mt-3 space-y-2 text-[13px] leading-relaxed text-muted-foreground list-disc list-inside">
-              <li><strong className="text-foreground">Contain</strong> — the image fits entirely inside the frame with letterboxing (padding fills the gaps).</li>
-              <li><strong className="text-foreground">Cover</strong> — the image fills the entire frame, cropping the edges if the aspect ratio differs.</li>
-              <li><strong className="text-foreground">Stretch</strong> — the image is scaled to exactly match the target dimensions, ignoring aspect ratio.</li>
+              <li><strong className="text-foreground">Contain</strong> | the image fits entirely inside the frame with letterboxing (padding fills the gaps).</li>
+              <li><strong className="text-foreground">Cover</strong> | the image fills the entire frame, cropping the edges if the aspect ratio differs.</li>
+              <li><strong className="text-foreground">Stretch</strong> | the image is scaled to exactly match the target dimensions, ignoring aspect ratio.</li>
             </ul>
           </section>
 
@@ -76,7 +76,7 @@ export default function SocialMediaResizerPage() {
               </div>
               <div>
                 <h3 className="text-[14px] font-semibold text-foreground">Can I resize to a custom size?</h3>
-                <p className="mt-1 text-[13px] leading-relaxed text-muted-foreground">Yes — select the Custom option and enter any width and height in pixels.</p>
+                <p className="mt-1 text-[13px] leading-relaxed text-muted-foreground">Yes | select the Custom option and enter any width and height in pixels.</p>
               </div>
               <div>
                 <h3 className="text-[14px] font-semibold text-foreground">What fill color is used in Contain mode?</h3>

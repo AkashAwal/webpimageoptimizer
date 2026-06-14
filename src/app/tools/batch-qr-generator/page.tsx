@@ -7,9 +7,9 @@ import { OtherTools } from "@/components/converter/other-tools";
 import { BatchQrGeneratorClient } from "./client";
 
 export const metadata: Metadata = {
-  title: "Batch QR Code Generator — Generate Hundreds at Once, Free",
+  title: "Batch QR Code Generator | Generate Hundreds at Once, Free",
   description:
-    "Paste a list of URLs or text — one per line — and generate a QR code for each instantly. Download all as a ZIP file. Free, private, and nothing is uploaded.",
+    "Paste a list of URLs or text | one per line | and generate a QR code for each instantly. Download all as a ZIP file. Free, private, and nothing is uploaded.",
   openGraph: {
     images: [{ url: "/og/batch-qr-generator.png", width: 1200, height: 630 }],
   },
@@ -34,7 +34,7 @@ export default function Page() {
             Batch QR Code Generator
           </h1>
           <p className="mt-3 text-[15px] leading-relaxed text-muted-foreground">
-            Paste one URL or text per line and generate a QR code for each in one click. Download all as a ZIP archive — perfect for product labels, event tickets, and marketing campaigns.
+            Paste one URL or text per line and generate a QR code for each in one click. Download all as a ZIP archive | perfect for product labels, event tickets, and marketing campaigns.
           </p>
         </div>
 
@@ -44,7 +44,7 @@ export default function Page() {
           <section>
             <h2 className="text-xl font-bold tracking-tight text-foreground mb-3">When to use batch generation</h2>
             <p>
-              Batch QR generation is useful when you need a unique QR code for each item in a list — product URLs, event attendee check-in links, individual landing pages, asset tracking labels, or restaurant table codes. Instead of generating each one manually, paste the entire list and download a ZIP in seconds.
+              Batch QR generation is useful when you need a unique QR code for each item in a list | product URLs, event attendee check-in links, individual landing pages, asset tracking labels, or restaurant table codes. Instead of generating each one manually, paste the entire list and download a ZIP in seconds.
             </p>
           </section>
 
@@ -53,9 +53,9 @@ export default function Page() {
             <div className="space-y-5">
               {[
                 ["How many QR codes can I generate at once?", "There is no hard limit, but very large batches (500+) may take a few seconds since everything runs in your browser. For best results, generate in batches of 200 or fewer."],
-                ["How are the files named?", "Each QR code PNG is named after its source text — for example, a code for 'https://example.com' becomes 'example-com.png'. Numbers are appended for duplicates."],
+                ["How are the files named?", "Each QR code PNG is named after its source text | for example, a code for 'https://example.com' becomes 'example-com.png'. Numbers are appended for duplicates."],
                 ["What format are the QR codes?", "PNG at your chosen size. SVG batch export is not currently supported."],
-                ["Is my data private?", "Yes — QR generation runs entirely in your browser using the Canvas API. Your list of URLs is never sent anywhere."],
+                ["Is my data private?", "Yes | QR generation runs entirely in your browser using the Canvas API. Your list of URLs is never sent anywhere."],
               ].map(([q, a]) => (
                 <div key={q as string}>
                   <h3 className="font-semibold text-foreground">{q}</h3>

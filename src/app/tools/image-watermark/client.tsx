@@ -206,7 +206,7 @@ export function ImageWatermarkClient() {
     a.click();
   };
 
-  // Preview watermark style (approximate — scaled to preview container)
+  // Preview watermark style (approximate | scaled to preview container)
   const previewStyle: React.CSSProperties = {
     color: hexToRgba(color, opacity / 100),
     fontSize: Math.max(8, Math.round(fontSize * (200 / Math.max(naturalH, 1)))),
@@ -412,7 +412,7 @@ export function ImageWatermarkClient() {
             )}
             {tiled && (
               <p className="text-[12px] text-muted-foreground/70 leading-snug">
-                Text will be repeated diagonally across the entire image — great for copyright protection.
+                Text will be repeated diagonally across the entire image | great for copyright protection.
               </p>
             )}
           </div>

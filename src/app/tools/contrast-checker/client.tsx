@@ -126,11 +126,11 @@ export function ContrastCheckerClient() {
           <div className="rounded-2xl bg-white ring-1 ring-black/6 shadow-[0_1px_3px_rgba(0,0,0,0.06)] px-4 py-3.5 space-y-2">
             <p className="text-[10px] font-semibold uppercase tracking-widest text-muted-foreground">WCAG 2.1 Results</p>
             <div className="grid grid-cols-2 gap-2">
-              <PassBadge label="AA — Normal text (4.5:1)"  pass={passes.aaNormal} />
-              <PassBadge label="AA — Large text (3:1)"     pass={passes.aaLarge} />
-              <PassBadge label="AA — UI components (3:1)"  pass={passes.aaUi} />
-              <PassBadge label="AAA — Normal text (7:1)"   pass={passes.aaaNormal} />
-              <PassBadge label="AAA — Large text (4.5:1)"  pass={passes.aaaLarge} />
+              <PassBadge label="AA | Normal text (4.5:1)"  pass={passes.aaNormal} />
+              <PassBadge label="AA | Large text (3:1)"     pass={passes.aaLarge} />
+              <PassBadge label="AA | UI components (3:1)"  pass={passes.aaUi} />
+              <PassBadge label="AAA | Normal text (7:1)"   pass={passes.aaaNormal} />
+              <PassBadge label="AAA | Large text (4.5:1)"  pass={passes.aaaLarge} />
             </div>
           </div>
         </>

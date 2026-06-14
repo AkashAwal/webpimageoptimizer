@@ -51,7 +51,7 @@ function NavLinks({ menuOpen, onClose }: { menuOpen: boolean; onClose: () => voi
 
   return (
     <>
-      {/* Desktop nav — centered */}
+      {/* Desktop nav | centered */}
       <nav className="hidden sm:flex absolute left-1/2 -translate-x-1/2 items-center gap-4">
         {CATEGORY_LINKS.map((link) => (
           <Link

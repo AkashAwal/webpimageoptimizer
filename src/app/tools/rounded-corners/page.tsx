@@ -7,7 +7,7 @@ import { OtherTools } from "@/components/converter/other-tools";
 import { RoundedCornersClient } from "./client";
 
 export const metadata: Metadata = {
-  title: "Rounded Corners — Add Round Corners to Images Free, In-Browser",
+  title: "Rounded Corners | Add Round Corners to Images Free, In-Browser",
   description:
     "Add rounded corners to any image with a radius slider. Customize each corner independently. Output is always PNG to preserve the transparent background. Free, no upload.",
 };

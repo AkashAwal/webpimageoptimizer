@@ -5,7 +5,7 @@ import { ResizerShell } from "@/components/converter/resizer-shell";
 import { OtherTools } from "@/components/converter/other-tools";
 
 export const metadata: Metadata = {
-  title: "JPG Resizer — Resize Images to JPG Free, In-Browser, No Upload",
+  title: "JPG Resizer | Resize Images to JPG Free, In-Browser, No Upload",
   description:
     "Resize any image to custom pixel dimensions and export as JPG. Adjust quality with a slider. Aspect ratio lock included. Free, private, no upload required.",
   openGraph: {
@@ -43,8 +43,8 @@ export default function Page() {
             <h2 className="text-xl font-bold tracking-tight text-foreground mb-4">How to resize an image to JPG</h2>
             <ol className="space-y-3 list-none">
               {[
-                ["Upload your image", "Drop any image file — PNG, JPG, WebP, GIF, BMP, AVIF — onto the upload area. The tool reads the original dimensions and fills them in automatically."],
-                ["Set dimensions and quality", "Enter the width or height you need. With aspect ratio lock on, the other dimension updates automatically. Use the quality slider to control the output file size — 85% is a great balance for most photos."],
+                ["Upload your image", "Drop any image file | PNG, JPG, WebP, GIF, BMP, AVIF | onto the upload area. The tool reads the original dimensions and fills them in automatically."],
+                ["Set dimensions and quality", "Enter the width or height you need. With aspect ratio lock on, the other dimension updates automatically. Use the quality slider to control the output file size | 85% is a great balance for most photos."],
                 ["Download your JPG", "Click Resize & Save as JPG and download the result. JPG output is compact and compatible with every device and platform."],
               ].map(([step, detail], i) => (
                 <li key={i} className="flex gap-4">
@@ -61,7 +61,7 @@ export default function Page() {
           <section>
             <h2 className="text-xl font-bold tracking-tight text-foreground mb-3">Why resize images and export as JPG?</h2>
             <p>JPG is the most universally supported image format in the world. Every browser, operating system, app, and online service accepts JPG without plugins or special handling. Resizing and exporting as JPG is the standard workflow for photos that need to be shared, uploaded, or embedded in documents.</p>
-            <p className="mt-3">Serving oversized images wastes bandwidth. A 4000×3000px photo served at 800×600px sends 5× more data than necessary. Resizing to the display dimensions — and adjusting quality to match your needs — significantly reduces file size without visible quality loss.</p>
+            <p className="mt-3">Serving oversized images wastes bandwidth. A 4000×3000px photo served at 800×600px sends 5× more data than necessary. Resizing to the display dimensions | and adjusting quality to match your needs | significantly reduces file size without visible quality loss.</p>
           </section>
 
           <section>
@@ -69,7 +69,7 @@ export default function Page() {
             <p>The quality slider controls how aggressively the JPG compressor trades detail for file size. Here's a practical guide:</p>
             <div className="mt-3 space-y-3">
               {[
-                ["95–100%", "Near-lossless. For professional editing, printing, or source files. File sizes are large — close to PNG."],
+                ["95–100%", "Near-lossless. For professional editing, printing, or source files. File sizes are large | close to PNG."],
                 ["85–92%", "High quality. Visually indistinguishable from the original for most photos. The default for most workflows."],
                 ["75–84%", "Good quality. Noticeable in high-contrast areas at 100% zoom, but excellent for web use where images are scaled down."],
                 ["60–74%", "Acceptable for thumbnails or preview images where file size is critical. Artefacts become visible at this level."],
@@ -88,7 +88,7 @@ export default function Page() {
               {[
                 { q: "What image formats can I resize with this tool?", a: "Any format your browser can decode: PNG, JPG, WebP, GIF, BMP, AVIF, SVG. The output is always JPG." },
                 { q: "Does JPG support transparency?", a: "No. JPG doesn't support an alpha channel. Transparent areas in the source image are filled with white before export. Use the PNG Resizer if you need to preserve transparency." },
-                { q: "Can I resize without distorting the image?", a: "Yes — the aspect ratio lock (on by default) ensures proportions are maintained. Enter a new width and the height adjusts automatically. Disable the lock only if you need non-proportional dimensions." },
+                { q: "Can I resize without distorting the image?", a: "Yes | the aspect ratio lock (on by default) ensures proportions are maintained. Enter a new width and the height adjusts automatically. Disable the lock only if you need non-proportional dimensions." },
                 { q: "Will resizing a JPG to a smaller size hurt quality?", a: "Resizing down involves resampling, which always involves some interpolation. But at high quality settings (85%+), the result looks excellent. Avoid repeatedly resizing and re-saving the same JPG, as each cycle introduces additional artefacts." },
                 { q: "Are my images uploaded to a server?", a: "No. Resizing and JPG export happens entirely in your browser using the HTML5 Canvas API. No images leave your device." },
               ].map(({ q, a }) => (

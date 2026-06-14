@@ -138,7 +138,7 @@ export default function PdfPageNumbersClient() {
               <span>/</span>
               <span className="text-foreground font-medium">PDF Page Numbers</span>
               {thumbnails.length > 0 && (
-                <span className="text-muted-foreground">— {thumbnails.length} page{thumbnails.length !== 1 ? "s" : ""}</span>
+                <span className="text-muted-foreground">| {thumbnails.length} page{thumbnails.length !== 1 ? "s" : ""}</span>
               )}
             </div>
 

@@ -7,7 +7,7 @@ import { RandomColorClient } from "./client";
 import { OtherTools } from "@/components/converter/other-tools";
 
 export const metadata: Metadata = {
-  title: "Random Color Generator — Build Palettes Instantly, Free",
+  title: "Random Color Generator | Build Palettes Instantly, Free",
   description:
     "Generate random colors and lock the ones you like to build a palette. Copy HEX, RGB, or HSL values with one click. Shuffle as many times as you want.",
 };
@@ -48,7 +48,7 @@ export default function RandomColorGeneratorPage() {
               </div>
               <div>
                 <h3 className="text-[14px] font-semibold text-foreground">Can I change the number of swatches?</h3>
-                <p className="mt-1 text-[13px] leading-relaxed text-muted-foreground">Yes — use the + and − buttons to add or remove swatches from your palette.</p>
+                <p className="mt-1 text-[13px] leading-relaxed text-muted-foreground">Yes | use the + and − buttons to add or remove swatches from your palette.</p>
               </div>
             </div>
           </section>

@@ -210,7 +210,7 @@ export function PhotoAdjustmentsClient() {
       {file && imgUrl && state !== "done" && (
         <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 sm:items-start">
 
-          {/* Left — preview */}
+          {/* Left | preview */}
           <div className="overflow-hidden rounded-2xl bg-neutral-900 ring-1 ring-black/10 shadow-[0_4px_24px_-6px_rgba(0,0,0,0.22),0_1px_3px_rgba(0,0,0,0.10)]">
             <div className="relative flex items-center justify-center" style={{ height: 280, overflow: "hidden" }}>
               <div className="absolute inset-0" style={{ backgroundImage: "linear-gradient(45deg,#333 25%,transparent 25%),linear-gradient(-45deg,#333 25%,transparent 25%),linear-gradient(45deg,transparent 75%,#333 75%),linear-gradient(-45deg,transparent 75%,#333 75%)", backgroundSize: "16px 16px", backgroundPosition: "0 0,0 8px,8px -8px,-8px 0px" }} />
@@ -252,7 +252,7 @@ export function PhotoAdjustmentsClient() {
             </div>
           </div>
 
-          {/* Right — controls */}
+          {/* Right | controls */}
           <div className="space-y-3">
             {/* Presets */}
             <div className="rounded-2xl bg-white ring-1 ring-black/6 shadow-[0_1px_3px_rgba(0,0,0,0.06)] px-4 py-3.5 space-y-2">

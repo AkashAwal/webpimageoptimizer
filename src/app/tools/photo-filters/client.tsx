@@ -212,7 +212,7 @@ export function PhotoFiltersClient() {
                 className="h-1.5 w-full cursor-pointer accent-foreground"
               />
               <div className="flex justify-between text-[10px] text-muted-foreground/50">
-                <span>0% — original</span><span>100% — full effect</span>
+                <span>0% | original</span><span>100% | full effect</span>
               </div>
             </div>
           )}

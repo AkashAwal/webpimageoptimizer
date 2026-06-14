@@ -3,7 +3,7 @@ export const dynamic = "force-static";
 export function GET() {
   const body = `# Pix Garage
 
-> Free client-side image conversion and optimisation tools. Convert PNG, JPG, and HEIC to WebP, and resize images to any dimensions — all in the browser with no uploads and no server processing.
+> Free client-side image conversion and optimisation tools. Convert PNG, JPG, and HEIC to WebP, and resize images to any dimensions | all in the browser with no uploads and no server processing.
 
 Pix Garage runs entirely on the user's device using the HTML5 Canvas API and WebAssembly. No image data is ever transmitted to a server. Every tool is free, requires no account, and works in all modern browsers.
 

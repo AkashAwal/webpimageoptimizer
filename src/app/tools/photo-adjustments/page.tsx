@@ -7,7 +7,7 @@ import { OtherTools } from "@/components/converter/other-tools";
 import { PhotoAdjustmentsClient } from "./client";
 
 export const metadata: Metadata = {
-  title: "Photo Adjustments — Brightness, Contrast, Saturation & More",
+  title: "Photo Adjustments | Brightness, Contrast, Saturation & More",
   description:
     "Adjust brightness, contrast, saturation, hue, blur, and sharpness online with a live preview. One-click presets included. Free, in-browser, no upload.",
 };
@@ -27,7 +27,7 @@ export default function Page() {
             Photo Adjustments
           </h1>
           <p className="mt-3 text-[15px] leading-relaxed text-muted-foreground">
-            Fine-tune brightness, contrast, saturation, hue, blur, and sharpness with a live preview that updates as you drag each slider. Start from a quick preset or dial in your own values. All processing runs in your browser — no upload needed.
+            Fine-tune brightness, contrast, saturation, hue, blur, and sharpness with a live preview that updates as you drag each slider. Start from a quick preset or dial in your own values. All processing runs in your browser | no upload needed.
           </p>
         </div>
 
@@ -62,10 +62,10 @@ export default function Page() {
             <h2 className="text-xl font-bold tracking-tight text-foreground mb-3">What each adjustment does</h2>
             <dl className="space-y-3">
               {[
-                ["Brightness", "Scales overall lightness up or down. Positive values lighten the image; negative values darken it. Use sparingly — large changes wash out detail."],
+                ["Brightness", "Scales overall lightness up or down. Positive values lighten the image; negative values darken it. Use sparingly | large changes wash out detail."],
                 ["Contrast", "Spreads the tonal range between darks and lights. Higher contrast makes images feel more punchy; lower contrast produces a softer, faded look."],
                 ["Saturation", "Controls colour intensity. Set to 0 for a full grayscale effect; push above 100% for vivid, poppy colours. The sweet spot for most photos is +10% to +40%."],
-                ["Hue", "Rotates all colours around the colour wheel. Useful for creative colour grading — shifting towards warm oranges (-10°) or cool blues (+15°) without changing luminance."],
+                ["Hue", "Rotates all colours around the colour wheel. Useful for creative colour grading | shifting towards warm oranges (-10°) or cool blues (+15°) without changing luminance."],
                 ["Blur", "Applies a Gaussian blur. Useful for softening backgrounds or creating a dreamy aesthetic. Values above 3 px are clearly visible."],
                 ["Sharpness", "Runs a convolution sharpening kernel over the exported image. Best used at 20–40 for most photos; high values introduce halos around edges."],
               ].map(([term, def]) => (
@@ -81,7 +81,7 @@ export default function Page() {
             <h2 className="text-xl font-bold tracking-tight text-foreground mb-4">Frequently asked questions</h2>
             <div className="space-y-5">
               {[
-                { q: "Does the live preview match the downloaded result exactly?", a: "Yes for brightness, contrast, saturation, hue, and blur — all are applied via the same CSS filter string passed to the canvas context. Sharpness is a convolution applied only on export, so it will not appear in the live preview." },
+                { q: "Does the live preview match the downloaded result exactly?", a: "Yes for brightness, contrast, saturation, hue, and blur | all are applied via the same CSS filter string passed to the canvas context. Sharpness is a convolution applied only on export, so it will not appear in the live preview." },
                 { q: "Will adjustments reduce image quality?", a: "The image is decoded once and re-encoded once at 95% quality. Adjustments themselves do not introduce additional artefacts beyond this single re-compression pass." },
                 { q: "What formats are supported?", a: "JPEG, PNG, and WebP. The output format always matches the input format." },
                 { q: "Why is the Apply button disabled?", a: "It is disabled when all sliders are at their default values (no changes have been made). Move any slider away from its default to enable it." },

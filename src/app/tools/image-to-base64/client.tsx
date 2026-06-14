@@ -81,7 +81,7 @@ export function ImageToBase64Client() {
       decodeUrlRef.current = url;
       setDecodeUrl(url);
     } catch {
-      setDecodeError("Could not decode — make sure you pasted a valid Base64 string or data URI.");
+      setDecodeError("Could not decode | make sure you pasted a valid Base64 string or data URI.");
     }
   }, [decodeInput]);
 

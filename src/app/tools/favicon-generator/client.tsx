@@ -24,7 +24,7 @@ async function resizeToCanvas(img: HTMLImageElement, size: number): Promise<HTML
   const natW = img.naturalWidth || img.width;
   const natH = img.naturalHeight || img.height;
 
-  // Step down by halves so each pass loses at most half the pixels —
+  // Step down by halves so each pass loses at most half the pixels |
   // single large→tiny draws produce heavy blur/mixing artefacts.
   let w = natW;
   let h = natH;

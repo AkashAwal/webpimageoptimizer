@@ -90,7 +90,7 @@ export function BatchQrGeneratorClient() {
       <div className="rounded-2xl bg-white ring-1 ring-black/6 shadow-[0_4px_24px_-6px_rgba(0,0,0,0.10),0_1px_3px_rgba(0,0,0,0.06)] p-5 space-y-4 dark:bg-white dark:ring-black/8">
         <div className="space-y-1.5">
           <div className="flex items-center justify-between">
-            <label className={labelCls}>URLs / Text — one per line</label>
+            <label className={labelCls}>URLs / Text | one per line</label>
             <span className="text-[11px] tabular-nums text-muted-foreground">{lines.length} item{lines.length !== 1 ? "s" : ""}</span>
           </div>
           <textarea
@@ -183,7 +183,7 @@ export function BatchQrGeneratorClient() {
           className="w-full h-10 text-[13px]"
         >
           {state === "generating" ? (
-            <><CircleNotch size={14} className="animate-spin" />Generating {progress}/{total} — Cancel</>
+            <><CircleNotch size={14} className="animate-spin" />Generating {progress}/{total} | Cancel</>
           ) : (
             <><DownloadSimple size={14} />Generate & Download ZIP ({lines.length})</>
           )}

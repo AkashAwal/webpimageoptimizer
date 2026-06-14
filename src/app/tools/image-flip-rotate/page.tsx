@@ -7,7 +7,7 @@ import { OtherTools } from "@/components/converter/other-tools";
 import { ImageFlipRotateClient } from "./client";
 
 export const metadata: Metadata = {
-  title: "Flip & Rotate Image — Free, In-Browser, No Upload",
+  title: "Flip & Rotate Image | Free, In-Browser, No Upload",
   description:
     "Flip images horizontally or vertically and rotate by 90°, 180°, or 270°. Live preview with smooth animations. Free, private, no upload required.",
 };
@@ -27,7 +27,7 @@ export default function Page() {
             Flip &amp; Rotate Image
           </h1>
           <p className="mt-3 text-[15px] leading-relaxed text-muted-foreground">
-            Flip any image horizontally or vertically, and rotate by 90°, 180°, or 270°. A live preview updates instantly as you make changes. Everything runs in your browser — no upload, no server.
+            Flip any image horizontally or vertically, and rotate by 90°, 180°, or 270°. A live preview updates instantly as you make changes. Everything runs in your browser | no upload, no server.
           </p>
         </div>
 
@@ -66,7 +66,7 @@ export default function Page() {
 
           <section>
             <h2 className="text-xl font-bold tracking-tight text-foreground mb-3">How the transform is applied</h2>
-            <p>Rotations and flips are computed using the HTML5 Canvas API. The canvas is sized to the correct output dimensions — rotating a 1200×800 image by 90° produces an 800×1200 canvas. A single matrix transform (translate, rotate, scale) is applied before drawing, so there is no loss from multiple encode/decode cycles. The result is exported at 95% quality to preserve visual fidelity.</p>
+            <p>Rotations and flips are computed using the HTML5 Canvas API. The canvas is sized to the correct output dimensions | rotating a 1200×800 image by 90° produces an 800×1200 canvas. A single matrix transform (translate, rotate, scale) is applied before drawing, so there is no loss from multiple encode/decode cycles. The result is exported at 95% quality to preserve visual fidelity.</p>
           </section>
 
           <section>
@@ -74,10 +74,10 @@ export default function Page() {
             <div className="space-y-5">
               {[
                 { q: "Does rotating or flipping reduce image quality?", a: "Minimally. The image is decoded from its original file and re-encoded once at 95% quality. For JPEG images this introduces a very small amount of re-compression artefacts, but at 95% quality the difference is imperceptible. PNG and WebP outputs are lossless at that quality setting." },
-                { q: "What formats are supported?", a: "JPEG, PNG, and WebP. The output format matches the input — a JPEG in gives a JPEG out. If you need a different output format, use one of the WebP converter tools." },
+                { q: "What formats are supported?", a: "JPEG, PNG, and WebP. The output format matches the input | a JPEG in gives a JPEG out. If you need a different output format, use one of the WebP converter tools." },
                 { q: "Can I combine a rotation and a flip in one step?", a: "Yes. Apply any combination of rotations and flips before clicking Apply & Download. All transforms are combined into a single canvas pass." },
                 { q: "Is there a file size limit?", a: "No hard limit. Very large images (20+ megapixels) may take a couple of seconds to process as the Canvas API works through the pixel data." },
-                { q: "Why is the Apply button disabled?", a: "The button is disabled when no transform has been applied — if the image is at 0° rotation with no flips active, there is nothing to process. Apply a rotation or flip to enable it." },
+                { q: "Why is the Apply button disabled?", a: "The button is disabled when no transform has been applied | if the image is at 0° rotation with no flips active, there is nothing to process. Apply a rotation or flip to enable it." },
               ].map(({ q, a }) => (
                 <div key={q}>
                   <h3 className="font-semibold text-foreground">{q}</h3>

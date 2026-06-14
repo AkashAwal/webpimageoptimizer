@@ -143,7 +143,7 @@ export default function OcrPdfClient() {
                     style={{ width: `${progressTotal > 0 ? (progressPage / progressTotal) * 100 : 0}%` }}
                   />
                 </div>
-                <p className="text-[11px] text-muted-foreground/60">OCR runs locally — large PDFs may take a few minutes.</p>
+                <p className="text-[11px] text-muted-foreground/60">OCR runs locally | large PDFs may take a few minutes.</p>
               </div>
             )}
             {processing && progressTotal === 0 && (

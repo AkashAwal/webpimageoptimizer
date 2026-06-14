@@ -7,7 +7,7 @@ import { OtherTools } from "@/components/converter/other-tools";
 import { FaviconGeneratorClient } from "./client";
 
 export const metadata: Metadata = {
-  title: "Favicon Generator — Free, In-Browser, No Upload",
+  title: "Favicon Generator | Free, In-Browser, No Upload",
   description:
     "Upload any image and download a complete favicon set: ICO, 16×16, 32×32, 48×48, 64×64, 128×128, 256×256 PNG, and 180×180 Apple touch icon. Free, no upload.",
   openGraph: {
@@ -34,7 +34,7 @@ export default function Page() {
             Favicon Generator
           </h1>
           <p className="mt-3 text-[15px] leading-relaxed text-muted-foreground">
-            Upload your logo or image and download a complete favicon set — ICO, all PNG sizes, and an Apple touch icon — packed into a single ZIP. Free, instant, nothing uploaded.
+            Upload your logo or image and download a complete favicon set | ICO, all PNG sizes, and an Apple touch icon | packed into a single ZIP. Free, instant, nothing uploaded.
           </p>
         </div>
 
@@ -50,7 +50,7 @@ export default function Page() {
             <h2 className="text-xl font-bold tracking-tight text-foreground mb-4">How to generate a favicon</h2>
             <ol className="space-y-3 list-none">
               {[
-                ["Upload your logo or icon", "Drop a PNG, SVG, or JPEG file onto the tool. For best results, use a square image with a transparent background — PNG or SVG is ideal."],
+                ["Upload your logo or icon", "Drop a PNG, SVG, or JPEG file onto the tool. For best results, use a square image with a transparent background | PNG or SVG is ideal."],
                 ["Preview the output files", "The tool shows exactly which files will be generated: PNG at every standard size, a multi-resolution favicon.ico, and a 180×180 Apple touch icon."],
                 ["Download the ZIP", "Click Generate Favicon Set. All files are bundled into a single ZIP that you can unpack directly into your project's public folder."],
               ].map(([step, detail], i) => (
@@ -71,7 +71,7 @@ export default function Page() {
             <ul className="mt-3 space-y-2 list-none">
               {[
                 ["favicon.ico", "A multi-resolution ICO file containing 16×16, 32×32, and 48×48 frames. Required for legacy browser support and pinned tabs."],
-                ["favicon-16x16.png", "The smallest favicon — shown in browser tabs on most systems."],
+                ["favicon-16x16.png", "The smallest favicon | shown in browser tabs on most systems."],
                 ["favicon-32x32.png", "Standard resolution for desktop tabs and taskbar shortcuts."],
                 ["favicon-48x48.png", "Used by Windows site shortcuts and some browsers."],
                 ["favicon-64x64.png", "Used by some operating systems and bookmark managers."],
@@ -103,7 +103,7 @@ export default function Page() {
             <h2 className="text-xl font-bold tracking-tight text-foreground mb-4">Frequently asked questions</h2>
             <div className="space-y-5">
               {[
-                { q: "What is the best image to use as a source?", a: "A square PNG with a transparent background gives the cleanest results at small sizes. SVG is even better if you have it — it scales to any resolution without pixelation. Avoid images with lots of fine detail; it won't survive being scaled to 16×16." },
+                { q: "What is the best image to use as a source?", a: "A square PNG with a transparent background gives the cleanest results at small sizes. SVG is even better if you have it | it scales to any resolution without pixelation. Avoid images with lots of fine detail; it won't survive being scaled to 16×16." },
                 { q: "What is a favicon.ico and do I still need it?", a: "ICO is the original favicon format. Modern browsers support PNG favicons, but favicon.ico is still needed for legacy browsers, some RSS readers, and URL bar address-bar bookmarks. This tool includes it automatically." },
                 { q: "Is my image uploaded anywhere?", a: "No. Everything runs in your browser using the Canvas API. Your image is never sent to a server." },
                 { q: "Do I need all the sizes?", a: "For a basic setup, favicon.ico, favicon-32x32.png, and apple-touch-icon.png cover most cases. The larger sizes (128, 256) are for PWAs, Windows shortcuts, and edge cases. It doesn't hurt to include them all." },

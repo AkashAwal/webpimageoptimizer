@@ -5,7 +5,7 @@ import ConverterShell from "@/components/converter/converter-shell";
 import { OtherTools } from "@/components/converter/other-tools";
 
 export const metadata: Metadata = {
-  title: "WebP to PDF Converter — Free, In-Browser, No Upload",
+  title: "WebP to PDF Converter | Free, In-Browser, No Upload",
   description:
     "Convert WebP images to PDF instantly in your browser. No upload, no signup. Great for sharing, printing, or archiving modern web images as documents.",
   openGraph: {
@@ -31,7 +31,7 @@ export default function Page() {
             <h2 className="text-xl font-bold tracking-tight text-foreground mb-4">How to convert WebP to PDF</h2>
             <ol className="space-y-3 list-none">
               {[
-                ["Drop or select your WebP files", "Click the upload area or drag your .webp files onto it. Multiple files are supported — each becomes its own PDF page."],
+                ["Drop or select your WebP files", "Click the upload area or drag your .webp files onto it. Multiple files are supported | each becomes its own PDF page."],
                 ["Adjust quality", "The quality slider controls how the WebP is re-encoded into the PDF. 85% is a good default; increase it for images that contain fine text or sharp edges."],
                 ["Download your PDF", "Click Convert to PDF and download the output. The page dimensions match your original WebP image."],
               ].map(([step, detail], i) => (
@@ -53,9 +53,9 @@ export default function Page() {
           </section>
 
           <section>
-            <h2 className="text-xl font-bold tracking-tight text-foreground mb-3">WebP vs PDF — format comparison</h2>
+            <h2 className="text-xl font-bold tracking-tight text-foreground mb-3">WebP vs PDF | format comparison</h2>
             <p>WebP is a compressed image format optimised for fast loading on the web. PDF is a document format designed for faithful reproduction across devices and print media. They serve different purposes: use WebP on your website, use PDF when the image needs to live in a document.</p>
-            <p className="mt-3">This converter decodes your WebP in the browser, renders it on a canvas, and wraps it in a PDF container — all without any server involvement.</p>
+            <p className="mt-3">This converter decodes your WebP in the browser, renders it on a canvas, and wraps it in a PDF container | all without any server involvement.</p>
           </section>
 
           <section>
@@ -64,7 +64,7 @@ export default function Page() {
               {[
                 { q: "Is this WebP to PDF converter free?", a: "Yes. There are no limits, fees, or account requirements. It runs entirely in your browser." },
                 { q: "Are my files uploaded to a server?", a: "No. Conversion happens locally using the HTML5 Canvas API. Your files never leave your device." },
-                { q: "Will the PDF look the same as the WebP image?", a: "Yes — the image is rendered at its original dimensions and embedded directly into the PDF page. No cropping or scaling occurs unless you set custom dimensions." },
+                { q: "Will the PDF look the same as the WebP image?", a: "Yes | the image is rendered at its original dimensions and embedded directly into the PDF page. No cropping or scaling occurs unless you set custom dimensions." },
                 { q: "Can I convert multiple WebP files at once?", a: "Yes. Drag in as many WebP files as you need. Each produces a separate PDF." },
                 { q: "Does the converter support animated WebP?", a: "The converter captures the first frame of animated WebP files, since PDFs are static documents." },
               ].map(({ q, a }) => (

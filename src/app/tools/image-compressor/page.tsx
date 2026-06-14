@@ -7,7 +7,7 @@ import { OtherTools } from "@/components/converter/other-tools";
 import { ImageCompressorClient } from "./client";
 
 export const metadata: Metadata = {
-  title: "Image Compressor — Free, In-Browser, No Upload",
+  title: "Image Compressor | Free, In-Browser, No Upload",
   description:
     "Compress JPEG, PNG, and WebP images online. Adjust quality with a slider and see exact file size savings before downloading. Free, private, no upload.",
   openGraph: {
@@ -34,7 +34,7 @@ export default function Page() {
             Image Compressor
           </h1>
           <p className="mt-3 text-[15px] leading-relaxed text-muted-foreground">
-            Reduce the file size of JPEG, PNG, and WebP images with a quality slider. All processing is done in your browser — nothing is uploaded.
+            Reduce the file size of JPEG, PNG, and WebP images with a quality slider. All processing is done in your browser | nothing is uploaded.
           </p>
         </div>
 
@@ -67,13 +67,13 @@ export default function Page() {
 
           <section>
             <h2 className="text-xl font-bold tracking-tight text-foreground mb-3">Why compress images?</h2>
-            <p>Large images are one of the most common causes of slow web pages. A 4 MB photo embedded in a blog post adds seconds to load time on mobile connections. Compressing to under 200 KB — while keeping the image visually sharp — directly improves page speed and Core Web Vitals scores.</p>
+            <p>Large images are one of the most common causes of slow web pages. A 4 MB photo embedded in a blog post adds seconds to load time on mobile connections. Compressing to under 200 KB | while keeping the image visually sharp | directly improves page speed and Core Web Vitals scores.</p>
             <p className="mt-3">For social media, compressed images also upload and load faster for your audience. For storage and email, smaller files mean less space used and quicker attachments. A quality setting of 75–85% is nearly indistinguishable from the original to the human eye, yet can reduce file size by 50–80%.</p>
           </section>
 
           <section>
             <h2 className="text-xl font-bold tracking-tight text-foreground mb-3">JPEG vs PNG vs WebP compression</h2>
-            <p><strong className="text-foreground font-semibold">JPEG</strong> uses lossy compression and responds well to the quality slider — dropping from 100% to 80% often cuts file size by more than half with no visible difference in most photos.</p>
+            <p><strong className="text-foreground font-semibold">JPEG</strong> uses lossy compression and responds well to the quality slider | dropping from 100% to 80% often cuts file size by more than half with no visible difference in most photos.</p>
             <p className="mt-3"><strong className="text-foreground font-semibold">PNG</strong> is a lossless format by design, but the browser&apos;s Canvas API still applies compression when exporting. The slider controls a re-encoding pass that can meaningfully reduce size, especially for screenshots and graphics.</p>
             <p className="mt-3"><strong className="text-foreground font-semibold">WebP</strong> is inherently more efficient than both. Even at 80% quality, WebP often beats JPEG at 95%. If ultimate file size matters, consider converting to WebP using the tools below.</p>
           </section>
@@ -82,11 +82,11 @@ export default function Page() {
             <h2 className="text-xl font-bold tracking-tight text-foreground mb-4">Frequently asked questions</h2>
             <div className="space-y-5">
               {[
-                { q: "Does image compression reduce quality?", a: "At settings above 70%, most people cannot see any difference in photos. Sharp-edged images like logos and screenshots are more sensitive — keep them above 85% to avoid visible artefacts." },
+                { q: "Does image compression reduce quality?", a: "At settings above 70%, most people cannot see any difference in photos. Sharp-edged images like logos and screenshots are more sensitive | keep them above 85% to avoid visible artefacts." },
                 { q: "Are my images uploaded to a server?", a: "No. The entire compression happens inside your browser using the HTML5 Canvas API. Your files never leave your device." },
-                { q: "What image formats are supported?", a: "JPEG, PNG, and WebP. The output format matches the input — a JPEG stays a JPEG. If you want to convert formats, use the WebP conversion tools in the sidebar." },
+                { q: "What image formats are supported?", a: "JPEG, PNG, and WebP. The output format matches the input | a JPEG stays a JPEG. If you want to convert formats, use the WebP conversion tools in the sidebar." },
                 { q: "What quality setting should I use?", a: "For photos: 75–85%. For UI screenshots and graphics: 85–92%. For icons and logos with sharp edges: 90%+. The savings shown after compression help you judge the trade-off." },
-                { q: "Is there a file size limit?", a: "No hard limit — the browser processes whatever you upload. Very large images (20+ MP) may take a few seconds to compress." },
+                { q: "Is there a file size limit?", a: "No hard limit | the browser processes whatever you upload. Very large images (20+ MP) may take a few seconds to compress." },
               ].map(({ q, a }) => (
                 <div key={q}>
                   <h3 className="font-semibold text-foreground">{q}</h3>

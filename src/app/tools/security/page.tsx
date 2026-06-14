@@ -5,7 +5,7 @@ import { SiteHeader } from "@/components/layout/site-header";
 import { SiteFooter } from "@/components/layout/site-footer";
 
 export const metadata: Metadata = {
-  title: "Security & Privacy — Pix Garage",
+  title: "Security & Privacy | Pix Garage",
   description:
     "Pix Garage processes all images entirely in your browser. No files are uploaded, no data is stored, and no account is required. Here's exactly how it works.",
 };
@@ -29,7 +29,7 @@ export default function Page() {
             Security &amp; Privacy
           </h1>
           <p className="mt-3 text-[15px] leading-relaxed text-muted-foreground">
-            Your files never leave your device. Every tool on Pix Garage runs entirely in your browser — no uploads, no servers, no accounts.
+            Your files never leave your device. Every tool on Pix Garage runs entirely in your browser | no uploads, no servers, no accounts.
           </p>
         </div>
 
@@ -41,12 +41,12 @@ export default function Page() {
               <h2 className="text-xl font-bold tracking-tight text-foreground">How your files are processed</h2>
             </div>
             <p>
-              When you drop a file into any Pix Garage tool, it is read directly from your device's memory by the browser's File API. The file is never transmitted over the network — not to our servers, not to any third party.
+              When you drop a file into any Pix Garage tool, it is read directly from your device's memory by the browser's File API. The file is never transmitted over the network | not to our servers, not to any third party.
             </p>
             <ol className="mt-4 space-y-3 list-none">
               {[
                 ["File is read locally", "Your browser's File API loads the file into memory. At no point does this create a network request."],
-                ["Browser APIs do the conversion", "Depending on the tool, your image is processed by the HTML5 Canvas API, the PDF.js library, or a WebAssembly module — all running inside the browser's sandboxed environment on your device."],
+                ["Browser APIs do the conversion", "Depending on the tool, your image is processed by the HTML5 Canvas API, the PDF.js library, or a WebAssembly module | all running inside the browser's sandboxed environment on your device."],
                 ["Output is downloaded directly", "The converted file is generated as a local Blob URL. Your browser prompts a download. Nothing is stored on disk, in a database, or in the cloud."],
               ].map(([title, detail], i) => (
                 <li key={i} className="flex gap-3">
@@ -54,7 +54,7 @@ export default function Page() {
                     {i + 1}
                   </span>
                   <div>
-                    <span className="font-medium text-foreground">{title} — </span>
+                    <span className="font-medium text-foreground">{title} | </span>
                     <span>{detail}</span>
                   </div>
                 </li>
@@ -69,10 +69,10 @@ export default function Page() {
             </p>
             <ul className="space-y-2 list-none">
               {[
-                "No image data — your files are never uploaded to any server.",
-                "No account required — there is no sign-in, no email, no profile.",
-                "No cookies for tracking — we do not use advertising cookies or cross-site tracking.",
-                "Basic analytics — we use privacy-respecting, aggregate page view counts to understand which tools are used. No personal data is tied to these counts.",
+                "No image data | your files are never uploaded to any server.",
+                "No account required | there is no sign-in, no email, no profile.",
+                "No cookies for tracking | we do not use advertising cookies or cross-site tracking.",
+                "Basic analytics | we use privacy-respecting, aggregate page view counts to understand which tools are used. No personal data is tied to these counts.",
               ].map((item) => (
                 <li key={item} className="flex items-start gap-2.5">
                   <Check size={14} className="mt-0.5 shrink-0 text-emerald-500" weight="bold" />
@@ -90,13 +90,13 @@ export default function Page() {
             <ul className="mt-3 space-y-2 list-none">
               {[
                 ["HTML5 Canvas API", "Used for PNG, JPG, GIF, BMP, TIFF, SVG, ICO, and WebP conversions."],
-                ["WebAssembly (Wasm)", "Used for HEIC/HEIF decoding — Apple's proprietary format requires a Wasm decoder since browsers don't natively support it."],
-                ["PDF.js / pdf-lib", "Used for PDF reading, manipulation, and generation — both are open-source libraries that run entirely in the browser."],
+                ["WebAssembly (Wasm)", "Used for HEIC/HEIF decoding | Apple's proprietary format requires a Wasm decoder since browsers don't natively support it."],
+                ["PDF.js / pdf-lib", "Used for PDF reading, manipulation, and generation | both are open-source libraries that run entirely in the browser."],
               ].map(([tech, desc]) => (
                 <li key={tech as string} className="flex gap-2.5">
                   <Check size={14} className="mt-0.5 shrink-0 text-emerald-500" weight="bold" />
                   <div>
-                    <span className="font-medium text-foreground">{tech} — </span>
+                    <span className="font-medium text-foreground">{tech} | </span>
                     <span>{desc}</span>
                   </div>
                 </li>

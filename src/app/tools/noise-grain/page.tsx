@@ -7,7 +7,7 @@ import { NoiseGrainClient } from "./client";
 import { OtherTools } from "@/components/converter/other-tools";
 
 export const metadata: Metadata = {
-  title: "Add Noise & Film Grain to Image — Free, In-Browser, No Upload",
+  title: "Add Noise & Film Grain to Image | Free, In-Browser, No Upload",
   description:
     "Add film grain, luminance noise, or color noise to any image with adjustable intensity and live preview. Three grain types, works entirely in your browser.",
 };
@@ -47,9 +47,9 @@ export default function NoiseGrainPage() {
           <section>
             <h2 className="text-[17px] font-semibold tracking-tight text-foreground">Grain types</h2>
             <ul className="mt-3 space-y-2 text-[13px] leading-relaxed text-muted-foreground list-disc list-inside">
-              <li><strong className="text-foreground">Film Grain</strong> — brightness-only noise that mimics analog film. The most natural-looking option.</li>
-              <li><strong className="text-foreground">Luminance</strong> — monochromatic noise applied evenly to brightness. Slightly harsher than film grain.</li>
-              <li><strong className="text-foreground">Color</strong> — per-channel RGB noise adds a chromatic grain similar to high-ISO digital noise.</li>
+              <li><strong className="text-foreground">Film Grain</strong> | brightness-only noise that mimics analog film. The most natural-looking option.</li>
+              <li><strong className="text-foreground">Luminance</strong> | monochromatic noise applied evenly to brightness. Slightly harsher than film grain.</li>
+              <li><strong className="text-foreground">Color</strong> | per-channel RGB noise adds a chromatic grain similar to high-ISO digital noise.</li>
             </ul>
           </section>
 
@@ -72,11 +72,11 @@ export default function NoiseGrainPage() {
               </div>
               <div>
                 <h3 className="text-[14px] font-semibold text-foreground">Does this work on large images?</h3>
-                <p className="mt-1 text-[13px] leading-relaxed text-muted-foreground">Yes — the Canvas API handles large images, though processing time increases with file size. All computation happens locally in your browser.</p>
+                <p className="mt-1 text-[13px] leading-relaxed text-muted-foreground">Yes | the Canvas API handles large images, though processing time increases with file size. All computation happens locally in your browser.</p>
               </div>
               <div>
                 <h3 className="text-[14px] font-semibold text-foreground">What format is exported?</h3>
-                <p className="mt-1 text-[13px] leading-relaxed text-muted-foreground">The output matches your input format — JPEG images export as JPEG, PNG as PNG, and so on.</p>
+                <p className="mt-1 text-[13px] leading-relaxed text-muted-foreground">The output matches your input format | JPEG images export as JPEG, PNG as PNG, and so on.</p>
               </div>
             </div>
           </section>

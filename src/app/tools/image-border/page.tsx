@@ -7,7 +7,7 @@ import { OtherTools } from "@/components/converter/other-tools";
 import { ImageBorderClient } from "./client";
 
 export const metadata: Metadata = {
-  title: "Add Border to Image — Solid, Gradient & Blur Frame, Free",
+  title: "Add Border to Image | Solid, Gradient & Blur Frame, Free",
   description:
     "Add a solid color, gradient, or blurred photo-style border to any image. Choose width and colors, preview live, and download as PNG. Free, in-browser, no upload.",
 };
@@ -27,7 +27,7 @@ export default function Page() {
             Add Border to Image
           </h1>
           <p className="mt-3 text-[15px] leading-relaxed text-muted-foreground">
-            Frame any image with a solid colour, a two-colour gradient, or a blurred photo-style border. Adjust the border width and colours with a live preview. Download as PNG. Everything runs in your browser — no upload required.
+            Frame any image with a solid colour, a two-colour gradient, or a blurred photo-style border. Adjust the border width and colours with a live preview. Download as PNG. Everything runs in your browser | no upload required.
           </p>
         </div>
 
@@ -45,7 +45,7 @@ export default function Page() {
               {[
                 ["Upload your image", "Drop any JPEG, PNG, or WebP file onto the upload area, or click to browse. A live preview appears immediately."],
                 ["Set the border width", "Drag the width slider from 2px to 120px. The preview updates in real time so you can judge the proportions before exporting."],
-                ["Choose a style", "Solid fills the border with a single colour. Gradient blends two colours in one of four directions. Blur extends the image itself, blurred and darkened, as the border — ideal for photos."],
+                ["Choose a style", "Solid fills the border with a single colour. Gradient blends two colours in one of four directions. Blur extends the image itself, blurred and darkened, as the border | ideal for photos."],
                 ["Download", "Click Add Border to export a PNG with the border baked in. The output canvas is the original image size plus the border width on all four sides."],
               ].map(([step, detail], i) => (
                 <li key={i} className="flex gap-4">
@@ -61,7 +61,7 @@ export default function Page() {
 
           <section>
             <h2 className="text-xl font-bold tracking-tight text-foreground mb-3">Choosing the right border style</h2>
-            <p><strong className="text-foreground font-semibold">Solid</strong> is the classic choice — a clean, uniform colour frame. White is the most common for prints and presentations; black for editorial or high-contrast looks. Any custom colour works.</p>
+            <p><strong className="text-foreground font-semibold">Solid</strong> is the classic choice | a clean, uniform colour frame. White is the most common for prints and presentations; black for editorial or high-contrast looks. Any custom colour works.</p>
             <p className="mt-3"><strong className="text-foreground font-semibold">Gradient</strong> transitions smoothly between two colours. This works well for social media headers, event flyers, and branded content where the border reinforces a colour palette. Choose a complementary colour pair and the diagonal direction for the most dynamic result.</p>
             <p className="mt-3"><strong className="text-foreground font-semibold">Blur</strong> extends the image outward, then blurs and darkens it to create a soft halo effect. This style is popular on Instagram and YouTube thumbnails where photos have backgrounds that clash with the platform&rsquo;s white or black background. The result feels cohesive because the border colours come from the image itself.</p>
           </section>
@@ -72,7 +72,7 @@ export default function Page() {
               {[
                 { q: "How is the output size calculated?", a: "The output canvas is the original image width + 2×border width, and the original image height + 2×border height. A 1000×800px image with a 40px border becomes 1080×880px." },
                 { q: "Why is the output always PNG?", a: "PNG is the only common web format that supports full-colour lossless encoding with any background colour. If you need a JPEG, open the exported PNG in another tool and save as JPEG." },
-                { q: "Does the blur border look different on the preview vs. the export?", a: "The preview is approximate — it uses CSS filter and overflow:hidden which behaves differently from the Canvas API blur. The exported PNG uses a precise canvas blur. Both look similar for most images, but the export is the authoritative result." },
+                { q: "Does the blur border look different on the preview vs. the export?", a: "The preview is approximate | it uses CSS filter and overflow:hidden which behaves differently from the Canvas API blur. The exported PNG uses a precise canvas blur. Both look similar for most images, but the export is the authoritative result." },
                 { q: "Can I combine a border with rounded corners?", a: "Yes. Add the border here first, then take the result and apply rounded corners in the Rounded Corners tool. The corner clip will follow the outer edge of the bordered image." },
                 { q: "Is there a maximum border width?", a: "The slider goes up to 120px. For very large borders, consider reducing the border width and upscaling the image first using the Image Resizer tool to maintain proportions." },
               ].map(({ q, a }) => (

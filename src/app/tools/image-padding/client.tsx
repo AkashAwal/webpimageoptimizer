@@ -247,7 +247,7 @@ export function ImagePaddingClient() {
               <div className="flex size-6 items-center justify-center rounded-full bg-emerald-100 text-emerald-600">
                 <Check size={11} weight="bold" />
               </div>
-              <span className="text-[13px] font-medium text-foreground">Padding applied — {outW} × {outH}px</span>
+              <span className="text-[13px] font-medium text-foreground">Padding applied | {outW} × {outH}px</span>
             </div>
             <div className="flex gap-2">
               <SoftPillButton variant="primary" onClick={handleDownload} className="flex-1 h-9 text-[13px]">Download</SoftPillButton>

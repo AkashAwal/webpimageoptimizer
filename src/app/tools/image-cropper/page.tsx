@@ -7,9 +7,9 @@ import { OtherTools } from "@/components/converter/other-tools";
 import { ImageCropperClient } from "./client";
 
 export const metadata: Metadata = {
-  title: "Image Cropper — Free, In-Browser, No Upload",
+  title: "Image Cropper | Free, In-Browser, No Upload",
   description:
-    "Crop images online to a custom area or preset ratio — 1:1, 16:9, 4:3, 3:2, and more. Drag crop handles directly on the image. Free, private, no upload.",
+    "Crop images online to a custom area or preset ratio | 1:1, 16:9, 4:3, 3:2, and more. Drag crop handles directly on the image. Free, private, no upload.",
   openGraph: {
     images: [{ url: "/og/image-cropper.png", width: 1200, height: 630 }],
   },
@@ -34,7 +34,7 @@ export default function Page() {
             Image Cropper
           </h1>
           <p className="mt-3 text-[15px] leading-relaxed text-muted-foreground">
-            Crop any image to a custom area or a preset aspect ratio. Drag the crop handles directly on the image and export as PNG — no upload required.
+            Crop any image to a custom area or a preset aspect ratio. Drag the crop handles directly on the image and export as PNG | no upload required.
           </p>
         </div>
 
@@ -68,18 +68,18 @@ export default function Page() {
 
           <section>
             <h2 className="text-xl font-bold tracking-tight text-foreground mb-3">When to use each aspect ratio</h2>
-            <p><strong className="text-foreground font-semibold">1:1 (square)</strong> — profile photos, Instagram posts, app icons. Any social profile photo should be square to avoid platform-side cropping.</p>
-            <p className="mt-3"><strong className="text-foreground font-semibold">16:9</strong> — YouTube thumbnails, Twitter/X header images, blog hero images, and any widescreen content. The standard for video and web banners.</p>
-            <p className="mt-3"><strong className="text-foreground font-semibold">4:3</strong> — classic photo proportions for cameras and presentations. Widely used in PowerPoint and Google Slides.</p>
-            <p className="mt-3"><strong className="text-foreground font-semibold">3:2</strong> — standard DSLR frame ratio. Good for print photos and wall art.</p>
-            <p className="mt-3"><strong className="text-foreground font-semibold">9:16 / 2:3</strong> — Instagram Stories, TikTok, YouTube Shorts, and any vertical mobile content.</p>
+            <p><strong className="text-foreground font-semibold">1:1 (square)</strong> | profile photos, Instagram posts, app icons. Any social profile photo should be square to avoid platform-side cropping.</p>
+            <p className="mt-3"><strong className="text-foreground font-semibold">16:9</strong> | YouTube thumbnails, Twitter/X header images, blog hero images, and any widescreen content. The standard for video and web banners.</p>
+            <p className="mt-3"><strong className="text-foreground font-semibold">4:3</strong> | classic photo proportions for cameras and presentations. Widely used in PowerPoint and Google Slides.</p>
+            <p className="mt-3"><strong className="text-foreground font-semibold">3:2</strong> | standard DSLR frame ratio. Good for print photos and wall art.</p>
+            <p className="mt-3"><strong className="text-foreground font-semibold">9:16 / 2:3</strong> | Instagram Stories, TikTok, YouTube Shorts, and any vertical mobile content.</p>
           </section>
 
           <section>
             <h2 className="text-xl font-bold tracking-tight text-foreground mb-4">Frequently asked questions</h2>
             <div className="space-y-5">
               {[
-                { q: "Does cropping reduce image quality?", a: "No. The cropped region is drawn directly from the original file — no re-compression is applied. The output PNG is lossless." },
+                { q: "Does cropping reduce image quality?", a: "No. The cropped region is drawn directly from the original file | no re-compression is applied. The output PNG is lossless." },
                 { q: "What formats can I crop?", a: "Any format your browser supports: JPEG, PNG, WebP, GIF, BMP, AVIF, HEIC (in Chrome/Firefox). The output is always PNG." },
                 { q: "Can I crop to exact pixel dimensions?", a: "Drag the handles to position the box, and the pixel count is shown live. For pixel-perfect sizes, set a ratio and scale the source image first using the WebP Resizer." },
                 { q: "Are my images uploaded anywhere?", a: "No. The entire crop operation runs in your browser using the HTML5 Canvas API. Your image never leaves your device." },

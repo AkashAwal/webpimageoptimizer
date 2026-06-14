@@ -6,7 +6,7 @@ import { SiteFooter } from "@/components/layout/site-footer";
 import { TOOLS } from "@/lib/tools";
 
 export const metadata: Metadata = {
-  title: "Contact — Pix Garage",
+  title: "Contact | Pix Garage",
   description:
     "Get in touch with Pix Garage. Report a bug, request a new image tool, or ask a question.",
 };
@@ -70,7 +70,7 @@ export default function Page() {
             <div className="space-y-3">
               {[
                 ["Bug report", "If a conversion fails, a file format isn't accepted, or something looks broken, let us know which tool, browser, and file type you were using."],
-                ["Tool request", "We plan to add more image tools over time. If there's a conversion or optimisation you'd find useful, suggest it — PNG to AVIF, GIF to WebP, SVG optimisation, image compression, and more are on our radar."],
+                ["Tool request", "We plan to add more image tools over time. If there's a conversion or optimisation you'd find useful, suggest it | PNG to AVIF, GIF to WebP, SVG optimisation, image compression, and more are on our radar."],
                 ["Question about privacy", "If you have a specific question about how your data is handled, we're happy to explain in more detail. The short answer: nothing leaves your browser."],
                 ["Partnership or press", "For business inquiries or press questions, email us with details about your organisation."],
               ].map(([title, detail]) => (

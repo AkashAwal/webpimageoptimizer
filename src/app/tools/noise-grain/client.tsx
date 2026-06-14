@@ -41,7 +41,7 @@ function applyGrain(
       d[i+1] = Math.max(0, Math.min(255, d[i+1] + n));
       d[i+2] = Math.max(0, Math.min(255, d[i+2] + n));
     } else {
-      // color — independent per channel
+      // color | independent per channel
       d[i]   = Math.max(0, Math.min(255, d[i]   + (Math.random() - 0.5) * 2 * scale * 80));
       d[i+1] = Math.max(0, Math.min(255, d[i+1] + (Math.random() - 0.5) * 2 * scale * 80));
       d[i+2] = Math.max(0, Math.min(255, d[i+2] + (Math.random() - 0.5) * 2 * scale * 80));

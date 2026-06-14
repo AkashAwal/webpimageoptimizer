@@ -7,7 +7,7 @@ import ConverterShell from "@/components/converter/converter-shell";
 import { OtherTools } from "@/components/converter/other-tools";
 
 export const metadata: Metadata = {
-  title: "WebP Re-optimizer — Free, In-Browser, No Upload",
+  title: "WebP Re-optimizer | Free, In-Browser, No Upload",
   description:
     "Re-compress an existing WebP file at a different quality level. No upload, no signup. Fine-tune file size vs. quality for WebP images directly in your browser. Free tool.",
   openGraph: {
@@ -34,8 +34,8 @@ export default function Page() {
             <ol className="space-y-3 list-none">
               {[
                 ["Drop or select your WebP file", "Click the upload area or drag your .webp file onto it. The file is decoded and loaded for re-compression."],
-                ["Set a new quality level", "Use the quality slider to choose the new compression level. The default is 80% — lower than typical initial conversions to give meaningful size savings on re-compression."],
-                ["Download the re-optimized WebP", "Click Convert and download the result. The file size and quality difference is shown — use this to find your ideal quality-to-size tradeoff."],
+                ["Set a new quality level", "Use the quality slider to choose the new compression level. The default is 80% | lower than typical initial conversions to give meaningful size savings on re-compression."],
+                ["Download the re-optimized WebP", "Click Convert and download the result. The file size and quality difference is shown | use this to find your ideal quality-to-size tradeoff."],
               ].map(([step, detail], i) => (
                 <li key={i} className="flex gap-4">
                   <span className="mt-0.5 flex size-6 shrink-0 items-center justify-center rounded-full bg-neutral-100 text-[12px] font-semibold text-neutral-600">{i + 1}</span>
@@ -50,15 +50,15 @@ export default function Page() {
 
           <section>
             <h2 className="text-xl font-bold tracking-tight text-foreground mb-3">Why re-optimize an existing WebP?</h2>
-            <p>WebP files you receive from other sources — image editors, CDNs, or other converters — may not be compressed at the optimal level for your use case. A WebP exported at 95% quality from a photo editor is much larger than needed for a thumbnail. A WebP generated at 60% quality may have visible artefacts that need to be improved for a hero image.</p>
+            <p>WebP files you receive from other sources | image editors, CDNs, or other converters | may not be compressed at the optimal level for your use case. A WebP exported at 95% quality from a photo editor is much larger than needed for a thumbnail. A WebP generated at 60% quality may have visible artefacts that need to be improved for a hero image.</p>
             <p className="mt-3">Re-optimizing lets you dial in the exact quality level you need. You can reduce file size by compressing an over-sized WebP at a lower quality, or improve visual quality by re-encoding at a higher level. The tool shows you exactly how much the file size changes, so you can make an informed decision.</p>
-            <p className="mt-3">Re-compression from lossy WebP to lossy WebP does stack compression generations — each encode adds a small amount of quality loss. For the best results, start from the original lossless source (PNG, BMP, or TIFF) if available, rather than re-encoding an already-compressed WebP multiple times.</p>
+            <p className="mt-3">Re-compression from lossy WebP to lossy WebP does stack compression generations | each encode adds a small amount of quality loss. For the best results, start from the original lossless source (PNG, BMP, or TIFF) if available, rather than re-encoding an already-compressed WebP multiple times.</p>
           </section>
 
           <section>
             <h2 className="text-xl font-bold tracking-tight text-foreground mb-3">Choosing a quality level for re-optimization</h2>
             <p>The right quality level depends on the image content and where it will be used. For photographs used as thumbnails or card images, 75–80% typically gives a good result at minimal file size. For hero images and product photos where visual quality matters more, 85–90% is appropriate.</p>
-            <p className="mt-3">Use the before/after size display to compare results. If the output is larger than the input, the source WebP was already compressed harder than the quality you selected — in that case, lower the quality slider until the output is smaller. A 5–10% reduction in quality rarely produces visible degradation for photo content.</p>
+            <p className="mt-3">Use the before/after size display to compare results. If the output is larger than the input, the source WebP was already compressed harder than the quality you selected | in that case, lower the quality slider until the output is smaller. A 5–10% reduction in quality rarely produces visible degradation for photo content.</p>
           </section>
 
           <section>

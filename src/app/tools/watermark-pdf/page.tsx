@@ -5,7 +5,7 @@ import WatermarkPdfClient from "./client";
 import { OtherTools } from "@/components/converter/other-tools";
 
 export const metadata: Metadata = {
-  title: "Watermark PDF — Add Text Watermark Free, In-Browser, No Upload",
+  title: "Watermark PDF | Add Text Watermark Free, In-Browser, No Upload",
   description: "Add a custom text watermark to every page of a PDF. Choose position, opacity, and font size. Free, in-browser, no upload required.",
   openGraph: {
     images: [{ url: "/og/watermark-pdf.png", width: 1200, height: 630 }],
@@ -23,11 +23,11 @@ export default function Page() {
         <div className="mt-16 space-y-10 text-[14px] leading-relaxed text-muted-foreground">
           <section>
             <h2 className="text-xl font-bold tracking-tight text-foreground mb-3">How to add a watermark to a PDF</h2>
-            <p>Drop your PDF into the tool, type your watermark text — such as <em>CONFIDENTIAL</em>, <em>DRAFT</em>, or your company name — and choose a position and opacity. Click <strong className="text-foreground font-semibold">Add Watermark</strong> to apply it to every page and download the result.</p>
+            <p>Drop your PDF into the tool, type your watermark text | such as <em>CONFIDENTIAL</em>, <em>DRAFT</em>, or your company name | and choose a position and opacity. Click <strong className="text-foreground font-semibold">Add Watermark</strong> to apply it to every page and download the result.</p>
           </section>
           <section>
             <h2 className="text-xl font-bold tracking-tight text-foreground mb-3">Why watermark a PDF?</h2>
-            <p>Watermarks serve two main purposes: branding and protection. Branding watermarks reinforce identity on client-facing documents. Protective watermarks — like CONFIDENTIAL or DRAFT — communicate the document's status and deter unauthorised distribution. Because they're applied to every page, recipients can't easily strip them by printing a single page.</p>
+            <p>Watermarks serve two main purposes: branding and protection. Branding watermarks reinforce identity on client-facing documents. Protective watermarks | like CONFIDENTIAL or DRAFT | communicate the document's status and deter unauthorised distribution. Because they're applied to every page, recipients can't easily strip them by printing a single page.</p>
           </section>
           <section>
             <h2 className="text-xl font-bold tracking-tight text-foreground mb-4">Frequently asked questions</h2>

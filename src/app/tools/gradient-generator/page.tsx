@@ -7,7 +7,7 @@ import { GradientGeneratorClient } from "./client";
 import { OtherTools } from "@/components/converter/other-tools";
 
 export const metadata: Metadata = {
-  title: "CSS Gradient Generator — Free Linear & Radial Gradient Tool",
+  title: "CSS Gradient Generator | Free Linear & Radial Gradient Tool",
   description:
     "Build beautiful linear and radial CSS gradients visually. Add color stops, adjust angles, and copy the ready-to-use CSS background property instantly.",
 };
@@ -45,8 +45,8 @@ export default function GradientGeneratorPage() {
           <section>
             <h2 className="text-[17px] font-semibold tracking-tight text-foreground">Linear vs radial gradients</h2>
             <ul className="mt-3 space-y-2 text-[13px] leading-relaxed text-muted-foreground list-disc list-inside">
-              <li><strong className="text-foreground">Linear</strong> — color transitions along a straight line at a given angle (0° is bottom-to-top, 90° is left-to-right).</li>
-              <li><strong className="text-foreground">Radial</strong> — color transitions outward from a central point in a circle or ellipse.</li>
+              <li><strong className="text-foreground">Linear</strong> | color transitions along a straight line at a given angle (0° is bottom-to-top, 90° is left-to-right).</li>
+              <li><strong className="text-foreground">Radial</strong> | color transitions outward from a central point in a circle or ellipse.</li>
             </ul>
           </section>
 
@@ -55,7 +55,7 @@ export default function GradientGeneratorPage() {
             <div className="mt-4 space-y-4">
               <div>
                 <h3 className="text-[14px] font-semibold text-foreground">Can I add more than two color stops?</h3>
-                <p className="mt-1 text-[13px] leading-relaxed text-muted-foreground">Yes — click Add Stop to add as many color stops as you need, and drag them to reposition.</p>
+                <p className="mt-1 text-[13px] leading-relaxed text-muted-foreground">Yes | click Add Stop to add as many color stops as you need, and drag them to reposition.</p>
               </div>
               <div>
                 <h3 className="text-[14px] font-semibold text-foreground">Is the output valid CSS?</h3>

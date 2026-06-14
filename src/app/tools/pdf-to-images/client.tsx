@@ -57,7 +57,7 @@ export default function PdfToImagesClient() {
 
   return (
     <div className="pt-4">
-      {/* Landing — no card */}
+      {/* Landing | no card */}
       {!file && (
         <div
           className="flex flex-col items-center justify-center gap-8 min-h-[calc(100vh-8rem)] transition-colors"
@@ -78,7 +78,7 @@ export default function PdfToImagesClient() {
         </div>
       )}
 
-      {/* Active — two-column */}
+      {/* Active | two-column */}
       {file && (
         <div className="flex flex-col sm:flex-row min-h-[calc(100vh-4rem)]">
           {/* Left: file info + progress */}
@@ -107,7 +107,7 @@ export default function PdfToImagesClient() {
             )}
           </div>
 
-          {/* Right: sticky sidebar — settings */}
+          {/* Right: sticky sidebar | settings */}
           <div className="w-full sm:w-80 shrink-0 border-t sm:border-t-0 sm:border-l border-border bg-white sm:sticky sm:top-16 sm:h-[calc(100vh-4rem)] flex flex-col p-6 gap-4 overflow-y-auto">
             <h2 className="text-xl font-bold tracking-tight text-foreground">PDF to Images</h2>
 
@@ -159,7 +159,7 @@ export default function PdfToImagesClient() {
 
             <div className="mt-auto space-y-2">
               <SoftPillButton variant="primary" onClick={process} disabled={processing} className="w-full h-12 text-[14px]">
-                {processing ? <><CircleNotch size={14} className="animate-spin" />{progress}% — rendering…</> : "Convert to Images"}
+                {processing ? <><CircleNotch size={14} className="animate-spin" />{progress}% | rendering…</> : "Convert to Images"}
               </SoftPillButton>
               <p className="text-center text-[11px] text-muted-foreground/60">Runs locally · no upload</p>
             </div>
