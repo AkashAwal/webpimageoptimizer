@@ -116,6 +116,22 @@ export const TOOLS = [
     category: "webp" as CategoryId,
   },
   {
+    href: "/tools/heic-to-png",
+    name: "HEIC to PNG",
+    shortName: "HEIC to PNG Converter",
+    description: "Convert iPhone HEIC photos to PNG for lossless, fully compatible output. Works via WebAssembly, no upload.",
+    badge: "Lossless out",
+    category: "webp" as CategoryId,
+  },
+  {
+    href: "/tools/heic-to-jpg",
+    name: "HEIC to JPG",
+    shortName: "HEIC to JPG Converter",
+    description: "Convert iPhone HEIC photos to JPG with adjustable quality. Universal format, works everywhere.",
+    badge: "Universal",
+    category: "webp" as CategoryId,
+  },
+  {
     href: "/tools/html-to-pdf",
     name: "HTML to PDF",
     shortName: "HTML to PDF Converter",

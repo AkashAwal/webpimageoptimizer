@@ -17,6 +17,7 @@ export type ConvertType =
   | "png-to-webp" | "jpg-to-webp" | "gif-to-webp" | "avif-to-webp"
   | "bmp-to-webp" | "tiff-to-webp" | "svg-to-webp" | "ico-to-webp"
   | "jfif-to-webp" | "pdf-to-webp" | "webp-to-webp" | "heic-to-webp"
+  | "heic-to-png" | "heic-to-jpg"
   | "html-to-pdf"
   | "jpg-to-pdf" | "png-to-pdf" | "webp-to-pdf" | "heic-to-pdf"
   | "bmp-to-pdf" | "tiff-to-pdf" | "gif-to-pdf" | "svg-to-pdf"
@@ -157,6 +158,46 @@ async function heicConvert(file: File, quality: number, targetW?: number, target
   const { default: heic2any } = await import("heic2any");
   const out = await heic2any({ blob: file, toType: "image/png" });
   return canvasConvert(Array.isArray(out) ? out[0] : out, quality, targetW, targetH);
+}
+
+async function heicToPng(file: File, _quality: number, targetW?: number, targetH?: number): Promise<Blob> {
+  const { default: heic2any } = await import("heic2any");
+  const out = await heic2any({ blob: file, toType: "image/png" });
+  const png = Array.isArray(out) ? out[0] : out;
+  if (!targetW && !targetH) return png;
+  const bitmap = await createImageBitmap(png);
+  let w = bitmap.width, h = bitmap.height;
+  if (targetW && targetH) { w = targetW; h = targetH; }
+  else if (targetW) { h = Math.round(bitmap.height * (targetW / bitmap.width)); w = targetW; }
+  else if (targetH) { w = Math.round(bitmap.width * (targetH / bitmap.height)); h = targetH; }
+  const canvas = document.createElement("canvas");
+  canvas.width = w; canvas.height = h;
+  canvas.getContext("2d")!.drawImage(bitmap, 0, 0, w, h);
+  bitmap.close();
+  return new Promise<Blob>((res, rej) =>
+    canvas.toBlob(b => b ? res(b) : rej(new Error("Canvas export failed")), "image/png"),
+  );
+}
+
+async function heicToJpg(file: File, quality: number, targetW?: number, targetH?: number): Promise<Blob> {
+  const { default: heic2any } = await import("heic2any");
+  const out = await heic2any({ blob: file, toType: "image/png" });
+  const png = Array.isArray(out) ? out[0] : out;
+  const bitmap = await createImageBitmap(png);
+  let w = bitmap.width, h = bitmap.height;
+  if (targetW && targetH) { w = targetW; h = targetH; }
+  else if (targetW) { h = Math.round(bitmap.height * (targetW / bitmap.width)); w = targetW; }
+  else if (targetH) { w = Math.round(bitmap.width * (targetH / bitmap.height)); h = targetH; }
+  const canvas = document.createElement("canvas");
+  canvas.width = w; canvas.height = h;
+  const ctx = canvas.getContext("2d")!;
+  ctx.fillStyle = "#ffffff";
+  ctx.fillRect(0, 0, w, h);
+  ctx.drawImage(bitmap, 0, 0, w, h);
+  bitmap.close();
+  return new Promise<Blob>((res, rej) =>
+    canvas.toBlob(b => b ? res(b) : rej(new Error("Canvas export failed")), "image/jpeg", quality / 100),
+  );
 }
 
 // ─── PDF helpers ──────────────────────────────────────────────────────────────
@@ -401,7 +442,7 @@ async function convertToTargetSize(
 
 type ConvertFn = (f: File, q: number, w?: number, h?: number, opts?: PdfOptions) => Promise<Blob>;
 
-const CONFIG: Record<ConvertType, { accept: string; acceptLabel: string; canPreview: boolean; convert: ConvertFn; outputType: "webp" | "pdf" }> = {
+const CONFIG: Record<ConvertType, { accept: string; acceptLabel: string; canPreview: boolean; convert: ConvertFn; outputType: "webp" | "pdf" | "png" | "jpg" }> = {
   "png-to-webp":  { accept: "image/png,.png",                             acceptLabel: "PNG files",   canPreview: true,  convert: canvasConvert, outputType: "webp" },
   "jpg-to-webp":  { accept: "image/jpeg,.jpg,.jpeg",                      acceptLabel: "JPG / JPEG",  canPreview: true,  convert: canvasConvert, outputType: "webp" },
   "gif-to-webp":  { accept: "image/gif,.gif",                             acceptLabel: "GIF files",   canPreview: true,  convert: canvasConvert, outputType: "webp" },
@@ -414,6 +455,8 @@ const CONFIG: Record<ConvertType, { accept: string; acceptLabel: string; canPrev
   "pdf-to-webp":  { accept: "application/pdf,.pdf",                       acceptLabel: "PDF files",   canPreview: false, convert: canvasConvert, outputType: "webp" },
   "webp-to-webp": { accept: "image/webp,.webp",                           acceptLabel: "WebP files",  canPreview: true,  convert: canvasConvert, outputType: "webp" },
   "heic-to-webp": { accept: ".heic,.heif,image/heic,image/heif",          acceptLabel: "HEIC / HEIF", canPreview: false, convert: heicConvert,   outputType: "webp" },
+  "heic-to-png":  { accept: ".heic,.heif,image/heic,image/heif",          acceptLabel: "HEIC / HEIF", canPreview: false, convert: heicToPng,    outputType: "png"  },
+  "heic-to-jpg":  { accept: ".heic,.heif,image/heic,image/heif",          acceptLabel: "HEIC / HEIF", canPreview: false, convert: heicToJpg,    outputType: "jpg"  },
   "html-to-pdf":  { accept: "text/html,.html,.htm",                       acceptLabel: "HTML files",  canPreview: false, convert: htmlToPdf,     outputType: "pdf"  },
   "jpg-to-pdf":   { accept: "image/jpeg,.jpg,.jpeg",                      acceptLabel: "JPG / JPEG",  canPreview: true,  convert: canvasToPdf,   outputType: "pdf"  },
   "png-to-pdf":   { accept: "image/png,.png",                             acceptLabel: "PNG files",   canPreview: true,  convert: canvasToPdf,   outputType: "pdf"  },

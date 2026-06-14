@@ -18,6 +18,8 @@ const TOOL_PATHS = [
   "/tools/webp-to-webp",
   "/tools/webp-resizer",
   "/tools/heic-to-webp",
+  "/tools/heic-to-png",
+  "/tools/heic-to-jpg",
   "/tools/html-to-pdf",
   "/tools/jpg-to-pdf",
   "/tools/png-to-pdf",
