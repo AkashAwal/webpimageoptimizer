@@ -11,6 +11,9 @@ interface OtherToolsProps {
 export function OtherTools({ currentHref }: OtherToolsProps) {
   const ref = useRef<HTMLElement>(null);
   const [visible, setVisible] = useState(false);
+  const [ogVisible, setOgVisible] = useState(true);
+
+  const slug = currentHref.split("/").filter(Boolean).pop() ?? "";
 
   useEffect(() => {
     const el = ref.current;
@@ -32,6 +35,21 @@ export function OtherTools({ currentHref }: OtherToolsProps) {
 
   return (
     <section ref={ref} className="mt-16">
+      {ogVisible && (
+        <div className="mb-16">
+          <h2 className="text-xl font-bold tracking-tight text-foreground mb-4">
+            Share preview
+          </h2>
+          <img
+            src={`/og/${slug}.png`}
+            alt="Page share preview"
+            width={1200}
+            height={630}
+            className="w-full rounded-2xl ring-1 ring-black/6 shadow-[0_4px_24px_-6px_rgba(0,0,0,0.10),0_1px_3px_rgba(0,0,0,0.06)]"
+            onError={() => setOgVisible(false)}
+          />
+        </div>
+      )}
       <h2 className="text-xl font-bold tracking-tight text-foreground mb-4">
         More free image tools
       </h2>
