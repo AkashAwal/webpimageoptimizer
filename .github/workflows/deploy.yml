@@ -18,11 +18,11 @@ jobs:
         run: bun install
 
       - name: Build
-        run: bunx opennextjs-cloudflare build
+        run: bun run build
 
       - name: Deploy
         uses: cloudflare/wrangler-action@v3
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: d77e2555809a392e75c4261ccde52c5f
-          command: deploy
+          command: pages deploy out --project-name=pixgarage-com
