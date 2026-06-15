@@ -6,6 +6,7 @@ export const CATEGORIES = [
   { id: "qr", label: "QR Codes" },
   { id: "image-tools", label: "Image Tools" },
   { id: "color-tools", label: "Color Tools" },
+  { id: "text-tools", label: "Text Tools" },
 ] as const;
 
 export type CategoryId = (typeof CATEGORIES)[number]["id"];
@@ -635,6 +636,30 @@ export const TOOLS = [
     badge: "RGBA output",
     category: "color-tools" as CategoryId,
   },
+  {
+    href: "/tools/lorem-ipsum",
+    name: "Lorem Ipsum Generator",
+    shortName: "Lorem Ipsum Generator",
+    description: "Generate classic lorem ipsum placeholder text or AI-powered filler text on any topic. Copy paragraphs instantly.",
+    badge: "AI topic mode",
+    category: "text-tools" as CategoryId,
+  },
+  {
+    href: "/tools/text-case-converter",
+    name: "Text Case Converter",
+    shortName: "Text Case Converter",
+    description: "Convert text between UPPERCASE, lowercase, Title Case, sentence case, camelCase, snake_case, and kebab-case.",
+    badge: "8 cases",
+    category: "text-tools" as CategoryId,
+  },
+  {
+    href: "/tools/word-counter",
+    name: "Word Counter",
+    shortName: "Word & Character Counter",
+    description: "Count words, characters, sentences, and paragraphs. Get reading time, speaking time, and top keyword density.",
+    badge: "Reading time",
+    category: "text-tools" as CategoryId,
+  },
 ] as const;
 
 export type Tool = (typeof TOOLS)[number];
@@ -687,6 +712,14 @@ export const CATEGORY_METADATA = [
     description: "Pick colors, build palettes, check WCAG contrast, generate gradients, shadows, and tint/shade scales.",
     seoTitle: "Free Online Color Tools — Picker, Palettes, Contrast Checker | Pix Garage",
     seoDescription: "Free color tools: color picker, palette generator, WCAG contrast checker, gradient builder, shadow generator, tint/shade scales, and color blindness simulator.",
+  },
+  {
+    id: "text-tools" as CategoryId,
+    label: "Text Tools",
+    href: "/text-tools",
+    description: "Generate lorem ipsum placeholder text, convert text case, and count words, characters, and reading time.",
+    seoTitle: "Free Online Text Tools — Lorem Ipsum, Case Converter, Word Counter | Pix Garage",
+    seoDescription: "Free text tools: lorem ipsum generator with AI topic mode, text case converter (8 formats), and word/character counter with reading time. All in-browser, no upload.",
   },
 ] as const;
 

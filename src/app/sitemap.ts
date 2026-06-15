@@ -83,6 +83,9 @@ const TOOL_PATHS = [
   "/tools/color-name-finder",
   "/tools/image-color-picker",
   "/tools/opacity-calculator",
+  "/tools/lorem-ipsum",
+  "/tools/text-case-converter",
+  "/tools/word-counter",
 ];
 
 const STATIC_PAGES = [
@@ -94,6 +97,7 @@ const STATIC_PAGES = [
   { path: "/webp-tools", priority: 0.9 },
   { path: "/qr-tools", priority: 0.9 },
   { path: "/color-tools", priority: 0.9 },
+  { path: "/text-tools", priority: 0.9 },
   { path: "/about", priority: 0.5 },
   { path: "/security", priority: 0.4 },
   { path: "/contact", priority: 0.4 },

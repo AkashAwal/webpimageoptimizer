@@ -16,6 +16,7 @@
     "prepare": "husky"
   },
   "dependencies": {
+    "@anthropic-ai/sdk": "^0.104.1",
     "@imgly/background-removal": "^1.7.0",
     "@opennextjs/cloudflare": "^1.19.11",
     "@phosphor-icons/react": "^2.1.10",

@@ -52,4 +52,9 @@ export {
   XLogo,
   Images,
   GridNine,
+  Article,
+  TextAa,
+  Hash,
+  Sparkle,
+  Copy,
 } from "@phosphor-icons/react";

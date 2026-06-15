@@ -393,6 +393,31 @@ URL: https://pixgarage.com/tools/random-color-generator
 
 Generate random colors and lock the ones you like to build a palette — copy HEX, RGB, or HSL values with one click. Free random color generator, no signup. Random Color Generator Generate random colors, lock favorites, and build a palette. (or press Space) to randomize all unlocked swatches. Click the lock icon on any swatch to keep that color while regenerating the rest. Click a swatch to copy its value in your preferred format. Frequently asked questions Are the colors truly random? Colors are generated using across the full HSL range, which produces vivid and varied results. The hue is fully random; saturation and lightness are constrained to avoid muddy or near-invisible colors. Can I change the number of swatches? Yes | use the + and − buttons to add or remove swatches from your palette.
 
+### Color Converter
+URL: https://pixgarage.com/tools/color-converter
+
+Convert colors between HEX, RGB, HSL, HSB/HSV, and CMYK instantly. Edit any field and all formats update in real time. Free, in-browser, no upload needed. Color Converter Convert between HEX, RGB, HSL, HSB, and CMYK in real time. What this tool does Color format reference — six-digit hexadecimal value used in HTML and CSS ( — red, green, blue channels each from 0–255. The native format for screens and CSS. — hue (0–360°), saturation and lightness as percentages. Easier to adjust perceptually than RGB. — hue, saturation, brightness (value). Used by Photoshop, Figma, and most design tools. — cyan, magenta, yellow, key (black) percentages. The standard model for print production. Frequently asked questions Why does my CMYK value look different in print software? What is the difference between HSB and HSL? Can I enter a 3-digit HEX code?
+
+### Color Mixer
+URL: https://pixgarage.com/tools/color-mixer
+
+Blend two colors at any ratio with a live gradient preview. Get the mixed color as HEX, RGB, and HSL instantly. Free, in-browser, no upload needed. Blend two colors at any ratio and get the mixed result instantly. How color mixing works When to use a color mixer Finding a midpoint between a brand primary and white to create a light tint. Generating intermediate steps between two palette swatches. Softening a color by blending it with its complementary without changing the hue dramatically. Previewing how a semi-transparent overlay will look over a background before writing the CSS. Frequently asked questions Is this the same as CSS color-mix()? color-mix(in srgb, ...) Can I mix more than two colors?
+
+### CSS Color Name Finder
+URL: https://pixgarage.com/tools/color-name-finder
+
+Enter any color and instantly find the nearest CSS named color from all 148 W3C names. See similarity scores and copy the name or HEX value. Free, in-browser. Color Name Finder Find the nearest CSS named color for any HEX or RGB value. What are CSS named colors? How similarity is calculated √((R₁−R₂)² + (G₁−G₂)² + (B₁−B₂)²) . The maximum possible distance is about 441 (black to white), so similarity is shown as 100 − (distance / 441 × 100) Frequently asked questions Why does my color show a low similarity score? Are grey and gray both included?
+
+### Pick Color from Image
+URL: https://pixgarage.com/tools/image-color-picker
+
+Upload any image and hover or click any pixel to extract its exact color as HEX, RGB, and HSL. Lock a color with a click. Free, in-browser, no upload to a server. Image Color Picker Hover to sample · Click to lock a color from any image. How to use this tool Drop an image or click the upload zone to load any photo, screenshot, or design export. Move your cursor over the image — the color beneath the pointer updates in real time. Click anywhere on the image to lock that color. The result card shows the HEX, RGB, and HSL values with copy buttons. Click "Pick another image" to start over with a new file. Privacy and processing Frequently asked questions What image formats are supported? The color I sampled looks slightly off — why?
+
+### Color Opacity Calculator
+URL: https://pixgarage.com/tools/opacity-calculator
+
+Preview any color at different opacities over white and dark backgrounds. See the effective blended hex and copy the rgba() or hsla() CSS value instantly. Free, in-browser. Opacity Calculator Preview any color at different opacities and copy the rgba() value. Understanding color opacity in CSS background-color: rgba(59, 130, 246, 0.5) in CSS, the browser blends the color with whatever is behind it. This tool shows you the result of that blending over two common backgrounds — white and dark — so you can verify the effective color before writing a line of code. The blended hex is computed as bg × (1 − α) + fg × α rgba() vs opacity property property affects the entire element including its children and text. The color function only makes the background (or border, or shadow) transparent — child text stays fully opaque. For overlays, backgrounds, and shadows, prefer Frequently asked questions What is the difference between rgba() and hsla()? uses red, green, blue channels (0–255). Why does the effective color over dark look different from over white?
+
 ## About
 
 - [About](https://pixgarage.com/about)
