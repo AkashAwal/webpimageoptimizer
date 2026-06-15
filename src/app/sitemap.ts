@@ -78,6 +78,11 @@ const TOOL_PATHS = [
   "/tools/color-blindness-simulator",
   "/tools/shadow-generator",
   "/tools/random-color-generator",
+  "/tools/color-converter",
+  "/tools/color-mixer",
+  "/tools/color-name-finder",
+  "/tools/image-color-picker",
+  "/tools/opacity-calculator",
 ];
 
 const STATIC_PAGES = [

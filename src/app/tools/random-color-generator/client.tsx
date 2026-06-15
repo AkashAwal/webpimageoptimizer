@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
-import { Lock, LockOpen, Plus, Minus, ArrowsClockwise } from "@phosphor-icons/react";
+import { Lock, LockOpen, Plus, Minus, ArrowsClockwise, DownloadSimple } from "@phosphor-icons/react";
 import { cn } from "@/lib/utils";
 
 type CopyFormat = "hex" | "rgb" | "hsl";
@@ -136,6 +136,46 @@ export function RandomColorClient() {
     setSwatches(prev => prev.slice(0, -1));
   };
 
+  const downloadPalette = useCallback(() => {
+    const W = 800;
+    const SWATCH_H = 150;
+    const LABEL_H = 52;
+    const H = SWATCH_H + LABEL_H;
+    const swatchW = Math.floor(W / swatches.length);
+
+    const canvas = document.createElement("canvas");
+    canvas.width = W;
+    canvas.height = H;
+    const ctx = canvas.getContext("2d")!;
+
+    ctx.fillStyle = "#ffffff";
+    ctx.fillRect(0, 0, W, H);
+
+    swatches.forEach((swatch, i) => {
+      const x = i * swatchW;
+      const w = i === swatches.length - 1 ? W - x : swatchW;
+
+      ctx.fillStyle = swatch.color;
+      ctx.fillRect(x, 0, w, SWATCH_H);
+
+      ctx.fillStyle = "#1a1a1a";
+      ctx.font = "bold 13px monospace";
+      ctx.textAlign = "center";
+      ctx.textBaseline = "middle";
+      ctx.fillText(swatch.color.toUpperCase(), x + w / 2, SWATCH_H + LABEL_H / 2);
+    });
+
+    canvas.toBlob(blob => {
+      if (!blob) return;
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "palette.png";
+      a.click();
+      URL.revokeObjectURL(url);
+    });
+  }, [swatches]);
+
   return (
     <div className="mx-auto w-full max-w-xl space-y-3">
 
@@ -166,6 +206,11 @@ export function RandomColorClient() {
           <button onClick={addSwatch} disabled={swatches.length >= 8}
             className="flex size-9 items-center justify-center rounded-full bg-neutral-100 text-neutral-500 hover:bg-neutral-200 disabled:opacity-30 transition-colors">
             <Plus size={13} />
+          </button>
+          <button onClick={downloadPalette}
+            className="flex size-9 items-center justify-center rounded-full bg-neutral-100 text-neutral-500 hover:bg-neutral-200 transition-colors"
+            title="Download palette as PNG">
+            <DownloadSimple size={13} />
           </button>
         </div>
       </div>

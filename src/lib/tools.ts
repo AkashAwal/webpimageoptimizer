@@ -595,6 +595,46 @@ export const TOOLS = [
     badge: "Lock & build",
     category: "color-tools" as CategoryId,
   },
+  {
+    href: "/tools/color-converter",
+    name: "Color Converter",
+    shortName: "Color Converter",
+    description: "Convert between HEX, RGB, HSL, HSB, and CMYK instantly. Edit any field and all others update in real time.",
+    badge: "5 formats",
+    category: "color-tools" as CategoryId,
+  },
+  {
+    href: "/tools/color-mixer",
+    name: "Color Mixer",
+    shortName: "Color Mixer",
+    description: "Blend two colors at any ratio with a gradient preview. Get the mixed HEX, RGB, and HSL values instantly.",
+    badge: "Blend & preview",
+    category: "color-tools" as CategoryId,
+  },
+  {
+    href: "/tools/color-name-finder",
+    name: "Color Name Finder",
+    shortName: "CSS Color Name Finder",
+    description: "Enter any color and find the nearest CSS named color. Covers all 148 W3C named colors with similarity scoring.",
+    badge: "148 names",
+    category: "color-tools" as CategoryId,
+  },
+  {
+    href: "/tools/image-color-picker",
+    name: "Image Color Picker",
+    shortName: "Pick Color from Image",
+    description: "Upload any image and hover or click any pixel to extract its exact color as HEX, RGB, and HSL.",
+    badge: "Pixel perfect",
+    category: "color-tools" as CategoryId,
+  },
+  {
+    href: "/tools/opacity-calculator",
+    name: "Opacity Calculator",
+    shortName: "Color Opacity Calculator",
+    description: "Preview any color at different opacities over light and dark backgrounds. Copy the rgba() CSS value instantly.",
+    badge: "RGBA output",
+    category: "color-tools" as CategoryId,
+  },
 ] as const;
 
 export type Tool = (typeof TOOLS)[number];
