@@ -5,31 +5,6 @@
 {
 	"$schema": "node_modules/wrangler/config-schema.json",
 	"name": "pixgarage-com",
-	"main": ".open-next/worker.js",
-	"compatibility_date": "2026-06-03",
-	"compatibility_flags": [
-		"nodejs_compat",
-		"global_fetch_strictly_public"
-	],
-	"assets": {
-		"binding": "ASSETS",
-		"directory": ".open-next/assets"
-	},
-	"images": {
-		// Enable image optimization
-		// see https://opennext.js.org/cloudflare/howtos/image
-		"binding": "IMAGES"
-	},
-	"services": [
-		{
-			// Self-reference service binding for caching
-			// see https://opennext.js.org/cloudflare/caching
-			"binding": "WORKER_SELF_REFERENCE",
-			"service": "pixgarage-com"
-		}
-	],
-	"observability": {
-		"enabled": true
-	},
-	"upload_source_maps": true
+	"pages_build_output_dir": "out",
+	"compatibility_date": "2026-06-03"
 }
