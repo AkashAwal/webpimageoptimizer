@@ -8,7 +8,15 @@ import { OtherTools } from "@/components/converter/other-tools";
 export const metadata: Metadata = {
   title: "HEIC to JPG Converter | Free, In-Browser, No Upload",
   description:
-    "Convert iPhone HEIC and HEIF photos to JPG format free in your browser. Adjust quality with a slider. No upload, no signup. Works in Chrome and Firefox via WebAssembly.",
+    "Convert iPhone HEIC and HEIF photos to JPG in your browser via WebAssembly — no upload needed. Adjust JPEG quality with a slider. Works in Chrome and Firefox. Free.",
+  keywords: [
+    "heic to jpg",
+    "convert heic to jpg",
+    "iphone photo to jpg",
+    "heif to jpg",
+    "heic jpg converter",
+    "open heic file",
+  ],
   openGraph: {
     images: [{ url: "/og/heic-to-jpg.png", width: 1200, height: 630 }],
   },

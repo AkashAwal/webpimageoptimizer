@@ -9,7 +9,15 @@ import { OtherTools } from "@/components/converter/other-tools";
 export const metadata: Metadata = {
   title: "Color Blindness Simulator | Preview Colors for Accessibility",
   description:
-    "Preview how any color looks to people with deuteranopia, protanopia, tritanopia, and achromatopsia. Free accessibility tool, runs entirely in your browser.",
+    "See exactly how any color looks to people with deuteranopia, protanopia, tritanopia, and achromatopsia. Free color blindness simulator for accessible design — runs in browser.",
+  keywords: [
+    "color blindness simulator",
+    "color blind test",
+    "deuteranopia simulator",
+    "protanopia test",
+    "color accessibility checker",
+    "color blind design tool",
+  ],
 };
 
 export default function ColorBlindnessPage() {

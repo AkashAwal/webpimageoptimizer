@@ -9,7 +9,14 @@ import { OtherTools } from "@/components/converter/other-tools";
 export const metadata: Metadata = {
   title: "PDF to WebP Converter | Free, In-Browser, No Upload",
   description:
-    "Convert the first page of a PDF to a WebP image in your browser. No upload, no signup. Generate PDF thumbnails and previews as WebP. Free PDF to WebP converter.",
+    "Convert the first page of a PDF to a WebP image in your browser — ideal for generating PDF thumbnails and preview images. Free, no upload. Free PDF to WebP converter.",
+  keywords: [
+    "pdf to webp",
+    "convert pdf to webp",
+    "pdf page to webp image",
+    "pdf thumbnail webp",
+    "pdf to image webp",
+  ],
   openGraph: {
     images: [{ url: "/og/pdf-to-webp.png", width: 1200, height: 630 }],
   },

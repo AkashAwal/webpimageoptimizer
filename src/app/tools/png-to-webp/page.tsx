@@ -9,7 +9,15 @@ import { OtherTools } from "@/components/converter/other-tools";
 export const metadata: Metadata = {
   title: "PNG to WebP Converter | Free, In-Browser, No Upload",
   description:
-    "Convert PNG images to WebP format instantly in your browser. No upload, no signup. Smaller file sizes, same visual quality. Free PNG to WebP converter.",
+    "Free PNG to WebP converter — runs entirely in your browser, no upload needed. Convert PNG images to smaller WebP files instantly with adjustable quality. Supports transparency.",
+  keywords: [
+    "png to webp",
+    "convert png to webp",
+    "png webp converter",
+    "png to webp free online",
+    "webp converter png",
+    "reduce png file size",
+  ],
   openGraph: {
     images: [{ url: "/og/png-to-webp.png", width: 1200, height: 630 }],
   },

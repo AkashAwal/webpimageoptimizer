@@ -7,7 +7,15 @@ import { OtherTools } from "@/components/converter/other-tools";
 export const metadata: Metadata = {
   title: "JPG to PDF Converter | Free, In-Browser, No Upload",
   description:
-    "Convert JPEG photos to PDF instantly in your browser. No upload, no signup. Each image becomes a perfectly sized PDF page. Free JPG to PDF converter.",
+    "Convert JPG and JPEG photos to PDF in your browser — each image becomes a perfectly sized PDF page. No upload, no signup. Free JPG to PDF converter, instant download.",
+  keywords: [
+    "jpg to pdf",
+    "jpeg to pdf",
+    "convert jpg to pdf",
+    "photo to pdf converter",
+    "image to pdf free",
+    "jpg pdf maker online",
+  ],
   openGraph: {
     images: [{ url: "/og/jpg-to-pdf.png", width: 1200, height: 630 }],
   },

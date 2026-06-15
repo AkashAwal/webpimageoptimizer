@@ -9,7 +9,16 @@ import { OtherTools } from "@/components/converter/other-tools";
 export const metadata: Metadata = {
   title: "Color Picker | HEX, RGB, HSL & CMYK, Free Online Tool",
   description:
-    "Pick any color and instantly get its HEX, RGB, HSL, and CMYK values. One-click copy for each format. Free, runs entirely in your browser.",
+    "Pick any color and get its HEX, RGB, HSL, and CMYK codes instantly. Click to copy each value in one click. Free online color picker — runs entirely in your browser.",
+  keywords: [
+    "color picker",
+    "hex color picker",
+    "rgb color picker",
+    "hex to rgb converter",
+    "color code converter",
+    "hsl color picker",
+    "cmyk color picker",
+  ],
 };
 
 export default function ColorPickerPage() {

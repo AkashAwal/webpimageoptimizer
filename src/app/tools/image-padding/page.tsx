@@ -9,7 +9,15 @@ import { OtherTools } from "@/components/converter/other-tools";
 export const metadata: Metadata = {
   title: "Add Image Padding | Free Canvas Expand Tool, No Upload",
   description:
-    "Expand the canvas of any image by adding padding on each side. Choose a solid color or transparent background. Works entirely in your browser | nothing uploaded.",
+    "Expand any image by adding padding on each side — choose a solid color or transparent background. Free image padding tool, runs entirely in your browser. No upload.",
+  keywords: [
+    "add padding to image",
+    "expand image canvas",
+    "image canvas size tool",
+    "add white border image",
+    "image padding tool",
+    "canvas extend image",
+  ],
 };
 
 export default function ImagePaddingPage() {

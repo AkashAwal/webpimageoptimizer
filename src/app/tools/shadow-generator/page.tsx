@@ -9,7 +9,15 @@ import { OtherTools } from "@/components/converter/other-tools";
 export const metadata: Metadata = {
   title: "CSS Shadow Generator | Box Shadow & Text Shadow Tool, Free",
   description:
-    "Build box-shadow and text-shadow CSS rules visually with live preview. Adjust offset, blur, spread, and color, then copy the ready-to-use CSS property.",
+    "Build box-shadow and text-shadow CSS rules visually — adjust offset, blur, spread, and color with live preview, then copy the ready CSS property. Free CSS shadow generator.",
+  keywords: [
+    "css box shadow generator",
+    "box shadow tool",
+    "text shadow css",
+    "css shadow generator free",
+    "drop shadow generator",
+    "css shadow builder",
+  ],
 };
 
 export default function ShadowGeneratorPage() {

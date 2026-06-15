@@ -9,7 +9,15 @@ import { OtherTools } from "@/components/converter/other-tools";
 export const metadata: Metadata = {
   title: "JPG to WebP Converter | Free, In-Browser, No Upload",
   description:
-    "Convert JPG and JPEG images to WebP format instantly in your browser. No upload, no signup. Up to 34% smaller than JPEG at the same quality. Free JPG to WebP converter.",
+    "Free JPG to WebP converter that runs in your browser — no upload, no signup. Convert JPEG photos to WebP and cut file size by up to 34% at the same visual quality.",
+  keywords: [
+    "jpg to webp",
+    "jpeg to webp",
+    "convert jpg to webp",
+    "jpg webp converter online",
+    "jpeg to webp free",
+    "compress jpg to webp",
+  ],
   openGraph: {
     images: [{ url: "/og/jpg-to-webp.png", width: 1200, height: 630 }],
   },

@@ -9,7 +9,15 @@ import { RoundedCornersClient } from "./client";
 export const metadata: Metadata = {
   title: "Rounded Corners | Add Round Corners to Images Free, In-Browser",
   description:
-    "Add rounded corners to any image with a radius slider. Customize each corner independently. Output is always PNG to preserve the transparent background. Free, no upload.",
+    "Add rounded corners to any image with a live radius slider — customize each corner independently. Output is a transparent PNG. Free rounded corners tool, no upload.",
+  keywords: [
+    "rounded corners image",
+    "add rounded corners to photo",
+    "circle image online",
+    "round image corners free",
+    "rounded image generator",
+    "corner radius image",
+  ],
 };
 
 export default function Page() {

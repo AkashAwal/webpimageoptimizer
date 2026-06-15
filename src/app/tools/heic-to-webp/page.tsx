@@ -7,7 +7,15 @@ import { OtherTools } from "@/components/converter/other-tools";
 export const metadata: Metadata = {
   title: "HEIC to WebP Converter | Free, In-Browser, No Upload",
   description:
-    "Convert iPhone HEIC and HEIF photos to WebP format free in your browser. No upload, cross-browser via WebAssembly. Convert Apple HEIC to WebP online.",
+    "Convert iPhone HEIC and HEIF photos to WebP in your browser via WebAssembly — no upload, works in Chrome and Firefox. Free HEIC to WebP converter, instant download.",
+  keywords: [
+    "heic to webp",
+    "convert heic to webp",
+    "iphone heic to webp",
+    "heif to webp",
+    "apple heic webp converter",
+    "heic webp online",
+  ],
   openGraph: {
     images: [{ url: "/og/heic-to-webp.png", width: 1200, height: 630 }],
   },

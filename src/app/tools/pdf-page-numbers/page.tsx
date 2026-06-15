@@ -6,7 +6,15 @@ import { OtherTools } from "@/components/converter/other-tools";
 
 export const metadata: Metadata = {
   title: "Add Page Numbers to PDF | Free, In-Browser, No Upload",
-  description: "Add page numbers to every page of a PDF. Choose position, format, and starting number. Free, no upload, processed entirely in your browser.",
+  description:
+    "Add page numbers to every page of a PDF — choose position, format (1 of N, Roman numerals), and starting number. Free, in-browser, no upload required.",
+  keywords: [
+    "add page numbers to pdf",
+    "pdf page numbering",
+    "number pdf pages online",
+    "pdf pagination tool",
+    "insert page numbers pdf",
+  ],
   openGraph: {
     images: [{ url: "/og/pdf-page-numbers.png", width: 1200, height: 630 }],
   },

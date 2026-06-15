@@ -7,7 +7,15 @@ import { OtherTools } from "@/components/converter/other-tools";
 export const metadata: Metadata = {
   title: "JPG Resizer | Resize Images to JPG Free, In-Browser, No Upload",
   description:
-    "Resize any image to custom pixel dimensions and export as JPG. Adjust quality with a slider. Aspect ratio lock included. Free, private, no upload required.",
+    "Resize any image to custom pixel dimensions and export as JPG — adjust JPEG quality with a slider. Aspect ratio lock included. Free JPG resizer, no upload required.",
+  keywords: [
+    "jpg resizer",
+    "resize image to jpg",
+    "jpeg resizer online",
+    "resize jpg free",
+    "image resizer jpeg output",
+    "compress and resize jpg",
+  ],
   openGraph: {
     images: [{ url: "/og/jpg-resizer.png", width: 1200, height: 630 }],
   },

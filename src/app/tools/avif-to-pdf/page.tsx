@@ -7,7 +7,14 @@ import { OtherTools } from "@/components/converter/other-tools";
 export const metadata: Metadata = {
   title: "AVIF to PDF Converter | Free, In-Browser, No Upload",
   description:
-    "Convert AVIF images to PDF in your browser. Bridge modern image formats with universal document compatibility. No upload, no signup. Free AVIF to PDF converter.",
+    "Convert AVIF images to PDF instantly in your browser — no upload, no server. Embed next-gen AVIF photos into a portable PDF document. Free AVIF to PDF converter.",
+  keywords: [
+    "avif to pdf",
+    "convert avif to pdf",
+    "avif pdf converter",
+    "avif image converter",
+    "avif file to pdf",
+  ],
   openGraph: {
     images: [{ url: "/og/avif-to-pdf.png", width: 1200, height: 630 }],
   },

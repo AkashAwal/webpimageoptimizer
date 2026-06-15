@@ -9,7 +9,15 @@ import { OtherTools } from "@/components/converter/other-tools";
 export const metadata: Metadata = {
   title: "WebP Re-optimizer | Free, In-Browser, No Upload",
   description:
-    "Re-compress an existing WebP file at a different quality level. No upload, no signup. Fine-tune file size vs. quality for WebP images directly in your browser. Free tool.",
+    "Re-compress a WebP image at a different quality level to fine-tune file size vs. quality — no upload, no signup. Free WebP optimizer, runs entirely in your browser.",
+  keywords: [
+    "webp optimizer",
+    "compress webp",
+    "webp compressor online",
+    "reduce webp size",
+    "webp quality adjuster",
+    "recompress webp",
+  ],
   openGraph: {
     images: [{ url: "/og/webp-to-webp.png", width: 1200, height: 630 }],
   },

@@ -9,7 +9,15 @@ import { OtherTools } from "@/components/converter/other-tools";
 export const metadata: Metadata = {
   title: "Image to Base64 Encoder & Decoder | Free, In-Browser, No Upload",
   description:
-    "Encode any image to a Base64 string or data URI instantly. Also decode a Base64 string back to a downloadable image. Runs entirely in your browser | nothing is uploaded.",
+    "Encode any image to a Base64 string or data URI — or decode a Base64 string back to a downloadable image. Free, runs entirely in your browser, nothing is uploaded.",
+  keywords: [
+    "image to base64",
+    "base64 encoder image",
+    "convert image to base64",
+    "base64 decode image",
+    "data uri generator",
+    "base64 string from image",
+  ],
 };
 
 export default function ImageToBase64Page() {

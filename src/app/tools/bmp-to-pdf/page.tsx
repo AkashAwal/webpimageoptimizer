@@ -7,7 +7,14 @@ import { OtherTools } from "@/components/converter/other-tools";
 export const metadata: Metadata = {
   title: "BMP to PDF Converter | Free, In-Browser, No Upload",
   description:
-    "Convert BMP images to PDF instantly in your browser. Instantly shrink uncompressed BMP files into a portable document. No upload, no signup. Free BMP to PDF converter.",
+    "Convert BMP bitmap images to PDF in your browser — no upload, no signup. Shrink large uncompressed BMP files into a compact, shareable PDF instantly. Free converter.",
+  keywords: [
+    "bmp to pdf",
+    "convert bmp to pdf",
+    "bitmap to pdf",
+    "bmp pdf converter",
+    "bmp image to pdf",
+  ],
   openGraph: {
     images: [{ url: "/og/bmp-to-pdf.png", width: 1200, height: 630 }],
   },

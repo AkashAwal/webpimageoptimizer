@@ -6,7 +6,16 @@ import { OtherTools } from "@/components/converter/other-tools";
 
 export const metadata: Metadata = {
   title: "Compare PDF | View Two PDFs Side by Side Free, In-Browser",
-  description: "Compare two PDF files side by side, page by page. Spot differences between document versions visually without uploading. Free, in-browser, no upload required.",
+  description:
+    "Compare two PDF files side by side, page by page, directly in your browser. Visually spot changes between document versions without uploading anything. Free, no signup.",
+  keywords: [
+    "compare pdf files",
+    "pdf comparison tool",
+    "diff pdf",
+    "side by side pdf viewer",
+    "compare two pdf documents",
+    "pdf diff tool",
+  ],
   openGraph: {
     images: [{ url: "/og/compare-pdf.png", width: 1200, height: 630 }],
   },

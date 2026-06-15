@@ -6,7 +6,16 @@ import { OtherTools } from "@/components/converter/other-tools";
 
 export const metadata: Metadata = {
   title: "Watermark PDF | Add Text Watermark Free, In-Browser, No Upload",
-  description: "Add a custom text watermark to every page of a PDF. Choose position, opacity, and font size. Free, in-browser, no upload required.",
+  description:
+    "Add a custom text watermark to every page of a PDF — choose position, opacity, and font size. Free, in-browser, no upload required. Download the watermarked PDF instantly.",
+  keywords: [
+    "watermark pdf",
+    "add watermark to pdf",
+    "pdf watermark tool",
+    "text watermark pdf",
+    "stamp pdf pages",
+    "pdf watermark free",
+  ],
   openGraph: {
     images: [{ url: "/og/watermark-pdf.png", width: 1200, height: 630 }],
   },

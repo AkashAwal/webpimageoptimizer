@@ -6,7 +6,16 @@ import { OtherTools } from "@/components/converter/other-tools";
 
 export const metadata: Metadata = {
   title: "Merge PDF | Combine PDF Files Free, In-Browser, No Upload",
-  description: "Combine multiple PDF files into one document instantly in your browser. Drag in any number of PDFs, set the order, and download the merged file. Free, no upload.",
+  description:
+    "Merge multiple PDF files into one document in your browser — drag in any number of PDFs, set the order, and download the combined file. Free PDF merger, no upload.",
+  keywords: [
+    "merge pdf",
+    "combine pdf files",
+    "join pdf online",
+    "pdf merger free",
+    "merge pdf files online",
+    "combine multiple pdfs",
+  ],
   openGraph: {
     images: [{ url: "/og/merge-pdf.png", width: 1200, height: 630 }],
   },

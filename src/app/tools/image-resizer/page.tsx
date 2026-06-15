@@ -9,7 +9,16 @@ import { ImageResizerClient } from "./client";
 export const metadata: Metadata = {
   title: "Image Resizer | Resize Images Free, In-Browser, No Upload",
   description:
-    "Resize any image to exact pixel dimensions or a percentage scale. Lock the aspect ratio, choose quick preset sizes, and export as PNG, JPG, or WebP. Free, private, no upload.",
+    "Resize any image to exact pixel dimensions or a percentage scale — lock aspect ratio, use preset sizes, and export as PNG, JPG, or WebP. Free image resizer, no upload.",
+  keywords: [
+    "image resizer",
+    "resize image online",
+    "resize photo free",
+    "change image dimensions",
+    "image size converter",
+    "scale image online",
+    "resize picture",
+  ],
 };
 
 export default function Page() {

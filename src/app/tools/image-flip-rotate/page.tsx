@@ -9,7 +9,15 @@ import { ImageFlipRotateClient } from "./client";
 export const metadata: Metadata = {
   title: "Flip & Rotate Image | Free, In-Browser, No Upload",
   description:
-    "Flip images horizontally or vertically and rotate by 90°, 180°, or 270°. Live preview with smooth animations. Free, private, no upload required.",
+    "Flip images horizontally or vertically and rotate by 90°, 180°, or 270° with a live preview. Free online image flip and rotate tool — no upload, instant download.",
+  keywords: [
+    "flip image online",
+    "rotate image online",
+    "mirror image free",
+    "flip photo horizontally",
+    "rotate photo 90 degrees",
+    "image rotation tool",
+  ],
 };
 
 export default function Page() {

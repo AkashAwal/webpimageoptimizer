@@ -7,7 +7,15 @@ import { OtherTools } from "@/components/converter/other-tools";
 export const metadata: Metadata = {
   title: "HEIC Resizer | Resize iPhone Photos to JPG Free, In-Browser",
   description:
-    "Resize HEIC and HEIF photos from your iPhone to custom dimensions and export as JPG. Works via WebAssembly | no upload, no signup, no cloud processing.",
+    "Resize HEIC and HEIF photos from your iPhone to any pixel dimensions and export as JPG. Works via WebAssembly — no upload, no cloud, completely private. Free HEIC resizer.",
+  keywords: [
+    "heic resizer",
+    "resize heic photos",
+    "iphone photo resizer",
+    "heic to jpg resize",
+    "heif image resizer",
+    "resize iphone images",
+  ],
   openGraph: {
     images: [{ url: "/og/heic-resizer.png", width: 1200, height: 630 }],
   },

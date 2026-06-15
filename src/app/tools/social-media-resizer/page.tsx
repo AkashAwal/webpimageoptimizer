@@ -9,7 +9,15 @@ import { OtherTools } from "@/components/converter/other-tools";
 export const metadata: Metadata = {
   title: "Social Media Image Resizer | Free, In-Browser, No Upload",
   description:
-    "Resize any image to the exact dimensions for Instagram, Twitter/X, Facebook, LinkedIn, YouTube, and more. 10+ presets, custom sizes, three fit modes | all in your browser.",
+    "Resize any image to the exact dimensions for Instagram, Twitter/X, Facebook, LinkedIn, YouTube, and more — 10+ presets, three fit modes. Free social media image resizer.",
+  keywords: [
+    "social media image resizer",
+    "instagram image size",
+    "twitter image dimensions",
+    "facebook cover resizer",
+    "resize for instagram free",
+    "social media photo size",
+  ],
 };
 
 export default function SocialMediaResizerPage() {

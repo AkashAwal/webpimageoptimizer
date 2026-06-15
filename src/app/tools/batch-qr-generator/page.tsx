@@ -9,7 +9,14 @@ import { BatchQrGeneratorClient } from "./client";
 export const metadata: Metadata = {
   title: "Batch QR Code Generator | Generate Hundreds at Once, Free",
   description:
-    "Paste a list of URLs or text | one per line | and generate a QR code for each instantly. Download all as a ZIP file. Free, private, and nothing is uploaded.",
+    "Batch QR code generator — paste a list of URLs or text, one per line, and generate a QR code for each in seconds. Download all as a ZIP file. Free, private, no upload.",
+  keywords: [
+    "batch qr code generator",
+    "bulk qr code generator",
+    "generate multiple qr codes",
+    "qr code batch creator",
+    "mass qr code generator",
+  ],
   openGraph: {
     images: [{ url: "/og/batch-qr-generator.png", width: 1200, height: 630 }],
   },

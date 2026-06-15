@@ -6,7 +6,16 @@ import { OtherTools } from "@/components/converter/other-tools";
 
 export const metadata: Metadata = {
   title: "Protect PDF | Add Password to PDF Free, In-Browser, No Upload",
-  description: "Add password protection to any PDF file in your browser. No upload, no signup. The PDF is re-rendered and encrypted with your chosen password.",
+  description:
+    "Add password protection to any PDF file in your browser — no upload, no signup. Set an open password and download the encrypted PDF instantly. Free PDF password tool.",
+  keywords: [
+    "protect pdf",
+    "password protect pdf",
+    "encrypt pdf online",
+    "add password to pdf",
+    "lock pdf file",
+    "pdf encryption free",
+  ],
   openGraph: {
     images: [{ url: "/og/protect-pdf.png", width: 1200, height: 630 }],
   },

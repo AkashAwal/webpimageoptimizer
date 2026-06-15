@@ -7,7 +7,14 @@ import { OtherTools } from "@/components/converter/other-tools";
 export const metadata: Metadata = {
   title: "PNG to PDF Converter | Free, In-Browser, No Upload",
   description:
-    "Convert PNG images to PDF instantly in your browser. Preserves detail and transparency. No upload, no signup. Free PNG to PDF converter.",
+    "Convert PNG images to PDF in your browser — preserves transparency and full image detail. No upload, no signup. Free PNG to PDF converter, instant download.",
+  keywords: [
+    "png to pdf",
+    "convert png to pdf",
+    "image to pdf converter",
+    "png pdf maker",
+    "transparent png to pdf",
+  ],
   openGraph: {
     images: [{ url: "/og/png-to-pdf.png", width: 1200, height: 630 }],
   },

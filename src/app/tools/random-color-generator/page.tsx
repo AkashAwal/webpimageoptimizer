@@ -9,7 +9,15 @@ import { OtherTools } from "@/components/converter/other-tools";
 export const metadata: Metadata = {
   title: "Random Color Generator | Build Palettes Instantly, Free",
   description:
-    "Generate random colors and lock the ones you like to build a palette. Copy HEX, RGB, or HSL values with one click. Shuffle as many times as you want.",
+    "Generate random colors and lock the ones you like to build a palette — copy HEX, RGB, or HSL values with one click. Free random color generator, no signup.",
+  keywords: [
+    "random color generator",
+    "random color picker",
+    "random hex color",
+    "color palette randomizer",
+    "generate random colors",
+    "color inspiration tool",
+  ],
 };
 
 export default function RandomColorGeneratorPage() {

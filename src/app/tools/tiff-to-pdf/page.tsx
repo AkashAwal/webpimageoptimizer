@@ -7,7 +7,15 @@ import { OtherTools } from "@/components/converter/other-tools";
 export const metadata: Metadata = {
   title: "TIFF to PDF Converter | Free, In-Browser, No Upload",
   description:
-    "Convert high-resolution TIFF images to PDF in your browser. Perfect for scanned documents and print-ready files. No upload, no signup. Free TIFF to PDF converter.",
+    "Convert high-resolution TIFF images to PDF in your browser — ideal for scanned documents and print-quality files. No upload, no signup. Free TIFF to PDF converter.",
+  keywords: [
+    "tiff to pdf",
+    "convert tiff to pdf",
+    "tif to pdf",
+    "tiff pdf converter",
+    "scanned tiff to pdf",
+    "multi page tiff to pdf",
+  ],
   openGraph: {
     images: [{ url: "/og/tiff-to-pdf.png", width: 1200, height: 630 }],
   },

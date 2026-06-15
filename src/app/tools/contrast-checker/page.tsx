@@ -9,7 +9,15 @@ import { OtherTools } from "@/components/converter/other-tools";
 export const metadata: Metadata = {
   title: "WCAG Contrast Checker | Free Accessibility Color Tool",
   description:
-    "Check the contrast ratio between two colors and get instant WCAG 2.1 AA and AAA pass/fail results for normal text, large text, and UI components. Free, no upload.",
+    "Check the WCAG 2.1 contrast ratio between two colors and get instant AA and AAA pass/fail results for normal text, large text, and UI components. Free accessibility tool.",
+  keywords: [
+    "wcag contrast checker",
+    "color contrast ratio",
+    "wcag aa contrast",
+    "accessibility contrast tool",
+    "text contrast checker",
+    "color accessibility wcag 2.1",
+  ],
 };
 
 export default function ContrastCheckerPage() {

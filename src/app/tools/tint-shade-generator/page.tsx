@@ -9,7 +9,15 @@ import { OtherTools } from "@/components/converter/other-tools";
 export const metadata: Metadata = {
   title: "Tint & Shade Generator | Color Scale Tool, Free Online",
   description:
-    "Generate a full 10-step tint and shade scale from any base color | similar to Tailwind's color palette. Click any swatch to copy its HEX value instantly.",
+    "Generate a full 10-step tint and shade scale from any base color — similar to Tailwind's color system. Click any swatch to copy its HEX value. Free, runs in your browser.",
+  keywords: [
+    "tint shade generator",
+    "color tints and shades",
+    "color scale generator",
+    "tailwind color scale",
+    "color variation tool",
+    "light dark color palette",
+  ],
 };
 
 export default function TintShadeGeneratorPage() {

@@ -9,7 +9,15 @@ import { ColorPaletteClient } from "./client";
 export const metadata: Metadata = {
   title: "Color Palette Extractor | Get Dominant Colors from Any Image",
   description:
-    "Upload any image to extract its 8 dominant colors as hex, RGB, or HSL codes. Copy individual colors or all at once. Export the palette as a PNG swatch. Free, no upload.",
+    "Extract the dominant colors from any image as HEX, RGB, or HSL codes — upload a photo and get 8 key colors instantly. Export the palette as a PNG swatch. Free, no upload.",
+  keywords: [
+    "color palette extractor",
+    "extract colors from image",
+    "image color palette",
+    "dominant colors from image",
+    "color picker from image",
+    "palette from photo",
+  ],
 };
 
 export default function Page() {

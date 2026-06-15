@@ -9,7 +9,16 @@ import { FaviconGeneratorClient } from "./client";
 export const metadata: Metadata = {
   title: "Favicon Generator | Free, In-Browser, No Upload",
   description:
-    "Upload any image and download a complete favicon set: ICO, 16×16, 32×32, 48×48, 64×64, 128×128, 256×256 PNG, and 180×180 Apple touch icon. Free, no upload.",
+    "Generate a complete favicon set from any image — ICO, 16×16 to 256×256 PNG, and 180×180 Apple touch icon. Free favicon generator, no upload, download all sizes instantly.",
+  keywords: [
+    "favicon generator",
+    "favicon maker",
+    "create favicon",
+    "ico generator",
+    "favicon from image",
+    "apple touch icon generator",
+    "website icon maker",
+  ],
   openGraph: {
     images: [{ url: "/og/favicon-generator.png", width: 1200, height: 630 }],
   },

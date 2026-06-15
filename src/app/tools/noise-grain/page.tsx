@@ -9,7 +9,15 @@ import { OtherTools } from "@/components/converter/other-tools";
 export const metadata: Metadata = {
   title: "Add Noise & Film Grain to Image | Free, In-Browser, No Upload",
   description:
-    "Add film grain, luminance noise, or color noise to any image with adjustable intensity and live preview. Three grain types, works entirely in your browser.",
+    "Add film grain, luminance noise, or color noise to any photo with adjustable intensity and live preview. Three grain types. Free image grain tool, runs in your browser.",
+  keywords: [
+    "add grain to photo",
+    "film grain effect online",
+    "noise texture image",
+    "photo grain filter",
+    "vintage film grain",
+    "add noise to image",
+  ],
 };
 
 export default function NoiseGrainPage() {

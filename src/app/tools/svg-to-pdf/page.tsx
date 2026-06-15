@@ -7,7 +7,15 @@ import { OtherTools } from "@/components/converter/other-tools";
 export const metadata: Metadata = {
   title: "SVG to PDF Converter | Free, In-Browser, No Upload",
   description:
-    "Convert SVG vector graphics to PDF in your browser. Rasterize at any dimensions for crisp print-ready output. No upload, no signup. Free SVG to PDF converter.",
+    "Convert SVG vector graphics to PDF in your browser — rasterize at any dimensions for crisp print-ready output. No upload, no signup. Free SVG to PDF converter.",
+  keywords: [
+    "svg to pdf",
+    "convert svg to pdf",
+    "svg pdf converter",
+    "vector to pdf online",
+    "svg file to pdf",
+    "svg export pdf",
+  ],
   openGraph: {
     images: [{ url: "/og/svg-to-pdf.png", width: 1200, height: 630 }],
   },

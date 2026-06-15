@@ -9,7 +9,15 @@ import { BackgroundRemoverClient } from "./client";
 export const metadata: Metadata = {
   title: "Background Remover | Free AI, In-Browser, No Upload",
   description:
-    "Remove the background from any photo using AI | runs entirely in your browser. No upload, no API key. Download a transparent PNG instantly.",
+    "Remove the background from any photo using AI — runs 100% in your browser, nothing uploaded. Get a transparent PNG in seconds. Free AI background remover, no signup.",
+  keywords: [
+    "background remover",
+    "remove background from image",
+    "ai background remover",
+    "transparent background",
+    "remove image background online",
+    "background eraser",
+  ],
   openGraph: {
     images: [{ url: "/og/background-remover.png", width: 1200, height: 630 }],
   },

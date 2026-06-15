@@ -9,7 +9,15 @@ import { PhotoAdjustmentsClient } from "./client";
 export const metadata: Metadata = {
   title: "Photo Adjustments | Brightness, Contrast, Saturation & More",
   description:
-    "Adjust brightness, contrast, saturation, hue, blur, and sharpness online with a live preview. One-click presets included. Free, in-browser, no upload.",
+    "Adjust brightness, contrast, saturation, hue, blur, and sharpness online with a live preview. One-click presets for common looks. Free photo adjustment tool, no upload.",
+  keywords: [
+    "photo adjustments online",
+    "adjust image brightness online",
+    "image contrast tool",
+    "saturation editor online",
+    "photo editor free",
+    "brightness contrast saturation",
+  ],
 };
 
 export default function Page() {

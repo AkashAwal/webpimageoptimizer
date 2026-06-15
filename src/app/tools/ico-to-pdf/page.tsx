@@ -7,7 +7,14 @@ import { OtherTools } from "@/components/converter/other-tools";
 export const metadata: Metadata = {
   title: "ICO to PDF Converter | Free, In-Browser, No Upload",
   description:
-    "Convert ICO icon files to PDF in your browser. Useful for documenting icon sets or repurposing favicons. No upload, no signup. Free ICO to PDF converter.",
+    "Convert ICO icon files to PDF in your browser — useful for documenting icon sets or archiving favicons as printable pages. No upload, no signup. Free ICO to PDF converter.",
+  keywords: [
+    "ico to pdf",
+    "convert ico to pdf",
+    "icon file to pdf",
+    "favicon to pdf",
+    "ico image converter",
+  ],
   openGraph: {
     images: [{ url: "/og/ico-to-pdf.png", width: 1200, height: 630 }],
   },

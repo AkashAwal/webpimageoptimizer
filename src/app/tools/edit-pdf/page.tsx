@@ -6,7 +6,17 @@ import { OtherTools } from "@/components/converter/other-tools";
 
 export const metadata: Metadata = {
   title: "Edit PDF | Annotate, Highlight, Draw Free, In-Browser, No Upload",
-  description: "Add text, shapes, highlights, freehand drawings, and white-out boxes to any PDF page directly in your browser. Free, no upload, annotate and download instantly.",
+  description:
+    "Free PDF editor — add text, highlights, shapes, drawings, and white-out directly on any PDF page in your browser. No upload, no signup. Annotate and download instantly.",
+  keywords: [
+    "edit pdf online",
+    "pdf editor free",
+    "annotate pdf",
+    "add text to pdf",
+    "highlight pdf",
+    "pdf annotation tool",
+    "free pdf editor",
+  ],
   openGraph: {
     images: [{ url: "/og/edit-pdf.png", width: 1200, height: 630 }],
   },

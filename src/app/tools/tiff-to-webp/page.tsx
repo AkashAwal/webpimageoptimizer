@@ -9,7 +9,15 @@ import { OtherTools } from "@/components/converter/other-tools";
 export const metadata: Metadata = {
   title: "TIFF to WebP Converter | Free, In-Browser, No Upload",
   description:
-    "Convert TIFF images to WebP format in your browser. No upload, no signup. Reduce large TIFF files to lightweight WebP for web use. Free TIFF to WebP converter.",
+    "Convert TIFF images to WebP in your browser — shrink large TIFF files down to lightweight WebP for web use. No upload, no signup. Free TIFF to WebP converter.",
+  keywords: [
+    "tiff to webp",
+    "convert tiff to webp",
+    "tif to webp",
+    "tiff webp converter",
+    "reduce tiff file size",
+    "tiff to web format",
+  ],
   openGraph: {
     images: [{ url: "/og/tiff-to-webp.png", width: 1200, height: 630 }],
   },

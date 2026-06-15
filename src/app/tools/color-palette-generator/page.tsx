@@ -9,7 +9,15 @@ import { OtherTools } from "@/components/converter/other-tools";
 export const metadata: Metadata = {
   title: "Color Palette Generator | Complementary, Analogous & More",
   description:
-    "Generate complementary, analogous, triadic, and tetradic color schemes from any base color. Copy HEX values instantly. Free, runs in your browser.",
+    "Generate complementary, analogous, triadic, and tetradic color schemes from any base color. Copy HEX codes instantly. Free color palette generator — runs in your browser.",
+  keywords: [
+    "color palette generator",
+    "color scheme generator",
+    "complementary color generator",
+    "analogous color palette",
+    "color wheel generator",
+    "color harmony tool",
+  ],
 };
 
 export default function ColorPaletteGeneratorPage() {

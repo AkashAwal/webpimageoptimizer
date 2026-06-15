@@ -9,7 +9,15 @@ import { ImageBorderClient } from "./client";
 export const metadata: Metadata = {
   title: "Add Border to Image | Solid, Gradient & Blur Frame, Free",
   description:
-    "Add a solid color, gradient, or blurred photo-style border to any image. Choose width and colors, preview live, and download as PNG. Free, in-browser, no upload.",
+    "Add a solid color, gradient, or blurred photo-style border to any image. Choose width and colors, preview live, and download as PNG. Free image border tool, no upload.",
+  keywords: [
+    "add border to image",
+    "image border maker",
+    "photo frame online",
+    "picture border tool",
+    "gradient border image",
+    "blur frame photo",
+  ],
 };
 
 export default function Page() {

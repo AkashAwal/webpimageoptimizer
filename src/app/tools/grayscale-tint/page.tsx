@@ -9,7 +9,16 @@ import { GrayscaleTintClient } from "./client";
 export const metadata: Metadata = {
   title: "Grayscale & Tint Image | B&W, Sepia, Duotone Effects Free",
   description:
-    "Apply grayscale, sepia, warm, cool, faded, or duotone effects to any image with a live preview. Adjust intensity and custom colors. Free, in-browser, no upload.",
+    "Convert any image to grayscale, sepia, warm, cool, faded, or custom duotone with a live preview. Adjust intensity and download as PNG. Free, in-browser, no upload.",
+  keywords: [
+    "grayscale image online",
+    "black and white photo converter",
+    "sepia filter online",
+    "duotone effect",
+    "image tint tool",
+    "grayscale converter",
+    "photo filter online",
+  ],
 };
 
 export default function Page() {

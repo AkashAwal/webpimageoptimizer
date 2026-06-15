@@ -6,7 +6,16 @@ import { OtherTools } from "@/components/converter/other-tools";
 
 export const metadata: Metadata = {
   title: "Split PDF | Extract Pages Free, In-Browser, No Upload",
-  description: "Split a PDF into individual pages or custom page ranges. Free, in-browser, no upload required. Download as a ZIP of separate PDF files.",
+  description:
+    "Split a PDF into individual pages or custom page ranges — download as a ZIP of separate PDF files. Free PDF splitter, in-browser, no upload required.",
+  keywords: [
+    "split pdf",
+    "split pdf pages",
+    "extract pdf pages",
+    "pdf splitter online",
+    "separate pdf pages",
+    "divide pdf file",
+  ],
   openGraph: {
     images: [{ url: "/og/split-pdf.png", width: 1200, height: 630 }],
   },

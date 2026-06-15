@@ -7,7 +7,14 @@ import { OtherTools } from "@/components/converter/other-tools";
 export const metadata: Metadata = {
   title: "GIF to PDF Converter | Free, In-Browser, No Upload",
   description:
-    "Convert GIF images to PDF in your browser. Extracts the first frame as a clean static PDF page. No upload, no signup. Free GIF to PDF converter.",
+    "Convert GIF images to PDF in your browser — extracts the first frame as a clean, static PDF page. No upload, no signup. Free GIF to PDF converter, instant download.",
+  keywords: [
+    "gif to pdf",
+    "convert gif to pdf",
+    "gif image to pdf",
+    "gif converter online",
+    "animated gif to pdf",
+  ],
   openGraph: {
     images: [{ url: "/og/gif-to-pdf.png", width: 1200, height: 630 }],
   },

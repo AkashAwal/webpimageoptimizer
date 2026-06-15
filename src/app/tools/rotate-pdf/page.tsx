@@ -6,7 +6,16 @@ import { OtherTools } from "@/components/converter/other-tools";
 
 export const metadata: Metadata = {
   title: "Rotate PDF | Rotate Pages Free, In-Browser, No Upload",
-  description: "Rotate PDF pages 90°, 180°, or 270°. Apply to all pages, even pages only, or odd pages only. Free, in-browser, no upload required.",
+  description:
+    "Rotate PDF pages 90°, 180°, or 270° — apply to all pages, odd pages only, or even pages only. Free, in-browser, no upload required. Download the rotated PDF instantly.",
+  keywords: [
+    "rotate pdf",
+    "rotate pdf pages online",
+    "fix pdf orientation",
+    "pdf rotation tool",
+    "turn pdf pages",
+    "rotate all pdf pages",
+  ],
   openGraph: {
     images: [{ url: "/og/rotate-pdf.png", width: 1200, height: 630 }],
   },

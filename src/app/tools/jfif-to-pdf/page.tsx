@@ -7,7 +7,14 @@ import { OtherTools } from "@/components/converter/other-tools";
 export const metadata: Metadata = {
   title: "JFIF to PDF Converter | Free, In-Browser, No Upload",
   description:
-    "Convert JFIF photos to PDF in your browser. JFIF is a JPEG variant | full quality preserved in the PDF output. No upload, no signup. Free JFIF to PDF converter.",
+    "Convert JFIF photos to PDF in your browser — JFIF is a JPEG variant so full image quality is preserved in the PDF. No upload, no signup. Free JFIF to PDF converter.",
+  keywords: [
+    "jfif to pdf",
+    "convert jfif to pdf",
+    "jfif converter",
+    "jfif image to pdf",
+    "jfif file converter",
+  ],
   openGraph: {
     images: [{ url: "/og/jfif-to-pdf.png", width: 1200, height: 630 }],
   },

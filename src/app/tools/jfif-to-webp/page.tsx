@@ -9,7 +9,14 @@ import { OtherTools } from "@/components/converter/other-tools";
 export const metadata: Metadata = {
   title: "JFIF to WebP Converter | Free, In-Browser, No Upload",
   description:
-    "Convert JFIF photos to WebP format instantly in your browser. No upload, no signup. JFIF is a JPEG variant | get up to 34% smaller files with WebP. Free converter.",
+    "Convert JFIF photos to WebP in your browser — JFIF is a JPEG variant, and WebP cuts file size by up to 34%. No upload, no signup. Free JFIF to WebP converter.",
+  keywords: [
+    "jfif to webp",
+    "convert jfif to webp",
+    "jfif webp converter",
+    "jfif image converter",
+    "jfif to webp online",
+  ],
   openGraph: {
     images: [{ url: "/og/jfif-to-webp.png", width: 1200, height: 630 }],
   },

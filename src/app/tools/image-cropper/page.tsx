@@ -9,7 +9,15 @@ import { ImageCropperClient } from "./client";
 export const metadata: Metadata = {
   title: "Image Cropper | Free, In-Browser, No Upload",
   description:
-    "Crop images online to a custom area or preset ratio | 1:1, 16:9, 4:3, 3:2, and more. Drag crop handles directly on the image. Free, private, no upload.",
+    "Crop any image to a custom area or preset ratio — 1:1, 16:9, 4:3, 3:2, and more. Drag the crop handles directly on the image. Free online image cropper, no upload.",
+  keywords: [
+    "image cropper",
+    "crop image online",
+    "crop photo free",
+    "online image crop tool",
+    "photo crop preset ratio",
+    "free image editor crop",
+  ],
   openGraph: {
     images: [{ url: "/og/image-cropper.png", width: 1200, height: 630 }],
   },

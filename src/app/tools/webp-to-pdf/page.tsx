@@ -7,7 +7,14 @@ import { OtherTools } from "@/components/converter/other-tools";
 export const metadata: Metadata = {
   title: "WebP to PDF Converter | Free, In-Browser, No Upload",
   description:
-    "Convert WebP images to PDF instantly in your browser. No upload, no signup. Great for sharing, printing, or archiving modern web images as documents.",
+    "Convert WebP images to PDF in your browser — ideal for sharing, printing, or archiving modern web images as documents. No upload, no signup. Free WebP to PDF converter.",
+  keywords: [
+    "webp to pdf",
+    "convert webp to pdf",
+    "webp image to pdf",
+    "webp pdf converter",
+    "webp to document",
+  ],
   openGraph: {
     images: [{ url: "/og/webp-to-pdf.png", width: 1200, height: 630 }],
   },

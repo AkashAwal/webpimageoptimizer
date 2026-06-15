@@ -9,7 +9,15 @@ import { OtherTools } from "@/components/converter/other-tools";
 export const metadata: Metadata = {
   title: "CSS Gradient Generator | Free Linear & Radial Gradient Tool",
   description:
-    "Build beautiful linear and radial CSS gradients visually. Add color stops, adjust angles, and copy the ready-to-use CSS background property instantly.",
+    "Build linear and radial CSS gradients visually — add color stops, adjust the angle, and copy the ready-to-use CSS background property. Free CSS gradient generator.",
+  keywords: [
+    "css gradient generator",
+    "linear gradient generator",
+    "radial gradient css",
+    "gradient background css",
+    "css gradient maker",
+    "gradient color tool",
+  ],
 };
 
 export default function GradientGeneratorPage() {

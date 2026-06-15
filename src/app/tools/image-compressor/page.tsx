@@ -9,7 +9,16 @@ import { ImageCompressorClient } from "./client";
 export const metadata: Metadata = {
   title: "Image Compressor | Free, In-Browser, No Upload",
   description:
-    "Compress JPEG, PNG, and WebP images online. Adjust quality with a slider and see exact file size savings before downloading. Free, private, no upload.",
+    "Compress JPEG, PNG, and WebP images online — adjust quality with a slider and see the exact file size saving before you download. Free image compressor, private, no upload.",
+  keywords: [
+    "image compressor",
+    "compress image online",
+    "reduce image file size",
+    "jpeg compressor",
+    "png compressor",
+    "webp optimizer",
+    "image size reducer",
+  ],
   openGraph: {
     images: [{ url: "/og/image-compressor.png", width: 1200, height: 630 }],
   },

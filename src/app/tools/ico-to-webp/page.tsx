@@ -9,7 +9,15 @@ import { OtherTools } from "@/components/converter/other-tools";
 export const metadata: Metadata = {
   title: "ICO to WebP Converter | Free, In-Browser, No Upload",
   description:
-    "Convert ICO icon files to WebP images instantly in your browser. No upload, no signup. Extract and repurpose favicons and icon files as web-ready WebP. Free converter.",
+    "Convert ICO icon files to WebP images in your browser — extract and repurpose favicons as web-ready WebP. No upload, no signup. Free ICO to WebP converter.",
+  keywords: [
+    "ico to webp",
+    "convert ico to webp",
+    "favicon to webp",
+    "icon to webp",
+    "ico image converter",
+    "ico webp online",
+  ],
   openGraph: {
     images: [{ url: "/og/ico-to-webp.png", width: 1200, height: 630 }],
   },

@@ -9,7 +9,15 @@ import { QrCodeWithLogoClient } from "./client";
 export const metadata: Metadata = {
   title: "QR Code with Logo | Embed Your Brand, Free, In-Browser",
   description:
-    "Generate a QR code with your logo or image embedded in the centre. Adjust logo size and shape. Download as PNG. Free and private | nothing is uploaded.",
+    "Generate a QR code with your logo or image embedded in the centre — adjust logo size and shape. Download as PNG. Free QR code with logo generator, nothing uploaded.",
+  keywords: [
+    "qr code with logo",
+    "branded qr code",
+    "qr code logo maker",
+    "custom qr code image",
+    "logo qr code generator",
+    "qr code with image center",
+  ],
   openGraph: {
     images: [{ url: "/og/qr-code-with-logo.png", width: 1200, height: 630 }],
   },

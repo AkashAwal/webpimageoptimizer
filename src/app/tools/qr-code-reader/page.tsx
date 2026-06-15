@@ -9,7 +9,15 @@ import { QrCodeReaderClient } from "./client";
 export const metadata: Metadata = {
   title: "QR Code Reader | Decode QR Codes from Images, Free",
   description:
-    "Upload any image containing a QR code to decode it instantly. Works with screenshots, photos, and saved images. No camera required | free and private.",
+    "Decode any QR code from an image file — upload a screenshot, photo, or saved image and get the encoded text or URL instantly. Free QR code reader, no camera required.",
+  keywords: [
+    "qr code reader",
+    "qr code decoder",
+    "read qr code from image",
+    "scan qr code photo",
+    "qr code scanner online",
+    "decode qr code",
+  ],
   openGraph: {
     images: [{ url: "/og/qr-code-reader.png", width: 1200, height: 630 }],
   },

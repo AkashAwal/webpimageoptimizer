@@ -8,7 +8,15 @@ import { OtherTools } from "@/components/converter/other-tools";
 export const metadata: Metadata = {
   title: "HEIC to PNG Converter | Free, In-Browser, No Upload",
   description:
-    "Convert iPhone HEIC and HEIF photos to PNG format free in your browser. Lossless output with full transparency support. No upload, no signup required.",
+    "Convert iPhone HEIC and HEIF photos to lossless PNG in your browser — full transparency support, no upload needed. Works via WebAssembly. Free HEIC to PNG converter.",
+  keywords: [
+    "heic to png",
+    "convert heic to png",
+    "iphone photo to png",
+    "heif to png",
+    "heic png converter",
+    "heic lossless convert",
+  ],
   openGraph: {
     images: [{ url: "/og/heic-to-png.png", width: 1200, height: 630 }],
   },

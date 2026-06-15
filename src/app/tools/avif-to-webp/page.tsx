@@ -9,7 +9,14 @@ import { OtherTools } from "@/components/converter/other-tools";
 export const metadata: Metadata = {
   title: "AVIF to WebP Converter | Free, In-Browser, No Upload",
   description:
-    "Convert AVIF images to WebP format instantly in your browser. No upload, no signup. Improve compatibility without sacrificing quality. Free AVIF to WebP converter.",
+    "Convert AVIF images to WebP format in your browser — no upload, no signup. Switch from AVIF to the widely-compatible WebP format instantly. Free AVIF to WebP converter.",
+  keywords: [
+    "avif to webp",
+    "convert avif to webp",
+    "avif webp converter",
+    "avif image converter",
+    "avif to webp online",
+  ],
   openGraph: {
     images: [{ url: "/og/avif-to-webp.png", width: 1200, height: 630 }],
   },

@@ -9,7 +9,15 @@ import { ImageWatermarkClient } from "./client";
 export const metadata: Metadata = {
   title: "Image Watermark | Add Text Watermark Free, In-Browser",
   description:
-    "Add a custom text watermark to any image. Control position, font size, opacity, color, and font style. Tiled pattern mode for copyright protection. Free, no upload.",
+    "Add a custom text watermark to any image — control position, font, size, opacity, and color. Tiled pattern mode for copyright protection. Free, in-browser, no upload.",
+  keywords: [
+    "add watermark to image",
+    "text watermark tool",
+    "watermark photo online",
+    "image watermark free",
+    "copyright watermark",
+    "tiled watermark photo",
+  ],
 };
 
 export default function Page() {

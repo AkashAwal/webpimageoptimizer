@@ -9,7 +9,15 @@ import { ImageCollageClient } from "./client";
 export const metadata: Metadata = {
   title: "Image Collage Maker | Combine Photos in a Grid, Free Online",
   description:
-    "Combine 2 to 6 images into a grid collage. Choose from six layouts, set the gap width, pick a background color, and download as JPEG. Free, in-browser, no upload.",
+    "Combine 2–6 photos into a grid collage — choose from 6 layouts, set gap width, pick a background color, and download as JPEG. Free image collage maker, no upload.",
+  keywords: [
+    "image collage maker",
+    "photo collage online",
+    "combine photos into grid",
+    "collage maker free",
+    "grid photo collage",
+    "picture collage maker",
+  ],
 };
 
 export default function Page() {

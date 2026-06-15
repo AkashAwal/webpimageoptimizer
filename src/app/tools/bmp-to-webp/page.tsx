@@ -9,7 +9,14 @@ import { OtherTools } from "@/components/converter/other-tools";
 export const metadata: Metadata = {
   title: "BMP to WebP Converter | Free, In-Browser, No Upload",
   description:
-    "Convert BMP images to WebP format instantly in your browser. No upload, no signup. Massive file size reduction from uncompressed BMP to efficient WebP. Free converter.",
+    "Convert BMP images to WebP in your browser — no upload, no signup. Reduce oversized BMP files to efficient WebP format with massive file size savings. Free converter.",
+  keywords: [
+    "bmp to webp",
+    "convert bmp to webp",
+    "bitmap to webp",
+    "bmp webp converter",
+    "bmp image converter",
+  ],
   openGraph: {
     images: [{ url: "/og/bmp-to-webp.png", width: 1200, height: 630 }],
   },

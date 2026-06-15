@@ -7,7 +7,14 @@ import { OtherTools } from "@/components/converter/other-tools";
 export const metadata: Metadata = {
   title: "PNG Resizer | Resize Images to PNG Free, In-Browser, No Upload",
   description:
-    "Resize any image to custom pixel dimensions and export as lossless PNG. Aspect ratio lock included. Free, private, no upload | all processing happens in your browser.",
+    "Resize any image to custom pixel dimensions and export as lossless PNG — aspect ratio lock included. Free PNG resizer, runs in your browser. No upload required.",
+  keywords: [
+    "png resizer",
+    "resize image to png",
+    "resize png online free",
+    "png image resizer",
+    "lossless image resizer",
+  ],
   openGraph: {
     images: [{ url: "/og/png-resizer.png", width: 1200, height: 630 }],
   },

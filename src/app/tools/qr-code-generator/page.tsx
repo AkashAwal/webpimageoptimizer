@@ -9,7 +9,15 @@ import { QrCodeGeneratorClient } from "./client";
 export const metadata: Metadata = {
   title: "QR Code Generator | Free, In-Browser, No Upload",
   description:
-    "Generate QR codes for URLs, plain text, WiFi networks, email addresses, phone numbers, and contacts. Download as PNG or SVG. Free and private | nothing is uploaded.",
+    "Generate QR codes for URLs, text, WiFi networks, email, phone numbers, and contacts — download as PNG or SVG. Free QR code generator, private, nothing is uploaded.",
+  keywords: [
+    "qr code generator",
+    "free qr code maker",
+    "qr code for url",
+    "wifi qr code",
+    "custom qr code generator",
+    "qr code online free",
+  ],
   openGraph: {
     images: [{ url: "/og/qr-code-generator.png", width: 1200, height: 630 }],
   },

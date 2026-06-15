@@ -6,7 +6,16 @@ import { OtherTools } from "@/components/converter/other-tools";
 
 export const metadata: Metadata = {
   title: "PDF to Images | Convert Every Page to JPG, PNG, or WebP Free",
-  description: "Convert each page of a PDF to a JPG, PNG, or WebP image. Choose quality and scale. All pages are exported as a ZIP file. Free, in-browser, no upload.",
+  description:
+    "Convert every page of a PDF to JPG, PNG, or WebP images — choose quality and scale, then download all pages as a ZIP file. Free, in-browser, no upload required.",
+  keywords: [
+    "pdf to images",
+    "pdf to jpg",
+    "convert pdf to image",
+    "pdf to png free",
+    "extract pdf pages as images",
+    "pdf page to image converter",
+  ],
   openGraph: {
     images: [{ url: "/og/pdf-to-images.png", width: 1200, height: 630 }],
   },

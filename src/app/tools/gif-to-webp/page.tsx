@@ -9,7 +9,14 @@ import { OtherTools } from "@/components/converter/other-tools";
 export const metadata: Metadata = {
   title: "GIF to WebP Converter | Free, In-Browser, No Upload",
   description:
-    "Convert GIF images to WebP format instantly in your browser. No upload, no signup. Smaller file sizes, better compression than GIF. Free GIF to WebP converter.",
+    "Convert GIF images to WebP format in your browser — no upload, no signup. WebP offers better compression than GIF for static frames. Free GIF to WebP converter.",
+  keywords: [
+    "gif to webp",
+    "convert gif to webp",
+    "animated gif to webp",
+    "gif webp converter",
+    "gif to webp online",
+  ],
   openGraph: {
     images: [{ url: "/og/gif-to-webp.png", width: 1200, height: 630 }],
   },

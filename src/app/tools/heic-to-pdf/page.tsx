@@ -7,7 +7,14 @@ import { OtherTools } from "@/components/converter/other-tools";
 export const metadata: Metadata = {
   title: "HEIC to PDF Converter | Free, In-Browser, No Upload",
   description:
-    "Convert iPhone HEIC photos to PDF directly in your browser. No upload, no signup. Works in Chrome and Firefox via WebAssembly. Free HEIC to PDF converter.",
+    "Convert iPhone HEIC and HEIF photos to PDF directly in your browser using WebAssembly — no upload, no signup. Works in Chrome and Firefox. Free HEIC to PDF converter.",
+  keywords: [
+    "heic to pdf",
+    "convert heic to pdf",
+    "iphone photo to pdf",
+    "heif to pdf",
+    "heic pdf converter",
+  ],
   openGraph: {
     images: [{ url: "/og/heic-to-pdf.png", width: 1200, height: 630 }],
   },

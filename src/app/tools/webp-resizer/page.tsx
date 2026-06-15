@@ -9,7 +9,15 @@ import { WebpResizerTool } from "./client";
 export const metadata: Metadata = {
   title: "WebP Resizer | Resize Images to Any Size, Free & In-Browser",
   description:
-    "Resize PNG, JPG, WebP, or GIF images to custom dimensions and export as WebP. Aspect ratio lock, adjustable quality. Free, client-side, no upload.",
+    "Resize any image to custom pixel dimensions and export as WebP — aspect ratio lock and adjustable quality included. Free WebP resizer, runs in your browser. No upload.",
+  keywords: [
+    "webp resizer",
+    "resize image to webp",
+    "resize to webp format",
+    "webp image resize online",
+    "resize webp file",
+    "image resizer webp output",
+  ],
   openGraph: {
     images: [{ url: "/og/webp-resizer.png", width: 1200, height: 630 }],
   },

@@ -7,7 +7,14 @@ import { OtherTools } from "@/components/converter/other-tools";
 export const metadata: Metadata = {
   title: "HTML to PDF Converter | Free, In-Browser, No Upload",
   description:
-    "Convert HTML files to PDF instantly in your browser. Drop any .html file and download a pixel-perfect PDF. No upload, no signup, completely private.",
+    "Convert any HTML file to a pixel-perfect PDF in your browser — just drop a .html file and download the PDF. No upload, no signup, completely private. Free HTML to PDF.",
+  keywords: [
+    "html to pdf",
+    "convert html to pdf",
+    "html file to pdf",
+    "webpage to pdf converter",
+    "html pdf generator",
+  ],
   openGraph: {
     images: [{ url: "/og/html-to-pdf.png", width: 1200, height: 630 }],
   },
