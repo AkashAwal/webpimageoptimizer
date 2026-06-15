@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { CaretLeft, Check, GithubLogo, XLogo } from "@/components/ui/icons";
+import { CaretLeft, Check } from "@/components/ui/icons";
 import { SiteHeader } from "@/components/layout/site-header";
 import { SiteFooter } from "@/components/layout/site-footer";
 import { TOOLS } from "@/lib/tools";
@@ -127,38 +127,16 @@ export default function Page() {
             <h2 className="text-xl font-bold tracking-tight text-foreground mb-3">Built by</h2>
             <div className="space-y-6">
               {/* Akash Awal */}
-              <div className="flex flex-col gap-1">
+              <div>
                 <a href="https://akashawal.com" target="_blank" rel="noopener noreferrer" className="inline-flex min-h-[44px] items-center text-[14px] font-semibold text-foreground hover:text-foreground/70 transition-colors">
                   Akash Awal
                 </a>
-                <div className="flex items-center gap-1 text-muted-foreground">
-                  <a href="https://github.com/akashawal" target="_blank" rel="noopener noreferrer" className="inline-flex h-8 min-w-[44px] items-center gap-1.5 text-[13px] hover:text-foreground transition-colors" aria-label="Akash Awal on GitHub">
-                    <GithubLogo size={14} />
-                    GitHub
-                  </a>
-                  <span className="text-border" aria-hidden="true">•</span>
-                  <a href="https://x.com/akashawal17" target="_blank" rel="noopener noreferrer" className="inline-flex h-8 min-w-[44px] items-center gap-1.5 text-[13px] hover:text-foreground transition-colors" aria-label="Akash Awal on X">
-                    <XLogo size={14} />
-                    X / Twitter
-                  </a>
-                </div>
               </div>
               {/* Gray Cup */}
-              <div className="flex flex-col gap-1">
-                <a href="https://graycup.com" target="_blank" rel="noopener noreferrer" className="inline-flex min-h-[44px] items-center text-[14px] font-semibold text-foreground hover:text-foreground/70 transition-colors">
+              <div>
+                <a href="https://graycup.org" target="_blank" rel="noopener noreferrer" className="inline-flex min-h-[44px] items-center text-[14px] font-semibold text-foreground hover:text-foreground/70 transition-colors">
                   Gray Cup
                 </a>
-                <div className="flex items-center gap-1 text-muted-foreground">
-                  <a href="https://github.com/nermalcat69" target="_blank" rel="noopener noreferrer" className="inline-flex h-8 min-w-[44px] items-center gap-1.5 text-[13px] hover:text-foreground transition-colors" aria-label="Gray Cup on GitHub">
-                    <GithubLogo size={14} />
-                    GitHub
-                  </a>
-                  <span className="text-border" aria-hidden="true">•</span>
-                  <a href="https://x.com/arjunaditya_" target="_blank" rel="noopener noreferrer" className="inline-flex h-8 min-w-[44px] items-center gap-1.5 text-[13px] hover:text-foreground transition-colors" aria-label="Gray Cup on X">
-                    <XLogo size={14} />
-                    X / Twitter
-                  </a>
-                </div>
               </div>
             </div>
           </section>

@@ -1,5 +1,4 @@
 import Link from "next/link";
-import { GithubLogo, XLogo } from "@/components/ui/icons";
 import { TOOLS } from "@/lib/tools";
 
 export function SiteFooter() {
@@ -58,7 +57,7 @@ export function SiteFooter() {
                 { href: "/security", label: "Security" },
                 { href: "/contact", label: "Contact" },
                 { href: "/privacy", label: "Privacy Policy" },
-                { href: "https://graycup.com", label: "Gray Cup", external: true },
+                { href: "https://graycup.org", label: "Gray Cup", external: true },
               ].map(({ href, label, external }) => (
                 <li key={href}>
                   {external ? (
@@ -89,67 +88,25 @@ export function SiteFooter() {
               Built by
             </p>
             <ul className="mt-3 space-y-3">
-              {/* Akash Awal */}
               <li>
                 <a
                   href="https://akashawal.com"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex min-h-[44px] items-center text-[13px] text-muted-foreground hover:text-foreground transition-colors font-medium"
+                  className="text-[13px] text-muted-foreground hover:text-foreground transition-colors font-medium"
                 >
                   Akash Awal
                 </a>
-                <div className="flex items-center gap-1 mt-1">
-                  <a
-                    href="https://github.com/akashawal"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex h-8 w-8 items-center justify-center text-muted-foreground hover:text-foreground transition-colors"
-                    aria-label="Akash Awal on GitHub"
-                  >
-                    <GithubLogo size={15} />
-                  </a>
-                  <a
-                    href="https://x.com/akashawal17"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex h-8 w-8 items-center justify-center text-muted-foreground hover:text-foreground transition-colors"
-                    aria-label="Akash Awal on X"
-                  >
-                    <XLogo size={15} />
-                  </a>
-                </div>
               </li>
-              {/* Gray Cup */}
               <li>
                 <a
-                  href="https://graycup.com"
+                  href="https://graycup.org"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex min-h-[44px] items-center text-[13px] text-muted-foreground hover:text-foreground transition-colors font-medium"
+                  className="text-[13px] text-muted-foreground hover:text-foreground transition-colors font-medium"
                 >
                   Gray Cup
                 </a>
-                <div className="flex items-center gap-1 mt-1">
-                  <a
-                    href="https://github.com/nermalcat69"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex h-8 w-8 items-center justify-center text-muted-foreground hover:text-foreground transition-colors"
-                    aria-label="Gray Cup on GitHub"
-                  >
-                    <GithubLogo size={15} />
-                  </a>
-                  <a
-                    href="https://x.com/arjunaditya_"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex h-8 w-8 items-center justify-center text-muted-foreground hover:text-foreground transition-colors"
-                    aria-label="Gray Cup on X"
-                  >
-                    <XLogo size={15} />
-                  </a>
-                </div>
               </li>
             </ul>
           </div>
