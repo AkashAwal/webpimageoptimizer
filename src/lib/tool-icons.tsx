@@ -54,6 +54,7 @@ import {
   Eye,
   SelectionBackground,
   Shuffle,
+  Fingerprint,
 } from "@phosphor-icons/react";
 
 export const TOOL_ICONS: Record<string, React.ReactNode> = {
@@ -131,4 +132,5 @@ export const TOOL_ICONS: Record<string, React.ReactNode> = {
   "/tools/shadow-generator": <SelectionBackground size={22} />,
   "/tools/random-color-generator": <Shuffle size={22} />,
   "/remove-pdf-pages": <MinusCircle size={22} />,
+  "/tools/plagiarism-checker": <Fingerprint size={22} />,
 };

@@ -56,4 +56,5 @@ export {
   TextAa,
   Hash,
   Copy,
+  Fingerprint,
 } from "@phosphor-icons/react";

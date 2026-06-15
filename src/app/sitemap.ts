@@ -86,6 +86,7 @@ const TOOL_PATHS = [
   "/tools/lorem-ipsum",
   "/tools/text-case-converter",
   "/tools/word-counter",
+  "/tools/plagiarism-checker",
 ];
 
 const STATIC_PAGES = [

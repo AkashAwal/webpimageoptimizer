@@ -660,6 +660,14 @@ export const TOOLS = [
     badge: "Reading time",
     category: "text-tools" as CategoryId,
   },
+  {
+    href: "/tools/plagiarism-checker",
+    name: "Plagiarism Checker",
+    shortName: "Plagiarism Checker",
+    description: "Check your content for plagiarism and duplicate phrases. Get exact match and partial match scores with a downloadable PDF report.",
+    badge: "No word limit",
+    category: "text-tools" as CategoryId,
+  },
 ] as const;
 
 export type Tool = (typeof TOOLS)[number];
