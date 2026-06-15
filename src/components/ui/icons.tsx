@@ -55,6 +55,5 @@ export {
   Article,
   TextAa,
   Hash,
-  Sparkle,
   Copy,
 } from "@phosphor-icons/react";

@@ -7,16 +7,16 @@ import { LoremIpsumClient } from "./client";
 import { OtherTools } from "@/components/converter/other-tools";
 
 export const metadata: Metadata = {
-  title: "Lorem Ipsum Generator | Classic & AI Topic Mode, Free Online",
+  title: "Lorem Ipsum Generator | Free Placeholder Text, No Signup",
   description:
-    "Generate classic lorem ipsum placeholder text or AI-powered filler copy on any topic. Choose paragraph count, copy instantly. Runs in your browser — no signup needed.",
+    "Generate classic lorem ipsum placeholder text instantly. Choose 1–10 paragraphs, shuffle on every click, and copy with one button. Free, in-browser, no signup needed.",
   keywords: [
     "lorem ipsum generator",
     "placeholder text generator",
     "dummy text generator",
     "filler text",
     "lorem ipsum online",
-    "ai lorem ipsum",
+    "lorem ipsum copy paste",
   ],
 };
 
@@ -41,7 +41,7 @@ export default function LoremIpsumPage() {
               Lorem Ipsum Generator
             </h1>
             <p className="text-[13px] text-muted-foreground">
-              Classic placeholder text or AI-powered filler copy on any topic.
+              Classic placeholder text — shuffle and copy in one click.
             </p>
           </div>
         </div>
@@ -63,36 +63,9 @@ export default function LoremIpsumPage() {
 
           <section>
             <h2 className="text-[17px] font-semibold tracking-tight text-foreground">
-              Classic vs AI Topic mode
-            </h2>
-            <p className="mt-2 text-[13px] leading-relaxed text-muted-foreground">
-              <strong className="text-foreground">Classic</strong> mode generates the familiar lorem ipsum Latin
-              paragraphs instantly in your browser — no network call needed. Use it whenever you just need inert filler
-              to fill a layout.
-            </p>
-            <p className="mt-2 text-[13px] leading-relaxed text-muted-foreground">
-              <strong className="text-foreground">AI Topic</strong> mode generates realistic, readable placeholder text
-              in English about any subject you specify. This is useful when you need a client or stakeholder to see
-              realistic content in a mockup without writing the actual copy yet — a tech startup landing page, a recipe
-              blog, or a travel brochure.
-            </p>
-          </section>
-
-          <section>
-            <h2 className="text-[17px] font-semibold tracking-tight text-foreground">
               Frequently asked questions
             </h2>
             <div className="mt-4 space-y-4">
-              <div>
-                <h3 className="text-[14px] font-semibold text-foreground">
-                  Does AI mode send my data anywhere?
-                </h3>
-                <p className="mt-1 text-[13px] leading-relaxed text-muted-foreground">
-                  AI Topic mode sends only your topic string to the Anthropic API to generate text. No personal data,
-                  images, or files are transmitted. Classic mode runs entirely in your browser with no network
-                  requests.
-                </p>
-              </div>
               <div>
                 <h3 className="text-[14px] font-semibold text-foreground">
                   How many paragraphs can I generate?

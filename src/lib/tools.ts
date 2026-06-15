@@ -640,8 +640,8 @@ export const TOOLS = [
     href: "/tools/lorem-ipsum",
     name: "Lorem Ipsum Generator",
     shortName: "Lorem Ipsum Generator",
-    description: "Generate classic lorem ipsum placeholder text or AI-powered filler text on any topic. Copy paragraphs instantly.",
-    badge: "AI topic mode",
+    description: "Generate classic lorem ipsum placeholder text with a paragraph count slider. Shuffled on every click, copy instantly.",
+    badge: "Instant copy",
     category: "text-tools" as CategoryId,
   },
   {
@@ -719,7 +719,7 @@ export const CATEGORY_METADATA = [
     href: "/text-tools",
     description: "Generate lorem ipsum placeholder text, convert text case, and count words, characters, and reading time.",
     seoTitle: "Free Online Text Tools — Lorem Ipsum, Case Converter, Word Counter | Pix Garage",
-    seoDescription: "Free text tools: lorem ipsum generator with AI topic mode, text case converter (8 formats), and word/character counter with reading time. All in-browser, no upload.",
+    seoDescription: "Free text tools: lorem ipsum generator, text case converter (9 formats), and word/character counter with reading time. All in-browser, no upload, no signup.",
   },
 ] as const;
 

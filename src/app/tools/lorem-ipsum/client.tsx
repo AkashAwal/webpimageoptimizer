@@ -1,8 +1,7 @@
 "use client";
 
-import { useState, useRef } from "react";
-import { ArrowsClockwise, Copy, Check, Sparkle } from "@/components/ui/icons";
-import { cn } from "@/lib/utils";
+import { useState } from "react";
+import { ArrowsClockwise, Copy, Check } from "@/components/ui/icons";
 
 const LOREM_PARAGRAPHS = [
   "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
@@ -17,73 +16,16 @@ const LOREM_PARAGRAPHS = [
   "Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim.",
 ];
 
-type Mode = "classic" | "ai";
-
 export function LoremIpsumClient() {
-  const [mode, setMode] = useState<Mode>("classic");
   const [paragraphs, setParagraphs] = useState(3);
-  const [topic, setTopic] = useState("");
   const [output, setOutput] = useState<string>(() =>
     LOREM_PARAGRAPHS.slice(0, 3).join("\n\n")
   );
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
   const [copied, setCopied] = useState(false);
-  const abortRef = useRef<AbortController | null>(null);
 
-  function generateClassic(count: number) {
+  function generate() {
     const shuffled = [...LOREM_PARAGRAPHS].sort(() => Math.random() - 0.5);
-    setOutput(shuffled.slice(0, count).join("\n\n"));
-    setError(null);
-  }
-
-  async function generateAI() {
-    if (!topic.trim()) { setError("Enter a topic first."); return; }
-    if (loading) { abortRef.current?.abort(); return; }
-
-    abortRef.current = new AbortController();
-    setLoading(true);
-    setError(null);
-    setOutput("");
-
-    try {
-      const res = await fetch("/api/lorem-ipsum", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ topic: topic.trim(), paragraphs }),
-        signal: abortRef.current.signal,
-      });
-
-      if (!res.ok) {
-        const text = await res.text();
-        throw new Error(text || `Error ${res.status}`);
-      }
-
-      const reader = res.body!.getReader();
-      const decoder = new TextDecoder();
-      let result = "";
-
-      while (true) {
-        const { done, value } = await reader.read();
-        if (done) break;
-        result += decoder.decode(value, { stream: true });
-        setOutput(result);
-      }
-    } catch (err) {
-      if ((err as Error).name !== "AbortError") {
-        setError((err as Error).message ?? "Something went wrong.");
-      }
-    } finally {
-      setLoading(false);
-    }
-  }
-
-  function handleGenerate() {
-    if (mode === "classic") {
-      generateClassic(paragraphs);
-    } else {
-      generateAI();
-    }
+    setOutput(shuffled.slice(0, paragraphs).join("\n\n"));
   }
 
   function copyOutput() {
@@ -96,42 +38,6 @@ export function LoremIpsumClient() {
 
   return (
     <div className="space-y-4">
-      {/* Mode toggle */}
-      <div className="flex gap-1 rounded-full bg-neutral-100 p-1 w-fit">
-        {(["classic", "ai"] as Mode[]).map((m) => (
-          <button
-            key={m}
-            onClick={() => { setMode(m); setError(null); }}
-            className={cn(
-              "flex items-center gap-1.5 rounded-full px-4 py-1.5 text-[13px] font-medium transition-colors",
-              mode === m
-                ? "bg-white text-foreground shadow-sm ring-1 ring-black/5"
-                : "text-neutral-500 hover:text-neutral-700"
-            )}
-          >
-            {m === "ai" && <Sparkle size={13} />}
-            {m === "classic" ? "Classic Lorem Ipsum" : "AI Topic Mode"}
-          </button>
-        ))}
-      </div>
-
-      {/* AI topic input */}
-      {mode === "ai" && (
-        <div>
-          <label className="block text-[12px] font-medium text-muted-foreground mb-1.5">
-            Topic
-          </label>
-          <input
-            type="text"
-            value={topic}
-            onChange={(e) => setTopic(e.target.value)}
-            onKeyDown={(e) => { if (e.key === "Enter") handleGenerate(); }}
-            placeholder="e.g. renewable energy, coffee brewing, space exploration"
-            className="w-full rounded-xl border border-black/10 bg-white px-4 py-2.5 text-[13px] text-foreground placeholder:text-neutral-400 focus:outline-none focus:ring-2 focus:ring-foreground/20"
-          />
-        </div>
-      )}
-
       {/* Paragraph count */}
       <div className="flex items-center gap-3">
         <span className="text-[12px] font-medium text-muted-foreground w-24 shrink-0">
@@ -149,30 +55,22 @@ export function LoremIpsumClient() {
 
       {/* Generate button */}
       <button
-        onClick={handleGenerate}
-        disabled={loading}
-        className="flex items-center gap-2 rounded-full bg-foreground px-5 py-2.5 text-[13px] font-medium text-white transition-colors hover:bg-foreground/90 disabled:opacity-60"
+        onClick={generate}
+        className="flex items-center gap-2 rounded-full bg-foreground px-5 py-2.5 text-[13px] font-medium text-white transition-colors hover:bg-foreground/90"
       >
-        <ArrowsClockwise size={13} className={loading ? "animate-spin" : ""} />
-        {loading ? "Generating…" : "Generate"}
+        <ArrowsClockwise size={13} />
+        Generate
       </button>
-
-      {/* Error */}
-      {error && (
-        <p className="text-[13px] text-red-500">{error}</p>
-      )}
 
       {/* Output */}
       {output && (
         <div className="relative">
           <div className="rounded-2xl bg-white ring-1 ring-black/6 p-5 shadow-[0_4px_24px_-6px_rgba(0,0,0,0.10),0_1px_3px_rgba(0,0,0,0.06)]">
-            <div className="prose prose-sm max-w-none">
-              {output.split("\n\n").filter(Boolean).map((para, i) => (
-                <p key={i} className="text-[13px] leading-relaxed text-muted-foreground mb-3 last:mb-0">
-                  {para}
-                </p>
-              ))}
-            </div>
+            {output.split("\n\n").filter(Boolean).map((para, i) => (
+              <p key={i} className="text-[13px] leading-relaxed text-muted-foreground mb-3 last:mb-0">
+                {para}
+              </p>
+            ))}
           </div>
           <button
             onClick={copyOutput}
