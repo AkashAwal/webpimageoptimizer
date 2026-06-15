@@ -25,4 +25,4 @@ jobs:
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: d77e2555809a392e75c4261ccde52c5f
-          command: pages deploy out --project-name=pixgarage-com-pages
+          command: deploy
