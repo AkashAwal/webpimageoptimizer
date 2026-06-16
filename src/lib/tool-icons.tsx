@@ -55,6 +55,9 @@ import {
   SelectionBackground,
   Shuffle,
   Fingerprint,
+  TextT,
+  TextAa,
+  Article,
 } from "@phosphor-icons/react";
 
 export const TOOL_ICONS: Record<string, React.ReactNode> = {
@@ -133,4 +136,7 @@ export const TOOL_ICONS: Record<string, React.ReactNode> = {
   "/tools/random-color-generator": <Shuffle size={22} />,
   "/remove-pdf-pages": <MinusCircle size={22} />,
   "/tools/plagiarism-checker": <Fingerprint size={22} />,
+  "/tools/lorem-ipsum": <TextT size={22} />,
+  "/tools/text-case-converter": <TextAa size={22} />,
+  "/tools/word-counter": <Article size={22} />,
 };
