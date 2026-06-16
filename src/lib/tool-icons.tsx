@@ -58,6 +58,13 @@ import {
   TextT,
   TextAa,
   Article,
+  TextBolder,
+  TextItalic,
+  TextStrikethrough,
+  Sparkle,
+  Star,
+  Fire,
+  Crosshair,
 } from "@phosphor-icons/react";
 
 export const TOOL_ICONS: Record<string, React.ReactNode> = {
@@ -139,4 +146,11 @@ export const TOOL_ICONS: Record<string, React.ReactNode> = {
   "/tools/lorem-ipsum": <TextT size={22} />,
   "/tools/text-case-converter": <TextAa size={22} />,
   "/tools/word-counter": <Article size={22} />,
+  "/tools/fancy-text": <Sparkle size={22} />,
+  "/tools/bold-text-generator": <TextBolder size={22} />,
+  "/tools/italic-text-generator": <TextItalic size={22} />,
+  "/tools/strikethrough-text": <TextStrikethrough size={22} />,
+  "/tools/stylish-name-generator": <Star size={22} />,
+  "/tools/free-fire-name-generator": <Fire size={22} />,
+  "/tools/pubg-name-generator": <Crosshair size={22} />,
 };

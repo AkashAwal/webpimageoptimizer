@@ -57,4 +57,12 @@ export {
   Hash,
   Copy,
   Fingerprint,
+  TextT,
+  TextBolder,
+  TextItalic,
+  TextStrikethrough,
+  Sparkle,
+  Star,
+  Fire,
+  Crosshair,
 } from "@phosphor-icons/react";

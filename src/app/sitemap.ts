@@ -87,6 +87,13 @@ const TOOL_PATHS = [
   "/tools/text-case-converter",
   "/tools/word-counter",
   "/tools/plagiarism-checker",
+  "/tools/fancy-text",
+  "/tools/bold-text-generator",
+  "/tools/italic-text-generator",
+  "/tools/strikethrough-text",
+  "/tools/stylish-name-generator",
+  "/tools/free-fire-name-generator",
+  "/tools/pubg-name-generator",
 ];
 
 const STATIC_PAGES = [
