@@ -34,8 +34,8 @@ export default function TextToolsPage() {
         <header className="mb-10">
           <h1 className="text-3xl font-bold tracking-tight text-foreground">Text Tools</h1>
           <p className="mt-3 max-w-2xl text-[15px] leading-relaxed text-muted-foreground">
-            {tools.length} free text tools for writers, developers, and designers — generate placeholder copy,
-            convert between naming conventions, and analyse your writing with word and reading-time stats.
+            {tools.length} free text tools for writers, developers, and gamers — generate fancy Unicode text, convert
+            case, count words, create stylish names, encode data, and much more. All run in your browser.
           </p>
         </header>
 

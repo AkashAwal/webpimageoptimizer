@@ -29,10 +29,12 @@ export function SiteFooter() {
             <ul className="mt-3 space-y-2">
               {[
                 { href: "/", label: "Home" },
-                { href: "/tools/png-to-webp", label: "PNG to WebP" },
-                { href: "/tools/jpg-to-webp", label: "JPG to WebP" },
-                { href: "/tools/webp-resizer", label: "WebP Resizer" },
-                { href: "/tools/heic-to-webp", label: "HEIC to WebP" },
+                { href: "/tools", label: "All Tools" },
+                { href: "/image-tools", label: "Image Tools" },
+                { href: "/pdf-tools", label: "PDF Tools" },
+                { href: "/color-tools", label: "Color Tools" },
+                { href: "/text-tools", label: "Text Tools" },
+                { href: "/qr-tools", label: "QR Code Tools" },
               ].map(({ href, label }) => (
                 <li key={href}>
                   <Link

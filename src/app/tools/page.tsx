@@ -9,15 +9,16 @@ import {
   ArrowsClockwise,
   QrCode,
   Palette,
+  TextT,
   CaretLeft,
   ArrowRight,
 } from "@/components/ui/icons";
 import { TOOLS, CATEGORY_METADATA } from "@/lib/tools";
 
 export const metadata: Metadata = {
-  title: "All Free Online Tools — Image, PDF, QR Code & Color | Pix Garage",
+  title: "All Free Online Tools — Image, PDF, QR Code, Color & Text | Pix Garage",
   description:
-    "Browse every free in-browser tool on Pix Garage: image editing, PDF editing, WebP conversion, QR code generation, and color tools. No upload, no account.",
+    "Browse every free in-browser tool on Pix Garage: image editing, PDF editing, WebP conversion, QR code generation, color tools, and text tools. No upload, no account.",
 };
 
 const CATEGORY_ICONS: Record<string, React.ReactNode> = {
@@ -27,6 +28,7 @@ const CATEGORY_ICONS: Record<string, React.ReactNode> = {
   webp: <ArrowsClockwise size={28} />,
   qr: <QrCode size={28} />,
   "color-tools": <Palette size={28} />,
+  "text-tools": <TextT size={28} />,
 };
 
 export default function ToolsHubPage() {
