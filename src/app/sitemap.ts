@@ -94,6 +94,20 @@ const TOOL_PATHS = [
   "/tools/stylish-name-generator",
   "/tools/free-fire-name-generator",
   "/tools/pubg-name-generator",
+  "/tools/password-generator",
+  "/tools/hashtag-generator",
+  "/tools/reverse-text",
+  "/tools/text-repeater",
+  "/tools/random-name-generator",
+  "/tools/json-formatter",
+  "/tools/base64-text",
+  "/tools/url-encoder",
+  "/tools/uuid-generator",
+  "/tools/diff-checker",
+  "/tools/leet-speak",
+  "/tools/morse-code",
+  "/tools/emoji-text",
+  "/tools/rot13",
 ];
 
 const STATIC_PAGES = [
