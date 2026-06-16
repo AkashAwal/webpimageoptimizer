@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { SiteHeader } from "@/components/layout/site-header";
 import { SiteFooter } from "@/components/layout/site-footer";
-import { CaretLeft, Sparkle } from "@/components/ui/icons";
+import { CaretLeft, MagicWand } from "@/components/ui/icons";
 import Link from "next/link";
 import { FancyTextClient } from "./client";
 import { OtherTools } from "@/components/converter/other-tools";
@@ -37,7 +37,7 @@ export default function FancyTextPage() {
 
         <div className="mb-8 flex items-center gap-3">
           <div className="flex size-10 items-center justify-center rounded-xl bg-neutral-100 text-neutral-600">
-            <Sparkle size={20} />
+            <MagicWand size={20} />
           </div>
           <div>
             <h1 className="text-[22px] font-semibold tracking-tight text-foreground">
