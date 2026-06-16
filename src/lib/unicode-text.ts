@@ -45,6 +45,31 @@ const MAPS = {
     "0": "⓪", "1": "①", "2": "②", "3": "③", "4": "④",
     "5": "⑤", "6": "⑥", "7": "⑦", "8": "⑧", "9": "⑨",
   },
+  negBubble: (() => {
+    const m: Record<string, string> = {};
+    for (let i = 0; i < 26; i++) {
+      const c = String.fromCodePoint(0x1f150 + i);
+      m[String.fromCharCode(65 + i)] = c;
+      m[String.fromCharCode(97 + i)] = c;
+    }
+    return m;
+  })(),
+  squared: (() => {
+    const m: Record<string, string> = {};
+    for (let i = 0; i < 26; i++) {
+      const c = String.fromCodePoint(0x1f130 + i);
+      m[String.fromCharCode(65 + i)] = c;
+      m[String.fromCharCode(97 + i)] = c;
+    }
+    return m;
+  })(),
+  superscript: {
+    a: "ᵃ", b: "ᵇ", c: "ᶜ", d: "ᵈ", e: "ᵉ", f: "ᶠ", g: "ᵍ", h: "ʰ",
+    i: "ⁱ", j: "ʲ", k: "ᵏ", l: "ˡ", m: "ᵐ", n: "ⁿ", o: "ᵒ", p: "ᵖ",
+    r: "ʳ", s: "ˢ", t: "ᵗ", u: "ᵘ", v: "ᵛ", w: "ʷ", x: "ˣ", y: "ʸ", z: "ᶻ",
+    "0": "⁰", "1": "¹", "2": "²", "3": "³", "4": "⁴",
+    "5": "⁵", "6": "⁶", "7": "⁷", "8": "⁸", "9": "⁹",
+  } as Record<string, string>,
   smallCaps: {
     a: "ᴀ", b: "ʙ", c: "ᴄ", d: "ᴅ", e: "ᴇ", f: "ꜰ",
     g: "ɢ", h: "ʜ", i: "ɪ", j: "ᴊ", k: "ᴋ", l: "ʟ",
@@ -99,6 +124,13 @@ export const FANCY_STYLES: TextStyle[] = [
   { id: "bubble", name: "Bubble", convert: (t) => applyMap(t, MAPS.bubble) },
   { id: "strikethrough", name: "Strikethrough", convert: (t) => withCombining(t, "̶") },
   { id: "underline", name: "Underline", convert: (t) => withCombining(t, "̲") },
+  { id: "superscript", name: "Superscript", convert: (t) => applyMap(t, MAPS.superscript) },
+  { id: "negBubble", name: "Filled Bubble", convert: (t) => applyMap(t, MAPS.negBubble) },
+  { id: "squared", name: "Squared", convert: (t) => applyMap(t, MAPS.squared) },
+  { id: "aesthetic", name: "Aesthetic", convert: (t) => [...t].map((c) => applyMap(c, MAPS.fullWidth)).join(" ") },
+  { id: "dashed", name: "Dashed", convert: (t) => [...t].join("-") },
+  { id: "dotted", name: "Dotted", convert: (t) => [...t].join("·") },
+  { id: "waved", name: "Wavy", convert: (t) => withCombining(t, "̴") },
   { id: "flip", name: "Upside Down", convert: (t) => applyMap([...t].reverse().join(""), MAPS.flip) },
 ];
 
@@ -119,4 +151,24 @@ export const GAMING_BORDERS: { label: string; wrap: (n: string) => string }[] = 
   { label: "God", wrap: (n) => `꧁ᴳᵒᵈ${n}꧂` },
   { label: "Angle", wrap: (n) => `≋${n}≋` },
   { label: "Arrows", wrap: (n) => `»${n}«` },
+  { label: "Diamond", wrap: (n) => `◈${n}◈` },
+  { label: "Chess Queen", wrap: (n) => `♛${n}♛` },
+  { label: "Chess King", wrap: (n) => `♔${n}♔` },
+  { label: "Lozenge", wrap: (n) => `❖${n}❖` },
+  { label: "Star 4", wrap: (n) => `✰${n}✰` },
+  { label: "Cross Skull", wrap: (n) => `☠${n}☠` },
+  { label: "Corner", wrap: (n) => `◤${n}◥` },
+  { label: "Wind", wrap: (n) => `᭄${n}᭄` },
+  { label: "Degree", wrap: (n) => `⁀°${n}°⁀` },
+  { label: "Rule", wrap: (n) => `━━${n}━━` },
+  { label: "Quote", wrap: (n) => `❝${n}❞` },
+  { label: "Flower", wrap: (n) => `✿${n}✿` },
+  { label: "Small Star", wrap: (n) => `⋆${n}⋆` },
+  { label: "Point", wrap: (n) => `≺${n}≻` },
+  { label: "Sparkle 4", wrap: (n) => `✦${n}✦` },
+  { label: "Katakana", wrap: (n) => `ッ${n}ッ` },
+  { label: "TM", wrap: (n) => `${n}™` },
+  { label: "Moon", wrap: (n) => `☽${n}☾` },
+  { label: "Infinity", wrap: (n) => `∞${n}∞` },
+  { label: "Peace", wrap: (n) => `✌${n}✌` },
 ];
