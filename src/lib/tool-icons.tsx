@@ -77,6 +77,15 @@ import {
   Radio,
   Smiley,
   Detective,
+  Table,
+  ChartBar,
+  Tag,
+  CalendarBlank,
+  Clock,
+  Certificate,
+  Ruler,
+  Scales,
+  Thermometer,
 } from "@phosphor-icons/react";
 
 export const TOOL_ICONS: Record<string, React.ReactNode> = {
@@ -184,4 +193,14 @@ export const TOOL_ICONS: Record<string, React.ReactNode> = {
   "/tools/regex-tester": <MagnifyingGlass size={22} />,
   "/tools/number-to-words": <Hash size={22} />,
   "/tools/ascii-art": <GridFour size={22} />,
+  "/tools/char-frequency": <ChartBar size={22} />,
+  "/tools/text-to-slug": <Tag size={22} />,
+  "/tools/csv-to-json": <Table size={22} />,
+  "/tools/json-to-csv": <Table size={22} />,
+  "/tools/crontab-explainer": <CalendarBlank size={22} />,
+  "/tools/unix-timestamp": <Clock size={22} />,
+  "/tools/jwt-decoder": <Certificate size={22} />,
+  "/tools/length-converter": <Ruler size={22} />,
+  "/tools/weight-converter": <Scales size={22} />,
+  "/tools/temperature-converter": <Thermometer size={22} />,
 };

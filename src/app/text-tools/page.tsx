@@ -44,21 +44,30 @@ export default function TextToolsPage() {
         <section className="mt-16 max-w-2xl">
           <h2 className="text-xl font-bold tracking-tight text-foreground">About these text tools</h2>
           <p className="mt-3 text-[14px] leading-relaxed text-muted-foreground">
-            All three tools run entirely in your browser. The Lorem Ipsum generator produces classic Latin
-            placeholder paragraphs or, in AI mode, realistic English filler text on any topic you specify. The
-            Case Converter handles nine naming conventions — from prose formats like Title Case and Sentence case
-            to code formats like camelCase, snake_case, and CONSTANT_CASE. The Word Counter gives you a full
-            breakdown of your text&apos;s statistics including reading and speaking time estimates and a keyword
-            frequency list.
+            All tools run entirely in your browser — nothing is uploaded or sent to a server. The collection covers
+            everything from everyday writing utilities (word counter, case converter, lorem ipsum) to creative tools
+            (fancy Unicode fonts, emoji text, ASCII art, Morse code) to technical utilities (regex tester, diff
+            checker, Base64, URL encoder, UUID generator, Markdown preview). Every tool processes your text locally
+            and instantly.
           </p>
 
           <h3 className="mt-8 text-[15px] font-semibold text-foreground">
-            When should I use AI Topic mode in the Lorem Ipsum generator?
+            Which tool should I use to fix my text for a URL?
           </h3>
           <p className="mt-2 text-[14px] leading-relaxed text-muted-foreground">
-            Use it when you need a mockup to feel realistic for a specific audience. For example, if you&apos;re
-            designing a landing page for a fintech product, AI topic mode generates financial-sounding placeholder
-            copy that lets stakeholders evaluate the layout without being distracted by Latin text.
+            Use <strong>Text to Slug</strong> when you need a clean URL path from a title or heading — it
+            lowercases, strips accents and punctuation, and joins words with hyphens or underscores. Use
+            <strong> URL Encoder</strong> when you need to percent-encode a full URL or query-string parameter
+            for safe use in a link or API call. They solve different problems.
+          </p>
+
+          <h3 className="mt-6 text-[15px] font-semibold text-foreground">
+            How does the Regex Tester handle catastrophic backtracking?
+          </h3>
+          <p className="mt-2 text-[14px] leading-relaxed text-muted-foreground">
+            The Regex Tester uses JavaScript&apos;s native <code className="rounded bg-neutral-100 px-1 py-0.5 text-[12px]">RegExp</code> engine
+            which can hang on poorly-written patterns against long input. If you notice the page freeze, reload and
+            simplify your pattern — for example, avoid nested quantifiers like <code className="rounded bg-neutral-100 px-1 py-0.5 text-[12px]">(a+)+</code>.
           </p>
 
           <h3 className="mt-6 text-[15px] font-semibold text-foreground">
@@ -66,18 +75,9 @@ export default function TextToolsPage() {
           </h3>
           <p className="mt-2 text-[14px] leading-relaxed text-muted-foreground">
             Convention varies by language: JavaScript and TypeScript use camelCase for variables and PascalCase for
-            classes and React components; Python uses snake_case for variables and CONSTANT_CASE for module-level
-            constants; CSS and HTML attributes prefer kebab-case; and database column names traditionally use
-            snake_case.
-          </p>
-
-          <h3 className="mt-6 text-[15px] font-semibold text-foreground">
-            How accurate is the reading time estimate?
-          </h3>
-          <p className="mt-2 text-[14px] leading-relaxed text-muted-foreground">
-            The Word Counter uses 200 words per minute for reading and 130 wpm for speaking — both widely cited
-            averages. Dense technical content and content aimed at younger audiences may be read more slowly;
-            casual conversational text more quickly. The figure is a useful benchmark, not a guarantee.
+            classes; Python uses snake_case for variables and CONSTANT_CASE for module-level constants; CSS and HTML
+            attributes prefer kebab-case; database column names traditionally use snake_case. The Case Converter
+            handles all of these with one click.
           </p>
         </section>
 

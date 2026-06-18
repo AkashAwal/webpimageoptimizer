@@ -113,6 +113,16 @@ const TOOL_PATHS = [
   "/tools/regex-tester",
   "/tools/number-to-words",
   "/tools/ascii-art",
+  "/tools/char-frequency",
+  "/tools/text-to-slug",
+  "/tools/csv-to-json",
+  "/tools/json-to-csv",
+  "/tools/crontab-explainer",
+  "/tools/unix-timestamp",
+  "/tools/jwt-decoder",
+  "/tools/length-converter",
+  "/tools/weight-converter",
+  "/tools/temperature-converter",
 ];
 
 const STATIC_PAGES = [
@@ -125,6 +135,8 @@ const STATIC_PAGES = [
   { path: "/qr-tools", priority: 0.9 },
   { path: "/color-tools", priority: 0.9 },
   { path: "/text-tools", priority: 0.9 },
+  { path: "/dev-tools", priority: 0.9 },
+  { path: "/unit-converter", priority: 0.9 },
   { path: "/about", priority: 0.5 },
   { path: "/security", priority: 0.4 },
   { path: "/contact", priority: 0.4 },

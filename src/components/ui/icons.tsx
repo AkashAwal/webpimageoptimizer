@@ -78,4 +78,13 @@ export {
   Smiley,
   Detective,
   MagnifyingGlass,
+  Table,
+  ChartBar,
+  Tag,
+  CalendarBlank,
+  Clock,
+  Certificate,
+  Ruler,
+  Scales,
+  Thermometer,
 } from "@phosphor-icons/react";
