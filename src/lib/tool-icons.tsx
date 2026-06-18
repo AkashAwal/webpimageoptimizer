@@ -102,6 +102,9 @@ import {
   Bank,
   Quotes,
   Terminal,
+  Wallet,
+  MathOperations,
+  GraduationCap,
 } from "@phosphor-icons/react";
 
 export const TOOL_ICONS: Record<string, React.ReactNode> = {
@@ -237,4 +240,18 @@ export const TOOL_ICONS: Record<string, React.ReactNode> = {
   "/tools/bmi-calculator": <Heartbeat size={22} />,
   "/tools/compound-interest": <ChartLineUp size={22} />,
   "/tools/loan-calculator": <Bank size={22} />,
+  "/tools/age-calculator": <CalendarBlank size={22} />,
+  "/tools/date-difference": <ArrowsHorizontal size={22} />,
+  "/tools/discount-calculator": <Tag size={22} />,
+  "/tools/sales-tax-calculator": <Percent size={22} />,
+  "/tools/calorie-calculator": <Fire size={22} />,
+  "/tools/fuel-cost-calculator": <GasPump size={22} />,
+  "/tools/hours-calculator": <Clock size={22} />,
+  "/tools/unit-price-calculator": <Scales size={22} />,
+  "/tools/electricity-cost-calculator": <Lightning size={22} />,
+  "/tools/salary-calculator": <Wallet size={22} />,
+  "/tools/margin-calculator": <MathOperations size={22} />,
+  "/tools/roi-calculator": <ChartLineUp size={22} />,
+  "/tools/savings-goal-calculator": <Bank size={22} />,
+  "/tools/gpa-calculator": <GraduationCap size={22} />,
 };

@@ -141,6 +141,20 @@ const TOOL_PATHS = [
   "/tools/bmi-calculator",
   "/tools/compound-interest",
   "/tools/loan-calculator",
+  "/tools/age-calculator",
+  "/tools/date-difference",
+  "/tools/discount-calculator",
+  "/tools/sales-tax-calculator",
+  "/tools/calorie-calculator",
+  "/tools/fuel-cost-calculator",
+  "/tools/hours-calculator",
+  "/tools/unit-price-calculator",
+  "/tools/electricity-cost-calculator",
+  "/tools/salary-calculator",
+  "/tools/margin-calculator",
+  "/tools/roi-calculator",
+  "/tools/savings-goal-calculator",
+  "/tools/gpa-calculator",
 ];
 
 const STATIC_PAGES = [

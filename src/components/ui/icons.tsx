@@ -103,4 +103,7 @@ export {
   Bank,
   Quotes,
   Terminal,
+  Wallet,
+  MathOperations,
+  GraduationCap,
 } from "@phosphor-icons/react";
