@@ -96,4 +96,11 @@ export {
   Hourglass,
   Compass,
   GasPump,
+  Percent,
+  Receipt,
+  Heartbeat,
+  ChartLineUp,
+  Bank,
+  Quotes,
+  Terminal,
 } from "@phosphor-icons/react";

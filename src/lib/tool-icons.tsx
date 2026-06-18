@@ -95,6 +95,13 @@ import {
   Hourglass,
   Compass,
   GasPump,
+  Percent,
+  Receipt,
+  Heartbeat,
+  ChartLineUp,
+  Bank,
+  Quotes,
+  Terminal,
 } from "@phosphor-icons/react";
 
 export const TOOL_ICONS: Record<string, React.ReactNode> = {
@@ -221,4 +228,13 @@ export const TOOL_ICONS: Record<string, React.ReactNode> = {
   "/tools/time-converter": <Hourglass size={22} />,
   "/tools/angle-converter": <Compass size={22} />,
   "/tools/fuel-converter": <GasPump size={22} />,
+  "/tools/yaml-to-json": <Code size={22} />,
+  "/tools/xml-formatter": <Quotes size={22} />,
+  "/tools/string-escape": <Terminal size={22} />,
+  "/tools/base-converter": <Hash size={22} />,
+  "/tools/percentage-calculator": <Percent size={22} />,
+  "/tools/tip-calculator": <Receipt size={22} />,
+  "/tools/bmi-calculator": <Heartbeat size={22} />,
+  "/tools/compound-interest": <ChartLineUp size={22} />,
+  "/tools/loan-calculator": <Bank size={22} />,
 };

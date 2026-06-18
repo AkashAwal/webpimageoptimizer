@@ -132,6 +132,15 @@ const TOOL_PATHS = [
   "/tools/time-converter",
   "/tools/angle-converter",
   "/tools/fuel-converter",
+  "/tools/yaml-to-json",
+  "/tools/xml-formatter",
+  "/tools/string-escape",
+  "/tools/base-converter",
+  "/tools/percentage-calculator",
+  "/tools/tip-calculator",
+  "/tools/bmi-calculator",
+  "/tools/compound-interest",
+  "/tools/loan-calculator",
 ];
 
 const STATIC_PAGES = [
@@ -146,6 +155,7 @@ const STATIC_PAGES = [
   { path: "/text-tools", priority: 0.9 },
   { path: "/dev-tools", priority: 0.9 },
   { path: "/unit-converter", priority: 0.9 },
+  { path: "/calculators", priority: 0.9 },
   { path: "/about", priority: 0.5 },
   { path: "/security", priority: 0.4 },
   { path: "/contact", priority: 0.4 },
