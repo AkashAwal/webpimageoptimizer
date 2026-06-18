@@ -77,4 +77,5 @@ export {
   Radio,
   Smiley,
   Detective,
+  MagnifyingGlass,
 } from "@phosphor-icons/react";

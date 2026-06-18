@@ -108,6 +108,11 @@ const TOOL_PATHS = [
   "/tools/morse-code",
   "/tools/emoji-text",
   "/tools/rot13",
+  "/tools/markdown-preview",
+  "/tools/html-encoder",
+  "/tools/regex-tester",
+  "/tools/number-to-words",
+  "/tools/ascii-art",
 ];
 
 const STATIC_PAGES = [

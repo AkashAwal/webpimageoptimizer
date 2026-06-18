@@ -836,6 +836,46 @@ export const TOOLS = [
     badge: "Classic cipher",
     category: "text-tools" as CategoryId,
   },
+  {
+    href: "/tools/markdown-preview",
+    name: "Markdown Preview",
+    shortName: "Markdown Live Preview",
+    description: "Paste Markdown and see a live rendered preview side by side. Supports headers, bold, italic, code blocks, lists, links, and blockquotes.",
+    badge: "Live preview",
+    category: "text-tools" as CategoryId,
+  },
+  {
+    href: "/tools/html-encoder",
+    name: "HTML Encoder / Decoder",
+    shortName: "HTML Entity Encoder Decoder",
+    description: "Encode special characters to HTML entities (&lt;, &gt;, &amp;) and decode them back. Essential for safely embedding HTML inside HTML.",
+    badge: "Entity encode",
+    category: "text-tools" as CategoryId,
+  },
+  {
+    href: "/tools/regex-tester",
+    name: "Regex Tester",
+    shortName: "Regular Expression Tester",
+    description: "Test regular expressions against sample text with live match highlighting. See match count, captured groups, and character indices. Supports all JS regex flags.",
+    badge: "Live match",
+    category: "text-tools" as CategoryId,
+  },
+  {
+    href: "/tools/number-to-words",
+    name: "Number to Words",
+    shortName: "Number to Words Converter",
+    description: "Convert any number up to one quadrillion into English words. Supports integers, decimals, negatives, and ordinal form. Great for cheques and legal documents.",
+    badge: "Ordinal too",
+    category: "text-tools" as CategoryId,
+  },
+  {
+    href: "/tools/ascii-art",
+    name: "ASCII Art Generator",
+    shortName: "Text to ASCII Art Generator",
+    description: "Convert any text into ASCII art using classic block character rendering. Choose from multiple character sets and adjust output width. Copy-paste anywhere.",
+    badge: "4 char sets",
+    category: "text-tools" as CategoryId,
+  },
 ] as const;
 
 export type Tool = (typeof TOOLS)[number];

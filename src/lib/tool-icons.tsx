@@ -179,4 +179,9 @@ export const TOOL_ICONS: Record<string, React.ReactNode> = {
   "/tools/morse-code": <Radio size={22} />,
   "/tools/emoji-text": <Smiley size={22} />,
   "/tools/rot13": <Detective size={22} />,
+  "/tools/markdown-preview": <Eye size={22} />,
+  "/tools/html-encoder": <Code size={22} />,
+  "/tools/regex-tester": <MagnifyingGlass size={22} />,
+  "/tools/number-to-words": <Hash size={22} />,
+  "/tools/ascii-art": <GridFour size={22} />,
 };
