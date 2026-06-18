@@ -87,4 +87,13 @@ export {
   Ruler,
   Scales,
   Thermometer,
+  Lightning,
+  CornersIn,
+  Cylinder,
+  ArrowsIn,
+  BatteryFull,
+  HardDrive,
+  Hourglass,
+  Compass,
+  GasPump,
 } from "@phosphor-icons/react";

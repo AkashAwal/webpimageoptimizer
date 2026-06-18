@@ -86,6 +86,15 @@ import {
   Ruler,
   Scales,
   Thermometer,
+  Lightning,
+  CornersIn,
+  Cylinder,
+  ArrowsIn,
+  BatteryFull,
+  HardDrive,
+  Hourglass,
+  Compass,
+  GasPump,
 } from "@phosphor-icons/react";
 
 export const TOOL_ICONS: Record<string, React.ReactNode> = {
@@ -203,4 +212,13 @@ export const TOOL_ICONS: Record<string, React.ReactNode> = {
   "/tools/length-converter": <Ruler size={22} />,
   "/tools/weight-converter": <Scales size={22} />,
   "/tools/temperature-converter": <Thermometer size={22} />,
+  "/tools/speed-converter": <Lightning size={22} />,
+  "/tools/area-converter": <CornersIn size={22} />,
+  "/tools/volume-converter": <Cylinder size={22} />,
+  "/tools/pressure-converter": <ArrowsIn size={22} />,
+  "/tools/energy-converter": <BatteryFull size={22} />,
+  "/tools/data-storage-converter": <HardDrive size={22} />,
+  "/tools/time-converter": <Hourglass size={22} />,
+  "/tools/angle-converter": <Compass size={22} />,
+  "/tools/fuel-converter": <GasPump size={22} />,
 };

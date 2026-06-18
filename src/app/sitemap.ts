@@ -123,6 +123,15 @@ const TOOL_PATHS = [
   "/tools/length-converter",
   "/tools/weight-converter",
   "/tools/temperature-converter",
+  "/tools/speed-converter",
+  "/tools/area-converter",
+  "/tools/volume-converter",
+  "/tools/pressure-converter",
+  "/tools/energy-converter",
+  "/tools/data-storage-converter",
+  "/tools/time-converter",
+  "/tools/angle-converter",
+  "/tools/fuel-converter",
 ];
 
 const STATIC_PAGES = [
