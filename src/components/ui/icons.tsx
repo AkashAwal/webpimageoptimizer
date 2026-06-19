@@ -106,4 +106,12 @@ export {
   Wallet,
   MathOperations,
   GraduationCap,
+  Divide,
+  Function,
+  Triangle,
+  Infinity,
+  Cube,
+  BookOpen,
+  SpeakerHigh,
+  PaintRoller as PaintRoll,
 } from "@phosphor-icons/react";
