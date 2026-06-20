@@ -1,4 +1,4 @@
-﻿import type { Metadata } from "next";
+import type { Metadata } from "next";
 import Link from "next/link";
 import { SiteHeader } from "@/components/layout/site-header";
 import { SiteFooter } from "@/components/layout/site-footer";
@@ -24,7 +24,7 @@ export default function BakingSubstitutionsPage() {
         <header className="mb-8">
           <h1 className="text-3xl font-bold tracking-tight text-foreground">Baking Substitutions Guide</h1>
           <p className="mt-3 text-[15px] leading-relaxed text-muted-foreground">
-            Find substitutes for 30+ common baking ingredients â€” eggs, butter, buttermilk, flour, sugar, chocolate,
+            Find substitutes for 30+ common baking ingredients — eggs, butter, buttermilk, flour, sugar, chocolate,
             and more. Search by ingredient or filter by vegan, dairy-free, and easy swaps.
           </p>
         </header>
@@ -34,10 +34,10 @@ export default function BakingSubstitutionsPage() {
         <section className="mt-10 space-y-4 text-[14px] leading-relaxed text-muted-foreground">
           <h2 className="text-xl font-bold tracking-tight text-foreground">About baking substitutions</h2>
           <p>
-            Baking is a science â€” every ingredient plays a functional role. Eggs provide structure, moisture, and leavening.
+            Baking is a science — every ingredient plays a functional role. Eggs provide structure, moisture, and leavening.
             Butter adds fat, flavour, and tenderness. Understanding what each ingredient does helps you choose a substitute
             that maintains the desired result. Substitutions work best in forgiving recipes like quick breads, muffins,
-            and cookies; they are harder in delicate recipes like chiffon cakes or soufflÃ©s.
+            and cookies; they are harder in delicate recipes like chiffon cakes or soufflés.
           </p>
 
           <h3 className="text-[15px] font-semibold text-foreground mt-6">What can I substitute for eggs in baking?</h3>
@@ -50,15 +50,15 @@ export default function BakingSubstitutionsPage() {
 
           <h3 className="text-[15px] font-semibold text-foreground mt-6">How do I substitute for buttermilk?</h3>
           <p>
-            The classic substitute is 1 cup of milk with 1 tablespoon of white vinegar or lemon juice â€” stir and let sit
+            The classic substitute is 1 cup of milk with 1 tablespoon of white vinegar or lemon juice — stir and let sit
             for 5 minutes until it curdles slightly. The acid is what matters in buttermilk recipes; it reacts with baking
             soda to create leavening. Plain yogurt also works as a 1:1 substitute and provides the same acidic environment.
           </p>
 
           <h3 className="text-[15px] font-semibold text-foreground mt-6">Can I substitute honey for sugar?</h3>
           <p>
-            Yes, but with adjustments. Use Â¾ cup honey for every 1 cup sugar, reduce other liquids by Â¼ cup, and lower
-            the oven temperature by 25Â°F / 15Â°C (honey browns faster). Honey also adds its own flavour, so it works
+            Yes, but with adjustments. Use ¾ cup honey for every 1 cup sugar, reduce other liquids by ¼ cup, and lower
+            the oven temperature by 25°F / 15°C (honey browns faster). Honey also adds its own flavour, so it works
             best in strongly flavoured recipes like gingerbread or banana bread where the honey taste complements the recipe.
           </p>
         </section>
@@ -69,4 +69,3 @@ export default function BakingSubstitutionsPage() {
     </div>
   );
 }
-
