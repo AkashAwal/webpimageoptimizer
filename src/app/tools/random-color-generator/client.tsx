@@ -79,10 +79,16 @@ function SwatchCard({ swatch, format, onToggleLock, onCopy, copied }: {
       {/* Lock */}
       <button
         onClick={onToggleLock}
-        className="absolute top-3 right-3 rounded-full p-1.5 transition-colors hover:bg-black/10"
+        title={swatch.locked ? "Unlock colour" : "Lock colour"}
+        className={cn(
+          "absolute top-3 right-3 flex items-center justify-center rounded-full size-8 transition-all",
+          swatch.locked
+            ? "bg-black/20 opacity-100 scale-100"
+            : "bg-black/0 opacity-0 group-hover:opacity-100 group-hover:bg-black/10 scale-90 group-hover:scale-100"
+        )}
         style={{ color: iconColor }}
       >
-        {swatch.locked ? <Lock size={14} weight="bold" /> : <LockOpen size={14} />}
+        {swatch.locked ? <Lock size={18} weight="bold" /> : <LockOpen size={18} />}
       </button>
 
       {/* Color value | click to copy */}
