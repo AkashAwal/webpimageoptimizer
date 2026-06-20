@@ -68,7 +68,6 @@ function SwatchCard({ swatch, format, onToggleLock, onCopy, copied }: {
   copied: boolean;
 }) {
   const light = getLightness(swatch.color) > 60;
-  const iconColor = light ? "rgba(0,0,0,0.5)" : "rgba(255,255,255,0.6)";
   const textColor = light ? "#000" : "#fff";
 
   return (
@@ -80,13 +79,8 @@ function SwatchCard({ swatch, format, onToggleLock, onCopy, copied }: {
       <button
         onClick={onToggleLock}
         title={swatch.locked ? "Unlock colour" : "Lock colour"}
-        className={cn(
-          "absolute top-3 right-3 flex items-center justify-center rounded-full size-8 transition-all",
-          swatch.locked
-            ? "bg-black/20 opacity-100 scale-100"
-            : "bg-black/0 opacity-0 group-hover:opacity-100 group-hover:bg-black/10 scale-90 group-hover:scale-100"
-        )}
-        style={{ color: iconColor }}
+        className="absolute top-3 right-3 flex items-center justify-center size-8 transition-opacity"
+        style={{ color: light ? "rgba(0,0,0,0.75)" : "rgba(255,255,255,0.9)" }}
       >
         {swatch.locked ? <Lock size={18} weight="bold" /> : <LockOpen size={18} />}
       </button>
