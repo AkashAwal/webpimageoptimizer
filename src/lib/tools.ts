@@ -404,6 +404,14 @@ export const TOOLS = [
     category: "qr" as CategoryId,
   },
   {
+    href: "/tools/vcard-qr-generator",
+    name: "vCard QR Generator",
+    shortName: "vCard Business Card QR Code",
+    description: "Generate a scannable QR code from your contact details — name, company, phone, email, address, and social links. Scan to save.",
+    badge: "Contact card",
+    category: "qr" as CategoryId,
+  },
+  {
     href: "/tools/image-compressor",
     name: "Image Compressor",
     shortName: "Image Compressor",

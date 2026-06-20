@@ -53,6 +53,7 @@ const TOOL_PATHS = [
   "/tools/qr-code-reader",
   "/tools/qr-code-with-logo",
   "/tools/batch-qr-generator",
+  "/tools/vcard-qr-generator",
   "/tools/image-compressor",
   "/tools/image-cropper",
   "/tools/background-remover",

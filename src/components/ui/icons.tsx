@@ -136,4 +136,8 @@ export {
   ChartPie,
   Wind,
   Heart,
+  Phone,
+  MapPin,
+  LinkedinLogo,
+  Envelope,
 } from "@phosphor-icons/react";
