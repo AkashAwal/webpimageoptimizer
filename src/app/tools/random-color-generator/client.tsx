@@ -61,6 +61,47 @@ function getLightness(hex: string): number {
   return hexToHsl(hex)[2];
 }
 
+function playShuffle() {
+  try {
+    const ctx = new AudioContext();
+    const rate = ctx.sampleRate;
+    const duration = 0.55;
+    const samples = Math.floor(rate * duration);
+    const buf = ctx.createBuffer(1, samples, rate);
+    const data = buf.getChannelData(0);
+
+    // 5 rapid card-flick bursts spaced ~90ms apart
+    const bursts = [0, 0.09, 0.18, 0.27, 0.38];
+    for (const offset of bursts) {
+      const start = Math.floor(offset * rate);
+      const burstLen = Math.floor(0.055 * rate);
+      for (let i = 0; i < burstLen && start + i < samples; i++) {
+        const t = i / burstLen;
+        // sharp attack, quick exponential decay
+        const env = Math.pow(1 - t, 3) * Math.exp(-t * 12);
+        data[start + i] += (Math.random() * 2 - 1) * env * 0.55;
+      }
+    }
+
+    const src = ctx.createBufferSource();
+    src.buffer = buf;
+
+    // gentle high-pass to keep it crisp, not boomy
+    const hp = ctx.createBiquadFilter();
+    hp.type = "highpass";
+    hp.frequency.value = 800;
+
+    const gain = ctx.createGain();
+    gain.gain.setValueAtTime(0.7, 0);
+
+    src.connect(hp);
+    hp.connect(gain);
+    gain.connect(ctx.destination);
+    src.start();
+    src.onended = () => ctx.close();
+  } catch {}
+}
+
 function playClick() {
   try {
     const ctx = new AudioContext();
@@ -130,7 +171,7 @@ export function RandomColorClient() {
 
   // Space to generate
   useEffect(() => {
-    const handler = (e: KeyboardEvent) => { if (e.code === "Space" && e.target === document.body) { e.preventDefault(); generate(); } };
+    const handler = (e: KeyboardEvent) => { if (e.code === "Space" && e.target === document.body) { e.preventDefault(); playShuffle(); generate(); } };
     window.addEventListener("keydown", handler);
     return () => window.removeEventListener("keydown", handler);
   }, [generate]);
@@ -201,7 +242,7 @@ export function RandomColorClient() {
       {/* Controls */}
       <div className="flex items-center gap-2">
         <button
-          onClick={generate}
+          onClick={() => { playShuffle(); generate(); }}
           className="flex flex-1 items-center justify-center gap-2 rounded-full bg-foreground py-2.5 text-[13px] font-medium text-white transition-colors hover:bg-foreground/90"
         >
           <ArrowsClockwise size={13} />Generate
