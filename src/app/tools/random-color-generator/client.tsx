@@ -61,6 +61,25 @@ function getLightness(hex: string): number {
   return hexToHsl(hex)[2];
 }
 
+function playClick() {
+  try {
+    const ctx = new AudioContext();
+    const buf = ctx.createBuffer(1, ctx.sampleRate * 0.04, ctx.sampleRate);
+    const data = buf.getChannelData(0);
+    for (let i = 0; i < data.length; i++) {
+      data[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / data.length, 8);
+    }
+    const src = ctx.createBufferSource();
+    src.buffer = buf;
+    const gain = ctx.createGain();
+    gain.gain.setValueAtTime(0.35, 0);
+    src.connect(gain);
+    gain.connect(ctx.destination);
+    src.start();
+    src.onended = () => ctx.close();
+  } catch {}
+}
+
 function SwatchCard({ swatch, format, onToggleLock, onCopy, copied }: {
   swatch: Swatch; format: CopyFormat;
   onToggleLock: () => void;
@@ -77,7 +96,7 @@ function SwatchCard({ swatch, format, onToggleLock, onCopy, copied }: {
     >
       {/* Lock */}
       <button
-        onClick={onToggleLock}
+        onClick={() => { playClick(); onToggleLock(); }}
         title={swatch.locked ? "Unlock colour" : "Lock colour"}
         className="absolute top-3 right-3 flex items-center justify-center size-8 transition-opacity"
         style={{ color: light ? "rgba(0,0,0,0.75)" : "rgba(255,255,255,0.9)" }}
@@ -200,15 +219,15 @@ export function RandomColorClient() {
         </div>
         <div className="flex gap-1">
           <button onClick={removeSwatch} disabled={swatches.length <= 2}
-            className="flex size-9 items-center justify-center rounded-full bg-neutral-100 text-neutral-500 hover:bg-neutral-200 disabled:opacity-30 transition-colors">
+            className="flex size-9 items-center justify-center rounded-full bg-neutral-100 text-neutral-900 hover:bg-neutral-200 disabled:opacity-30 transition-colors">
             <Minus size={13} />
           </button>
           <button onClick={addSwatch} disabled={swatches.length >= 8}
-            className="flex size-9 items-center justify-center rounded-full bg-neutral-100 text-neutral-500 hover:bg-neutral-200 disabled:opacity-30 transition-colors">
+            className="flex size-9 items-center justify-center rounded-full bg-neutral-100 text-neutral-900 hover:bg-neutral-200 disabled:opacity-30 transition-colors">
             <Plus size={13} />
           </button>
           <button onClick={downloadPalette}
-            className="flex size-9 items-center justify-center rounded-full bg-neutral-100 text-neutral-500 hover:bg-neutral-200 transition-colors"
+            className="flex size-9 items-center justify-center rounded-full bg-neutral-100 text-neutral-900 hover:bg-neutral-200 transition-colors"
             title="Download palette as PNG">
             <DownloadSimple size={13} />
           </button>
