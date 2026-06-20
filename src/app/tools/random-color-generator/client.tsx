@@ -1,7 +1,7 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
-import { Lock, LockOpen, Plus, Minus, ArrowsClockwise, DownloadSimple } from "@phosphor-icons/react";
+import { useCallback, useEffect, useRef, useState } from "react";
+import { Lock, LockOpen, Plus, Minus, ArrowsClockwise, DownloadSimple, PencilSimple, Check } from "@phosphor-icons/react";
 import { cn } from "@/lib/utils";
 
 type CopyFormat = "hex" | "rgb" | "hsl";
@@ -121,14 +121,38 @@ function playClick() {
   } catch {}
 }
 
-function SwatchCard({ swatch, format, onToggleLock, onCopy, copied }: {
+function SwatchCard({ swatch, format, onToggleLock, onCopy, onColorChange, copied }: {
   swatch: Swatch; format: CopyFormat;
   onToggleLock: () => void;
   onCopy: (hex: string) => void;
+  onColorChange: (hex: string) => void;
   copied: boolean;
 }) {
+  const [editing, setEditing] = useState(false);
+  const [editVal, setEditVal] = useState(swatch.color);
+  const inputRef = useRef<HTMLInputElement>(null);
+
   const light = getLightness(swatch.color) > 60;
   const textColor = light ? "#000" : "#fff";
+  const mutedColor = light ? "rgba(0,0,0,0.45)" : "rgba(255,255,255,0.55)";
+
+  const startEdit = () => {
+    setEditVal(swatch.color);
+    setEditing(true);
+    setTimeout(() => { inputRef.current?.select(); }, 0);
+  };
+
+  const applyEdit = () => {
+    const raw = editVal.trim();
+    const hex = raw.startsWith("#") ? raw : `#${raw}`;
+    if (/^#[0-9a-fA-F]{6}$/.test(hex)) onColorChange(hex.toLowerCase());
+    setEditing(false);
+  };
+
+  const onKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === "Enter") applyEdit();
+    if (e.key === "Escape") setEditing(false);
+  };
 
   return (
     <div
@@ -145,15 +169,47 @@ function SwatchCard({ swatch, format, onToggleLock, onCopy, copied }: {
         {swatch.locked ? <Lock size={18} weight="bold" /> : <LockOpen size={18} />}
       </button>
 
-      {/* Color value | click to copy */}
-      <button
-        onClick={() => onCopy(swatch.color)}
-        className="flex flex-col items-center gap-1 px-4 py-2"
-      >
-        <span className="font-mono text-[13px] font-semibold" style={{ color: textColor }}>
-          {copied ? "Copied!" : formatColor(swatch.color, format)}
-        </span>
-      </button>
+      {/* Color value / edit */}
+      {editing ? (
+        <div className="flex items-center gap-1.5 px-3">
+          <input
+            ref={inputRef}
+            value={editVal}
+            onChange={e => setEditVal(e.target.value)}
+            onKeyDown={onKeyDown}
+            onBlur={applyEdit}
+            maxLength={7}
+            spellCheck={false}
+            className="w-[88px] rounded-lg bg-black/20 px-2 py-1 text-center font-mono text-[13px] font-semibold outline-none backdrop-blur-sm"
+            style={{ color: textColor, caretColor: textColor }}
+          />
+          <button
+            onMouseDown={e => { e.preventDefault(); applyEdit(); }}
+            className="flex items-center justify-center size-6 rounded-full bg-black/20"
+            style={{ color: textColor }}
+          >
+            <Check size={11} weight="bold" />
+          </button>
+        </div>
+      ) : (
+        <div className="flex items-center gap-1.5">
+          <button
+            onClick={() => onCopy(swatch.color)}
+            className="font-mono text-[13px] font-semibold"
+            style={{ color: textColor }}
+          >
+            {copied ? "Copied!" : formatColor(swatch.color, format)}
+          </button>
+          <button
+            onClick={startEdit}
+            title="Edit hex"
+            className="flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
+            style={{ color: mutedColor }}
+          >
+            <PencilSimple size={12} />
+          </button>
+        </div>
+      )}
     </div>
   );
 }
@@ -178,6 +234,9 @@ export function RandomColorClient() {
 
   const toggleLock = (id: number) =>
     setSwatches(prev => prev.map(s => s.id === id ? { ...s, locked: !s.locked } : s));
+
+  const changeColor = (id: number, hex: string) =>
+    setSwatches(prev => prev.map(s => s.id === id ? { ...s, color: hex } : s));
 
   const copyColor = (id: number, hex: string) => {
     navigator.clipboard.writeText(formatColor(hex, format)).then(() => {
@@ -284,6 +343,7 @@ export function RandomColorClient() {
             format={format}
             onToggleLock={() => toggleLock(s.id)}
             onCopy={(hex) => copyColor(s.id, hex)}
+            onColorChange={(hex) => changeColor(s.id, hex)}
             copied={copiedId === s.id}
           />
         ))}
